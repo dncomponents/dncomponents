@@ -1,0 +1,3 @@
+mvn archetype:generate -DarchetypeGroupId=com.dncomponents.core -DarchetypeArtifactId=create-project
+
+project28 is template

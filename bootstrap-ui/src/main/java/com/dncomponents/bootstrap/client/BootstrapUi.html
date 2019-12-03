@@ -1,0 +1,242 @@
+<template ui-field="checkBoxFactory">
+    <template ui-field="checkBoxDefault">
+        <div ui-field="root" class="form-check">
+            <label class="form-check-label">
+                <input ui-field="checkBoxInput" class="form-check-input" type="checkbox" value="">
+                <span ui-field="labelText"></span>
+            </label>
+        </div>
+    </template>
+    <template ui-field="checkBoxSimple">
+        <input ui-field="checkBoxInput" class="form-check-input" type="checkbox" value="">
+    </template>
+</template>
+<!--  TEXTBOX  -->
+<template ui-field="textbox">
+    <input ui-field="root" class="form-control" type="text">
+</template>
+<!--  TEXTAREA  -->
+<template ui-field="textarea">
+    <textarea ui-field="root" rows="5" class="form-control"></textarea>
+</template>
+<!--  RADIO  -->
+<template ui-field="radio">
+    <div ui-field="root" class="form-check">
+        <label class="form-check-label">
+            <input ui-field="checkBoxInput" class="form-check-input" type="radio" value="">
+            <label ui-field="labelText" class="form-check-label">
+
+            </label>
+        </label>
+    </div>
+</template>
+<!--  CHECKBOX  -->
+<template ui-field="checkbox">
+    <div ui-field="root" class="form-check">
+        <input ui-field="checkBoxInput" class="form-check-input" type="checkbox" value="">
+        <label ui-field="labelText" class="form-check-label">
+
+        </label>
+    </div>
+</template>
+<!--SIMPLE CHECKBOX-->
+<template ui-field="simplecheckbox">
+    <input ui-field="root" class="form-check-input" type="checkbox" value="">
+</template>
+<!--  BUTTON  -->
+<template ui-field="button">
+    <button ui-field="root" class="btn btn-primary"></button>
+    <style-item ui-field="disabledStyle" class="disabled"/>
+</template>
+<!--  BUTTON  ICON-->
+<template ui-field="buttonIcon">
+    <button ui-field='root' class="btn">
+        <i ui-field="iconPanel"></i>
+        <span ui-field="textPanel"></span>
+    </button>
+    <style-item ui-field="disabledStyle" class="disabled"/>
+</template>
+<template ui-field="button-builder">
+
+    <style-item ui-field="baseStyle" class="btn"></style-item>
+    <!--color-->
+    <style-item ui-field="btnSuccess" class="btn-success"></style-item>
+    <style-item ui-field="btnDanger" class="btn-danger"></style-item>
+    <style-item ui-field="btnInfo" class="btn-info"></style-item>
+    <style-item ui-field="btnWarning" class="btn-warning"></style-item>
+    <style-item ui-field="btnPrimary" class="btn-primary"></style-item>
+    <style-item ui-field="btnSecondary" class="btn-secondary"></style-item>
+    <style-item ui-field="btnLight" class="btn-light"></style-item>
+    <style-item ui-field="btnDark" class="btn-dark"></style-item>
+    <style-item ui-field="btnLink" class="btn-link"></style-item>
+    <!--outline color-->
+    <style-item ui-field="btnOutlineSuccess" class="btn-outline-success"></style-item>
+    <style-item ui-field="btnOutlineInfo" class="btn-outline-info"></style-item>
+    <style-item ui-field="btnOutlineWarning" class="btn-outline-warning"></style-item>
+    <style-item ui-field="btnOutlineDanger" class="btn-outline-danger"></style-item>
+    <style-item ui-field="btnOutlinePrimary" class="btn-outline-primary"></style-item>
+    <style-item ui-field="btnOutlineSecondary" class="btn-outline-secondary"></style-item>
+    <style-item ui-field="btnOutlineLight" class="btn-outline-light"></style-item>
+    <style-item ui-field="btnOutlineDark" class="btn-outline-dark"></style-item>
+    <style-item ui-field="btnOutlineLink" class="btn-outline-link"></style-item>
+    <!--size-->
+    <style-item ui-field="small" class="btn-sm"></style-item>
+    <style-item ui-field="large" class="btn-lg"></style-item>
+    <style-item ui-field="block" class="btn-block"></style-item>
+</template>
+<!--  TAB  -->
+<template ui-field="tabUi">
+    <template ui-field="tab">
+        <div ui-field="root" style="width:100%;">
+            <ul ui-field="tabPanel" class="nav nav-tabs">
+
+            </ul>
+            <div ui-field="tabContentPanel" class="tab-content" style="padding:10px;">
+
+            </div>
+        </div>
+    </template>
+    <template ui-field="tabVertical">
+        <div ui-field="root" class="row">
+            <div class="col-3">
+                <ul ui-field="tabPanel" class="nav nav-tabs">
+
+                </ul>
+            </div>
+            <div class="col-9">
+                <div ui-field="tabContentPanel" class="tab-content">
+
+                </div>
+            </div>
+        </div>
+    </template>
+    <template ui-field="tabItem">
+        <li ui-field="tabItemNav" class="nav-item">
+            <a ui-field="tabItemPanel" class="nav-link" data-toggle="tab" href="javascript:void(0)"
+               role="tab">
+
+            </a>
+        </li>
+        <div ui-field="tabItemContent" class="tab-pane fade" role="tabpanel">
+
+        </div>
+        <style-item ui-field="showTabContentStyle" class="show active"/>
+        <style-item ui-field="active" class="active"/>
+    </template>
+</template>
+<!--  ACCORDION  -->
+<template ui-field="accordion-ui">
+    <template ui-field="accordion">
+        <div ui-field="root">
+
+        </div>
+    </template>
+    <template ui-field="accordion-item">
+        <div ui-field="root" class="card">
+            <div ui-field="accordionItemTitlePanel" class="card-header">
+                <h5 class="mb-0">
+                    <a href="javascript:void(0)" ui-field="accordionItemTitle">
+                    </a>
+                </h5>
+            </div>
+            <div ui-field="contentPanelParent" class="collapse" role="tabpanel"
+                 aria-labelledby="headingOne">
+                <div ui-field="contentPanel" class="card-body">
+                </div>
+            </div>
+        </div>
+        <style-item ui-field="showContentStyle" class="show"/>
+    </template>
+</template>
+<!--DROPDOWN-->
+<template ui-field="dropdown-ui">
+    <template ui-field="dropdown">
+        <div class="dropdown" ui-field="root">
+            <button ui-field="button" class="btn btn-secondary dropdown-toggle">
+
+            </button>
+            <div ui-field="dropdown-menu" class="dropdown-menu">
+            </div>
+        </div>
+        <style-item ui-field="dropDownMenuShowStyle" class="show"></style-item>
+    </template>
+    <template ui-field="dropdown-item">
+        <a ui-field="root" class="dropdown-item" href="javascript:void(0)"></a>
+    </template>
+</template>
+<!--POPOVER-->
+<template ui-field="popover">
+    <div ui-field="root" class="popover fade bs-popover-right show" role="tooltip" x-placement="right">
+        <div ui-field="arrowPanel" class="arrow"></div>
+        <h3 ui-field="popoverTitle" class="popover-header"></h3>
+        <div ui-field="contentPanel" class="popover-body">
+        </div>
+    </div>
+    <style-item ui-field="topStyle" class="bs-popover-top"></style-item>
+    <style-item ui-field="bottomStyle" class="bs-popover-bottom"></style-item>
+    <style-item ui-field="leftStyle" class="bs-popover-left"></style-item>
+    <style-item ui-field="rightStyle" class="bs-popover-right"></style-item>
+    <style-item ui-field="baseStyle" class="popover"></style-item>
+    <style-item ui-field="fadeStyle" class="fade"></style-item>
+    <style-item ui-field="showStyle" class="show"></style-item>
+</template>
+<!--TOOLTIP-->
+<!-- Generated markup by the plugin -->
+<template ui-field="tooltip">
+    <div ui-field="root" class="tooltip bs-tooltip-top" role="tooltip">
+        <div ui-field="arrowPanel" class="arrow"></div>
+        <div ui-field="contentPanel" class="tooltip-inner">
+        </div>
+    </div>
+    <style-item ui-field="topStyle" class="bs-tooltip-top"></style-item>
+    <style-item ui-field="bottomStyle" class="bs-tooltip-bottom"></style-item>
+    <style-item ui-field="leftStyle" class="bs-tooltip-left"></style-item>
+    <style-item ui-field="rightStyle" class="bs-tooltip-right"></style-item>
+    <style-item ui-field="baseStyle" class="tooltip show"></style-item>
+    <style-item ui-field="fadeStyle" class="fade"></style-item>
+    <style-item ui-field="showStyle" class="show"></style-item>
+</template>
+<!--DIALOG-->
+<template ui-field="modalDialog">
+    <div ui-field="root" class="modal fade">
+        <div ui-field="modalDialogPanel" class="modal-dialog">
+            <div class="modal-content">
+                <div ui-field="header" class="modal-header">
+                    <h5 ui-field="titleHeader" class="modal-title">
+
+                    </h5>
+                    <button ui-field="closeHeader" type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div ui-field="body" class="modal-body">
+
+                </div>
+                <div ui-field="footer" class="modal-footer">
+                    <button ui-field="closeButton" type="button" class="btn btn-secondary"
+                            data-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ui-field="backDropDiv" class="modal-backdrop fade show"></div>
+</template>
+<!--PROGRESS-->
+<template ui-field="progress">
+    <div ui-field="root" class="progress">
+        <div ui-field="progressBar" class="progress-bar" role="progressbar" style="width: 25%">
+
+        </div>
+    </div>
+</template>
+<template ui-field="progress-builder">
+    <style-item ui-field="success" class="bg-success"/>
+    <style-item ui-field="info" class="bg-info"/>
+    <style-item ui-field="warning" class="bg-warning"/>
+    <style-item ui-field="danger" class="bg-danger"/>
+    <style-item ui-field="striped" class="progress-bar-striped"/>
+    <style-item ui-field="animated" class="progress-bar-animated active"/>
+</template>

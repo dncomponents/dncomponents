@@ -1,0 +1,38 @@
+<archetype-descriptor
+        xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0
+        http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd"
+        xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        name="create-project">
+    <requiredProperties>
+        <requiredProperty key="mainapp">
+            <defaultValue>App</defaultValue>
+        </requiredProperty>
+    </requiredProperties>
+
+    <fileSets>
+        <fileSet filtered="true" packaged="true">
+            <directory>src/main/java</directory>
+            <includes>
+                <include>client/*.java</include>
+                <include>client/*.html</include>
+                <include>client/greeting/*.java</include>
+                <include>client/greeting/*.html</include>
+                <include>client/home/*.java</include>
+                <include>client/home/*.html</include>
+                <include>public/custom.css</include>
+                <include>public/logo.svg</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>src/test/java</directory>
+        </fileSet>
+        <fileSet filtered="true" packaged="true">
+            <directory>src/main/resources/</directory>
+            <includes>
+                <include>public/index.html</include>
+                <include>*.gwt.xml</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</archetype-descriptor>

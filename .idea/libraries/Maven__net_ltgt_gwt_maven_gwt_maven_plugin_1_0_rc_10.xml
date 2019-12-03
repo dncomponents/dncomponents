@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: net.ltgt.gwt.maven:gwt-maven-plugin:1.0-rc-10">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/net/ltgt/gwt/maven/gwt-maven-plugin/1.0-rc-10/gwt-maven-plugin-1.0-rc-10.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/net/ltgt/gwt/maven/gwt-maven-plugin/1.0-rc-10/gwt-maven-plugin-1.0-rc-10-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/net/ltgt/gwt/maven/gwt-maven-plugin/1.0-rc-10/gwt-maven-plugin-1.0-rc-10-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

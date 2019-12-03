@@ -1,0 +1,50 @@
+.modelSelected {
+    background: lightblue;
+}
+
+.cellHighlighted {
+    background: lightyellow;
+}
+
+.errorCell {
+    background: lightcoral;
+    border: 1px solid lightcoral;
+}
+
+.errorCell:after {
+    content: "";
+    position: relative;
+    top: -0.4em;
+    border-left: 0.5em solid transparent;
+    border-top: 0.5em solid lightcoral;
+    float: right;
+}
+
+.valueChanged {
+    background: greenyellow;
+    border: 2px dashed greenyellow !important;
+}
+
+.scroll-style {
+    display: block !important;
+    max-height: 500px;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.horizontal-div * {
+    display: inline-block;
+}
+
+.pull-right-container {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -7px;
+}
+
+.tree .list-group-item {
+    border: 1px solid transparent;
+}
