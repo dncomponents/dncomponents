@@ -16,6 +16,45 @@
         <elemental.version>1.0.0-RC1</elemental.version>
     </properties>
 
+    <groupId>com.dncomponents.core</groupId>
+    <artifactId>dncomponents</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>dn-components</name>
+    <description>Java UI framework</description>
+    <url>http://dncomponents.com</url>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Nikola Savic</name>
+            <email>nikolasav@gmail.com</email>
+            <organization>dn-components</organization>
+            <organizationUrl>http://www.dncomponents.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/dncomponents/dncomponents.git</connection>
+        <developerConnection>scm:git:ssh://github.com:dncomponents/dncomponents.git</developerConnection>
+        <url>https://github.com/dncomponents/dncomponents</url>
+    </scm>
+
+
+    <modules>
+        <module>core-uui</module>
+        <module>bootstrap-ui</module>
+        <module>template_annotation_processor</module>
+        <module>create-project</module>
+    </modules>
+
     <dependencies>
         <dependency>
             <groupId>net.ltgt.gwt.maven</groupId>
@@ -24,16 +63,16 @@
         </dependency>
     </dependencies>
 
-    <groupId>com.dncomponents.core</groupId>
-    <artifactId>dncomponents</artifactId>
-    <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>core-uui</module>
-        <module>bootstrap-ui</module>
-         <module>template_annotation_processor</module>
-        <module>create-project</module>
-    </modules>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+<!--        <repository>-->
+<!--            <id>ossrh</id>-->
+<!--            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+<!--        </repository>-->
+    </distributionManagement>
 
     <build>
         <plugins>
@@ -52,6 +91,44 @@
                         <arg>-generateJsInteropExports</arg>
                     </devmodeArgs>
                     <moduleName/>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
         </plugins>

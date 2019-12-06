@@ -1,7 +1,7 @@
 package ${package}.client.home;
 
 import com.dncomponents.client.views.appview.AbstractActivity;
-import com.mycompany.client.greeting.GreetingPlace;
+import ${package}.client.greeting.GreetingPlace;
 
 /**
  * @author nikolasavic

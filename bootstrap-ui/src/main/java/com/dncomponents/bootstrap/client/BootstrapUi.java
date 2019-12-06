@@ -197,11 +197,29 @@ public class BootstrapUi implements ComponentsViews {
     }
 
     //for plugins
-    private static BootstrapUi instance;
 
-    public static BootstrapUi getInstance() {
-        if (instance == null)
-            instance = new BootstrapUi();
-        return instance;
+    protected static MultiMap<Class, ViewFactory> registeredViewFactoriesListS = new MultiMap<>();
+
+    protected static Map<String, ViewFactory> registeredViewFactoriesMapS = new HashMap<>();
+
+    public static void registerStaticViewFactoryS(Class clazz, ViewFactory... viewFactories) {
+        for (ViewFactory viewFactory : viewFactories)
+            registeredViewFactoriesListS.put(clazz, viewFactory);
     }
+
+    static {
+        registerStaticViewFactoryS(Button.class, ButtonViewFactory.DefaultButtonIconViewFactory.getInstance());
+        registerStaticViewFactoryS(Button.class, ButtonViewFactory.DefaultButtonViewFactory.getInstance());
+        registerStaticViewFactoryS(Tab.class, TabUiFactory.DefaultUiFactory.getInstance());
+        registerStaticViewFactoryS(CheckBox.class, CheckBoxViewFactory.DefaultCheckBoxViewFactory.getInstance());
+        registerStaticViewFactoryS(CheckBox.class, CheckBoxViewFactory.DefaultSimpleCheckBoxViewFactory.getInstance());
+        registerStaticViewFactoryS(Progress.class, ProgressViewImpl.ProgressViewFactory.getInstance());
+    }
+
+    public static MultiMap<Class, ViewFactory> getRegisteredViewFactoriesListS() {
+        return registeredViewFactoriesListS;
+    }
+
+    //end for plugins
+
 }

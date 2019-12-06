@@ -104,7 +104,7 @@ public interface ComponentHtmlParser extends HtmlParser<BaseComponent> {
     }
 
 
-//    @Deprecated
+    //    @Deprecated
     default <T extends View> T getView(Class viewClazz, Element html, Map<String, ?> elements) {
         String viewAttr = html.getAttribute(VIEW);
         String templateId = html.getAttribute(TEMPLATE_ID);
@@ -131,5 +131,9 @@ public interface ComponentHtmlParser extends HtmlParser<BaseComponent> {
             }
         }
         return (T) view;
+    }
+
+    default boolean isPremium() {
+        return false;
     }
 }
