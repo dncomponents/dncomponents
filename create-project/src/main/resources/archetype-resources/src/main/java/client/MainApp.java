@@ -10,10 +10,6 @@ import ${package}.client.greeting.GreetingPlace;
 import ${package}.client.home.HomePlace;
 import elemental2.dom.HTMLElement;
 
-
-/**
- * @author nikolasavic
- */
 public class MainApp implements AcceptsOneElement, IsElement {
 
     @UiField

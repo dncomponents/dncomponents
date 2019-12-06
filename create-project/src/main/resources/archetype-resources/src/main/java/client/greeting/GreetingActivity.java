@@ -2,9 +2,6 @@ package ${package}.client.greeting;
 
 import com.dncomponents.client.views.appview.AbstractActivity;
 
-/**
- * @author nikolasavic
- */
 public class GreetingActivity extends AbstractActivity<GreetingView, GreetingPlace> implements GreetingView.GreetingPresenter {
 
     public GreetingActivity(GreetingView view, GreetingPlace place) {

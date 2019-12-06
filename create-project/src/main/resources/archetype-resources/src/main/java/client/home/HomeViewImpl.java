@@ -7,9 +7,6 @@ import com.dncomponents.client.views.appview.AbstractView;
 import elemental2.dom.HTMLDivElement;
 import elemental2.dom.HTMLElement;
 
-/**
- * @author nikolasavic
- */
 public class HomeViewImpl extends AbstractView<HomeView.HomePresenter> implements HomeView {
     private static HomeViewImpl instance;
 
