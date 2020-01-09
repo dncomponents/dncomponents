@@ -59,8 +59,13 @@ public class TextBox extends ValueBox<String> {
         }
 
         @Override
-        public BaseComponent parse(Element htmlElement, Map<String, ?> templateElement) {
-            TextBox textBox = new TextBox();
+        public BaseComponent parse(Element htmlElement, Map<String, ?> elements) {
+            TextBox textBox;
+            TextBoxView view = getView(TextBox.class, htmlElement, elements);
+            if (view != null)
+                textBox = new TextBox(view);
+            else
+                textBox = new TextBox();
             String value = htmlElement.getAttribute(VALUE);
             if (value != null) {
                 textBox.setValue(value);

@@ -1,0 +1,17 @@
+<div ui-field="root">
+    <div class="form-label-group">
+        <dn-text-box ui-field="nameField" label="Enter your name" helpertext="Should be 4 characters long!"
+                     type="FILLED"></dn-text-box>
+    </div>
+    <dn-button ui-field="button" type="OUTLINED">
+        Send name
+    </dn-button>
+    <div class="error" ui-field="errorLabel"></div>
+    <h1 ui-field="nameLabel"></h1>
+    <style>
+        .error {
+            margin-top: 2rem;
+            color: red;
+        }
+    </style>
+</div>

@@ -49,6 +49,16 @@ public class TextAreaViewImpl implements TextBoxView {
     }
 
     @Override
+    public void setErrorMessage(String errorMessage) {
+
+    }
+
+    @Override
+    public void setPlaceHolder(String placeHolder) {
+        root.setAttribute("placeholder", placeHolder);
+    }
+
+    @Override
     public void addOnBlurHandler(OnBlurHandler handler) {
         handler.addTo(asElement());
     }

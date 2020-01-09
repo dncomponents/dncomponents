@@ -2,24 +2,16 @@ package com.dncomponents.client.components.core.entities;
 
 import java.util.List;
 
-public class RowItemId {
-    String id;
+public class RowItemId extends ItemBase {
+
     List<ItemId> cells;
 
     public RowItemId(String id, List<ItemId> cells) {
-        this.id = id;
+        super(id);
         this.cells = cells;
     }
 
     public RowItemId() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public List<ItemId> getCells() {

@@ -14,6 +14,14 @@ public interface HasStyle {
         }
     }
 
+    static String appendString(String style) {
+        if (style != null) {
+            return " " + style;
+        } else {
+            return "";
+        }
+    }
+
     String getStyle();
 
     interface StyleCmd extends IsSerializable {

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-public class AbstractSingleSelectionGroup<T, C extends HasUserValue<T>> //todo ?  & CanSelect
+public class AbstractSingleSelectionGroup<T, C extends HasUserValue<T>>
         extends DefaultSingleSelectionModel<C> {
 
     List<C> possibleValues = new ArrayList<>();

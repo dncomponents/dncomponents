@@ -54,8 +54,13 @@ public class LongBox extends ValueBox<Long> {
         }
 
         @Override
-        public BaseComponent parse(Element htmlElement, Map<String, ?> templateElement) {
-            LongBox longBox = new LongBox();
+        public BaseComponent parse(Element htmlElement, Map<String, ?> elements) {
+            LongBox longBox;
+            TextBoxView view = getView(TextBox.class, htmlElement, elements);
+            if (view != null)
+                longBox = new LongBox(view);
+            else
+                longBox = new LongBox();
             String value = htmlElement.getAttribute(VALUE);
             if (value != null) {
                 try {

@@ -107,14 +107,6 @@ public class DropDownSingle<T> extends BaseComponentSingleSelection<T, DropDownU
         return ensureHandlers().addHandler(CloseEvent.getType(), handler);
     }
 
-
-    //todo add clear to all components of this type
-//    public void clear() {
-//        getItems().forEach(view::removeItem);
-//        getItems().clear();
-//    }
-
-
     public void setItemRenderer(DropDownItem.DropDownItemRenderer<T> renderer) {
         this.renderer = renderer;
     }

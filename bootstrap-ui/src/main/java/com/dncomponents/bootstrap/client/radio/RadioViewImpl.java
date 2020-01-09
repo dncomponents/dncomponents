@@ -1,6 +1,4 @@
 package com.dncomponents.bootstrap.client.radio;
-
-
 import com.dncomponents.UiTemplate;
 import com.dncomponents.bootstrap.client.checkbox.CheckBoxViewImpl;
 import com.dncomponents.client.components.core.HtmlBinder;
@@ -9,7 +7,6 @@ import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.core.ui.checkbox.CheckBoxViewSlots;
 import com.dncomponents.client.views.core.ui.radio.RadioView;
 import elemental2.dom.*;
-
 /**
  * @author nikolasavic
  */

@@ -36,7 +36,7 @@
         <developer>
             <name>Nikola Savic</name>
             <email>nikolasav@gmail.com</email>
-            <organization>dn-components</organization>
+            <organization>dncomponents</organization>
             <organizationUrl>http://www.dncomponents.com</organizationUrl>
         </developer>
     </developers>
@@ -51,8 +51,10 @@
     <modules>
         <module>core-uui</module>
         <module>bootstrap-ui</module>
+        <module>material-ui</module>
         <module>template_annotation_processor</module>
         <module>create-project</module>
+        <module>create-project-material</module>
     </modules>
 
     <dependencies>

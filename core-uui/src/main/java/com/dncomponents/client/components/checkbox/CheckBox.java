@@ -47,7 +47,7 @@ public class CheckBox<T> extends AbstractCheckBox<T> implements HasValue<Boolean
     public CheckBox(T userObject) {
         this();
         setUserObject(userObject);
-        setLabel(userObject.toString());//todo remove and add renderer
+        setLabel(userObject.toString());
     }
 
     public CheckBox(T userObject, CheckBoxSelectionGroup<T> group) {
@@ -139,7 +139,7 @@ public class CheckBox<T> extends AbstractCheckBox<T> implements HasValue<Boolean
             checkBox.setRenderer(new CheckBoxRenderer<ItemId>() {
                 @Override
                 public void render(ItemId idItem, CheckBoxViewSlots slots) {
-                    slots.getMainSlot().innerHTML = idItem.getHtml();
+                    slots.getMainSlot().innerHTML = idItem.getContent();
                 }
             });
             checkBox.setUserObject(getIdItem(htmlElement));

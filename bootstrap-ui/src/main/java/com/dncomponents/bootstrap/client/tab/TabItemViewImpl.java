@@ -98,6 +98,11 @@ public class TabItemViewImpl implements TabItemView {
         }
 
         @Override
+        public HTMLElement getIcon() {
+            return null;
+        }
+
+        @Override
         public HTMLElement getContent() {
             return tabItemContent;
         }

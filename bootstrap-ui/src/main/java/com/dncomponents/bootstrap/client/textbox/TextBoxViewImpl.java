@@ -66,9 +66,19 @@ public class TextBoxViewImpl implements TextBoxView {
     @Override
     public void setError(boolean b) {
         if (b)
-            root.classList.add("errorStyle");//todo
+            root.classList.add("errorStyle");
         else
             root.classList.remove("errorStyle");
+    }
+
+    @Override
+    public void setErrorMessage(String errorMessage) {
+
+    }
+
+    @Override
+    public void setPlaceHolder(String placeHolder) {
+        root.setAttribute("placeholder", placeHolder);
     }
 
 

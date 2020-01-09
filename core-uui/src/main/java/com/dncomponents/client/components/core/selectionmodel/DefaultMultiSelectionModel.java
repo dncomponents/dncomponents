@@ -86,7 +86,6 @@ public abstract class DefaultMultiSelectionModel<M> implements MultiSelectionMod
     public abstract List<M> getItems();
 
     public void selectAll(Boolean value, boolean fire) {
-        //todo improve this.. maybe last-selected items to avoid iterating through all possible items.
         if (value) {
             selection.clear();
             selection.addAll(getItems());

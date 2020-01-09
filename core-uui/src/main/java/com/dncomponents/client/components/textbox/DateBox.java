@@ -71,8 +71,13 @@ public class DateBox extends ValueBox<Date> {
         }
 
         @Override
-        public BaseComponent parse(Element htmlElement, Map<String, ?> templateElement) {
-            DateBox dateBox = new DateBox();
+        public BaseComponent parse(Element htmlElement, Map<String, ?> elements) {
+            DateBox dateBox;
+            TextBoxView view = getView(TextBox.class, htmlElement, elements);
+            if (view != null)
+                dateBox = new DateBox(view);
+            else
+                dateBox = new DateBox();
             String value = htmlElement.getAttribute(VALUE);
             if (value != null) {
                 try {

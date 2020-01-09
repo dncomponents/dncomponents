@@ -1,38 +1,39 @@
 package com.dncomponents.client.components.core.entities;
 
 /**
- * Used as a entity class in ui-binder.
+ * Used as a entity class in html-binder.
  */
-public class ItemId {
-    private String id;
-    private String html;
+public class ItemId extends ItemBase {
+
+    private String content;
+    private String icon;
 
     public ItemId() {
     }
 
-    public ItemId(String id, String html) {
-        this.id = id;
-        this.html = html;
+    public ItemId(String id, String content) {
+        super(id);
+        this.content = content;
     }
 
-    public String getId() {
-        return id;
+    public String getContent() {
+        return content;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public String getHtml() {
-        return html;
+    public String getIcon() {
+        return icon;
     }
 
-    public void setHtml(String html) {
-        this.html = html;
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     @Override
     public String toString() {
-        return html;
+        return content;
     }
 }

@@ -55,8 +55,14 @@ public class DoubleBox extends ValueBox<Double> {
         }
 
         @Override
-        public BaseComponent parse(Element htmlElement, Map<String, ?> templateElement) {
-            DoubleBox doubleBox = new DoubleBox();
+        public BaseComponent parse(Element htmlElement, Map<String, ?> elements) {
+            DoubleBox doubleBox;
+            TextBoxView view = getView(TextBox.class, htmlElement, elements);
+            if (view != null)
+                doubleBox = new DoubleBox(view);
+            else
+                doubleBox = new DoubleBox();
+
             String value = htmlElement.getAttribute(VALUE);
             if (value != null) {
                 try {

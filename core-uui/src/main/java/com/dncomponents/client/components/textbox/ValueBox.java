@@ -125,6 +125,10 @@ public abstract class ValueBox<T> extends BaseFocusComponent<Object, TextBoxView
         return parseResult;
     }
 
+    public void setPlaceHolder(String placeHolder){
+        view.setPlaceHolder(placeHolder);
+    }
+
     @Override
     public HandlerRegistration addValidationHandler(ValidationHandler<T> handler) {
         return addHandler(handler);

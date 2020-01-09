@@ -26,6 +26,7 @@ import com.dncomponents.client.views.ComponentsViews;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.MultiMap;
 import com.dncomponents.client.views.core.ViewFactory;
+import com.dncomponents.client.views.core.ui.IconRenderer;
 import com.dncomponents.client.views.core.ui.accordion.AccordionUi;
 import com.dncomponents.client.views.core.ui.button.ButtonView;
 import com.dncomponents.client.views.core.ui.checkbox.CheckBoxView;
@@ -37,6 +38,7 @@ import com.dncomponents.client.views.core.ui.radio.RadioView;
 import com.dncomponents.client.views.core.ui.tab.TabUi;
 import com.dncomponents.client.views.core.ui.textbox.TextBoxView;
 import com.dncomponents.client.views.core.ui.tooltip.TooltipView;
+import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
 import java.util.HashMap;
@@ -191,6 +193,18 @@ public class BootstrapUi implements ComponentsViews {
         return new ProgressViewImpl(progress);
     }
 
+    @Override
+    public IconRenderer getIconRenderer() {
+        return fontAwesomeIconRenderer;
+    }
+
+    IconRenderer fontAwesomeIconRenderer = new IconRenderer() {
+        @Override
+        public void render(HTMLElement element, String icon) {
+            if (element != null)
+                element.className = icon;
+        }
+    };
 
     public static <S extends BootstrapUi> S getUi() {
         return (S) Ui.get();

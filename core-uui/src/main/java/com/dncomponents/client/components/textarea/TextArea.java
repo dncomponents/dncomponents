@@ -41,8 +41,14 @@ public class TextArea extends TextBox {
         }
 
         @Override
-        public BaseComponent parse(Element htmlElement, Map<String, ?> templateElement) {
-            TextArea textArea = new TextArea();
+        public BaseComponent parse(Element htmlElement, Map<String, ?> elements) {
+            TextArea textArea;
+            TextBoxView view = getView(TextArea.class, htmlElement, elements);
+            if (view != null)
+                textArea = new TextArea(view);
+            else
+                textArea = new TextArea();
+
             String value = htmlElement.getAttribute(VALUE);
             if (value != null) {
                 textArea.setValue(value);

@@ -1,8 +1,8 @@
 package com.dncomponents.client.components.textbox;
 
+import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.components.core.BaseComponent;
 import com.dncomponents.client.components.core.ComponentHtmlParser;
-import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.textbox.TextBoxView;
 import com.google.gwt.core.client.GWT;
@@ -54,13 +54,20 @@ public class IntegerBox extends ValueBox<Integer> {
         }
 
         @Override
-        public BaseComponent parse(Element htmlElement, Map<String, ?> templateElement) {
-            IntegerBox integerBox = new IntegerBox();
+        public BaseComponent parse(Element htmlElement, Map<String, ?> elements) {
+            IntegerBox integerBox;
+            TextBoxView view = getView(TextBox.class, htmlElement, elements);
+            if (view != null)
+                integerBox = new IntegerBox(view);
+            else
+                integerBox = new IntegerBox();
             String value = htmlElement.getAttribute(VALUE);
             if (value != null) {
                 try {
                     integerBox.setValue(Integer.parseInt(value));
                 } catch (Exception ex) {
+                    integerBox.getView().setError(true);
+                    integerBox.getView().setErrorMessage("error parsing integer value");
                     GWT.log("Warning: error parsing integer value: " + value);
                 }
             }

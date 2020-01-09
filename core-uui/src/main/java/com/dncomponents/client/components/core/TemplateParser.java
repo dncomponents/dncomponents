@@ -168,7 +168,6 @@ public class TemplateParser {
                 if (between == null || between.isEmpty())
                     break;
                 String value = DnI18e.get().getValue(between);
-                //todo ? SafeHtmlUtils.htmlEscape()
                 content = content.replace(DnI18e.START_TAG + between + DnI18e.END_TAG, value);
             } while (true);
             template.innerHTML = content;

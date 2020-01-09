@@ -1,0 +1,1 @@
+mvn archetype:generate -DarchetypeGroupId=com.dncomponents.core -DarchetypeArtifactId=create-project-material

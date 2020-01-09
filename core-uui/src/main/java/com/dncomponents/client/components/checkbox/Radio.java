@@ -81,14 +81,12 @@ public class Radio<T> extends AbstractCheckBox<T> {
         });
     }
 
-
     public interface RadioRenderer<T> extends BaseComponent.Renderer<T, CheckBoxViewSlots> {
     }
 
     public void setRenderer(RadioRenderer<T> renderer) {
         super.setRendererBase(renderer);
     }
-
 
     //uibinder field
     protected String groupUiField;
@@ -123,7 +121,7 @@ public class Radio<T> extends AbstractCheckBox<T> {
             radio.setRenderer(new RadioRenderer<ItemId>() {
                 @Override
                 public void render(ItemId idItem, CheckBoxViewSlots slots) {
-                    slots.getMainSlot().innerHTML = idItem.getHtml();
+                    slots.getMainSlot().innerHTML = idItem.getContent();
                 }
             });
             setValueCh(htmlElement, radio);
@@ -132,6 +130,7 @@ public class Radio<T> extends AbstractCheckBox<T> {
             radio.groupUiField = htmlElement.getAttribute(CheckBox.CheckBoxHtmlParser.GROUP);
             DomUtil.copyAllAttributes(htmlElement, radio.asElement());
             DomUtil.replace(radio.asElement(), htmlElement);
+            radio.setValue(radio.getValue());
             return radio;
         }
 
@@ -146,6 +145,5 @@ public class Radio<T> extends AbstractCheckBox<T> {
         }
 
     }
-
 
 }

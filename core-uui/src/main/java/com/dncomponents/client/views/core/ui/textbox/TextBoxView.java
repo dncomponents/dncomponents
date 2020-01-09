@@ -21,4 +21,8 @@ public interface TextBoxView extends FocusComponentView {
     void addOnKeyUpHandler(KeyUpHandler handler);
 
     void setError(boolean b);
+
+    void setErrorMessage(String errorMessage);
+
+    void setPlaceHolder(String placeHolder);
 }

@@ -49,6 +49,7 @@ public class Tab<T> extends BaseComponentSingleSelection<T, TabUi, TabItem<T>> i
     public static class TabHtmlParser extends AbstractPluginHelper implements ComponentHtmlParser {
 
         private static String TITLE_TAG = "title";
+        private static String ICON_TAG = "icon";
         private static String CONTENT_TAG = "content";
 
 
@@ -76,6 +77,7 @@ public class Tab<T> extends BaseComponentSingleSelection<T, TabUi, TabItem<T>> i
             tab.setTabItemRenderer((accordionIdItem, slots) -> {
                 slots.getTitle().innerHTML = accordionIdItem.getTitle();
                 slots.getContent().innerHTML = accordionIdItem.getContent();
+                Ui.get().getIconRenderer().render(slots.getIcon(), accordionIdItem.getIcon());
             });
 
             NodeList<Element> elementsByTagName = htmlElement.getElementsByTagName(ITEM);
@@ -104,6 +106,11 @@ public class Tab<T> extends BaseComponentSingleSelection<T, TabUi, TabItem<T>> i
             NodeList<Element> titles = html.getElementsByTagName(TITLE_TAG);
             for (int i = 0; i < titles.length; i++) {
                 idItem.setTitle(titles.getAt(i).textContent);
+                break;
+            }
+            NodeList<Element> icons = html.getElementsByTagName(ICON_TAG);
+            for (int i = 0; i < icons.length; i++) {
+                idItem.setIcon(icons.getAt(i).textContent);
                 break;
             }
             NodeList<Element> contents = html.getElementsByTagName(CONTENT_TAG);

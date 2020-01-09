@@ -50,7 +50,15 @@ public interface ComponentHtmlParser extends HtmlParser<BaseComponent> {
     static void addStyle(Element element1, Element element2) {
         String style = element1.getAttribute("addclass");
         if (style != null) {
-            element2.classList.add(style);
+            if (style.contains(" ")) {
+                final String[] words = style.split(" ");
+                for (String word : words) {
+                    if (!word.isEmpty())
+                        element2.classList.add(word);
+                }
+            } else {
+                element2.classList.add(style);
+            }
             element2.removeAttribute("addclass");
         }
     }
@@ -65,9 +73,9 @@ public interface ComponentHtmlParser extends HtmlParser<BaseComponent> {
     default ItemId getIdItem(Element element) {
         ItemId idItem = new ItemId();
         idItem.setId(getElementId(element));
-        idItem.setHtml(element.innerHTML);
+        idItem.setContent(element.innerHTML);
         if (element.hasAttribute(CONTENT)) {
-            idItem.setHtml(element.getAttribute(CONTENT));
+            idItem.setContent(element.getAttribute(CONTENT));
         }
         return idItem;
     }

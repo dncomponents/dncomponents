@@ -22,7 +22,8 @@
             <artifactId>tools</artifactId>
             <version>LATEST</version>
             <scope>system</scope>
-            <systemPath>${JAVA_HOME}/lib/tools.jar</systemPath>
+            <systemPath>${java.home}/../lib/tools.jar</systemPath>
+<!--            <systemPath>${JAVA_HOME}/lib/tools.jar</systemPath>-->
         </dependency>
     </dependencies>
 </project>

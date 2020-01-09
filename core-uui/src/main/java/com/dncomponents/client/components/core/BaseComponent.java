@@ -1,10 +1,10 @@
 package com.dncomponents.client.components.core;
 
+import com.dncomponents.client.components.core.events.HasHandlers;
+import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.BaseEventListener;
 import com.dncomponents.client.views.HasViewSlots;
 import com.dncomponents.client.views.IsElement;
-import com.dncomponents.client.components.core.events.HasHandlers;
-import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.ViewSlots;
 import com.dncomponents.client.views.core.pcg.View;
@@ -74,7 +74,6 @@ public abstract class BaseComponent<T, V extends View> implements IsElement, Has
         return userObject;
     }
 
-    //todo rename to setUserValue ?
     @Override
     public void setUserObject(T userObject) {
         this.userObject = userObject;
@@ -88,7 +87,6 @@ public abstract class BaseComponent<T, V extends View> implements IsElement, Has
     }
 
 
-    //todo remove... overrider getViewSlots() instead
     public interface DrawOnSlots {
         void apply(ViewSlots slots);
     }
@@ -115,12 +113,9 @@ public abstract class BaseComponent<T, V extends View> implements IsElement, Has
         this.asElement().dispatchEvent(event);
     }
 
-    //todo remove handler
     public HandlerRegistration addHandler(BaseEventListener handler) {
         return handler.addTo(this.asElement());
     }
-
-    //todo remove
 
     private HandlerManager handlerManager;
 
@@ -137,8 +132,6 @@ public abstract class BaseComponent<T, V extends View> implements IsElement, Has
             handlerManager.fireEvent(event);
         }
     }
-
-    //end todo remove
 
 
     public void setStyle(String style) {

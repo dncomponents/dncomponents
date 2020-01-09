@@ -6,5 +6,7 @@ import elemental2.dom.HTMLElement;
 public interface TabItemViewSlots extends ViewSlots {
     HTMLElement getTitle();
 
+    HTMLElement getIcon();
+
     HTMLElement getContent();
 }
