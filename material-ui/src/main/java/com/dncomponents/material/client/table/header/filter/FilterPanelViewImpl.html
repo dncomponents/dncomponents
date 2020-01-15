@@ -1,0 +1,21 @@
+<div ui-field="root" class="d-flex">
+    <div ui-field="mainPanel" class="input-group input-group-sm">
+        <dn-autocomplete ui-field="ac" template-id="acc"></dn-autocomplete>
+        <div ui-field="valueHolder"></div>
+    </div>
+    <button ui-field="clear" class="btn btn-sm btn-outline-secondary ml-2">x</button>
+</div>
+<style-item ui-field="booleanMainPanelStyle" class="d-flex justify-content-between align-items-center"></style-item>
+<template ui-template="acc">
+    <div ui-field='root' class='input-group-prepend'>
+        <dn-button ui-field='button' class='btn btn-outline-secondary dropdown-toggle'>
+            <span ui-field='buttonText'>Choose ...</span>
+        </dn-button>
+        <div ui-field='listPanel' class='autocomplete-scroll-panel'>
+            <dn-text-box ui-field='textBox'></dn-text-box>
+            <div class='scroll-style'>
+                <dn-list ui-field="list"></dn-list>
+            </div>
+        </div>
+    </div>
+</template>

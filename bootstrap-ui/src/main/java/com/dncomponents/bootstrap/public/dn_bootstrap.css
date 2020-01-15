@@ -48,3 +48,151 @@
 .tree .list-group-item {
     border: 1px solid transparent;
 }
+
+/*cell components style*/
+/*table*/
+.fixed-table {
+    table-layout: fixed;
+}
+
+.table-main {
+    overflow: auto;
+    position: relative;
+    overflow-anchor: none;
+}
+
+.table-header {
+    margin-bottom: 0px;
+}
+
+.table-header-style {
+    margin-bottom: -1px;
+    border-bottom-width: 0px;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: bold;
+    background: #e9ecef;
+    color: #495057;
+    border-color: #dee2e6;
+}
+
+.table-content-panel {
+    width: fit-content;
+}
+
+.header-s2 {
+    position: relative;
+    top: -7px;
+}
+
+.table-main .table td {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/*filter table header*/
+.btn-group-sm .autocomplete-choices {
+    min-height: 31px;
+}
+
+/*end table*/
+
+.autocomplete {
+    width: fit-content;
+}
+
+.autocomplete-scroll-panel {
+    position: absolute;
+    background: white;
+    z-index: 333333;
+}
+
+.autocomplete-container {
+    display: inline-block;
+    font-size: 14px;
+    position: relative;
+    vertical-align: middle;
+}
+
+.autocomplete-choices {
+    min-height: 40px;
+    min-width: 200px;
+    max-width: 300px;
+}
+
+.autocomplete-container-multi .autocomplete-choices {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    cursor: text;
+    height: auto !important;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+}
+
+.autocomplete-container-multi .autocomplete-choices li {
+    float: left;
+    list-style: none;
+}
+
+.autocomplete-container-multi .autocomplete-choices .search-field {
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+}
+
+.autocomplete-container-multi .autocomplete-choices .search-field input[type="text"] {
+    background: transparent !important;
+    border: 0 !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color: #555555;
+    height: 32px;
+    margin: 0;
+    padding: 4px;
+    outline: 0;
+}
+
+.autocomplete-container-multi .autocomplete-choices .search-field .default {
+    color: #999;
+}
+
+.autocomplete-container-multi .autocomplete-choices .search-choice {
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+    background-color: #eeeeee;
+    border: 1px solid #cccccc;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    background-image: -webkit-linear-gradient(top, #ffffff 0%, #eeeeee 100%);
+    background-image: -o-linear-gradient(top, #ffffff 0%, #eeeeee 100%);
+    background-image: linear-gradient(to bottom, #ffffff 0%, #eeeeee 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffeeeeee', GradientType=0);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    color: #333333;
+    cursor: default;
+    line-height: 13px;
+    margin: 6px 0 3px 5px;
+    padding: 3px 20px 3px 5px;
+    position: relative;
+}
+
+/*end autocomplete*/
+
+/*sidemenu*/
+li.nav-item.active {
+    font-weight: bold;
+}
+
+/*end sidemenu*/

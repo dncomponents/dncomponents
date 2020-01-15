@@ -240,3 +240,521 @@
     <style-item ui-field="striped" class="progress-bar-striped"/>
     <style-item ui-field="animated" class="progress-bar-animated active"/>
 </template>
+
+<!--CELL COMPONENTS-->
+<!--  LIST  -->
+<template ui-field="list">
+    <template ui-field="list-main">
+        <ul ui-field="root" class="list-group scroll-style"></ul>
+        <style-item ui-field='scrollableStyle' class='scroll-style'></style-item>
+        <style-item ui-field="ROW_HEIGHT" class="49"></style-item>
+    </template>
+
+    <template ui-field="list-item">
+        <li ui-field="root" class="list-group-item"></li>
+        <style-item ui-field="modelSelected" class="active"></style-item>
+    </template>
+
+    <template ui-field="list-item-checkbox">
+        <li ui-field="root" class="list-group-item" style="padding-left:  30px;">
+            <dn-checkbox ui-field="checkBox" view="SIMPLE"></dn-checkbox>
+            <span ui-field="valuePanel"></span>
+        </li>
+        <style-item ui-field="modelSelected" class="active"></style-item>
+    </template>
+</template>
+<!--   TREE  -->
+<template ui-field="tree">
+    <template ui-field="tree-main">
+        <ul ui-field="root" class="list-group scroll-style tree" style="border: 1px solid lightgrey;"></ul>
+        <style-item ui-field="ROW_HEIGHT" class="49"></style-item>
+    </template>
+    <template ui-field="tree-item-simple">
+        <li ui-field="root" class="list-group-item">
+                <span style="margin-left:48px;">
+                  <span ui-field="valuePanel"></span>
+                </span>
+        </li>
+        <style-item ui-field="modelSelected" class="active"></style-item>
+    </template>
+    <template ui-field="tree-item-simple-parent">
+        <li ui-field="root" class="list-group-item">
+            <i ui-field="openCloseElement" style="margin-right:  10px;"></i>
+            <span ui-field="valuePanel"></span>
+        </li>
+        <style-item ui-field="openStyle" class="fa fa-plus-square-o"></style-item>
+        <style-item ui-field="closeStyle" class="fa fa-minus-square-o"></style-item>
+        <style-item ui-field="modelSelected" class="active"></style-item>
+    </template>
+
+    <template ui-field="tree-item-simple-checkbox">
+        <li class="list-group-item" ui-field="root">
+                <span style="margin-left:  48px;">
+                    <dn-checkbox ui-field="checkBox" view="SIMPLE"></dn-checkbox>
+                  <span ui-field="valuePanel"></span>
+                </span>
+        </li>
+    </template>
+    <template ui-field="tree-item-simple-parent-checkbox">
+        <li ui-field="root" class="list-group-item">
+            <i ui-field="openCloseElement" style="margin-right:  30px;"></i>
+            <dn-checkbox ui-field="checkBox" view="SIMPLE"></dn-checkbox>
+            <span ui-field="valuePanel"></span>
+        </li>
+        <style-item ui-field="openStyle" class="fa fa-plus-square-o"></style-item>
+        <style-item ui-field="closeStyle" class="fa fa-minus-square-o"></style-item>
+    </template>
+</template>
+<!--   TABLE  -->
+<template ui-field="tableUi">
+
+    <template ui-field="filterPanel">
+        <div ui-field="root" class="d-flex">
+            <div ui-field="mainPanel" class="input-group input-group-sm">
+                <dn-autocomplete ui-field="ac" template-id="acc"></dn-autocomplete>
+                <div ui-field="valueHolder"></div>
+            </div>
+            <button ui-field="clear" class="btn btn-sm btn-outline-secondary ml-2">x</button>
+        </div>
+        <style-item ui-field="booleanMainPanelStyle"
+                    class="d-flex justify-content-between align-items-center"></style-item>
+        <template ui-template="acc">
+            <div ui-field='root' class='input-group-prepend'>
+                <dn-button ui-field='button' class='btn btn-outline-secondary btn-sm dropdown-toggle'>
+                    <span ui-field='buttonText'>Choose ...</span>
+                </dn-button>
+                <div ui-field='listPanel' class='autocomplete-scroll-panel'>
+                    <dn-text-box ui-field='textBox'></dn-text-box>
+                    <div class='scroll-style'>
+                        <dn-list ui-field="list"></dn-list>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </template>
+
+    <template ui-field="table-row-expander-item">
+        <td ui-field="root">
+            <i ui-field="open-close-element" class="fa fa-close"></i>
+        </td>
+        <style-item ui-field="openStyle" class="fa fa-plus-square-o"></style-item>
+        <style-item ui-field="closeStyle" class="fa fa-minus-square-o"></style-item>
+    </template>
+
+    <template ui-field="table-checkbox-column">
+        <td ui-field="root">
+            <dn-checkbox ui-field="checkBox" view="SIMPLE"
+                         style="margin-left: 12px"></dn-checkbox>
+        </td>
+    </template>
+
+    <template ui-field="table-header-checkbox">
+        <td ui-field="root">
+            <dn-checkbox ui-field="checkBox" style="margin-left: 12px;"></dn-checkbox>
+            <span ui-field="textPanel"></span>
+        </td>
+    </template>
+
+    <template ui-field="footerCell">
+        <td ui-field="root">
+        </td>
+    </template>
+
+    <template ui-field="table-bar-ui">
+
+        <template ui-field="table-bar">
+            <div ui-field="root">
+
+            </div>
+        </template>
+        <template ui-field="columnChooseBar">
+            <div ui-field="root">
+
+            </div>
+        </template>
+        <template ui-field="table-bar-groupby-ui">
+            <template ui-field="table-bar-item">
+                <div ui-field="root" class="row p-1">
+                    <div class="col-1">
+                        <i ui-field="close" class="fa fa-close"></i>
+                    </div>
+                    <div class="col-2">
+                        <span ui-field="action-label"></span>
+                    </div>
+                    <div class="col-2">
+                        <span ui-field="column-name"></span>
+                    </div>
+                    <div class="col-6">
+                        <div class="row" ui-field="panel">
+
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        :::
+                    </div>
+                </div>
+            </template>
+            <template ui-field="table-bar-panel">
+                <div ui-field="root">
+                    <div ui-field="table-bar-panel-content" class="p-2"></div>
+                    <div ui-field="dropdown-holder" class="pl-2 mb-3 mt-3"></div>
+                </div>
+            </template>
+        </template>
+    </template>
+
+    <template ui-field="table-tree-item-simple-parent">
+        <tr ui-field="root">
+            <td ui-field="open-close-cell">
+                <div class="horizontal-div">
+                    <i ui-field="openCloseElement"></i>
+                    <div style="width: 10px;"></div>
+                    <div ui-field="valuePanel"></div>
+                </div>
+            </td>
+        </tr>
+        <style-item ui-field="openStyle" class="fa fa-plus-square-o"></style-item>
+        <style-item ui-field="closeStyle" class="fa fa-minus-square-o"></style-item>
+    </template>
+
+    <template ui-field="table-main">
+        <style-item ui-field="ROW_HEIGHT" class="49"></style-item>
+        <div ui-field="root" class="table-main">
+            <div ui-field="table-header-bar-row">
+                <!--header bar content here-->
+            </div>
+            <div ui-field="table-header-panel">
+                <table ui-field="table-header" class="table-header table table-bordered fixed-table table-header-style">
+                    <colgroup ui-field="table-header-colgroup"></colgroup>
+                    <tbody ui-field="headerBodyPanel">
+                    <tr ui-field="table-header-row">
+                        <!--header content here-->
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div ui-field="table-content-panel" class="table-content-panel scroll-style" style="padding-right: 1px">
+                <table ui-field="table-content" class="table table-bordered fixed-table">
+                    <colgroup ui-field="table-content-colgroup"></colgroup>
+                    <tbody ui-field="table-content-tbody">
+                    <!--main content here-->
+                    </tbody>
+                </table>
+            </div>
+            <div ui-field="table-footer-panel">
+                <table ui-field="table-footer" class="table-header table table-bordered fixed-table">
+                    <colgroup ui-field="table-footer-colgroup"></colgroup>
+                    <tbody ui-field="footerBodyPanel">
+                    <tr ui-field="table-footer-row">
+                        <!--footer content here-->
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div ui-field="footer-pager-panel">
+                <!--pager goes here-->
+            </div>
+        </div>
+    </template>
+    <template ui-field="table-row">
+        <tr ui-field="root"></tr>
+        <style-item ui-field="modelSelected" class="table-primary"></style-item>
+    </template>
+    <template ui-field="table-column">
+        <td ui-field="root"></td>
+    </template>
+
+    <template ui-field="table-column-sort-header">
+        <td ui-field="root">
+            <div ui-field="text-panel"></div>
+            <div style="position: relative;" class="pull-right">
+                <div style="right: 1px;top: -19px;position:absolute;">
+                    <div ui-field="icon-panel" class="pull-right header-s2"></div>
+                </div>
+            </div>
+        </td>
+        <style-item ui-field="sortUpStyle" class="fa fa-sort-down pull-right"></style-item>
+        <style-item ui-field="sortDownStyle" class="fa fa-sort-up pull-right"></style-item>
+    </template>
+    <template ui-field="table-column-menu-header">
+        <td ui-field="root">
+            <div ui-field="text-panel"></div>
+
+            <div style="position: relative;" class="pull-right">
+                <div style="left: -100px;top: -19px;position:absolute;">
+                    <div ui-field="filter-icon-panel" class="fa fa-filter pull-right header-s2"></div>
+                    <div ui-field="group-by-icon-panel" class="fa fa-group pull-right header-s2"></div>
+                    <div ui-field="icon-panel" class="pull-right header-s2"></div>
+                </div>
+                <!--fa fa-sort-->
+                <div style="right: 1px;top: -30px;position:absolute;">
+                    <div ui-field="menu-holder"></div>
+                </div>
+            </div>
+        </td>
+        <style-item ui-field="sortStyle" class="fa fa-sort pull-right"></style-item>
+        <style-item ui-field="sortUpStyle" class="fa fa-sort-down pull-right"></style-item>
+        <style-item ui-field="sortDownStyle" class="fa fa-sort-up pull-right"></style-item>
+    </template>
+
+    <template ui-field="table-column-filter-header">
+        <td ui-field="root">
+            <div ui-field="text-panel" style="font-weight: bold"></div>
+            <div ui-field="icon-panel" class="pull-right header-s2"></div>
+            <div ui-field="filter-icon-panel" class="fa fa-filter pull-right header-s2"></div>
+            <div ui-field="filter-panel"></div>
+        </td>
+    </template>
+
+</template>
+<!--  DROPDOWN MULTILEVEL   -->
+<template ui-field="dropDownMultiLevelUi">
+    <template ui-field="dropdown">
+        <div class="dropdown" ui-field="root">
+            <button ui-field="button" class="btn btn-secondary dropdown-toggle">
+
+            </button>
+            <div ui-field="dropdown-menu" class="dropdown-menu">
+            </div>
+        </div>
+        <style-item ui-field="dropDownMenuShowStyle" class="show"></style-item>
+    </template>
+    <template ui-field="dropdownItem">
+        <a ui-field="root" class="dropdown-item" href="javascript:void(0)"></a>
+    </template>
+    <template ui-field="dropdownItemHasChildren">
+        <a ui-field="root" class="dropdown-item" href="javascript:void(0)">
+            <span ui-field="textPanel"></span>
+            <span style="position: absolute;right: 5px;">
+            <i class="fa fa-angle-right"></i>
+        </span>
+        </a>
+    </template>
+    <template ui-field="dropdownPanelHasChildren">
+        <div ui-field="root" class="dropdown-menu dropdownPanel">
+        </div>
+    </template>
+</template>
+<!--  AUTOCOMPLETE  -->
+<template ui-field="autocomplete">
+    <div ui-field='root' class='autocomplete'>
+        <dn-button ui-field='button' class='btn btn-secondary dropdown-toggle'>
+            <span ui-field='buttonText'>Choose ...</span>
+        </dn-button>
+        <div ui-field='listPanel' class='autocomplete-scroll-panel'>
+            <dn-text-box ui-field='textBox'></dn-text-box>
+            <div class='scroll-style'>
+                <dn-list ui-field="list"></dn-list>
+            </div>
+        </div>
+    </div>
+</template>
+<!--  AUTOCOMPLETE  TREE-->
+<template ui-field="autocompleteTree">
+    <div ui-field='root' class='autocomplete'>
+        <dn-button ui-field='button' class='btn btn-secondary dropdown-toggle'>
+            <span ui-field='buttonText'>Choose ...</span>
+        </dn-button>
+        <div ui-field='listPanel' class='autocomplete-scroll-panel'>
+            <dn-text-box ui-field='textBox'></dn-text-box>
+            <div class='scroll-style'>
+                <dn-tree ui-field="tree"></dn-tree>
+            </div>
+        </div>
+    </div>
+</template>
+<!--AUTOCOMPLETE MULTISELECT-->
+<template ui-field="autocompleteMultiSelect">
+    <template ui-field="rootView">
+        <div ui-field='root'
+             class='autocomplete autocomplete-container autocomplete-container-multi autocomplete-container-active'>
+            <ul ui-field="selectionPanel" class="autocomplete-choices">
+            </ul>
+            <div ui-field='listPanel' class='autocomplete-scroll-panel'>
+                <dn-text-box ui-field='textBox'></dn-text-box>
+                <div class='scroll-style'>
+                    <dn-list ui-field="list"></dn-list>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template ui-field="itemView">
+        <li class="search-choice" ui-field="root">
+            <span ui-field="mainPanel"></span>
+            <a class="fa fa-close" style="position: relative;right: -16px" ui-field="removeBtn"></a>
+        </li>
+    </template>
+</template>
+<!--PAGER-->
+<template ui-field="pagerUi">
+    <template ui-field="pager">
+        <ul ui-field="root" class="pagination">
+            <li><span ui-field="textPanel" style="margin-right: 15px"></span></li>
+            <li ui-field="first" class="page-item">
+                <a class="page-link" href="javascript:void(0)" aria-label="First">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">First</span>
+                </a>
+            </li>
+            <li ui-field="previous" class="page-item">
+                <a class="page-link" href="javascript:void(0)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <dn-integer-box ui-field="numberField"></dn-integer-box>
+                <!--<input ui-field="pageNumberField" class="form-control" type="text">-->
+            </li>
+            <li ui-field="next" class="page-item">
+                <a class="page-link" href="javascript:void(0)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+            <li ui-field="last" class="page-item">
+                <a class="page-link" href="javascript:void(0)" aria-label="Last">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Last</span>
+                </a>
+            </li>
+        </ul>
+        <style-item ui-field="disabledStyle" class="disabled"/>
+    </template>
+    <template ui-field="pager-item">
+        <li ui-field="root" class="page-item">
+            <a ui-field="textPanel" class="page-link" href="javascript:void(0)">1</a>
+        </li>
+    </template>
+</template>
+<template ui-field="pagerListUi">
+    <template ui-field="pager">
+        <ul ui-field="root" class="pagination justify-content-center">
+            <!---->
+        </ul>
+    </template>
+    <template ui-field="pager-item">
+        <li ui-field="root" class="page-item">
+            <a ui-field="textPanel" class="page-link" href="javascript:void(0)">1</a>
+        </li>
+    </template>
+</template>
+
+<template ui-field="treeCellIconView">
+    <li ui-field="root" class="list-group-item">
+        <a>
+            <i ui-field="iconPanel" class="fa fa-envelope-open"></i>
+            <span ui-field="valuePanel"></span>
+        </a>
+    </li>
+    <style-item ui-field="modelSelected" class="active"></style-item>
+</template>
+<template ui-field="treeCellParentIconView">
+    <li ui-field="root" class="list-group-item">
+        <a href="javascript:void(0)">
+            <i ui-field="iconPanel" class="fa fa-bus"></i>
+            <span ui-field="valuePanel"></span>
+            <span class="pull-right-container">
+                <i ui-field="openCloseElement" class="fa fa-angle-down pull-right"></i>
+                 </span>
+        </a>
+    </li>
+    <style-item ui-field="openStyle" class="fa fa-angle-left"></style-item>
+    <style-item ui-field="closeStyle" class="fa fa-angle-down"></style-item>
+</template>
+<template ui-field="filterPanelList">
+    <div ui-field="root" class="d-flex">
+        <div class="btn-group btn-group-sm">
+            <dn-autocomplete ui-field="ac" template-id="acc"></dn-autocomplete>
+            <div ui-field="valueHolder"></div>
+        </div>
+        <button ui-field="clear" class="btn btn-sm btn-outline-secondary ml-2">x</button>
+    </div>
+    <template ui-template="acc" ui-field="accTemplate">
+        <div ui-field='root' class='btn-group btn-group-sm'>
+            <dn-button ui-field='button' class='btn btn-outline-secondary dropdown-toggle'>
+                <span ui-field='buttonText'>Choose ...</span>
+            </dn-button>
+            <div ui-field='listPanel' class='autocomplete-scroll-panel'>
+                <dn-text-box ui-field='textBox'></dn-text-box>
+                <div class='scroll-style'>
+                    <dn-list ui-field="list"></dn-list>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template ui-field="autocompleteMs">
+        <template ui-field="rootView">
+            <div ui-field='root'
+                 class='autocomplete autocomplete-container autocomplete-container-multi autocomplete-container-active'>
+                <ul ui-field="selectionPanel" class="autocomplete-choices">
+                </ul>
+                <div ui-field='listPanel' class='autocomplete-scroll-panel'>
+                    <dn-text-box ui-field='textBox'></dn-text-box>
+                    <div class='scroll-style'>
+                        <dn-list ui-field="list"></dn-list>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template ui-field="itemView">
+            <li class="search-choice" ui-field="root">
+                <span ui-field="mainPanel"></span>
+                <a class="fa fa-close" style="position: relative;right: -16px" ui-field="removeBtn"></a>
+            </li>
+        </template>
+    </template>
+</template>
+
+<!--SIDEMENU-->
+<template ui-field="sidemenu">
+    <aside ui-field="root" class="col-12 col-md-3 col-xl-2 border-right scroll-style" style="max-height: 100%">
+        <div class="d-flex flex-row-reverse justify-content-between align-items-center d-md-block">
+            <div class="w-100 ml-3 ml-md-0">
+                <form>
+                    <dn-text-box ui-field="searchBox" addclass="w-100"></dn-text-box>
+                </form>
+            </div>
+            <hr class="d-none d-md-block mb-2">
+            <button ui-field="navBtn" class="navbar-toggler d-block d-md-none border">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" role="img"
+                     focusable="false">
+                    <path stroke="#333" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"
+                          d="M4 7h22M4 15h22M4 23h22"></path>
+                </svg>
+            </button>
+        </div>
+        <nav class="navbar navbar-expand-md p-0">
+            <div ui-field="navbarPanel" class="navbar-collapse collapse">
+                <!--            <dn-tree ui-field="tree" ></dn-tree>-->
+                <div ui-field="treeHolder" class="pb-4"></div>
+            </div>
+        </nav>
+    </aside>
+    <template ui-field="treeSideTemplate">
+        <template ui-field="tree-main">
+            <ul ui-field="root" class="nav flex-column w-100 demo-nav"></ul>
+            <style-item ui-field="ROW_HEIGHT" class="49"></style-item>
+        </template>
+        <template ui-field="tree-item-simple">
+            <li ui-field="root" class="nav-item">
+                <a href="javascript:void(0)" class="nav-link" ui-field="valuePanel">
+
+                </a>
+            </li>
+            <style-item ui-field="modelSelected" class="active"></style-item>
+        </template>
+        <template ui-field="tree-item-simple-parent">
+            <li ui-field="root" class="nav-item">
+                <a href="javascript:void(0)" class="nav-link dropdown-toggle collapsed" ui-field="valuePanel">
+                    <i ui-field="openCloseElement" class="pull-right">+</i>
+                </a>
+            </li>
+            <style-item ui-field="openStyle" class=""></style-item>
+            <style-item ui-field="closeStyle" class="collapsed"></style-item>
+        </template>
+    </template>
+
+    <style-item ui-field="collapsedStyle" class="collapsed"></style-item>
+    <style-item ui-field="showNavBarPanelStyle" class="show"></style-item>
+</template>

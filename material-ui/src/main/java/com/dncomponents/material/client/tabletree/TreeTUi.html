@@ -1,0 +1,39 @@
+<template ui-field="tree-main">
+    <ul ui-field="root" class="list-group scroll-style tree" style="border: 1px solid lightgrey;"></ul>
+    <style-item ui-field="ROW_HEIGHT" class="49"></style-item>
+</template>
+<template ui-field="tree-item-simple">
+    <td ui-field="root">
+                <span style="margin-left:48px;">
+                  <span ui-field="valuePanel"></span>
+                </span>
+    </td>
+    <style-item ui-field="modelSelected" class="active"></style-item>
+</template>
+<template ui-field="tree-item-simple-parent">
+    <td ui-field="root">
+        <i ui-field="openCloseElement" class="material-icons" style="margin-right:  10px;"></i>
+        <span ui-field="valuePanel"></span>
+    </td>
+    <style-item ui-field="openStyle" class="chevron_right"></style-item>
+    <style-item ui-field="closeStyle" class="expand_more"></style-item>
+    <style-item ui-field="modelSelected" class="active"></style-item>
+</template>
+
+<template ui-field="tree-item-simple-checkbox">
+    <td ui-field="root">
+                <span style="margin-left:  48px;">
+                    <dn-checkbox ui-field="checkBox" view="SIMPLE"></dn-checkbox>
+                  <span ui-field="valuePanel"></span>
+                </span>
+    </td>
+</template>
+<template ui-field="tree-item-simple-parent-checkbox">
+    <td ui-field="root">
+        <i ui-field="openCloseElement" class="material-icons" style="margin-right:  30px;"></i>
+        <dn-checkbox ui-field="checkBox" view="SIMPLE"></dn-checkbox>
+        <span ui-field="valuePanel"></span>
+    </td>
+    <style-item ui-field="openStyle" class="chevron_right"></style-item>
+    <style-item ui-field="closeStyle" class="expand_more"></style-item>
+</template>

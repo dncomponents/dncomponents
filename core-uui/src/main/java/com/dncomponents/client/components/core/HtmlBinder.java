@@ -1,6 +1,5 @@
 package com.dncomponents.client.components.core;
 
-import com.google.gwt.core.client.GWT;
 import elemental2.dom.HTMLTemplateElement;
 
 import javax.validation.constraints.NotNull;
@@ -37,10 +36,10 @@ public abstract class HtmlBinder<T> {
     public abstract void bind();
 
     /**
-     *  Use it to bind only fields from the current class without parent's fields.
-     *
-     *  If you want to bind all the fields including parent's fields,
-     *  provide complete template and use bind() instead.
+     * Use it to bind only fields from the current class without parent's fields.
+     * <p>
+     * If you want to bind all the fields including parent's fields,
+     * provide complete template and use bind() instead.
      */
     public void bindThis() {
     }

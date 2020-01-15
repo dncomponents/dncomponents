@@ -387,3 +387,137 @@ div.mdc-dialog__title_parent h1 {
     display: block;
     opacity: 1;
 }
+
+/*cell components styling*/
+.scroll-style {
+    display: block !important;
+    max-height: 500px;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/*table*/
+.bar-item > * {
+    margin-right: 10px;
+    align-self: center;
+}
+
+.bar-item > span {
+    min-width: 90px;
+}
+
+.bar-item {
+    display: flex;
+    height: 56px;
+}
+
+.header-bar {
+    margin-bottom: 20px;
+    margin-left: 15px;
+}
+
+.header-bar button {
+    margin-right: 20px;
+    margin-top: 20px;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.fixed-table {
+    table-layout: fixed;
+}
+
+.table-main {
+    overflow: auto;
+    position: relative;
+    overflow-anchor: none;
+    width: 100%;
+}
+
+.table-content-panel {
+    width: 100%;
+}
+
+table {
+    /*todo remove this */
+    border-spacing: 0;
+}
+
+.pagination {
+    display: flex;
+    float: right;
+    align-items: baseline;
+    margin: 10px;
+}
+
+.page-item {
+    border: 1px solid lightgray;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.page-item.active {
+    color: rgba(98, 0, 238, 0.87);
+    background: #ede2fd;
+}
+
+div.pagination i {
+    cursor: pointer;
+    position: relative;
+    top: 8px;
+}
+
+/*table*/
+
+
+/*autocomplete !*/
+/*autocomplete*/
+.autocomplete {
+    width: fit-content;
+}
+
+.autocomplete-scroll-panel {
+    position: absolute;
+    background: white;
+    z-index: 333333;
+}
+
+/*end autocomplete*/
+
+/*side*/
+@media (min-width: 768px) {
+    .mdc-drawer--dismissible {
+        display: block;
+    }
+}
+
+.side-closed {
+    display: none;
+}
+
+.side-open {
+    display: flex;
+}
+/*end side*/
+
+/*autocomplete multiselect*/
+.autocomplete-multiselect {
+    position: relative;
+    width: 260px;
+    min-width: 200px;
+    min-height: 50px;
+    max-width: 500px;
+    border-radius: 4px 4px 0 0;
+    background-color: whitesmoke;
+    border: none;
+    border-bottom: 1px solid;
+    border-bottom-color: rgba(0, 0, 0, 0.42);
+}
+
+.autocomplete-multiselect:hover {
+    background-color: #ececec;
+    border-bottom: 1px solid;
+}
+/*end autocomplete multiselect*/
