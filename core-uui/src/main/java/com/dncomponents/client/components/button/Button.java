@@ -39,7 +39,7 @@ public class Button<T> extends BaseComponent<T, ButtonView> implements HasClickH
     public Button(String text, ClickHandler clickHandler) {
         this();
         setText(text);
-        addClickHandler(clickHandler);
+         addClickHandler(clickHandler);
     }
 
     public Button(ButtonView view, String text) {
