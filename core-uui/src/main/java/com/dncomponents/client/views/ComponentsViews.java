@@ -6,13 +6,13 @@ import com.dncomponents.client.views.core.ui.IconRenderer;
 import com.dncomponents.client.views.core.ui.accordion.AccordionUi;
 import com.dncomponents.client.views.core.ui.autocomplete.AutocompleteTreeView;
 import com.dncomponents.client.views.core.ui.autocomplete.AutocompleteView;
-import com.dncomponents.client.views.core.ui.autocomplete.multiselect.AutocompleteMultiSelectUi;
+import com.dncomponents.client.views.core.ui.autocomplete.multiselect.AutocompleteMultiSelectView;
 import com.dncomponents.client.views.core.ui.button.ButtonView;
 import com.dncomponents.client.views.core.ui.checkbox.CheckBoxView;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownMultiLevelUi;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownUi;
 import com.dncomponents.client.views.core.ui.list.ListUi;
-import com.dncomponents.client.views.core.ui.modal.ModalDialogView;
+import com.dncomponents.client.views.core.ui.modal.DialogView;
 import com.dncomponents.client.views.core.ui.pager.PagerListUi;
 import com.dncomponents.client.views.core.ui.pager.PagerUi;
 import com.dncomponents.client.views.core.ui.popover.PopoverView;
@@ -28,8 +28,6 @@ import com.dncomponents.client.views.core.ui.textbox.TextBoxView;
 import com.dncomponents.client.views.core.ui.tooltip.TooltipView;
 import com.dncomponents.client.views.core.ui.tree.TreeUi;
 
-import java.util.Map;
-
 
 /**
  * @author nikolasavic
@@ -37,8 +35,6 @@ import java.util.Map;
 public interface ComponentsViews {
 
     MultiMap<Class, ViewFactory> getRegisteredViewFactoriesList();
-
-    Map<String, ViewFactory> getRegisteredViewFactoriesMap();
 
     void registerViewFactory(Class clazz, ViewFactory... viewFactories);
 
@@ -60,7 +56,7 @@ public interface ComponentsViews {
 
     PopoverView getPopoverView();
 
-    ModalDialogView getModalDialogView();
+    DialogView getModalDialogView();
 
     TabUi getTabUi();
 
@@ -75,7 +71,7 @@ public interface ComponentsViews {
 
     AutocompleteTreeView getAutocompleteTreeView();
 
-    <T> AutocompleteMultiSelectUi<T> getAutocompleteMultiSelectView();
+    <T> AutocompleteMultiSelectView<T> getAutocompleteMultiSelectView(boolean tree);
 
     TreeUi getTreeUi();
 

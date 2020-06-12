@@ -97,9 +97,9 @@ public class ProgressViewImpl implements ProgressView {
 
 
         public ProgressViewImpl build() {
-            ProgressViewImpl progressView = null;
+            ProgressViewImpl progressView;
             if (templateElement == null)
-                progressView = (ProgressViewImpl) Ui.get().getProgressView();
+                progressView = (ProgressViewImpl) BootstrapUi.getUi().getProgressView();
             else
                 progressView = new ProgressViewImpl(templateElement);
             progressView.progressBar.className = BASE_STYLE + " "
@@ -109,44 +109,4 @@ public class ProgressViewImpl implements ProgressView {
         }
     }
 
-    public static class ProgressViewFactory extends AbstractPluginHelper implements ViewFactory<ProgressView> {
-
-        private static ProgressViewFactory instance;
-
-        private ProgressViewFactory() {
-            arguments.put(Builder.typeId, ProgressBarTypes.lookUp.toStringList());
-            arguments.put(Builder.colorTypeId, ProgressBarColorTypes.lookUp.toStringList());
-        }
-
-        public static ProgressViewFactory getInstance() {
-            if (instance == null)
-                return instance = new ProgressViewFactory();
-            return instance;
-        }
-
-        @Override
-        public ProgressView getView(Map<String, String> attributes, HTMLTemplateElement templateElement) {
-            String typesStringList = attributes.get(Builder.typeId);
-            List<ProgressBarTypes> types = new ArrayList<>();
-            if (typesStringList != null) {
-                String res[] = typesStringList.split("\\s+");
-                for (String re : res) {
-                    types.add(ProgressBarTypes.lookUp.getValue(re));
-                }
-            }
-            ProgressBarColorTypes color = ProgressBarColorTypes.lookUp.getValue(attributes.get(Builder.colorTypeId));
-            ProgressViewImpl progressView = Builder.get().type(types).color(color).build();
-            return progressView;
-        }
-
-        @Override
-        public String getId() {
-            return ProgressViewImpl.VIEW_ID;
-        }
-
-        @Override
-        public Class getClazz() {
-            return ProgressViewImpl.class;
-        }
-    }
 }

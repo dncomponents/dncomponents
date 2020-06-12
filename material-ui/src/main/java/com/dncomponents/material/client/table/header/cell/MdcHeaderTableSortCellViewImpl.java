@@ -22,11 +22,11 @@ public class MdcHeaderTableSortCellViewImpl implements HeaderTableSortCellView {
 
     @UiField
     HTMLElement root;
-    @UiField("text-panel")
+    @UiField
     HTMLElement textPanel;
-    @UiField("icon-panel")
+    @UiField
     HTMLElement sortIcon;
-    @UiField("icon-panel-order")
+    @UiField
     HTMLElement sortIconOrder;
     @UiStyle
     String active;

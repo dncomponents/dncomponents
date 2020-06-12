@@ -4,13 +4,13 @@ package com.dncomponents.client.components.progress;
 import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.components.core.BaseComponent;
 import com.dncomponents.client.components.core.ComponentHtmlParser;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.value.HasValue;
+import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
+import com.dncomponents.client.components.core.events.value.ValueChangeHandler;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.ViewSlots;
 import com.dncomponents.client.views.core.ui.progress.ProgressView;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.ui.HasValue;
 import elemental2.dom.Element;
 
 import java.util.*;
@@ -105,7 +105,7 @@ public class Progress extends BaseComponent<Object, ProgressView> implements Has
 
     @Override
     public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Integer> handler) {
-        return ensureHandlers().addHandler(ValueChangeEvent.getType(), handler);
+        return handler.addTo(asElement());
     }
 
     public static class ProgressHtmlParser extends AbstractPluginHelper implements ComponentHtmlParser {

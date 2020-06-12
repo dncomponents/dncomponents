@@ -1,10 +1,10 @@
 package com.dncomponents.client.components.core;
 
-import com.dncomponents.client.components.core.selectionmodel.SingleSelectionModel;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.selection.SelectionHandler;
 import com.dncomponents.client.components.core.selectionmodel.AbstractSingleSelectionGroup;
+import com.dncomponents.client.components.core.selectionmodel.SingleSelectionModel;
 import com.dncomponents.client.views.core.pcg.View;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
 
 import java.util.List;
 

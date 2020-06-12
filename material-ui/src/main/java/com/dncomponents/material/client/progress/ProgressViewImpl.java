@@ -6,8 +6,8 @@ import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.views.core.ViewFactory;
 import com.dncomponents.client.views.core.ui.progress.ProgressView;
 import com.dncomponents.material.client.MaterialUi;
-import com.google.gwt.core.client.GWT;
 import elemental2.dom.CSSProperties;
+import elemental2.dom.DomGlobal;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
@@ -95,7 +95,7 @@ public class ProgressViewImpl implements ProgressView {
 
         public ProgressViewImpl build() {
             if (templateElement == null)
-                templateElement = MaterialUi.getInstance().progress;
+                templateElement = MaterialUi.getUi().progress;
             ProgressViewImpl progressView = new ProgressViewImpl(templateElement);
             final String style = type != null ? type.getStyle() : "";
             if (style != null && !style.isEmpty())
@@ -107,45 +107,4 @@ public class ProgressViewImpl implements ProgressView {
     }
 
 
-    public static class ProgressViewFactory extends AbstractPluginHelper implements ViewFactory<ProgressView> {
-
-        private static ProgressViewFactory instance;
-
-        private ProgressViewFactory() {
-            arguments.put(Builder.typeId, ProgressBarTypes.lookUp.toStringList());
-        }
-
-        public static ProgressViewFactory getInstance() {
-            if (instance == null)
-                return instance = new ProgressViewFactory();
-            return instance;
-        }
-
-        @Override
-        public ProgressView getView(Map<String, String> attributes, HTMLTemplateElement templateElement) {
-            ProgressBarTypes type = ProgressBarTypes.lookUp.getValue(attributes.get(Builder.typeId));
-            String buffered = attributes.get(Builder.bufferedId);
-            double bufferedDouble = 0;
-            if (buffered != null && !buffered.isEmpty()) {
-                try {
-                    bufferedDouble = Double.parseDouble(buffered);
-                } catch (Exception ex) {
-                    GWT.log("Error parsing buffer");
-                }
-            }
-
-            ProgressViewImpl progressView = Builder.get().setType(type).setBuffered(bufferedDouble).build();
-            return progressView;
-        }
-
-        @Override
-        public String getId() {
-            return ProgressViewImpl.VIEW_ID;
-        }
-
-        @Override
-        public Class getClazz() {
-            return ProgressViewImpl.class;
-        }
-    }
 }

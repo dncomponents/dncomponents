@@ -1,6 +1,5 @@
 package com.dncomponents.client.views.core.ui.table.headers;
 
-
 import com.dncomponents.client.components.ColumnConfig;
 import com.dncomponents.client.components.table.header.HeaderFiltering;
 import com.dncomponents.client.components.table.header.SortingDirection;

@@ -3,17 +3,18 @@ package com.dncomponents.bootstrap.client.autocomplete.tree;
 import com.dncomponents.UiField;
 import com.dncomponents.UiTemplate;
 import com.dncomponents.bootstrap.client.autocomplete.BaseAutocompleteViewImpl;
-import com.dncomponents.client.components.HasRows;
+import com.dncomponents.client.components.HasTreeData;
 import com.dncomponents.client.components.Tree;
 import com.dncomponents.client.components.core.CellConfig;
 import com.dncomponents.client.components.core.HtmlBinder;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.close.HasCloseHandlers;
+import com.dncomponents.client.components.core.events.filters.Filter;
+import com.dncomponents.client.components.core.events.open.HasOpenHandlers;
+import com.dncomponents.client.components.core.events.selection.SelectionHandler;
 import com.dncomponents.client.components.core.selectionmodel.DefaultMultiSelectionModel;
-import com.dncomponents.client.components.filters.Filter;
 import com.dncomponents.client.components.tree.TreeNode;
 import com.dncomponents.client.views.core.ui.autocomplete.AutocompleteTreeView;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerRegistration;
 import elemental2.dom.HTMLTemplateElement;
 
 import java.util.List;
@@ -43,13 +44,9 @@ public class AutocompleteTreeViewImpl<T> extends BaseAutocompleteViewImpl<TreeNo
 
     private void init() {
         tree.showRoot(false);
+        tree.getRowCellConfig().setFieldGetter((Function<TreeNode<T>, String>) node -> node.getUserObject() + "");
         tree.getSelectionModel().setSelectionMode(DefaultMultiSelectionModel.SelectionMode.SINGLE);
-    }
-
-    @Override
-    public void setRoot(TreeNode root) {
-        tree.setRoot(root);
-        tree.drawData();
+        tree.showRoot(false);
     }
 
     @Override
@@ -64,13 +61,28 @@ public class AutocompleteTreeViewImpl<T> extends BaseAutocompleteViewImpl<TreeNo
     }
 
     @Override
-    public HasRows<TreeNode<T>> getHasRowsData() {
+    public HasTreeData<T> getHasRowsData() {
+        return tree;
+    }
+
+    @Override
+    public HasOpenHandlers<TreeNode<T>> getHasOpenHandlers() {
+        return tree;
+    }
+
+    @Override
+    public HasCloseHandlers<TreeNode<T>> getHasCloseHandlers() {
         return tree;
     }
 
     @Override
     public void setFieldGetter(Function<TreeNode<T>, String> fieldGetter) {
-//        tree.setFieldGetter(fieldGetter);
+        tree.getRowCellConfig().setFieldGetter(fieldGetter);
+    }
+
+    @Override
+    public CellConfig<TreeNode<T>, String> getRowCellConfig() {
+        return tree.getRowCellConfig();
     }
 
     @Override
@@ -79,17 +91,8 @@ public class AutocompleteTreeViewImpl<T> extends BaseAutocompleteViewImpl<TreeNo
     }
 
     @Override
-    public void setCellConfig(CellConfig cellConfig) {
-//        tree.setCellConfig((TreeCellConfig) cellConfig);
-    }
-
-    @Override
     public HandlerRegistration addSelectionHandler(SelectionHandler<List<TreeNode<T>>> handler) {
         return tree.getSelectionModel().addSelectionHandler(handler);
     }
 
-    @Override
-    public void fireEvent(GwtEvent<?> event) {
-        tree.fireEvent(event);
-    }
 }

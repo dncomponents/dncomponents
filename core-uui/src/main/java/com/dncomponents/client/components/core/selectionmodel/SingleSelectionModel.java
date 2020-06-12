@@ -1,6 +1,6 @@
 package com.dncomponents.client.components.core.selectionmodel;
 
-import com.google.gwt.event.logical.shared.HasSelectionHandlers;
+import com.dncomponents.client.components.core.events.selection.HasSelectionHandlers;
 
 public interface SingleSelectionModel<T> extends BaseSelectionModel<T>,
         HasSelectionHandlers<T> {

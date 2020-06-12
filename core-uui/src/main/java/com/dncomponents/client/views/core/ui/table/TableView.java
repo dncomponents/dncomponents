@@ -9,6 +9,7 @@ import elemental2.dom.HTMLElement;
  * @author nikolasavic
  */
 public interface TableView extends TreeView {
+
     void setColumnWidth(int column, String width);
 
     void setHeaderColumnWidth(int column, String width);

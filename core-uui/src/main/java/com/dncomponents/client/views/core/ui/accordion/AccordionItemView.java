@@ -1,8 +1,8 @@
 package com.dncomponents.client.views.core.ui.accordion;
 
+import com.dncomponents.client.components.core.events.Command;
 import com.dncomponents.client.views.HasViewSlots;
 import com.dncomponents.client.views.core.pcg.View;
-import com.google.gwt.user.client.Command;
 import elemental2.dom.EventListener;
 import elemental2.dom.HTMLElement;
 

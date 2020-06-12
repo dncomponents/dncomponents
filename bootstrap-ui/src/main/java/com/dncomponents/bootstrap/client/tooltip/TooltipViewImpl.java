@@ -14,6 +14,7 @@ import elemental2.dom.HTMLTemplateElement;
  */
 public class TooltipViewImpl<V extends TooltipViewSlots> implements TooltipView<V> {
 
+    public static final String VIEW_ID = "default";
     @UiField
     HTMLElement root;
     @UiField

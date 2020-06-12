@@ -2,13 +2,10 @@ package com.dncomponents.bootstrap.client.list;
 
 import com.dncomponents.UiField;
 import com.dncomponents.client.components.core.HtmlBinder;
-import com.dncomponents.client.dom.handlers.ScrollHandler;
 import com.dncomponents.client.views.core.pcg.cell.BaseCellView;
 import com.dncomponents.client.views.core.ui.list.ListCellCheckBoxView;
 import com.dncomponents.client.views.core.ui.list.ListUi;
 import com.dncomponents.client.views.core.ui.list.ListView;
-import com.google.gwt.core.client.GWT;
-import elemental2.dom.Event;
 import elemental2.dom.HTMLTemplateElement;
 
 /**
@@ -16,14 +13,14 @@ import elemental2.dom.HTMLTemplateElement;
  */
 public class ListUiImpl implements ListUi {
 
-
-    @UiField("list-main")
+    public static final String VIEW_ID = "default";
+    @UiField
     HTMLTemplateElement listMain;
 
-    @UiField("list-item")
+    @UiField
     public HTMLTemplateElement listItem;
 
-    @UiField("list-item-checkbox")
+    @UiField
     HTMLTemplateElement listItemCheckbox;
 
     protected HtmlBinder uiBinder = HtmlBinder.get(ListUiImpl.class, this);
@@ -38,12 +35,6 @@ public class ListUiImpl implements ListUi {
     public ListUiImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);
         uiBinder.bind();
-        getRootView().addScrollHandler(new ScrollHandler() {
-            @Override
-            public void onScroll(Event event) {
-                GWT.log(getRootView().getScrollTop() + "");
-            }
-        });
     }
 
     @Override

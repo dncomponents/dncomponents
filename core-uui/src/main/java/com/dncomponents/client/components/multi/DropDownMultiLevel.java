@@ -4,20 +4,23 @@ import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.components.core.BaseComponent;
 import com.dncomponents.client.components.core.ComponentHtmlParser;
 import com.dncomponents.client.components.core.entities.ItemId;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.close.CloseEvent;
+import com.dncomponents.client.components.core.events.close.CloseHandler;
+import com.dncomponents.client.components.core.events.close.HasCloseHandlers;
+import com.dncomponents.client.components.core.events.open.HasOpenHandlers;
+import com.dncomponents.client.components.core.events.open.OpenEvent;
+import com.dncomponents.client.components.core.events.open.OpenHandler;
 import com.dncomponents.client.components.core.selectionmodel.DefaultSingleSelectionModel;
 import com.dncomponents.client.components.core.selectionmodel.SingleSelectionModel;
-import com.dncomponents.client.components.core.selectionmodel.helper.HasItemSelectionHandlers;
-import com.dncomponents.client.components.core.selectionmodel.helper.ItemSelectionEvent;
-import com.dncomponents.client.components.core.selectionmodel.helper.ItemSelectionHandler;
 import com.dncomponents.client.components.tree.TreeNode;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.IsElement;
+import com.dncomponents.client.views.MainRenderer;
+import com.dncomponents.client.views.MainRendererImpl;
 import com.dncomponents.client.views.Ui;
-import com.dncomponents.client.views.core.ui.dropdown.DropDownItemViewSlots;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownMultiLevelUi;
-import com.google.gwt.event.logical.shared.*;
-import com.google.gwt.event.shared.HandlerRegistration;
 import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
 
@@ -31,7 +34,7 @@ import static com.dncomponents.client.components.Tree.TreeHtmlParser.parseItem;
  * @author nikolasavic
  */
 public class DropDownMultiLevel<T> extends BaseComponent<TreeNode<T>, DropDownMultiLevelUi> implements
-        HasOpenHandlers, HasCloseHandlers, HasItemSelectionHandlers<DropDownItemMultiLevel<T>> {
+        HasOpenHandlers, HasCloseHandlers {
 
     SingleSelectionModel<TreeNode<T>> singleSelectionModel = new DefaultSingleSelectionModel<TreeNode<T>>() {
         @Override
@@ -39,40 +42,38 @@ public class DropDownMultiLevel<T> extends BaseComponent<TreeNode<T>, DropDownMu
             return rows;
         }
     };
-    DropDownItemMultiLevel.DropDownItemRenderer<TreeNode<T>> renderer = new DropDownItemMultiLevel.DropDownItemRenderer<TreeNode<T>>() {
-        @Override
-        public void render(TreeNode<T> tTreeNode, DropDownItemViewSlots slots) {
-            slots.getMainSlot().textContent = tTreeNode.getUserObject() + "";
-        }
-    };
+    MainRenderer<TreeNode<T>> itemRenderer = new MainRendererImpl<>();
     List<TreeNode<T>> rows;
     boolean menuVisible;
     private TriggerType triggerType = TriggerType.HOVER;
-
     DropDownTreeNodePanel<T> dropDownPanel;
+    HandlerRegistration clickOutHandlerRegistration;
 
     public enum TriggerType {
         CLICK, HOVER
     }
 
-
     public DropDownMultiLevel(DropDownMultiLevelUi ui) {
         super(ui);
-    }
-
-    public DropDownMultiLevel() {
-        super(Ui.get().getDropDownMultiLevelUi());
         view.getRootView().addClickOnButton((ClickHandler) mouseEvent -> {
             showMenu(!menuVisible);
-            fireOpenCloseEvent();
-        });
-        view.getRootView().addClickOutOfButton(() -> {
             if (menuVisible) {
-                showMenu(false);
-                fireOpenCloseEvent();
+                clickOutHandlerRegistration = view.getRootView().addClickOutOfButton(evt -> {
+                    if (!DomUtil.isDescendant(this.asElement(), ((Element) evt.target))) {
+                        if (clickOutHandlerRegistration != null)
+                            clickOutHandlerRegistration.removeHandler();
+                        clickOutHandlerRegistration = null;
+                        showMenu(false);
+                    }
+                });
             }
         });
     }
+
+    public DropDownMultiLevel() {
+        this(Ui.get().getDropDownMultiLevelUi());
+    }
+
 
     private void fireOpenCloseEvent() {
         if (menuVisible)
@@ -88,7 +89,7 @@ public class DropDownMultiLevel<T> extends BaseComponent<TreeNode<T>, DropDownMu
 
 
     public void setSelected(DropDownItemMultiLevel<T> item, boolean b, boolean fireEvent) {
-        ItemSelectionEvent.fire(this, item);
+//        ItemSelectionEvent.fire(this, item);
         singleSelectionModel.setSelected(item.getValue(), b, fireEvent);
     }
 
@@ -107,38 +108,28 @@ public class DropDownMultiLevel<T> extends BaseComponent<TreeNode<T>, DropDownMu
         }
         menuVisible = b;
         dropDownPanel.show(view.getRootView().getRelativeElement(), b, "bottom");
+        fireOpenCloseEvent();
     }
 
 
     @Override
     public HandlerRegistration addOpenHandler(OpenHandler handler) {
-        return ensureHandlers().addHandler(OpenEvent.getType(), handler);
+        return handler.addTo(asElement());
     }
 
     @Override
     public HandlerRegistration addCloseHandler(CloseHandler handler) {
-        return ensureHandlers().addHandler(CloseEvent.getType(), handler);
+        return handler.addTo(asElement());
     }
 
-    public void setItemRenderer(DropDownItemMultiLevel.DropDownItemRenderer<TreeNode<T>> renderer) {
-        this.renderer = renderer;
+    public void setItemRenderer(MainRenderer<TreeNode<T>> renderer) {
+        this.itemRenderer = renderer;
     }
 
     @Override
     protected DropDownMultiLevelUi getView() {
         return super.getView();
     }
-
-//    @Override
-//    public HandlerRegistration addItemSelectionHandler(ItemSelectionHandler<DropDownItem<TreeNode<T>>> handler) {
-//        return ensureHandlers().addHandler(ItemSelectionEvent.getType(), handler);
-//    }
-
-    @Override
-    public HandlerRegistration addItemSelectionHandler(ItemSelectionHandler<DropDownItemMultiLevel<T>> handler) {
-        return ensureHandlers().addHandler(ItemSelectionEvent.getType(), handler);
-    }
-
 
     public void setTriggerType(TriggerType triggerType) {
         this.triggerType = triggerType;
@@ -179,7 +170,7 @@ public class DropDownMultiLevel<T> extends BaseComponent<TreeNode<T>, DropDownMu
             else
                 dropDown = new DropDownMultiLevel();
 
-            if (htmlElement.hasChildNodes()) { //todo apply this everywhere - if has children it is IdItem type
+            if (htmlElement.hasChildNodes()) {
                 dropDown.setItemRenderer((idItemTreeNode, slots) ->
                         slots.getMainSlot().innerHTML = idItemTreeNode.getUserObject().getContent());
                 TreeNode<ItemId> root = new TreeNode<>(new ItemId("root", "root"));
@@ -206,10 +197,6 @@ public class DropDownMultiLevel<T> extends BaseComponent<TreeNode<T>, DropDownMu
             return DropDownMultiLevel.class;
         }
 
-        @Override
-        public boolean isPremium() {
-            return true;
-        }
     }
 
 }

@@ -6,7 +6,8 @@ import com.dncomponents.client.components.core.HtmlParser;
 import com.dncomponents.client.components.core.TemplateParser;
 import com.dncomponents.client.components.core.selectionmodel.AbstractSingleSelectionGroup;
 import com.dncomponents.client.dom.DomUtil;
-import com.dncomponents.client.views.core.ui.checkbox.CheckBoxViewSlots;
+import com.dncomponents.client.views.MainRenderer;
+import com.dncomponents.client.views.MainRendererImpl;
 import elemental2.dom.Element;
 import elemental2.dom.NodeList;
 
@@ -39,23 +40,18 @@ public class RadioSelectionGroup<T> extends AbstractSingleSelectionGroup<T, Radi
         items.forEach(t -> addItem(new Radio<T>(t, this)));
     }
 
-    public void addEntityItems(List<T> items, Radio.RadioRenderer<T> defaultRenderer) {
+    public void addEntityItems(List<T> items, MainRenderer<T> defaultRenderer) {
         setDefaultRenderer(defaultRenderer);
         addEntityItems(items);
     }
 
-    Radio.RadioRenderer<T> defaultRenderer = new Radio.RadioRenderer<T>() {
-        @Override
-        public void render(T t, CheckBoxViewSlots slots) {
-            slots.getMainSlot().innerHTML = t + "";
-        }
-    };
+    MainRenderer<T> defaultRenderer = new MainRendererImpl<>();
 
-    public Radio.RadioRenderer<T> getDefaultRenderer() {
+    public MainRenderer<T> getDefaultRenderer() {
         return defaultRenderer;
     }
 
-    public void setDefaultRenderer(Radio.RadioRenderer<T> defaultRenderer) {
+    public void setDefaultRenderer(MainRenderer<T> defaultRenderer) {
         this.defaultRenderer = defaultRenderer;
     }
 

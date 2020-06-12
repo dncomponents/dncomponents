@@ -1,12 +1,12 @@
 package com.dncomponents.client.components.tooltip;
 
 import com.dncomponents.client.components.core.BaseComponent;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.popover.Popper;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.*;
 import com.dncomponents.client.views.core.EnumLookUp;
 import com.dncomponents.client.views.core.ui.tooltip.TooltipView;
-import com.google.gwt.event.shared.HandlerRegistration;
 import elemental2.dom.DomGlobal;
 import elemental2.dom.Element;
 import elemental2.dom.Event;
@@ -131,7 +131,7 @@ public abstract class BaseTooltip<T, C extends TooltipView> extends BaseComponen
         this.trigger = trigger;
         if (this.trigger == null)
             this.trigger = Trigger.HOVER;
-        handlers.forEach(HandlerRegistration::removeHandler);
+        handlers.forEach((HandlerRegistration handlerRegistration) -> handlerRegistration.removeHandler());
         switch (this.trigger) {
             case HOVER:
                 handlers.add(DomUtil.addHandler(owner, (MouseOverHandler) mouseEvent -> show()));

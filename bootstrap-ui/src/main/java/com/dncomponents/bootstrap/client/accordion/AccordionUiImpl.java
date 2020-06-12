@@ -1,7 +1,6 @@
 package com.dncomponents.bootstrap.client.accordion;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.views.core.ui.accordion.AccordionItemView;
 import com.dncomponents.client.views.core.ui.accordion.AccordionUi;
@@ -11,12 +10,12 @@ import elemental2.dom.HTMLTemplateElement;
 /**
  * @author nikolasavic
  */
-@UiTemplate
 public class AccordionUiImpl implements AccordionUi {
 
-    @UiField("accordion")
+    public static final String VIEW_ID = "default";
+    @UiField
     HTMLTemplateElement accordion;
-    @UiField("accordion-item")
+    @UiField
     HTMLTemplateElement accordionItem;
 
     AccordionView accordionView;

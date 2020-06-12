@@ -4,12 +4,11 @@ import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.components.core.BaseComponentSingleSelection;
 import com.dncomponents.client.components.core.ComponentHtmlParser;
 import com.dncomponents.client.components.core.entities.ItemIdTitle;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.beforeselection.BeforeSelectionHandler;
+import com.dncomponents.client.components.core.events.beforeselection.HasBeforeSelectionHandlers;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.tab.TabUi;
-import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
-import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
-import com.google.gwt.event.logical.shared.HasBeforeSelectionHandlers;
-import com.google.gwt.event.shared.HandlerRegistration;
 import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.NodeList;
@@ -38,7 +37,7 @@ public class Tab<T> extends BaseComponentSingleSelection<T, TabUi, TabItem<T>> i
 
     @Override
     public HandlerRegistration addBeforeSelectionHandler(BeforeSelectionHandler<TabItem<T>> handler) {
-        return ensureHandlers().addHandler(BeforeSelectionEvent.getType(), handler);
+        return handler.addTo(asElement());
     }
 
     @Override
@@ -89,16 +88,6 @@ public class Tab<T> extends BaseComponentSingleSelection<T, TabUi, TabItem<T>> i
             return tab;
         }
 
-        @Override
-        public String getId() {
-            return "dn-tab";
-        }
-
-        @Override
-        public Class getClazz() {
-            return Tab.class;
-        }
-
         public TabItem<ItemIdTitle> parseTabItem(HTMLElement html, Tab tab) {
             TabItem<ItemIdTitle> item = new TabItem<>(tab);
             ItemIdTitle idItem = new ItemIdTitle();
@@ -121,6 +110,17 @@ public class Tab<T> extends BaseComponentSingleSelection<T, TabUi, TabItem<T>> i
             item.setUserObject(idItem);
             return item;
         }
+
+        @Override
+        public String getId() {
+            return "dn-tab";
+        }
+
+        @Override
+        public Class getClazz() {
+            return Tab.class;
+        }
+
     }
 
     public void setTabItemRenderer(TabItem.RenderTabItem<T> tabItemRenderer) {

@@ -4,6 +4,8 @@ import com.dncomponents.UiField;
 import com.dncomponents.client.components.ColumnConfig;
 import com.dncomponents.client.components.autocomplete.Autocomplete;
 import com.dncomponents.client.components.button.Button;
+import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
+import com.dncomponents.client.components.core.events.value.ValueChangeHandler;
 import com.dncomponents.client.components.popover.Popover;
 import com.dncomponents.client.components.table.header.HeaderWithModifiers;
 import com.dncomponents.client.components.tooltip.BaseTooltip;
@@ -12,8 +14,6 @@ import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.core.ui.table.headers.bar.panel.BaseBarPanelView;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.MouseEvent;
 
@@ -26,9 +26,9 @@ public abstract class BaseBarPanelViewImpl<T extends HeaderWithModifiers> implem
 
     @UiField
     HTMLElement root;
-    @UiField("table-bar-panel-content")
+    @UiField
     HTMLElement contentPanel;
-    @UiField("dropdown-holder")
+    @UiField
     HTMLElement dropDownHolder;
 
     protected static String defaultBtnStyle = "btn btn-outline-secondary mr-3 mb-3";
@@ -47,7 +47,7 @@ public abstract class BaseBarPanelViewImpl<T extends HeaderWithModifiers> implem
         DomUtil.setWidth(popover.asElement(), "630px");
         DomUtil.setMaxWidth(popover.asElement(), "630px");
         DomUtil.replace(autocomplete.asElement(), dropDownHolder);
-        autocomplete.addHandler(new ClickHandler() {
+        autocomplete.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(MouseEvent mouseEvent) {
                 presenter.loadColumnsDropDown();
@@ -67,7 +67,7 @@ public abstract class BaseBarPanelViewImpl<T extends HeaderWithModifiers> implem
 
     @Override
     public void initColumns(List<ColumnConfig> columns) {
-        autocomplete.setData(columns);
+        autocomplete.setRowsData(columns);
     }
 
     @Override

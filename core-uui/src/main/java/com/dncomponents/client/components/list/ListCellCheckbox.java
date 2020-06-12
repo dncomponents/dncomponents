@@ -1,10 +1,8 @@
 package com.dncomponents.client.components.list;
 
-
+import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
+import com.dncomponents.client.components.core.events.value.ValueChangeHandler;
 import com.dncomponents.client.views.core.ui.list.ListCellCheckBoxView;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-
 
 /**
  * Created by nikolasavic

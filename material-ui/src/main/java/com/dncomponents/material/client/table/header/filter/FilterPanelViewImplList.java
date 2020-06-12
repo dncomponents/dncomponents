@@ -4,15 +4,15 @@ import com.dncomponents.UiField;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.views.core.ui.autocomplete.AutocompleteView;
-import com.dncomponents.client.views.core.ui.autocomplete.multiselect.AutocompleteMultiSelectUi;
+import com.dncomponents.client.views.core.ui.autocomplete.multiselect.AutocompleteMultiSelectView;
 import com.dncomponents.client.views.core.ui.table.headers.FilterPanelListView;
 import com.dncomponents.material.client.autocomplete.list.AutocompleteViewImpl;
-import com.dncomponents.material.client.autocomplete.multiselect.AutocompleteMultiSelectUiImpl;
+import com.dncomponents.material.client.autocomplete.multiselect.AutocompleteListOrTreeMultiSelectViewImpl;
 import elemental2.dom.HTMLTemplateElement;
 
 public class FilterPanelViewImplList<T> extends FilterPanelViewImpl<T> implements FilterPanelListView<T> {
 
-    private AutocompleteMultiSelectUiImpl autocompleteMultiSelectUi;
+    private AutocompleteMultiSelectView autocompleteMultiSelectUi;
 
 
     @UiField
@@ -41,9 +41,10 @@ public class FilterPanelViewImplList<T> extends FilterPanelViewImpl<T> implement
     }
 
     @Override
-    public AutocompleteMultiSelectUi getAutocompleteMultiSelectUi() {
+    public AutocompleteMultiSelectView getAutocompleteMultiSelectUi() {
         if (autocompleteMultiSelectUi == null)
-            autocompleteMultiSelectUi = new AutocompleteMultiSelectUiImpl(autocompleteMs);
+            autocompleteMultiSelectUi = AutocompleteListOrTreeMultiSelectViewImpl.getInstance(autocompleteMs, false);
         return autocompleteMultiSelectUi;
     }
+
 }

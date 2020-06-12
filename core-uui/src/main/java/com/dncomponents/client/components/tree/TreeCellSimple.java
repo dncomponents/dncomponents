@@ -17,7 +17,7 @@ public class TreeCellSimple<T, M> extends AbstractTreeCell<T, M> {
 
     @Override
     protected void initViewFromOwner() {
-        cellView = getUi().getTreeCellView();
+        cellView = getUi().getTreeCellView(icon);
     }
 
     protected TreeCellSimple(BaseCellBuilder<TreeNode<T>, M, ?> builder) {

@@ -1,6 +1,5 @@
 package com.dncomponents.client.components.tree;
 
-
 import com.dncomponents.client.components.BaseCell;
 import com.dncomponents.client.components.Tree;
 import com.dncomponents.client.components.tree.checkbox.TreeCellCheckboxParent;
@@ -14,6 +13,8 @@ import com.dncomponents.client.views.core.ui.tree.TreeUi;
  */
 public abstract class AbstractTreeCell<T, M> extends BaseCell<TreeNode<T>, M> {
 
+    protected String icon;
+
     public AbstractTreeCell() {
     }
 
@@ -22,10 +23,14 @@ public abstract class AbstractTreeCell<T, M> extends BaseCell<TreeNode<T>, M> {
     }
 
     public static <T, M> AbstractTreeCell<T, M> getCell(TreeNode<T> treeNode, boolean checkBox) {
+        AbstractTreeCell<T, M> treeCell;
         if (checkBox)
-            return getCellCheckBox(treeNode);
+            treeCell = getCellCheckBox(treeNode);
         else
-            return getCell(treeNode);
+            treeCell = getCell(treeNode);
+        if (treeNode.getUserObject() instanceof HasIcon)
+            treeCell.icon = ((HasIcon) treeNode.getUserObject()).getIcon();
+        return treeCell;
     }
 
     private static <T, M> AbstractTreeCell<T, M> getCellCheckBox(TreeNode treeNode) {
@@ -69,8 +74,8 @@ public abstract class AbstractTreeCell<T, M> extends BaseCell<TreeNode<T>, M> {
         return (BaseTreeCellView) super.getCellView();
     }
 
-    public void setVisible(boolean b) { //TODO
-        cellView.asElement().setAttribute("style", "display: none;");
+    public void setVisible(boolean b) {
+        cellView.asElement().setAttribute("style", b ? "display:block" : "display: none;");
     }
 
 

@@ -1,9 +1,9 @@
 package com.dncomponents.client.views.core.ui.list;
 
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.dom.handlers.ScrollHandler;
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.core.pcg.View;
-import com.google.gwt.event.shared.HandlerRegistration;
 import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
 
@@ -30,4 +30,7 @@ public interface ScrollView extends View { //HasScrollHandlers
     void resetScrollTop(Double value);
 
     HTMLElement getScrollPanel();
+
+    void setScrollHeight(String height);
+
 }

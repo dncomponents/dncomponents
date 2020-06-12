@@ -57,7 +57,7 @@ public class FilterPanelList<T> extends FilterPanel<T> {
     private CellEditor getSingleCellEdit() {
         if (singleCellEdit == null) {
             Autocomplete<T> autocomplete = new Autocomplete<>(getView().getAutocompleteView(), t -> t + "");
-            autocomplete.setData(data);
+            autocomplete.setRowsData(data);
             singleCellEdit = new DefaultCellEditor(autocomplete);
             singleCellEdit.getHasValue().addValueChangeHandler(e -> onValueChanged());
         }

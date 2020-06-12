@@ -1,13 +1,13 @@
 package com.dncomponents.client.components.table.header.bar;
 
 import com.dncomponents.client.components.ColumnConfig;
+import com.dncomponents.client.components.core.events.open.OpenEvent;
+import com.dncomponents.client.components.core.events.open.OpenHandler;
+import com.dncomponents.client.components.core.events.selection.SelectionEvent;
+import com.dncomponents.client.components.core.events.selection.SelectionHandler;
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.components.Table;
 import com.dncomponents.client.components.core.BaseComponent;
-import com.google.gwt.event.logical.shared.OpenEvent;
-import com.google.gwt.event.logical.shared.OpenHandler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 
 import java.util.List;
 

@@ -11,7 +11,7 @@ import com.dncomponents.client.components.core.HtmlBinder;
 public class TreeTUi extends TreeUiImpl {
 
 
-    HtmlBinder binder = HtmlBinder.get(TreeTUi.class, this);
+     HtmlBinder binder = HtmlBinder.get(TreeTUi.class, this);
 
     public TreeTUi() {
         binder.bind();

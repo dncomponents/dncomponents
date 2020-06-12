@@ -3,16 +3,16 @@ package com.dncomponents.bootstrap.client.autocomplete.list;
 import com.dncomponents.UiField;
 import com.dncomponents.UiTemplate;
 import com.dncomponents.bootstrap.client.autocomplete.BaseAutocompleteViewImpl;
-import com.dncomponents.client.components.HasRows;
+import com.dncomponents.client.components.HasRowsDataList;
+import com.dncomponents.client.components.ListCellConfig;
 import com.dncomponents.client.components.ListData;
-import com.dncomponents.client.components.core.CellConfig;
 import com.dncomponents.client.components.core.HtmlBinder;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.filters.Filter;
+import com.dncomponents.client.components.core.events.selection.SelectionHandler;
 import com.dncomponents.client.components.core.selectionmodel.DefaultMultiSelectionModel;
-import com.dncomponents.client.components.filters.Filter;
 import com.dncomponents.client.views.core.ui.autocomplete.AutocompleteView;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerRegistration;
+import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
 import java.util.List;
@@ -50,6 +50,7 @@ public class AutocompleteViewImpl<T> extends BaseAutocompleteViewImpl<T> impleme
 
     private void init() {
         list.setEditable(false);
+        list.getRowCellConfig().setFieldGetter(t -> t + "");
         list.getSelectionModel().setSelectionMode(DefaultMultiSelectionModel.SelectionMode.SINGLE);
     }
 
@@ -60,19 +61,13 @@ public class AutocompleteViewImpl<T> extends BaseAutocompleteViewImpl<T> impleme
     }
 
     @Override
+    public HTMLElement getFocusElement() {
+        return textBox.asElement();
+    }
+
+    @Override
     public DefaultMultiSelectionModel getSelectionModel() {
         return list.getSelectionModel();
-    }
-
-    @Override
-    public void setData(List<T> data) {
-        list.setRowsData(data);
-        list.drawData();
-    }
-
-    @Override
-    public List<T> getRowsData() {
-        return list.getRowsData();
     }
 
     @Override
@@ -81,12 +76,7 @@ public class AutocompleteViewImpl<T> extends BaseAutocompleteViewImpl<T> impleme
     }
 
     @Override
-    public void setCellConfig(CellConfig cellConfig) {
-//        list.setCellConfig(cellConfig);
-    }
-
-    @Override
-    public HasRows<T> getHasRowsData() {
+    public HasRowsDataList<T> getHasRowsData() {
         return list;
     }
 
@@ -95,14 +85,13 @@ public class AutocompleteViewImpl<T> extends BaseAutocompleteViewImpl<T> impleme
         list.getRowCellConfig().setFieldGetter(fieldGetter);
     }
 
+    @Override
+    public ListCellConfig<T, String> getRowCellConfig() {
+        return list.getRowCellConfig();
+    }
 
     @Override
     public HandlerRegistration addSelectionHandler(SelectionHandler<List<T>> handler) {
         return list.getSelectionModel().addSelectionHandler(handler);
-    }
-
-    @Override
-    public void fireEvent(GwtEvent<?> event) {
-        list.fireEvent(event);
     }
 }

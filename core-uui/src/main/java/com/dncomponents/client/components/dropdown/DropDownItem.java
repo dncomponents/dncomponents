@@ -1,10 +1,10 @@
 package com.dncomponents.client.components.dropdown;
 
 import com.dncomponents.client.components.core.BaseComponent;
-import com.dncomponents.client.dom.handlers.ClickHandler;
-import com.dncomponents.client.views.core.ui.dropdown.DropDownItemView;
-import com.dncomponents.client.views.core.ui.dropdown.DropDownItemViewSlots;
 import com.dncomponents.client.components.core.CanSelect;
+import com.dncomponents.client.dom.handlers.ClickHandler;
+import com.dncomponents.client.views.MainRenderer;
+import com.dncomponents.client.views.core.ui.dropdown.DropDownItemView;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.MouseEvent;
 
@@ -72,12 +72,8 @@ public class DropDownItem<T> extends BaseComponent<T, DropDownItemView> implemen
         return selected;
     }
 
-    public interface DropDownItemRenderer<T> extends BaseComponent.Renderer<T, DropDownItemViewSlots> {
 
-    }
-
-
-    public void setRenderer(DropDownItemRenderer<T> renderer) {
+    public void setRenderer(MainRenderer<T> renderer) {
         super.setRendererBase(renderer);
     }
 }

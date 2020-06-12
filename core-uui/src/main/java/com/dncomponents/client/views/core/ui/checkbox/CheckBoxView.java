@@ -1,14 +1,15 @@
 package com.dncomponents.client.views.core.ui.checkbox;
 
 
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.dom.handlers.OnChangeHandler;
 import com.dncomponents.client.views.FocusComponentView;
-import com.google.gwt.event.shared.HandlerRegistration;
+import com.dncomponents.client.views.MainViewSlots;
 
 /**
  * @author nikolasavic
  */
-public interface CheckBoxView extends FocusComponentView, CheckBoxViewSlots.HasGCheckBoxViewSlots {
+public interface CheckBoxView extends FocusComponentView, MainViewSlots.HasMainViewSlots {
     boolean isChecked();
 
     void setChecked(Boolean b);

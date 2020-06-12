@@ -1,18 +1,14 @@
 package com.dncomponents.client.components.core;
 
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.HasEnabled;
+import com.dncomponents.client.components.core.events.focus.Focusable;
 import com.dncomponents.client.components.core.events.focus.HasBlurHandlers;
 import com.dncomponents.client.components.core.events.focus.HasFocusHandlers;
 import com.dncomponents.client.dom.handlers.OnBlurHandler;
 import com.dncomponents.client.dom.handlers.OnFocusHandler;
 import com.dncomponents.client.views.FocusComponentView;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.Focusable;
-import com.google.gwt.user.client.ui.HasEnabled;
-import elemental2.dom.Event;
-import elemental2.dom.EventListener;
-import elemental2.dom.FocusEvent;
-import elemental2.dom.HTMLElement;
+import elemental2.dom.*;
 
 /**
  * Abstract base class for most components that can receive keyboard focus.
@@ -83,16 +79,15 @@ public class BaseFocusComponent<T, V extends FocusComponentView> extends BaseCom
             @Override
             public void handleEvent(Event evt) {
                 focused = false;
-                Timer timer = new Timer() {
+                DomGlobal.setTimeout(new DomGlobal.SetTimeoutCallbackFn() {
                     @Override
-                    public void run() {
+                    public void onInvoke(Object... p0) {
                         if (!focused) {
                             asElement().dispatchEvent(new FocusEvent("blur"));
                             firstTimeFocused = false;
                         }
                     }
-                };
-                timer.schedule(200);
+                }, 200);
             }
         });
         asElement().addEventListener("focusin", new EventListener() {

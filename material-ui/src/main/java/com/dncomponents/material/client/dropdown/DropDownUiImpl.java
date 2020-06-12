@@ -12,10 +12,11 @@ import elemental2.dom.HTMLTemplateElement;
  */
 public class DropDownUiImpl implements DropDownUi {
 
-    @UiField("dropdown")
+    public static final String VIEW_ID = "default";
+    @UiField
     HTMLTemplateElement dropdown;
-    @UiField("dropdown-item")
-    HTMLTemplateElement dropdownItem;
+    @UiField
+    HTMLTemplateElement dropDownItem;
 
     DropDownView dropDownView;
 
@@ -30,7 +31,7 @@ public class DropDownUiImpl implements DropDownUi {
 
     @Override
     public DropDownItemView getDropDownItemView() {
-        return new DropDownItemViewImpl(dropdownItem);
+        return new DropDownItemViewImpl(dropDownItem);
     }
 
     @Override

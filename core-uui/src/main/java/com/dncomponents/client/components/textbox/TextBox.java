@@ -24,7 +24,7 @@ public class TextBox extends ValueBox<String> {
 
     @Override
     String parseString(String str) {
-        return str == null ? "" : str;
+        return str == "" ? null : str;
     }
 
     @Override

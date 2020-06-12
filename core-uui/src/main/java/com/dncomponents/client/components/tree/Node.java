@@ -10,8 +10,6 @@ import java.util.stream.Collectors;
  */
 public interface Node<N extends Node> {
 
-    //todo write test cases!
-
     static List<Node<?>> collect(Node<?> node) {
         List<Node<?>> list = new ArrayList<>();
         for (Node child : node.getChildren()) {

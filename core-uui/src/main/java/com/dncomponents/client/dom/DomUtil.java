@@ -1,8 +1,8 @@
 package com.dncomponents.client.dom;
 
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.dom.handlers.BaseEventListener;
 import com.dncomponents.client.views.IsElement;
-import com.google.gwt.event.shared.HandlerRegistration;
 import elemental2.core.Global;
 import elemental2.core.JsArray;
 import elemental2.dom.*;
@@ -16,8 +16,6 @@ import java.util.Map;
  * @author nikolasavic
  */
 public class DomUtil {
-
-    public static boolean Junit = false;
 
     public static <T extends HTMLElement> T createElement(String tag) {
         return Js.cast(DomGlobal.document.createElement(tag));
@@ -467,7 +465,7 @@ public class DomUtil {
     }
 
     public static void copyAllAttributes(Element element1, Element element2) {
-        for (String s : element1.getAttributeNames()) {
+        for (String s : element1.getAttributeNames().asList()) {
             element2.setAttribute(s, element1.getAttribute(s));
         }
     }
@@ -1184,7 +1182,6 @@ public class DomUtil {
      * Parse json to {@code ArrayList}
      *
      * @param json json string to be parsed
-     * @param <T>
      * @return ArrayList
      */
     public static <T> List<T> getListFromJson(String json) {
@@ -1212,7 +1209,7 @@ public class DomUtil {
 
     public static Map<String, String> getAllAttributes(Element html) {
         Map<String, String> map = new HashMap<>();
-        for (String s : html.getAttributeNames()) {
+        for (String s : html.getAttributeNames().asList()) {
             map.put(s, html.getAttribute(s));
         }
         return map;
@@ -1273,5 +1270,11 @@ public class DomUtil {
         setStyle(element.asElement(), style);
     }
 
+    public static String escapeHtml(String html) {
+        final Text textNode = DomGlobal.document.createTextNode(html);
+        HTMLElement p = createDiv();
+        p.appendChild(textNode);
+        return p.innerHTML;
+    }
 
 }

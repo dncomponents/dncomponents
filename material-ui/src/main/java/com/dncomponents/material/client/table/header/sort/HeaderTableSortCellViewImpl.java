@@ -2,7 +2,6 @@ package com.dncomponents.material.client.table.header.sort;
 
 import com.dncomponents.UiField;
 import com.dncomponents.UiStyle;
-import com.dncomponents.UiTemplate;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.table.header.SortingDirection;
 import com.dncomponents.client.dom.handlers.ClickHandler;
@@ -17,14 +16,13 @@ import static com.dncomponents.client.components.table.header.SortingDirection.D
 /**
  * @author nikolasavic
  */
-@UiTemplate
 public class HeaderTableSortCellViewImpl implements HeaderTableSortCellView {
 
     @UiField
     HTMLElement root;
-    @UiField("text-panel")
+    @UiField
     HTMLElement textPanel;
-    @UiField("icon-panel")
+    @UiField
     HTMLElement sortIcon;
     @UiStyle
     String sortUpStyle;
@@ -59,7 +57,6 @@ public class HeaderTableSortCellViewImpl implements HeaderTableSortCellView {
                 } else if (currentDirection == DESCENDING) {
                     presenter.sort(null);
                 }
-
             }
         });
     }

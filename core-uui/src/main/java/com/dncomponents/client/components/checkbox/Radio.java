@@ -6,8 +6,9 @@ import com.dncomponents.client.components.core.ComponentHtmlParser;
 import com.dncomponents.client.components.core.entities.ItemId;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.OnChangeHandler;
+import com.dncomponents.client.views.MainRenderer;
+import com.dncomponents.client.views.MainViewSlots;
 import com.dncomponents.client.views.Ui;
-import com.dncomponents.client.views.core.ui.checkbox.CheckBoxViewSlots;
 import com.dncomponents.client.views.core.ui.radio.RadioView;
 import elemental2.dom.Element;
 import elemental2.dom.Event;
@@ -23,15 +24,6 @@ import static com.dncomponents.client.components.checkbox.CheckBox.CheckBoxHtmlP
 public class Radio<T> extends AbstractCheckBox<T> {
 
     RadioSelectionGroup<T> group;
-
-    {
-        setRenderer(new RadioRenderer<T>() {
-            @Override
-            public void render(T t, CheckBoxViewSlots slots) {
-                slots.getMainSlot().innerHTML = t + "";
-            }
-        });
-    }
 
     public Radio() {
         super(Ui.get().getRadioView());
@@ -81,12 +73,6 @@ public class Radio<T> extends AbstractCheckBox<T> {
         });
     }
 
-    public interface RadioRenderer<T> extends BaseComponent.Renderer<T, CheckBoxViewSlots> {
-    }
-
-    public void setRenderer(RadioRenderer<T> renderer) {
-        super.setRendererBase(renderer);
-    }
 
     //uibinder field
     protected String groupUiField;
@@ -118,10 +104,10 @@ public class Radio<T> extends AbstractCheckBox<T> {
                 radio = new Radio(viewC);
             else
                 radio = new Radio();
-            radio.setRenderer(new RadioRenderer<ItemId>() {
+            radio.setRenderer(new MainRenderer<ItemId>() {
                 @Override
-                public void render(ItemId idItem, CheckBoxViewSlots slots) {
-                    slots.getMainSlot().innerHTML = idItem.getContent();
+                public void render(ItemId itemId, MainViewSlots slots) {
+                    slots.getMainSlot().innerHTML = itemId.getContent();
                 }
             });
             setValueCh(htmlElement, radio);

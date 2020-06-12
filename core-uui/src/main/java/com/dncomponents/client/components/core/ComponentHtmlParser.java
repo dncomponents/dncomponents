@@ -38,6 +38,7 @@ public interface ComponentHtmlParser extends HtmlParser<BaseComponent> {
 
     String ITEM_ID = "itemId";
     String CONTENT = "content";
+    String ICON = "icon";
 
     String ITEM = "item";
 
@@ -77,6 +78,9 @@ public interface ComponentHtmlParser extends HtmlParser<BaseComponent> {
         if (element.hasAttribute(CONTENT)) {
             idItem.setContent(element.getAttribute(CONTENT));
         }
+        if (element.hasAttribute(ICON)) {
+            idItem.setIcon(element.getAttribute(ICON));
+        }
         return idItem;
     }
 
@@ -87,36 +91,10 @@ public interface ComponentHtmlParser extends HtmlParser<BaseComponent> {
             return null;
     }
 
-    default <T extends View> T getViewFor(String viewClazz, Element html, Map<String, ?> elements) {
-        String viewAttr = html.getAttribute(VIEW);
-        String templateId = html.getAttribute(TEMPLATE_ID);
 
-        if (viewAttr == null)
-            viewAttr = "default";
-
-        HTMLTemplateElement template = null;
-
-        if (elements.containsKey(templateId))
-            template = (HTMLTemplateElement) elements.get(templateId);
-
-        ViewFactory viewFactory = Ui.get().getRegisteredViewFactoriesMap().get(viewClazz);
-        if (viewFactory == null) {
-            DomGlobal.console.log("No ViewFactory for view: " + viewClazz);
-            return null;
-        }
-        Object view = null;
-        if (viewFactory.getId().equalsIgnoreCase(viewAttr)) {
-            view = viewFactory.getView(DomUtil.getAllAttributes(html), template);
-        }
-        return (T) view;
-    }
-
-
-    //    @Deprecated
     default <T extends View> T getView(Class viewClazz, Element html, Map<String, ?> elements) {
         String viewAttr = html.getAttribute(VIEW);
         String templateId = html.getAttribute(TEMPLATE_ID);
-        DomGlobal.console.log("for: " + viewClazz);
         if (viewAttr == null)
             viewAttr = "default";
 
@@ -124,8 +102,6 @@ public interface ComponentHtmlParser extends HtmlParser<BaseComponent> {
 
         if (elements.containsKey(templateId))
             template = (HTMLTemplateElement) elements.get(templateId);
-
-        DomGlobal.console.log("template: " + template);
 
         Set<ViewFactory> viewFactories = Ui.get().getRegisteredViewFactoriesList().get(viewClazz);
         if (viewFactories == null) {
@@ -141,7 +117,4 @@ public interface ComponentHtmlParser extends HtmlParser<BaseComponent> {
         return (T) view;
     }
 
-    default boolean isPremium() {
-        return false;
-    }
 }

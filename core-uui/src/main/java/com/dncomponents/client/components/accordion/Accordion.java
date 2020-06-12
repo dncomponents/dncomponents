@@ -79,7 +79,6 @@ public class Accordion<T> extends BaseComponentMultiSelection<T, AccordionUi, Ac
                 }
             });
         }
-
     }
 
     public void setItemRenderer(AccordionItem.RenderAccordionItem<T> accordionItemRenderer) {

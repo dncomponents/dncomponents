@@ -22,9 +22,9 @@ public class HeaderTableSortCellViewImpl implements HeaderTableSortCellView {
 
     @UiField
     HTMLElement root;
-    @UiField("text-panel")
+    @UiField
     HTMLElement textPanel;
-    @UiField("icon-panel")
+    @UiField
     HTMLElement sortIcon;
     @UiStyle
     String sortUpStyle;

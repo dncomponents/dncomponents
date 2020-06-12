@@ -24,7 +24,7 @@ import java.util.function.Function;
 /**
  * @author nikolasavic
  */
-public class ListData<T, M> extends AbstractCellComponent<T, M, ListUi> {
+public class ListData<T, M> extends AbstractCellComponent<T, M, ListUi> implements HasRowsDataList<T> {
 
 
     {
@@ -165,11 +165,21 @@ public class ListData<T, M> extends AbstractCellComponent<T, M, ListUi> {
         return sortable;
     }
 
+    public void addRow(T t) {
+        super.addRow(t);
+    }
 
-//    public void setRowRenderer(CellRenderer<T, M> rowRenderer) {
-//         ensureRowCellConfig().setCellRenderer(rowRenderer);
-//    }
+    public void insertRow(T t, int index) {
+        super.insertRow(t, index);
+    }
 
+    public void removeRow(T t) {
+        super.removeRow(t);
+    }
+
+    public void setRowsData(List<T> rows) {
+        super.setRowsData(rows);
+    }
 
     public static class ListHtmlParser extends AbstractPluginHelper implements ComponentHtmlParser {
 
@@ -193,7 +203,13 @@ public class ListData<T, M> extends AbstractCellComponent<T, M, ListUi> {
                 list = new ListData(ui);
             else
                 list = new ListData();
-            list.getRowCellConfig().setFieldGetter(o -> o + "");
+//            list.getRowCellConfig().setFieldGetter(o -> o + "");
+            list.getRowCellConfig().setFieldGetter(new Function<ItemId, String>() {
+                @Override
+                public String apply(ItemId itemId) {
+                    return itemId + "";
+                }
+            });
             if (htmlElement.hasChildNodes()) {
                 getChildren(list, htmlElement, this);
             }
@@ -202,7 +218,7 @@ public class ListData<T, M> extends AbstractCellComponent<T, M, ListUi> {
         }
 
 
-        public static void getChildren(HasRowsData<ItemId> hasRowsData, Element htmlElement, ComponentHtmlParser cp) {
+        public static void getChildren(HasRowsDataList<ItemId> hasRowsData, Element htmlElement, ComponentHtmlParser cp) {
             NodeList<Element> elementsByTagName = htmlElement.getElementsByTagName(ITEM);
             for (int i = 0; i < elementsByTagName.length; i++) {
                 final HTMLElement at = (HTMLElement) elementsByTagName.getAt(i);
@@ -221,10 +237,6 @@ public class ListData<T, M> extends AbstractCellComponent<T, M, ListUi> {
             return ListData.class;
         }
 
-        @Override
-        public boolean isPremium() {
-            return true;
-        }
     }
 
     @Override

@@ -2,7 +2,8 @@ package com.dncomponents.client.components.list;
 
 
 import com.dncomponents.client.components.AbstractCellComponent;
-import com.google.gwt.user.client.Timer;
+import elemental2.dom.DomGlobal;
+import elemental2.dom.DomGlobal.SetTimeoutCallbackFn;
 import elemental2.dom.KeyboardEvent;
 
 /**
@@ -26,20 +27,13 @@ public class ListTreeCellNavigator extends BaseCellNavigator {
         selectCell(obj, keyboardEvent);
     }
 
-    public boolean working=false;
-    Timer timer = new Timer() {
-        @Override
-        public void run() {
-            working = false;
-        }
-    };
+    public boolean working = false;
+    SetTimeoutCallbackFn timerFn = p -> working = false;
 
     private void selectCell(Object obj, KeyboardEvent keyboardEvent) {
-        timer.cancel();
         working = true;
         setVal(obj, true, keyboardEvent);
-        timer.schedule(500);
-
+        DomGlobal.setTimeout(timerFn, 500);
     }
 
     public void focusCurrentCell() {

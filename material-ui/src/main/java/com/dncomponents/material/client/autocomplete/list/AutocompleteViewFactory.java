@@ -13,7 +13,6 @@ import java.util.Map;
  */
 public class AutocompleteViewFactory {
 
-
     public static class DefaultAutocompleteViewFactory extends AbstractPluginHelper implements ViewFactory<AutocompleteView> {
 
         private static DefaultAutocompleteViewFactory instance;

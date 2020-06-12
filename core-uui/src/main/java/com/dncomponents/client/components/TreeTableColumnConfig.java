@@ -23,20 +23,6 @@ public class TreeTableColumnConfig<T, M> extends ColumnConfig<TreeNode<T>, M> {
         });
     }
 
-    //todo move to columnconfig
-    public static <T, M> Comparator<T> getComparator2(Function<T, M> fieldGetter) {
-        return Comparator.comparing(fieldGetter,
-                Comparator.nullsFirst((o1, o2) -> {
-                    if (!(o1 instanceof Comparable) || !(o2 instanceof Comparable)) //this happens for entities without comparable defined;
-                        throw new IllegalArgumentException("Entity must be of Comparable type! Please define valid comparator for this column!");
-                    Comparable<M> comparable1 = (Comparable<M>) o1;
-                    Comparable<M> comparable2 = (Comparable<M>) o2;
-                    return comparable1.compareTo((M) comparable2);
-                }));
-
-    }
-
-
     public TreeTableColumnConfig(ColumnConfig<T, M> columnConfig) {
         this(columnConfig.getFieldGetter());
         setFieldSetter((tn, m) -> {

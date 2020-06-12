@@ -18,9 +18,9 @@ import elemental2.dom.HTMLTemplateElement;
 @UiTemplate
 public class TableBarUiImpl implements TableBarUi {
 
-    @UiField("table-bar-groupby-ui")
+    @UiField
     HTMLTemplateElement tableBarGroupByUi;
-    @UiField("table-bar")
+    @UiField
     HTMLTemplateElement tableBar;
     @UiField
     HTMLTemplateElement columnChooseBar;

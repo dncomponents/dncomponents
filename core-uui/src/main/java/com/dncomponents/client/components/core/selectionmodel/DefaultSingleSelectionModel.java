@@ -1,10 +1,11 @@
 package com.dncomponents.client.components.core.selectionmodel;
 
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.selection.SelectionEvent;
+import com.dncomponents.client.components.core.events.selection.SelectionHandler;
+import com.dncomponents.client.dom.DomUtil;
+import elemental2.dom.CustomEvent;
+import elemental2.dom.HTMLElement;
 
 import java.util.List;
 
@@ -12,6 +13,8 @@ public abstract class DefaultSingleSelectionModel<T> implements SingleSelectionM
 
     T selection;
     T lastSelection;
+
+    private HTMLElement bus;
 
     @Override
     public T getSelection() {
@@ -42,7 +45,7 @@ public abstract class DefaultSingleSelectionModel<T> implements SingleSelectionM
     }
 
     protected void fireSelectionChange() {
-        SelectionEvent.fire(this, selection);
+        SelectionEvent.fire(ensureHandlers(), selection);
     }
 
     @Override
@@ -60,22 +63,17 @@ public abstract class DefaultSingleSelectionModel<T> implements SingleSelectionM
 
     @Override
     public HandlerRegistration addSelectionHandler(SelectionHandler<T> handler) {
-        return ensureHandlers().addHandler(SelectionEvent.getType(), handler);
+        return handler.addTo(ensureHandlers());
     }
 
-    private HandlerManager handlerManager;
-
-    public void fireEvent(GwtEvent<?> event) {
-        if (handlerManager != null) {
-            handlerManager.fireEvent(event);
-        }
+    @Override
+    public void fireEvent(CustomEvent event) {
+        ensureHandlers().dispatchEvent(event);
     }
 
-    protected HandlerManager ensureHandlers() {
-        if (handlerManager == null) {
-            handlerManager = new HandlerManager(this);
-        }
-        return handlerManager;
+    private HTMLElement ensureHandlers() {
+        if (bus == null)
+            bus = DomUtil.createDiv();
+        return bus;
     }
-
 }

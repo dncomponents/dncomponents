@@ -1,16 +1,11 @@
 package com.dncomponents.client.components.core;
 
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.core.events.HasHandlers;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.BaseEventListener;
-import com.dncomponents.client.views.HasViewSlots;
-import com.dncomponents.client.views.IsElement;
-import com.dncomponents.client.views.Ui;
-import com.dncomponents.client.views.ViewSlots;
+import com.dncomponents.client.views.*;
 import com.dncomponents.client.views.core.pcg.View;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
 import elemental2.dom.CustomEvent;
 import elemental2.dom.Event;
 import elemental2.dom.HTMLElement;
@@ -25,12 +20,11 @@ import elemental2.dom.HTMLElement;
  * @author nikolasavic
  */
 public abstract class BaseComponent<T, V extends View> implements IsElement, HasUserValue<T>,
-        HasHandlers, com.google.gwt.event.shared.HasHandlers {
+        HasHandlers {
 
     protected final V view;
     protected T userObject;
     protected Renderer renderer;
-
     protected ViewSlots viewSlots;
 
     protected ViewSlots getViewSlots() {
@@ -86,7 +80,6 @@ public abstract class BaseComponent<T, V extends View> implements IsElement, Has
         }
     }
 
-
     public interface DrawOnSlots {
         void apply(ViewSlots slots);
     }
@@ -100,9 +93,6 @@ public abstract class BaseComponent<T, V extends View> implements IsElement, Has
         return getView().asElement();
     }
 
-    public interface Renderer<T, R extends ViewSlots> {
-        void render(T t, R slots);
-    }
 
     protected void setRendererBase(Renderer renderer) {
         this.renderer = renderer;
@@ -114,25 +104,8 @@ public abstract class BaseComponent<T, V extends View> implements IsElement, Has
     }
 
     public HandlerRegistration addHandler(BaseEventListener handler) {
-        return handler.addTo(this.asElement());
+        return handler.addTo(asElement());
     }
-
-    private HandlerManager handlerManager;
-
-    protected HandlerManager ensureHandlers() {
-        if (handlerManager == null) {
-            handlerManager = new HandlerManager(this);
-        }
-        return handlerManager;
-    }
-
-    @Override
-    public void fireEvent(GwtEvent<?> event) {
-        if (handlerManager != null) {
-            handlerManager.fireEvent(event);
-        }
-    }
-
 
     public void setStyle(String style) {
         DomUtil.setStyle(asElement(), style);

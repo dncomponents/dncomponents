@@ -1,13 +1,14 @@
 package com.dncomponents.client.components.checkbox;
 
 import com.dncomponents.client.components.core.BaseFocusComponent;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.value.HasValue;
+import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
+import com.dncomponents.client.components.core.events.value.ValueChangeHandler;
 import com.dncomponents.client.components.modal.SetElement;
+import com.dncomponents.client.views.MainRenderer;
+import com.dncomponents.client.views.MainRendererImpl;
 import com.dncomponents.client.views.core.ui.checkbox.CheckBoxView;
-import com.dncomponents.client.views.core.ui.checkbox.CheckBoxViewSlots;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.ui.HasValue;
 
 public abstract class AbstractCheckBox<T> extends BaseFocusComponent<T, CheckBoxView> implements HasValue<Boolean> {
     Boolean value;
@@ -16,6 +17,7 @@ public abstract class AbstractCheckBox<T> extends BaseFocusComponent<T, CheckBox
 
     public AbstractCheckBox(CheckBoxView view) {
         super(view);
+        setRenderer(new MainRendererImpl<T>());
     }
 
     @Override
@@ -50,7 +52,7 @@ public abstract class AbstractCheckBox<T> extends BaseFocusComponent<T, CheckBox
 
     @Override
     public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Boolean> handler) {
-        return ensureHandlers().addHandler(ValueChangeEvent.getType(), handler);
+        return handler.addTo(asElement());
     }
 
     public void setLabel(String txt) {
@@ -69,9 +71,8 @@ public abstract class AbstractCheckBox<T> extends BaseFocusComponent<T, CheckBox
         view.setName(nameOfGroup);
     }
 
-    @Override
-    public CheckBoxViewSlots getViewSlots() {
-        return (CheckBoxViewSlots) super.getViewSlots();
+    public void setRenderer(MainRenderer<T> renderer) {
+        super.setRendererBase(renderer);
     }
 
 }

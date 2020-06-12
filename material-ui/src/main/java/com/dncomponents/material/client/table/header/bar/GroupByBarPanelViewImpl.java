@@ -3,9 +3,9 @@ package com.dncomponents.material.client.table.header.bar;
 import com.dncomponents.UiTemplate;
 import com.dncomponents.client.components.checkbox.CheckBox;
 import com.dncomponents.client.components.core.HtmlBinder;
+import com.dncomponents.client.components.core.events.value.ValueChangeHandler;
 import com.dncomponents.client.components.table.header.HeaderGrouping;
 import com.dncomponents.client.views.core.ui.table.headers.bar.panel.GroupByBarPanelView;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import elemental2.dom.HTMLTemplateElement;
 
 /**

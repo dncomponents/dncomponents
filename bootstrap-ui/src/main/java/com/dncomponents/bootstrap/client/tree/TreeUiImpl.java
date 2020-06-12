@@ -21,16 +21,22 @@ public class TreeUiImpl implements TreeUi {
 
     public static final String VIEW_ID = "default";
 
-    @UiField("tree-main")
+    @UiField
     HTMLTemplateElement treeMain;
-    @UiField("tree-item-simple")
+    @UiField
     public HTMLTemplateElement treeItemSimple;
-    @UiField("tree-item-simple-parent")
+    @UiField
     protected HTMLTemplateElement treeItemSimpleParent;
-    @UiField("tree-item-simple-checkbox")
+    @UiField
     HTMLTemplateElement treeItemSimpleCheckbox;
-    @UiField("tree-item-simple-parent-checkbox")
+    @UiField
     HTMLTemplateElement treeItemSimpleParentCheckbox;
+    @UiField
+    protected HTMLTemplateElement treeItemSimpleParentIcon;
+    @UiField
+    HTMLTemplateElement treeItemSimpleCheckboxIcon;
+    @UiField
+    HTMLTemplateElement treeItemSimpleParentCheckboxIcon;
 
     TreeView treeView;
 
@@ -52,23 +58,23 @@ public class TreeUiImpl implements TreeUi {
     }
 
     @Override
-    public BaseTreeCellView getTreeCellView() {
-        return new TreeCellViewImpl(treeItemSimple);
+    public BaseTreeCellView getTreeCellView(String icon) {
+        return new TreeCellViewImpl(treeItemSimple).setIcon(icon);
     }
 
     @Override
-    public ParentTreeCellView getParentTreeCellView() {
-        return new TreeCellParentViewImpl(treeItemSimpleParent);
+    public ParentTreeCellView getParentTreeCellView(String icon) {
+        return new TreeCellParentViewImpl(treeItemSimpleParent).setIcon(icon);
     }
 
     @Override
-    public TreeCellCheckboxSimpleView getTreeCellCheckBoxView() {
-        return new TreeCellCheckboxSimpleViewImpl(treeItemSimpleCheckbox);
+    public TreeCellCheckboxSimpleView getTreeCellCheckBoxView(String icon) {
+        return new TreeCellCheckboxSimpleViewImpl(treeItemSimpleCheckbox).setIcon(icon);
     }
 
     @Override
-    public TreeCellCheckboxParentView getParentTreeCellCheckboxView() {
-        return new TreeCellCheckboxParentViewImpl(treeItemSimpleParentCheckbox);
+    public TreeCellCheckboxParentView getParentTreeCellCheckboxView(String icon) {
+        return new TreeCellCheckboxParentViewImpl(treeItemSimpleParentCheckbox).setIcon(icon);
     }
 
     @Override

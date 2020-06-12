@@ -4,8 +4,8 @@ import com.dncomponents.UiField;
 import com.dncomponents.UiStyle;
 import com.dncomponents.client.components.ColumnConfig;
 import com.dncomponents.client.components.core.HtmlBinder;
-import com.dncomponents.client.components.core.selectionmodel.helper.ItemSelectionEvent;
-import com.dncomponents.client.components.core.selectionmodel.helper.ItemSelectionHandler;
+import com.dncomponents.client.components.core.events.selection.SelectionEvent;
+import com.dncomponents.client.components.core.events.selection.SelectionHandler;
 import com.dncomponents.client.components.dropdown.DropDown;
 import com.dncomponents.client.components.dropdown.DropDownItem;
 import com.dncomponents.client.components.table.header.HeaderFiltering;
@@ -17,6 +17,8 @@ import com.dncomponents.client.views.core.ui.table.headers.HeaderTableMenuCellVi
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
+import java.util.List;
+
 import static com.dncomponents.client.components.table.header.SortingDirection.ASCENDING;
 import static com.dncomponents.client.components.table.header.SortingDirection.DESCENDING;
 
@@ -27,15 +29,15 @@ public class HeaderTableMenuCellViewImpl implements HeaderTableMenuCellView {
 
     @UiField
     HTMLElement root;
-    @UiField("text-panel")
+    @UiField
     HTMLElement textPanel;
-    @UiField("filter-icon-panel")
+    @UiField
     HTMLElement filterIconPanel;
-    @UiField("group-by-icon-panel")
+    @UiField
     HTMLElement groupByIconPanel;
-    @UiField("icon-panel")
+    @UiField
     HTMLElement sortIconPanel;
-    @UiField("menu-holder")
+    @UiField
     HTMLElement menuHolder;
     @UiStyle
     String sortStyle;
@@ -97,10 +99,13 @@ public class HeaderTableMenuCellViewImpl implements HeaderTableMenuCellView {
         }
 
         menu.addItem(di);
-        menu.addItemSelectionHandler(new ItemSelectionHandler<DropDownItem<MenuItem>>() {
+        menu.addSelectionHandler(new SelectionHandler<List<DropDownItem<MenuItem>>>() {
             @Override
-            public void onSelection(ItemSelectionEvent<DropDownItem<MenuItem>> event) {
-                event.getSelectedItem().getUserObject().execute(event.getSelectedItem().isSelected());
+            public void onSelection(SelectionEvent<List<DropDownItem<MenuItem>>> event) {
+                if (!event.getSelectedItem().isEmpty()) {
+                    final DropDownItem<MenuItem> item = event.getSelectedItem().get(0);
+                    item.getUserObject().execute(item.isSelected());
+                }
             }
         });
     }

@@ -1,54 +1,50 @@
 package com.dncomponents.bootstrap.client.table;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
 import com.dncomponents.bootstrap.client.list.ListViewImpl;
 import com.dncomponents.client.components.core.HtmlBinder;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ScrollHandler;
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.core.ui.table.TableView;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.HandlerRegistration;
 import elemental2.dom.*;
 
 /**
  * @author nikolasavic
  */
-@UiTemplate
 public class TableViewImpl extends ListViewImpl implements TableView {
 
-    @UiField("table-content-colgroup")
+    @UiField
     HTMLTableColElement contentColgroupPanel;
-    @UiField("table-content-tbody")
+    @UiField
     HTMLTableSectionElement rowsPanel;
-    @UiField("table-header-colgroup")
+    @UiField
     HTMLTableColElement headerColgroupPanel;
-    @UiField("table-header-row")
+    @UiField
     HTMLTableRowElement headerRow;
     @UiField
     HTMLTableSectionElement headerBodyPanel;
     @UiField
     HTMLTableSectionElement footerBodyPanel;
-    @UiField("table-content")
+    @UiField
     HTMLElement tableContent;
-    @UiField("table-content-panel")
+    @UiField
     public HTMLElement tableContentPanel;
-    @UiField("table-header")
+    @UiField
     HTMLElement tableHeader;
-    @UiField("table-header-bar-row")
+    @UiField
     HTMLElement headerBarRow;
-
     //footer
-    @UiField("table-footer-panel")
+    @UiField
     HTMLElement footerPanel;
-    @UiField("table-footer")
+    @UiField
     HTMLElement tableFooter;
-    @UiField("table-footer-colgroup")
+    @UiField
     HTMLElement tableFooterColGroup;
-    @UiField("table-footer-row")
+    @UiField
     HTMLElement tableFooterRow;
-    @UiField("footer-pager-panel")
+    @UiField
     HTMLElement footerPagerPanel;
 
     HtmlBinder uiBinder = HtmlBinder.get(TableViewImpl.class, this);
@@ -93,7 +89,7 @@ public class TableViewImpl extends ListViewImpl implements TableView {
         if ((headerColgroupPanel
                 .childNodes
                 .item(column)) == null) {
-            GWT.log("Warning: this shouldn't be a null ?");
+            DomGlobal.console.log("Warning: this shouldn't be a null ?");
             return;
         }
         ((HTMLElement) contentColgroupPanel
@@ -109,7 +105,7 @@ public class TableViewImpl extends ListViewImpl implements TableView {
                 .childNodes
                 .item(column)) == null) {
             //todo
-            GWT.log("Warning: this shouldn't be a null ?");
+            DomGlobal.console.log("Warning: this shouldn't be a null ?");
             return;
         }
 

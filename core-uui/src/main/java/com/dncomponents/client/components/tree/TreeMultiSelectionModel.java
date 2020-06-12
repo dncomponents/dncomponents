@@ -1,7 +1,7 @@
 package com.dncomponents.client.components.tree;
 
-import com.dncomponents.client.components.list.ListTreeMultiSelectionModel;
 import com.dncomponents.client.components.AbstractCellComponent;
+import com.dncomponents.client.components.list.ListTreeMultiSelectionModel;
 import com.dncomponents.client.views.core.ui.list.ListView;
 
 import java.util.stream.Collectors;

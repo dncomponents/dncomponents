@@ -3,12 +3,13 @@ package com.dncomponents.client.components.button;
 import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.components.core.BaseComponent;
 import com.dncomponents.client.components.core.ComponentHtmlParser;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.core.events.click.HasClickHandlers;
 import com.dncomponents.client.dom.handlers.ClickHandler;
+import com.dncomponents.client.views.MainRenderer;
+import com.dncomponents.client.views.MainViewSlots;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.button.ButtonView;
-import com.dncomponents.client.views.core.ui.button.ButtonViewSlots;
-import com.google.gwt.event.shared.HandlerRegistration;
 import elemental2.dom.Element;
 
 import java.util.Collections;
@@ -28,9 +29,9 @@ public class Button<T> extends BaseComponent<T, ButtonView> implements HasClickH
     public Button(String text) {
         this();
         setText(text);
-        setRenderer(new ButtonRenderer<T>() {
+        setRenderer(new MainRenderer<T>() {
             @Override
-            public void render(T t, ButtonViewSlots slots) {
+            public void render(T t, MainViewSlots slots) {
                 slots.getMainSlot().innerHTML = t + "";
             }
         });
@@ -39,7 +40,7 @@ public class Button<T> extends BaseComponent<T, ButtonView> implements HasClickH
     public Button(String text, ClickHandler clickHandler) {
         this();
         setText(text);
-         addClickHandler(clickHandler);
+        addClickHandler(clickHandler);
     }
 
     public Button(ButtonView view, String text) {
@@ -70,16 +71,13 @@ public class Button<T> extends BaseComponent<T, ButtonView> implements HasClickH
         return enabled;
     }
 
-    public interface ButtonRenderer<T> extends Renderer<T, ButtonViewSlots> {
-    }
-
-    public void setRenderer(ButtonRenderer<T> renderer) {
+    public void setRenderer(MainRenderer<T> renderer) {
         super.setRendererBase(renderer);
     }
 
     @Override
-    protected ButtonViewSlots getViewSlots() {
-        return (ButtonViewSlots) super.getViewSlots();
+    protected MainViewSlots getViewSlots() {
+        return (MainViewSlots) super.getViewSlots();
     }
 
     public static class ButtonHtmlParser extends AbstractPluginHelper implements ComponentHtmlParser {

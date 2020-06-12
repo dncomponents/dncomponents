@@ -38,7 +38,7 @@ public abstract class BaseCellViewImpl implements BaseCellView {
     }
 
     @Override
-    public void addKeyDownEvent(KeyDownHandler keyDownHandler) {
+    public void addKeyDownHandler(KeyDownHandler keyDownHandler) {
         keyDownHandler.addTo(asElement());
     }
 

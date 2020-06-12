@@ -4,8 +4,6 @@
     <inherits name="elemental2.core.Core"/>
     <inherits name="elemental2.dom.Dom"/>
     <inherits name="com.dncomponents.CoreUi"/>
-<!--    <inherits name="com.dncomponents.CoreCellUi"/>-->
-<!--    <inherits name="com.dncomponents.bootstrap.cell.BootstrapCell"/>-->
     <inherits name="com.dncomponents.bootstrap.Bootstrap"/>
 
     <source path="client"/>

@@ -7,8 +7,6 @@ import com.dncomponents.client.components.core.FieldGetter;
  * Validates value that is obtained from {@link FieldGetter}.
  * <p>
  * It is part of {@link CellConfig} object.
- * <p>
- * <p>
  *
  * @author nikolasavic
  */

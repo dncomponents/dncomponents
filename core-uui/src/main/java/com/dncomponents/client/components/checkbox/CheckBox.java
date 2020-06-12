@@ -4,11 +4,12 @@ import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.components.core.BaseComponent;
 import com.dncomponents.client.components.core.ComponentHtmlParser;
 import com.dncomponents.client.components.core.entities.ItemId;
+import com.dncomponents.client.components.core.events.value.HasValue;
 import com.dncomponents.client.dom.handlers.OnChangeHandler;
+import com.dncomponents.client.views.MainRenderer;
+import com.dncomponents.client.views.MainViewSlots;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.checkbox.CheckBoxView;
-import com.dncomponents.client.views.core.ui.checkbox.CheckBoxViewSlots;
-import com.google.gwt.user.client.ui.HasValue;
 import elemental2.dom.Element;
 import elemental2.dom.Event;
 
@@ -24,15 +25,6 @@ public class CheckBox<T> extends AbstractCheckBox<T> implements HasValue<Boolean
     protected CheckBoxSelectionGroup<T> group;
 
     Boolean value;
-
-    {
-        setRenderer(new CheckBoxRenderer<T>() {
-            @Override
-            public void render(T t, CheckBoxViewSlots slots) {
-                slots.getMainSlot().innerHTML = t + "";
-            }
-        });
-    }
 
     public CheckBox(CheckBoxView view) {
         super(view);
@@ -88,18 +80,6 @@ public class CheckBox<T> extends AbstractCheckBox<T> implements HasValue<Boolean
         setRenderer(group.getDefaultRenderer());
     }
 
-    public interface CheckBoxRenderer<T> extends BaseComponent.Renderer<T, CheckBoxViewSlots> {
-    }
-
-    public void setRenderer(CheckBoxRenderer<T> renderer) {
-        super.setRendererBase(renderer);
-    }
-
-    @Override
-    public CheckBoxViewSlots getViewSlots() {
-        return super.getViewSlots();
-    }
-
     //uibinder field
     protected String groupUiField;
 
@@ -136,10 +116,10 @@ public class CheckBox<T> extends AbstractCheckBox<T> implements HasValue<Boolean
 
             setValueCh(htmlElement, checkBox);
             checkBox.setEnabled(!htmlElement.hasAttribute(DISABLED));
-            checkBox.setRenderer(new CheckBoxRenderer<ItemId>() {
+            checkBox.setRenderer(new MainRenderer<ItemId>() {
                 @Override
-                public void render(ItemId idItem, CheckBoxViewSlots slots) {
-                    slots.getMainSlot().innerHTML = idItem.getContent();
+                public void render(ItemId itemId, MainViewSlots slots) {
+                    slots.getMainSlot().innerHTML = itemId.getContent();
                 }
             });
             checkBox.setUserObject(getIdItem(htmlElement));

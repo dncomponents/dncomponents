@@ -1,6 +1,7 @@
 package com.dncomponents.client.views.core.ui.table.headers;
 
-import com.google.gwt.user.client.ui.HasValue;
+
+import com.dncomponents.client.components.core.events.value.HasValue;
 
 /**
  * @author nikolasavic

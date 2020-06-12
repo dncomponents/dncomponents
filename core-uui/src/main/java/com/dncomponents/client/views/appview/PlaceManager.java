@@ -1,14 +1,16 @@
 package com.dncomponents.client.views.appview;
 
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.History;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
+import com.dncomponents.client.components.core.events.value.ValueChangeHandler;
+import com.dncomponents.client.dom.DomUtil;
+import com.dncomponents.client.dom.History;
+import elemental2.dom.CustomEvent;
+import elemental2.dom.HTMLElement;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class PlaceManager implements HasPlaceChangeHandler {
 
@@ -24,12 +26,14 @@ public class PlaceManager implements HasPlaceChangeHandler {
 
     private Place currentPlace;
 
+    private HTMLElement bus;
+
     public PlaceManager(AcceptsOneElement mainApp) {
         this.mainApp = mainApp;
-        History.addValueChangeHandler(new ValueChangeHandler<String>() {
+        History.addValueChangeHandler(new Consumer<String>() {
             @Override
-            public void onValueChange(ValueChangeEvent<String> event) {
-                String token = event.getValue();
+            public void accept(String s) {
+                String token = s;
                 if (token == null)
                     return;
                 String filteredToken = token;
@@ -76,7 +80,7 @@ public class PlaceManager implements HasPlaceChangeHandler {
 
     @Override
     public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Place> handler) {
-        return ensureHandlers().addHandler(ValueChangeEvent.getType(), handler);
+        return handler.addTo(ensureHandlers());
     }
 
     @Override
@@ -101,23 +105,20 @@ public class PlaceManager implements HasPlaceChangeHandler {
         }
     }
 
-    @Override
-    public void fireEvent(GwtEvent<?> event) {
-        ensureHandlers().fireEvent(event);
-    }
-
-    private HandlerManager handlerManager;
-
-    protected HandlerManager ensureHandlers() {
-        if (handlerManager == null) {
-            handlerManager = new HandlerManager(this);
-        }
-        return handlerManager;
+    protected HTMLElement ensureHandlers() {
+        if (bus == null)
+            bus = new DomUtil().createDiv();
+        return bus;
     }
 
     public String getHistoryToken(Place place) {
         Place.PlaceRegister placeRegister = tokenRegisterMap.get(place.getClass());
         String historyToken = placeRegister.getTokenFromPlace(place);
         return historyToken;
+    }
+
+    @Override
+    public void fireEvent(CustomEvent event) {
+        ensureHandlers().dispatchEvent(event);
     }
 }

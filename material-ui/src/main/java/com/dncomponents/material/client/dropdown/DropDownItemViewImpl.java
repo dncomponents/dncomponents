@@ -4,8 +4,9 @@ import com.dncomponents.UiField;
 import com.dncomponents.UiTemplate;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.handlers.ClickHandler;
+import com.dncomponents.client.views.MainViewSlots;
+import com.dncomponents.client.views.MainViewSlotsImpl;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownItemView;
-import com.dncomponents.client.views.core.ui.dropdown.DropDownItemViewSlots;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
@@ -54,12 +55,7 @@ public class DropDownItemViewImpl implements DropDownItemView {
     }
 
     @Override
-    public DropDownItemViewSlots getViewSlots() {
-        return new DropDownItemViewSlots() {
-            @Override
-            public HTMLElement getMainSlot() {
-                return asElement();
-            }
-        };
+    public MainViewSlots getViewSlots() {
+        return new MainViewSlotsImpl(asElement());
     }
 }

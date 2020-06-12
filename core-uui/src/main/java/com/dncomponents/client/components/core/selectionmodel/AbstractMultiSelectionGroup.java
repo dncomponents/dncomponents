@@ -1,11 +1,12 @@
 package com.dncomponents.client.components.core.selectionmodel;
 
 import com.dncomponents.client.components.core.HasUserValue;
+import com.dncomponents.client.components.core.events.selection.SelectionEvent;
+import com.dncomponents.client.components.core.events.value.HasValue;
+import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
 import com.dncomponents.client.components.core.selectionmodel.helper.AbstractSelectionHandler;
 import com.dncomponents.client.components.core.selectionmodel.helper.AbstractValueChangeHandler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.user.client.ui.HasValue;
+import elemental2.dom.CustomEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,6 +55,11 @@ public class AbstractMultiSelectionGroup<T, C extends HasUserValue<T>>
         super.fireSelectionChange();
         SelectionEvent.fire(entitySelectionModel, entitySelectionModel.getSelection());
         ValueChangeEvent.fire(entitySelectionModel.getHasValue(), entitySelectionModel.getHasValue().getValue());
+    }
+
+    @Override
+    public void fireEvent(CustomEvent event) {
+        ensureHandlers().dispatchEvent(event);
     }
 
     class EntitySelectionModel extends AbstractSelectionHandler<List<T>> implements MultiSelectionModel<T> {

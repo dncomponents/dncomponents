@@ -9,7 +9,7 @@ import elemental2.dom.HTMLTemplateElement;
 
 public class PagerUiImpl implements PagerUi {
 
-    @UiField("pager-item")
+    @UiField
     HTMLTemplateElement pagerItem;
     @UiField
     HTMLTemplateElement pager;

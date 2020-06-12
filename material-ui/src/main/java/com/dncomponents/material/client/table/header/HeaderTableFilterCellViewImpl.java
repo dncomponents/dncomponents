@@ -1,7 +1,6 @@
 package com.dncomponents.material.client.table.header;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.table.header.SortingDirection;
 import com.dncomponents.client.dom.DomUtil;
@@ -15,18 +14,17 @@ import elemental2.dom.HTMLTemplateElement;
 /**
  * @author nikolasavic
  */
-@UiTemplate
 public class HeaderTableFilterCellViewImpl implements HeaderTableFilterCellView {
 
     @UiField
     HTMLElement root;
-    @UiField("text-panel")
+    @UiField
     HTMLElement textPanel;
-    @UiField("filter-icon-panel")
+    @UiField
     HTMLElement filterIconPanel;
-    @UiField("filter-panel")
+    @UiField
     HTMLElement filterPanelElement;
-    @UiField("icon-panel")
+    @UiField
     HTMLElement sortIconPanel;
 
     HtmlBinder uiBinder = HtmlBinder.get(HeaderTableFilterCellViewImpl.class, this);

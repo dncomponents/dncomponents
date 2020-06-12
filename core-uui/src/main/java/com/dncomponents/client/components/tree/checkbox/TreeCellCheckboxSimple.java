@@ -1,5 +1,6 @@
 package com.dncomponents.client.components.tree.checkbox;
 
+import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
 import com.dncomponents.client.components.tree.AbstractTreeCell;
 import com.dncomponents.client.components.tree.TreeCellSimple;
 import com.dncomponents.client.components.tree.TreeNode;
@@ -20,11 +21,10 @@ public class TreeCellCheckboxSimple<T, M> extends TreeCellSimple<T, M> {
     @Override
     protected void bind() {
         super.bind();
-        getCellView().getCheckBox().addValueChangeHandler(event ->
+        getCellView().getCheckBox().addValueChangeHandler((ValueChangeEvent<Boolean> event) ->
                 getOwner().getSelectionModel().setSelected(getModel(), event.getValue(), true)
         );
 //        getOwner().getSelectionModel().setNavigator(false);
-
     }
 
     @Override
@@ -34,7 +34,7 @@ public class TreeCellCheckboxSimple<T, M> extends TreeCellSimple<T, M> {
 
     @Override
     protected void initViewFromOwner() {
-        cellView = getUi().getTreeCellCheckBoxView();
+        cellView = getUi().getTreeCellCheckBoxView(icon);
     }
 
     protected TreeCellCheckboxSimple(BaseCellBuilder<TreeNode<T>, M, ?> builder) {

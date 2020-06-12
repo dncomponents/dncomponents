@@ -30,7 +30,6 @@ public class HeaderFiltering extends HeaderWithModifiers<Predicate> {
         setActiveModifier(headerWithModifiers.getActiveModifier());
     }
 
-
     public void setUserEnteredValue(Object userEnteredValue, Comparator comparator) {
         this.userEnteredValue = userEnteredValue;
         this.comparator = comparator;

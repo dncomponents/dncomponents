@@ -1,6 +1,7 @@
 package com.dncomponents.bootstrap.client.autocomplete.list;
 
 import com.dncomponents.bootstrap.client.BootstrapUi;
+import com.dncomponents.client.components.autocomplete.Autocomplete;
 import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.views.core.ViewFactory;
 import com.dncomponents.client.views.core.ui.autocomplete.AutocompleteView;

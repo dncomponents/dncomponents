@@ -1,5 +1,6 @@
 package com.dncomponents.client.components.table.columnclasses.checkboxcolumn;
 
+import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
 import com.dncomponents.client.components.list.ListTreeMultiSelectionModel;
 import com.dncomponents.client.components.table.TableCell;
 import com.dncomponents.client.components.AbstractCellComponent;
@@ -25,8 +26,8 @@ public class TableCellCheckBox extends TableCell {
     protected void bind() {
         super.bind();
         getCellView().getCheckbox().addValueChangeHandler(
-                event -> getOwner().getSelectionModel().setSelected(getModel(), event.getValue(), true));
-        getCellView().addKeyDownEvent(new KeyDownHandler() {
+                (ValueChangeEvent<Boolean> event) -> getOwner().getSelectionModel().setSelected(getModel(), event.getValue(), true));
+        getCellView().addKeyDownHandler(new KeyDownHandler() {
             @Override
             public void onKeyDown(KeyboardEvent event) {
                 if (event.key.equals("space")) {

@@ -15,6 +15,7 @@ import elemental2.dom.HTMLTemplateElement;
 @UiTemplate
 public class PopoverViewImpl extends TooltipViewImpl<PopoverViewSlots> implements PopoverView {
 
+    public static final String VIEW_ID = "default";
     @UiField
     HTMLElement popoverTitle;
 

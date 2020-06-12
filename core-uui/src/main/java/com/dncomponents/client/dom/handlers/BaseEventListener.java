@@ -1,6 +1,6 @@
 package com.dncomponents.client.dom.handlers;
 
-import com.google.gwt.event.shared.HandlerRegistration;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import elemental2.dom.EventListener;
 import elemental2.dom.EventTarget;
 

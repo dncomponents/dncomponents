@@ -43,7 +43,6 @@ public class BrowserEvents {
   public static final String TOUCHMOVE = "touchmove";
   public static final String TOUCHSTART = "touchstart";
 
-  // Prevents instantiation and subclassing.
   private BrowserEvents() {
   }
 }

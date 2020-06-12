@@ -113,7 +113,6 @@ public class TreeGroupBy<T> extends TableTree<T> {
         groupByInOrder.addAll(columnsForGrouping);
     }
 
-
     private void copyExpended(int level, TreeNode root) {
         getRoot().getAllLeafs().forEach(new Consumer<TreeNode>() {
             @Override

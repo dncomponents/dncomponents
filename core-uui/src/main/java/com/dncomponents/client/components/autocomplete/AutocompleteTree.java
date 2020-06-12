@@ -2,41 +2,104 @@ package com.dncomponents.client.components.autocomplete;
 
 import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.components.core.BaseComponent;
-import com.dncomponents.client.components.core.CellConfig;
 import com.dncomponents.client.components.core.ComponentHtmlParser;
+import com.dncomponents.client.components.core.TreeCellConfig;
 import com.dncomponents.client.components.core.entities.ItemId;
+import com.dncomponents.client.components.core.events.close.HasCloseHandlers;
+import com.dncomponents.client.components.core.events.open.HasOpenHandlers;
 import com.dncomponents.client.components.tree.TreeNode;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.autocomplete.AutocompleteTreeView;
+import elemental2.dom.DomGlobal;
 import elemental2.dom.Element;
+import elemental2.dom.HTMLElement;
 
 import java.util.Map;
+import java.util.function.Function;
+
+import static com.dncomponents.client.components.Tree.TreeHtmlParser.parseItem;
 
 /**
  * @author nikolasavic
  */
-public class AutocompleteTree<T> extends AbstractAutocomplete<TreeNode<T>, AutocompleteTreeView<T>> {
-
-    public AutocompleteTree(CellConfig cellConfig) {
-        super(Ui.get().getAutocompleteTreeView(), cellConfig);
-    }
-
-    public void setRoot(TreeNode<T> root) {
-        view.setRoot(root);
-    }
+public class AutocompleteTree<T> extends AbstractAutocomplete<TreeNode<T>, AutocompleteTreeView<T>, TreeNode<T>> {
+    TreeAcLogic treeAcLogic;
 
     public AutocompleteTree() {
         super(Ui.get().getAutocompleteTreeView());
+        bind();
+    }
+
+    public AutocompleteTree(AutocompleteTreeView<T> view, Function<TreeNode<T>, String> fieldGetter) {
+        super(view, fieldGetter);
+        bind();
     }
 
     public AutocompleteTree(AutocompleteTreeView view) {
         super(view);
+        bind();
     }
 
-    public void setCellConfig(CellConfig config) {
-        super.cellConfig = config;
-        bind();
+    public void setRoot(TreeNode<T> root) {
+        view.getHasRowsData().setRoot(root);
+        view.getHasRowsData().drawData();
+    }
+
+    private void bind() {
+        treeAcLogic = new TreeAcLogic(this);
+        treeAcLogic.bind();
+    }
+
+    static class TreeAcLogic {
+        boolean treeOp = false;
+        boolean onlyLeaf;
+        AbstractAutocomplete ac;
+
+        public TreeAcLogic(AbstractAutocomplete ac) {
+            this.ac = ac;
+        }
+
+        public void bind() {
+            ac.blurRegistration.removeHandler();
+            ((HasCloseHandlers<Object>) ac.getView().getHasRowsData()).addCloseHandler(e -> treeOp = true);
+            ((HasOpenHandlers<Object>) ac.getView().getHasRowsData()).addOpenHandler(e -> treeOp = true);
+            ac.addBlurHandler(e -> DomGlobal.setTimeout(p0 -> {
+                if (treeOp) {
+                    treeOp = false;
+                    ac.getView().setTextBoxFocused(true);
+                    return;
+                }
+                ac.showList(false);
+            }, 200));
+        }
+
+        public boolean isNotLeaf(TreeNode value) {
+            return (!value.isLeaf() && onlyLeaf);
+        }
+
+        public void setOnlyLeaf(boolean onlyLeaf) {
+            this.onlyLeaf = onlyLeaf;
+        }
+
+        public boolean isOnlyLeaf() {
+            return onlyLeaf;
+        }
+    }
+
+    public void selectOnlyLeaf(boolean b) {
+        this.treeAcLogic.setOnlyLeaf(b);
+    }
+
+//    @Override
+//    public void setValue(TreeNode<T> value, boolean fireEvents) {
+////        if (!value.isLeaf() && treeAcLogic.isOnlyLeaf())
+////            return;
+//        super.setValue(value, fireEvents);
+//    }
+
+    public TreeCellConfig<T, String> getRowCellConfig() {
+        return (TreeCellConfig<T, String>) view.getRowCellConfig();
     }
 
     public static class AutocompleteTreeHtmlParser extends AbstractPluginHelper implements ComponentHtmlParser {
@@ -62,11 +125,12 @@ public class AutocompleteTree<T> extends AbstractAutocomplete<TreeNode<T>, Autoc
                 autocomplete = new AutocompleteTree();
 
             if (htmlElement.hasChildNodes()) {
-//                autocomplete.setItemRenderer((idItemTreeNode, slots) ->
-//                        slots.getMainSlot().innerHTML = idItemTreeNode.getUserObject().getHtml());
-//                TreeNode<ItemId> root = new TreeNode<>(new ItemId("root", "root"));
-//                parseItem((HTMLElement) htmlElement, root, this);
-//                dropDown.setRoot(root);
+                TreeNode<ItemId> root = new TreeNode<>(new ItemId("root", "root"));
+                parseItem((HTMLElement) htmlElement, root, this);
+                autocomplete.getRowCellConfig().getCellBuilder()
+                        .setCellRenderer(r -> r.valuePanel.innerHTML =
+                                r.cell.getModel().getUserObject().getContent());
+                autocomplete.setRoot(root);
             }
 
             DomUtil.copyAllAttributes(htmlElement, autocomplete.asElement());
@@ -84,10 +148,6 @@ public class AutocompleteTree<T> extends AbstractAutocomplete<TreeNode<T>, Autoc
             return AutocompleteTree.class;
         }
 
-        @Override
-        public boolean isPremium() {
-            return true;
-        }
     }
 
 }

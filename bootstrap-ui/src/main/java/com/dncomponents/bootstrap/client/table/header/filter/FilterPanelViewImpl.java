@@ -1,18 +1,18 @@
 package com.dncomponents.bootstrap.client.table.header.filter;
 
 import com.dncomponents.UiField;
-import com.dncomponents.client.components.HasRowsData;
+import com.dncomponents.client.components.HasRowsDataList;
 import com.dncomponents.client.components.autocomplete.Autocomplete;
 import com.dncomponents.client.components.checkbox.CheckBox;
 import com.dncomponents.client.components.core.CellEditor;
 import com.dncomponents.client.components.core.DefaultCellEditor;
 import com.dncomponents.client.components.core.HtmlBinder;
+import com.dncomponents.client.components.core.events.value.HasValue;
 import com.dncomponents.client.components.table.header.filter.Comparator;
 import com.dncomponents.client.components.textbox.*;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.core.ui.table.headers.FilterPanelView;
-import com.google.gwt.user.client.ui.HasValue;
 import elemental2.dom.HTMLDivElement;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
@@ -110,8 +110,8 @@ public class FilterPanelViewImpl<T> implements FilterPanelView<T> {
     }
 
     @Override
-    public HasRowsData<Comparator> getComparatorHasRowsData() {
-        return ac;
+    public HasRowsDataList<Comparator> getComparatorHasRowsData() {
+        return ac.getHasRowsDataList();
     }
 
     @Override

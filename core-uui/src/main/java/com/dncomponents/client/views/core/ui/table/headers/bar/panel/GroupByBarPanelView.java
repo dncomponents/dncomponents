@@ -1,7 +1,7 @@
 package com.dncomponents.client.views.core.ui.table.headers.bar.panel;
 
+import com.dncomponents.client.components.core.events.value.ValueChangeHandler;
 import com.dncomponents.client.components.table.header.HeaderGrouping;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 
 /**
  * @author nikolasavic

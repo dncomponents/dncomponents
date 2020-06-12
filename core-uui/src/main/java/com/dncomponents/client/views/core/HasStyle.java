@@ -1,6 +1,6 @@
 package com.dncomponents.client.views.core;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
+import java.io.Serializable;
 
 /**
  * @author nikolasavic
@@ -24,7 +24,7 @@ public interface HasStyle {
 
     String getStyle();
 
-    interface StyleCmd extends IsSerializable {
+    interface StyleCmd extends Serializable {
         String getStyle();
     }
 

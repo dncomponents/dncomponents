@@ -16,6 +16,7 @@ import elemental2.dom.HTMLTemplateElement;
 @UiTemplate
 public class TextBoxViewImpl implements TextBoxView {
 
+    public static final String VIEW_ID = "default";
     @UiField
     HTMLInputElement root;
 
@@ -36,7 +37,6 @@ public class TextBoxViewImpl implements TextBoxView {
         uiBinder.setTemplateElement(templateElement);
         uiBinder.bind();
     }
-
 
     @Override
     public String getValue() {

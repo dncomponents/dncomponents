@@ -2,13 +2,13 @@ package com.dncomponents.bootstrap.client.checkbox;
 
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
 import com.dncomponents.client.components.core.HtmlBinder;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.OnChangeHandler;
+import com.dncomponents.client.views.MainViewSlots;
+import com.dncomponents.client.views.MainViewSlotsImpl;
 import com.dncomponents.client.views.core.ui.checkbox.CheckBoxView;
-import com.dncomponents.client.views.core.ui.checkbox.CheckBoxViewSlots;
-import com.google.gwt.event.shared.HandlerRegistration;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLInputElement;
 import elemental2.dom.HTMLTemplateElement;
@@ -16,10 +16,9 @@ import elemental2.dom.HTMLTemplateElement;
 /**
  * @author nikolasavic
  */
-//language=html
-@UiTemplate("<input ui-field=\"root\" class=\"form-check-input\" type=\"checkbox\" value=\"\">")
 public class CheckBoxViewImplSimple implements CheckBoxView {
 
+    public static final String VIEW_ID = "simple";
     @UiField
     public HTMLInputElement root;
 
@@ -59,8 +58,7 @@ public class CheckBoxViewImplSimple implements CheckBoxView {
 
     @Override
     public HandlerRegistration addOnChangeHandler(OnChangeHandler changeHandler) {
-        changeHandler.addTo(asElement());
-        return null;
+        return changeHandler.addTo(asElement());
     }
 
     @Override
@@ -78,17 +76,10 @@ public class CheckBoxViewImplSimple implements CheckBoxView {
         return root;
     }
 
-    protected static final String VIEW_ID = "SIMPLE";
-
-    CheckBoxViewSlots viewSlots = new CheckBoxViewSlots() {
-        @Override
-        public HTMLElement getMainSlot() {
-            return DomUtil.createDiv();
-        }
-    };
+    MainViewSlots viewSlots = new MainViewSlotsImpl(DomUtil.createDiv());
 
     @Override
-    public CheckBoxViewSlots getViewSlots() {
+    public MainViewSlots getViewSlots() {
         return viewSlots;
     }
 }

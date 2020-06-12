@@ -1,23 +1,27 @@
 package com.dncomponents.client.components.table.footer;
 
-import com.google.gwt.i18n.client.NumberFormat;
-
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.DoubleStream;
+
 /**
  * @author nikolasavic
  */
 public class NumberFooterCell<T, N extends Number> extends FooterCell<T, N> {
 
     private Types types;
-    private NumberFormat df = NumberFormat.getFormat("0.00"); //".##"
-
+    Function<Number, String> df = new Function<Number, String>() {
+        @Override
+        public String apply(Number number) {
+            return number.toString();
+        }
+    };
 
     public NumberFooterCell() {
     }
 
-    public NumberFooterCell(Types types, NumberFormat df) {
+    public NumberFooterCell(Types types, Function<Number, String> df) {
         this(types);
         this.df = df;
     }
@@ -26,7 +30,7 @@ public class NumberFooterCell<T, N extends Number> extends FooterCell<T, N> {
         this.types = types;
         setCellRenderer((valuePanel, cell) -> {
             Number value = Types.getValue((List<Number>) cell.getColumnItems(), types);
-            String formatted = df.format(value);
+            String formatted = df.apply(value);
             valuePanel.innerHTML = formatted;
         });
     }

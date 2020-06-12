@@ -15,10 +15,10 @@ import elemental2.dom.HTMLTemplateElement;
 @UiTemplate
 public class SortBarPanelUiImpl implements SortBarPanelUi {
 
-    @UiField("table-bar-item")
-    HTMLTemplateElement tableBarItemUi;
-    @UiField("table-bar-panel")
-    HTMLTemplateElement tableBarPanelUi;
+    @UiField
+    HTMLTemplateElement tableBarItem;
+    @UiField
+    HTMLTemplateElement tableBarPanel;
 
     SortBarPanelView sortBarPanelView;
     HtmlBinder uiBinder = HtmlBinder.get(SortBarPanelUiImpl.class, this);
@@ -35,13 +35,13 @@ public class SortBarPanelUiImpl implements SortBarPanelUi {
 
     @Override
     public SortBarItemView getSortBarItemView() {
-        return new SortBarItemViewImpl(tableBarItemUi);
+        return new SortBarItemViewImpl(tableBarItem);
     }
 
     @Override
     public SortBarPanelView getRootView() {
         if (sortBarPanelView == null)
-            sortBarPanelView = new SortBarPanelViewImpl(tableBarPanelUi);
+            sortBarPanelView = new SortBarPanelViewImpl(tableBarPanel);
         return sortBarPanelView;
     }
 }

@@ -1,7 +1,6 @@
 package com.dncomponents.bootstrap.client.table;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
 import com.dncomponents.bootstrap.client.BootstrapUi;
 import com.dncomponents.bootstrap.client.table.cell.RowDetailsCellViewImpl;
 import com.dncomponents.bootstrap.client.table.cell.TableCellCheckBoxViewImpl;
@@ -30,32 +29,32 @@ import elemental2.dom.HTMLTemplateElement;
 /**
  * @author nikolasavic
  */
-@UiTemplate
 public class TableUiImpl implements TableUi {
 
-    @UiField("table-main")
+    public static final String VIEW_ID = "default";
+    @UiField
     HTMLTemplateElement tableMain;
-    @UiField("table-row")
+    @UiField
     HTMLTemplateElement tableRow;
-    @UiField("table-column")
+    @UiField
     HTMLTemplateElement tableColumn;
-    @UiField("table-checkbox-column")
-    HTMLTemplateElement tableCheckBoxColumn;
-    @UiField("table-tree-item-simple-parent")
+    @UiField
+    HTMLTemplateElement tableCheckboxColumn;
+    @UiField
     HTMLTemplateElement tableTreeItemSimpleParent;
-    @UiField("table-column-sort-header")
+    @UiField
     HTMLTemplateElement tableColumnSortHeader;
-    @UiField("table-column-menu-header")
+    @UiField
     HTMLTemplateElement tableColumnMenuHeader;
-    @UiField("table-column-filter-header")
+    @UiField
     HTMLTemplateElement tableColumnFilterHeader;
-    @UiField("table-row-expander-item")
+    @UiField
     HTMLTemplateElement tableRowExpanderItem;
-    @UiField("table-header-checkbox")
+    @UiField
     HTMLTemplateElement tableHeaderCheckbox;
     @UiField
     HTMLTemplateElement footerCell;
-    @UiField("table-bar-ui")
+    @UiField
     HTMLTemplateElement tableBarUi;
     @UiField
     HTMLTemplateElement filterPanel;
@@ -130,22 +129,22 @@ public class TableUiImpl implements TableUi {
     public TreeUi getGTreeGroupByUi() {
         return new TreeUi() {
             @Override
-            public BaseTreeCellView getTreeCellView() {
+            public BaseTreeCellView getTreeCellView(String icon) {
                 return new ParentTableTreeCellViewImpl(tableTreeItemSimpleParent);
             }
 
             @Override
-            public ParentTreeCellView getParentTreeCellView() {
+            public ParentTreeCellView getParentTreeCellView(String icon) {
                 return new ParentTableTreeCellViewImpl(tableTreeItemSimpleParent);
             }
 
             @Override
-            public TreeCellCheckboxSimpleView getTreeCellCheckBoxView() {
+            public TreeCellCheckboxSimpleView getTreeCellCheckBoxView(String icon) {
                 return null; //we don't need this for tree group by
             }
 
             @Override
-            public TreeCellCheckboxParentView getParentTreeCellCheckboxView() {
+            public TreeCellCheckboxParentView getParentTreeCellCheckboxView(String icon) {
                 return null; //we don't need this for tree group by
             }
 
@@ -158,7 +157,7 @@ public class TableUiImpl implements TableUi {
 
     @Override
     public TableCellCheckBoxView getTableCellCheckBoxView() {
-        return new TableCellCheckBoxViewImpl(tableCheckBoxColumn);
+        return new TableCellCheckBoxViewImpl(tableCheckboxColumn);
     }
 
     @Override

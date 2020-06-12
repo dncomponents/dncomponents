@@ -1,9 +1,9 @@
 package com.dncomponents.client.components;
 
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.views.core.ui.list.ScrollView;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.HandlerRegistration;
+import elemental2.dom.DomGlobal;
 import elemental2.dom.HTMLElement;
 
 import java.util.ArrayList;
@@ -181,7 +181,7 @@ public class VirtualScroll {
 
     public void setTopScroll(int topScroll) {
         if (topScroll < 0 || topScroll > totalHeight)
-            GWT.log("error: Top scroll must be in range: " + 0 + " - " + totalHeight);
+            DomGlobal.console.log("error: Top scroll must be in range: " + 0 + " - " + totalHeight);
 //            throw new IllegalArgumentException("Top scroll must be in range: " + 0 + " - " + totalHeight);
         this.rows = owner.rowsFiltered.size();
         this.topScroll = topScroll;

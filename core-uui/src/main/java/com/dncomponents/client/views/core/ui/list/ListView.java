@@ -8,6 +8,4 @@ import com.dncomponents.client.views.core.pcg.View;
  */
 public interface ListView extends View, ScrollView, HasNavigationHandler {
     void setScrollable(boolean b);
-
-    void setScrollHeight(String height);
 }

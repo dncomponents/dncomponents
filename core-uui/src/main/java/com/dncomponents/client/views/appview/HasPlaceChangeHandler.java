@@ -1,8 +1,8 @@
 package com.dncomponents.client.views.appview;
 
-import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.value.HasValueChangeHandlers;
+import com.dncomponents.client.components.core.events.value.ValueChangeHandler;
 
 /**
  * @author nikolasavic

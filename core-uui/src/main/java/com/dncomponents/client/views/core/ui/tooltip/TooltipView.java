@@ -1,7 +1,7 @@
 package com.dncomponents.client.views.core.ui.tooltip;
 
- import com.dncomponents.client.views.HasViewSlots;
- import com.dncomponents.client.views.core.pcg.View;
+import com.dncomponents.client.views.HasViewSlots;
+import com.dncomponents.client.views.core.pcg.View;
 import elemental2.dom.HTMLElement;
 
 /**

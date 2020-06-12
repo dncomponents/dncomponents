@@ -1,9 +1,10 @@
 package com.dncomponents.client.views.core.ui.dropdown;
 
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.dom.handlers.BaseEventListener;
+import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.core.pcg.View;
-import com.google.gwt.user.client.Command;
 import elemental2.dom.HTMLElement;
 
 /**
@@ -24,7 +25,7 @@ public interface DropDownView extends View {
 
     void setButtonContent(String content);
 
-    void addClickOutOfButton(Command command);
+    HandlerRegistration addClickOutOfButton(ClickHandler clickHandler);
 
     void addDropDownPanel(IsElement dropDownPanel);
 }

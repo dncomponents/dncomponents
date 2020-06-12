@@ -3,6 +3,7 @@ package com.dncomponents.client.components;
 import com.dncomponents.client.components.core.*;
 import com.dncomponents.client.components.core.entities.ItemId;
 import com.dncomponents.client.components.core.entities.RowItemId;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.list.ListTreeMultiSelectionModel;
 import com.dncomponents.client.components.pager.Pager;
 import com.dncomponents.client.components.table.AbstractHeaderCell;
@@ -12,11 +13,9 @@ import com.dncomponents.client.components.table.columnclasses.FooterCellFactory;
 import com.dncomponents.client.components.table.header.HeaderCellHolder;
 import com.dncomponents.client.components.table.header.HeaderTableFilterCell;
 import com.dncomponents.client.components.table.header.HeaderTableTextCell;
-import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.BaseEventListener;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.table.TableUi;
-import com.google.gwt.event.shared.HandlerRegistration;
 import elemental2.dom.EventListener;
 import elemental2.dom.*;
 
@@ -28,7 +27,7 @@ import java.util.stream.IntStream;
 /**
  * @author nikolasavic
  */
-public class Table<T> extends AbstractCellComponent<T, List, TableUi> {
+public class Table<T> extends AbstractCellComponent<T, List, TableUi> implements HasRowsDataList<T> {
 
     public TreeGroupBy groupBy;
 
@@ -274,6 +273,7 @@ public class Table<T> extends AbstractCellComponent<T, List, TableUi> {
         elemental2.dom.EventListener listener = new EventListener() {
             @Override
             public void handleEvent(Event evt) {
+                DomGlobal.console.log(evt.target);
                 for (RowTable<T> rowTable : getCells()) {
                     if (rowTable.asElement() == evt.target || rowTable.asElement().contains((Node) evt.target)) {
                         handler.handleEvent(evt);
@@ -281,15 +281,13 @@ public class Table<T> extends AbstractCellComponent<T, List, TableUi> {
                 }
             }
         };
-        if (!DomUtil.Junit)
-            asElement().addEventListener(handler.getType(), listener);
+        asElement().addEventListener(handler.getType(), listener);
         return new HandlerRegistration() {
             @Override
             public void removeHandler() {
                 asElement().removeEventListener(handler.getType(), listener);
             }
         };
-
     }
 
     @Override
@@ -298,8 +296,7 @@ public class Table<T> extends AbstractCellComponent<T, List, TableUi> {
             if (getCell(evt) != null)
                 handler.handleEvent(evt);
         };
-        if (!DomUtil.Junit)
-            asElement().addEventListener(handler.getType(), listener);
+        asElement().addEventListener(handler.getType(), listener);
         return () -> asElement().removeEventListener(handler.getType(), listener);
     }
 
@@ -423,10 +420,6 @@ public class Table<T> extends AbstractCellComponent<T, List, TableUi> {
             return Table.class;
         }
 
-        @Override
-        public boolean isPremium() {
-            return true;
-        }
     }
 
     private HeaderRenderer headerRenderer;
@@ -470,6 +463,22 @@ public class Table<T> extends AbstractCellComponent<T, List, TableUi> {
         if (rowCellConfig == null)
             rowCellConfig = new TableRowCellConfig();
         return rowCellConfig;
+    }
+
+    public void addRow(T t) {
+        super.addRow(t);
+    }
+
+    public void insertRow(T t, int index) {
+        super.insertRow(t, index);
+    }
+
+    public void removeRow(T t) {
+        super.removeRow(t);
+    }
+
+    public void setRowsData(List<T> rows) {
+        super.setRowsData(rows);
     }
 
     public class TableRowCellConfig<T, M> extends CellConfig<T, M> {

@@ -1,9 +1,9 @@
 package com.dncomponents.client.components.multi;
 
 import com.dncomponents.client.components.tree.TreeNode;
+import com.dncomponents.client.views.MainRenderer;
 import com.dncomponents.client.views.ViewSlots;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownItemView;
-import com.dncomponents.client.views.core.ui.dropdown.DropDownItemViewSlots;
 import elemental2.dom.HTMLElement;
 
 /**
@@ -27,19 +27,15 @@ public class DropDownItemMultiLevel<T> extends BaseHasView<TreeNode<T>, DropDown
 
     private void init(DropDownTreeNodePanel<T> panel, TreeNode<T> node) {
         this.owner = panel;
-        setRenderer(panel.dropDown.renderer);
+        setRenderer(panel.dropDown.itemRenderer);
         setValue(node);
-        init();
+        view.addClickHandler(mouseEvent ->
+                owner.dropDown.setSelected(DropDownItemMultiLevel.this,
+                        !DropDownItemMultiLevel.this.selected, true));
     }
 
     public DropDownItemMultiLevel(DropDownItemView view) {
         super(view);
-    }
-
-    void init() {
-        view.addClickHandler(mouseEvent ->
-                owner.dropDown.setSelected(DropDownItemMultiLevel.this,
-                        !DropDownItemMultiLevel.this.selected, true));
     }
 
     public void setContent(String content) {
@@ -61,11 +57,8 @@ public class DropDownItemMultiLevel<T> extends BaseHasView<TreeNode<T>, DropDown
         view.setActive(active);
     }
 
-    public interface DropDownItemRenderer<T> extends Renderer<T, DropDownItemViewSlots> {
 
-    }
-
-    public void setRenderer(DropDownItemRenderer<TreeNode<T>> renderer) {
+    public void setRenderer(MainRenderer<TreeNode<T>> renderer) {
         super.setRendererBase(renderer);
     }
 

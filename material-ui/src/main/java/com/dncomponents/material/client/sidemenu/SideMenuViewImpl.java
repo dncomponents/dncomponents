@@ -7,7 +7,7 @@ import com.dncomponents.client.components.core.CellRenderer;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.core.TreeCellConfig;
 import com.dncomponents.client.components.core.selectionmodel.DefaultMultiSelectionModel;
-import com.dncomponents.client.components.filters.Filter;
+import com.dncomponents.client.components.core.events.filters.Filter;
 import com.dncomponents.client.components.tree.TreeNode;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.BaseEventListener;
@@ -19,8 +19,8 @@ import com.dncomponents.client.views.core.ui.tree.ParentTreeCellView;
 import com.dncomponents.material.client.tree.TreeUiImpl;
 import com.dncomponents.material.client.tree.basic.TreeCellParentViewImpl;
 import com.dncomponents.material.client.tree.basic.TreeCellViewImpl;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
+import com.dncomponents.client.components.core.events.selection.SelectionHandler;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import elemental2.dom.*;
 import jsinterop.base.Js;
 
@@ -31,19 +31,15 @@ import java.util.List;
  */
 public class SideMenuViewImpl implements SideMenuView {
 
-    private static final String VIEW_ID = "default";
+    public static final String VIEW_ID = "default";
     @UiField
     HTMLElement root;
     @UiField
     HTMLElement treePanel;
     @UiField
     HTMLTemplateElement treeSideTemplate;
-    Tree tree;
     @UiStyle
     String collapsedStyle;
-    private boolean collapsedToggle = true;
-
-    HtmlBinder uiBinder = HtmlBinder.get(SideMenuViewImpl.class, this);
     @UiField
     public HTMLDivElement navbarPanel;
     @UiField
@@ -54,6 +50,9 @@ public class SideMenuViewImpl implements SideMenuView {
     public HTMLDivElement treeHolder;
     @UiField
     HTMLInputElement searchField;
+    Tree tree;
+    private boolean collapsedToggle = true;
+    HtmlBinder uiBinder = HtmlBinder.get(SideMenuViewImpl.class, this);
 
 
     public SideMenuViewImpl(String template) {
@@ -79,44 +78,13 @@ public class SideMenuViewImpl implements SideMenuView {
     private void initTree() {
         tree = new Tree(new TreeUiImpl(treeSideTemplate) {
             @Override
-            public ParentTreeCellView getParentTreeCellView() {
-                return new TreeCellParentViewImpl(treeItemSimpleParent) {
-
-                    @Override
-                    public void addOpenCloseHandler(BaseEventListener handler) {
-                        handler.addTo(root);
-                    }
-
-                    @Override
-                    public void setOpened(boolean b) {
-                        if (b)
-                            openCloseElement.innerHTML = (closeStyle);
-                        else
-                            openCloseElement.innerHTML = (openStyle);
-                    }
-                };
+            public ParentTreeCellView getParentTreeCellView(String icon) {
+                return new SideMenuTreeCellParentViewImpl(treeItemSimpleParent).setIcon(icon);
             }
 
             @Override
-            public BaseTreeCellView getTreeCellView() {
-                return new TreeCellViewImpl(treeItemSimple) {
-                    {
-                        DomUtil.addHandler(valuePanel, new ClickHandler() {
-                            @Override
-                            public void onClick(MouseEvent mouseEvent) {
-//                               mouseEvent.stopImmediatePropagation();
-                                mouseEvent.preventDefault();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void addClickHandler(ClickHandler clickHandler) {
-                        clickHandler.addTo(valuePanel);
-//                        super.addClickHandler(clickHandler);
-                    }
-
-                };
+            public BaseTreeCellView getTreeCellView(String icon) {
+                return new SideMenuTreeCellViewImpl(treeItemSimple).setIcon(icon);
             }
         });
         DomUtil.replaceRaw(tree, treeHolder);

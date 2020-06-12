@@ -1,13 +1,11 @@
 package com.dncomponents.client.views.core.ui.autocomplete;
 
-import java.util.List;
+import com.dncomponents.client.components.HasRowsDataList;
 
 /**
  * @author nikolasavic
  */
 public interface AutocompleteView<M> extends BaseAutocompleteView<M> {
-    void setData(List<M> data);
-
-    List<M> getRowsData();
-
+    @Override
+    HasRowsDataList<M> getHasRowsData();
 }

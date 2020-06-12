@@ -1,9 +1,11 @@
 package com.dncomponents.client.components.core.entities;
 
+import com.dncomponents.client.components.tree.HasIcon;
+
 /**
  * Used as a entity class in html-binder.
  */
-public class ItemId extends ItemBase {
+public class ItemId extends ItemBase implements HasIcon {
 
     private String content;
     private String icon;
@@ -24,6 +26,7 @@ public class ItemId extends ItemBase {
         this.content = content;
     }
 
+    @Override
     public String getIcon() {
         return icon;
     }

@@ -1,9 +1,9 @@
 package com.dncomponents.client.components.table.header.bar;
 
- import com.dncomponents.client.components.table.header.HeaderFiltering;
- import com.dncomponents.client.components.table.header.filter.FilterPanel;
+import com.dncomponents.client.components.table.header.HeaderFiltering;
+import com.dncomponents.client.components.table.header.filter.FilterPanel;
 import com.dncomponents.client.components.table.header.filter.FilterUtil;
- import com.dncomponents.client.views.core.ui.table.headers.bar.panelitems.FilterBarItemView;
+import com.dncomponents.client.views.core.ui.table.headers.bar.panelitems.FilterBarItemView;
 
 /**
  * @author nikolasavic

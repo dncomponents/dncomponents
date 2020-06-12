@@ -56,7 +56,7 @@
     </button>
     <style-item ui-field="disabledStyle" class="disabled"/>
 </template>
-<template ui-field="button-builder">
+<template ui-field="buttonBuilder">
 
     <style-item ui-field="baseStyle" class="btn"></style-item>
     <!--color-->
@@ -88,10 +88,10 @@
 <template ui-field="tabUi">
     <template ui-field="tab">
         <div ui-field="root" style="width:100%;">
-            <ul ui-field="tabPanel" class="nav nav-tabs">
+            <ul ui-field="tabPanel" class="nav nav-tabs" style="margin-bottom: 1rem">
 
             </ul>
-            <div ui-field="tabContentPanel" class="tab-content" style="padding:10px;">
+            <div ui-field="tabContentPanel" class="tab-content">
 
             </div>
         </div>
@@ -125,13 +125,13 @@
     </template>
 </template>
 <!--  ACCORDION  -->
-<template ui-field="accordion-ui">
+<template ui-field="accordionUi">
     <template ui-field="accordion">
         <div ui-field="root">
 
         </div>
     </template>
-    <template ui-field="accordion-item">
+    <template ui-field="accordionItem">
         <div ui-field="root" class="card">
             <div ui-field="accordionItemTitlePanel" class="card-header">
                 <h5 class="mb-0">
@@ -149,18 +149,18 @@
     </template>
 </template>
 <!--DROPDOWN-->
-<template ui-field="dropdown-ui">
+<template ui-field="dropDownUi">
     <template ui-field="dropdown">
         <div class="dropdown" ui-field="root">
             <button ui-field="button" class="btn btn-secondary dropdown-toggle">
 
             </button>
-            <div ui-field="dropdown-menu" class="dropdown-menu">
+            <div ui-field="dropDownMenu" class="dropdown-menu">
             </div>
         </div>
         <style-item ui-field="dropDownMenuShowStyle" class="show"></style-item>
     </template>
-    <template ui-field="dropdown-item">
+    <template ui-field="dropDownItem">
         <a ui-field="root" class="dropdown-item" href="javascript:void(0)"></a>
     </template>
 </template>
@@ -232,7 +232,7 @@
         </div>
     </div>
 </template>
-<template ui-field="progress-builder">
+<template ui-field="progressBuilder">
     <style-item ui-field="success" class="bg-success"/>
     <style-item ui-field="info" class="bg-info"/>
     <style-item ui-field="warning" class="bg-warning"/>
@@ -244,18 +244,18 @@
 <!--CELL COMPONENTS-->
 <!--  LIST  -->
 <template ui-field="list">
-    <template ui-field="list-main">
+    <template ui-field="listMain">
         <ul ui-field="root" class="list-group scroll-style"></ul>
         <style-item ui-field='scrollableStyle' class='scroll-style'></style-item>
-        <style-item ui-field="ROW_HEIGHT" class="49"></style-item>
+        <style-item ui-field="rowHeight" class="49"></style-item>
     </template>
 
-    <template ui-field="list-item">
+    <template ui-field="listItem">
         <li ui-field="root" class="list-group-item"></li>
         <style-item ui-field="modelSelected" class="active"></style-item>
     </template>
 
-    <template ui-field="list-item-checkbox">
+    <template ui-field="listItemCheckbox">
         <li ui-field="root" class="list-group-item" style="padding-left:  30px;">
             <dn-checkbox ui-field="checkBox" view="SIMPLE"></dn-checkbox>
             <span ui-field="valuePanel"></span>
@@ -265,11 +265,11 @@
 </template>
 <!--   TREE  -->
 <template ui-field="tree">
-    <template ui-field="tree-main">
+    <template ui-field="treeMain">
         <ul ui-field="root" class="list-group scroll-style tree" style="border: 1px solid lightgrey;"></ul>
-        <style-item ui-field="ROW_HEIGHT" class="49"></style-item>
+        <style-item ui-field="rowHeight" class="49"></style-item>
     </template>
-    <template ui-field="tree-item-simple">
+    <template ui-field="treeItemSimple">
         <li ui-field="root" class="list-group-item">
                 <span style="margin-left:48px;">
                   <span ui-field="valuePanel"></span>
@@ -277,7 +277,7 @@
         </li>
         <style-item ui-field="modelSelected" class="active"></style-item>
     </template>
-    <template ui-field="tree-item-simple-parent">
+    <template ui-field="treeItemSimpleParent">
         <li ui-field="root" class="list-group-item">
             <i ui-field="openCloseElement" style="margin-right:  10px;"></i>
             <span ui-field="valuePanel"></span>
@@ -287,7 +287,7 @@
         <style-item ui-field="modelSelected" class="active"></style-item>
     </template>
 
-    <template ui-field="tree-item-simple-checkbox">
+    <template ui-field="treeItemSimpleCheckbox">
         <li class="list-group-item" ui-field="root">
                 <span style="margin-left:  48px;">
                     <dn-checkbox ui-field="checkBox" view="SIMPLE"></dn-checkbox>
@@ -295,7 +295,7 @@
                 </span>
         </li>
     </template>
-    <template ui-field="tree-item-simple-parent-checkbox">
+    <template ui-field="treeItemSimpleParentCheckbox">
         <li ui-field="root" class="list-group-item">
             <i ui-field="openCloseElement" style="margin-right:  30px;"></i>
             <dn-checkbox ui-field="checkBox" view="SIMPLE"></dn-checkbox>
@@ -333,22 +333,22 @@
         </template>
     </template>
 
-    <template ui-field="table-row-expander-item">
+    <template ui-field="tableRowExpanderItem">
         <td ui-field="root">
-            <i ui-field="open-close-element" class="fa fa-close"></i>
+            <i ui-field="openClosedElement" class="fa fa-close"></i>
         </td>
         <style-item ui-field="openStyle" class="fa fa-plus-square-o"></style-item>
         <style-item ui-field="closeStyle" class="fa fa-minus-square-o"></style-item>
     </template>
 
-    <template ui-field="table-checkbox-column">
+    <template ui-field="tableCheckboxColumn">
         <td ui-field="root">
             <dn-checkbox ui-field="checkBox" view="SIMPLE"
                          style="margin-left: 12px"></dn-checkbox>
         </td>
     </template>
 
-    <template ui-field="table-header-checkbox">
+    <template ui-field="tableHeaderCheckbox">
         <td ui-field="root">
             <dn-checkbox ui-field="checkBox" style="margin-left: 12px;"></dn-checkbox>
             <span ui-field="textPanel"></span>
@@ -360,9 +360,9 @@
         </td>
     </template>
 
-    <template ui-field="table-bar-ui">
+    <template ui-field="tableBarUi">
 
-        <template ui-field="table-bar">
+        <template ui-field="tableBar">
             <div ui-field="root">
 
             </div>
@@ -372,17 +372,17 @@
 
             </div>
         </template>
-        <template ui-field="table-bar-groupby-ui">
-            <template ui-field="table-bar-item">
+        <template ui-field="tableBarGroupByUi">
+            <template ui-field="tableBarItem">
                 <div ui-field="root" class="row p-1">
                     <div class="col-1">
                         <i ui-field="close" class="fa fa-close"></i>
                     </div>
                     <div class="col-2">
-                        <span ui-field="action-label"></span>
+                        <span ui-field="actionLabel"></span>
                     </div>
                     <div class="col-2">
-                        <span ui-field="column-name"></span>
+                        <span ui-field="columnName"></span>
                     </div>
                     <div class="col-6">
                         <div class="row" ui-field="panel">
@@ -394,18 +394,18 @@
                     </div>
                 </div>
             </template>
-            <template ui-field="table-bar-panel">
+            <template ui-field="tableBarPanel">
                 <div ui-field="root">
-                    <div ui-field="table-bar-panel-content" class="p-2"></div>
-                    <div ui-field="dropdown-holder" class="pl-2 mb-3 mt-3"></div>
+                    <div ui-field="contentPanel" class="p-2"></div>
+                    <div ui-field="dropDownHolder" class="pl-2 mb-3 mt-3"></div>
                 </div>
             </template>
         </template>
     </template>
 
-    <template ui-field="table-tree-item-simple-parent">
+    <template ui-field="tableTreeItemSimpleParent">
         <tr ui-field="root">
-            <td ui-field="open-close-cell">
+            <td ui-field="openCloseCell">
                 <div class="horizontal-div">
                     <i ui-field="openCloseElement"></i>
                     <div style="width: 10px;"></div>
@@ -417,78 +417,78 @@
         <style-item ui-field="closeStyle" class="fa fa-minus-square-o"></style-item>
     </template>
 
-    <template ui-field="table-main">
-        <style-item ui-field="ROW_HEIGHT" class="49"></style-item>
+    <template ui-field="tableMain">
+        <style-item ui-field="rowHeight" class="49"></style-item>
         <div ui-field="root" class="table-main">
-            <div ui-field="table-header-bar-row">
+            <div ui-field="headerBarRow">
                 <!--header bar content here-->
             </div>
-            <div ui-field="table-header-panel">
-                <table ui-field="table-header" class="table-header table table-bordered fixed-table table-header-style">
-                    <colgroup ui-field="table-header-colgroup"></colgroup>
+            <div>
+                <table ui-field="tableHeader" class="table-header table table-bordered fixed-table table-header-style">
+                    <colgroup ui-field="headerColgroupPanel"></colgroup>
                     <tbody ui-field="headerBodyPanel">
-                    <tr ui-field="table-header-row">
+                    <tr ui-field="headerRow">
                         <!--header content here-->
                     </tr>
                     </thead>
                 </table>
             </div>
-            <div ui-field="table-content-panel" class="table-content-panel scroll-style" style="padding-right: 1px">
-                <table ui-field="table-content" class="table table-bordered fixed-table">
-                    <colgroup ui-field="table-content-colgroup"></colgroup>
-                    <tbody ui-field="table-content-tbody">
+            <div ui-field="tableContentPanel" class="table-content-panel scroll-style" style="padding-right: 1px">
+                <table ui-field="tableContent" class="table table-bordered fixed-table">
+                    <colgroup ui-field="contentColgroupPanel"></colgroup>
+                    <tbody ui-field="rowsPanel">
                     <!--main content here-->
                     </tbody>
                 </table>
             </div>
-            <div ui-field="table-footer-panel">
-                <table ui-field="table-footer" class="table-header table table-bordered fixed-table">
-                    <colgroup ui-field="table-footer-colgroup"></colgroup>
+            <div ui-field="footerPanel">
+                <table ui-field="tableFooter" class="table-header table table-bordered fixed-table">
+                    <colgroup ui-field="tableFooterColGroup"></colgroup>
                     <tbody ui-field="footerBodyPanel">
-                    <tr ui-field="table-footer-row">
+                    <tr ui-field="tableFooterRow">
                         <!--footer content here-->
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <div ui-field="footer-pager-panel">
+            <div ui-field="footerPagerPanel">
                 <!--pager goes here-->
             </div>
         </div>
     </template>
-    <template ui-field="table-row">
+    <template ui-field="tableRow">
         <tr ui-field="root"></tr>
         <style-item ui-field="modelSelected" class="table-primary"></style-item>
     </template>
-    <template ui-field="table-column">
+    <template ui-field="tableColumn">
         <td ui-field="root"></td>
     </template>
 
-    <template ui-field="table-column-sort-header">
+    <template ui-field="tableColumnSortHeader">
         <td ui-field="root">
-            <div ui-field="text-panel"></div>
+            <div ui-field="textPanel"></div>
             <div style="position: relative;" class="pull-right">
                 <div style="right: 1px;top: -19px;position:absolute;">
-                    <div ui-field="icon-panel" class="pull-right header-s2"></div>
+                    <div ui-field="sortIcon" class="pull-right header-s2"></div>
                 </div>
             </div>
         </td>
         <style-item ui-field="sortUpStyle" class="fa fa-sort-down pull-right"></style-item>
         <style-item ui-field="sortDownStyle" class="fa fa-sort-up pull-right"></style-item>
     </template>
-    <template ui-field="table-column-menu-header">
+    <template ui-field="tableColumnMenuHeader">
         <td ui-field="root">
-            <div ui-field="text-panel"></div>
+            <div ui-field="textPanel"></div>
 
             <div style="position: relative;" class="pull-right">
                 <div style="left: -100px;top: -19px;position:absolute;">
-                    <div ui-field="filter-icon-panel" class="fa fa-filter pull-right header-s2"></div>
-                    <div ui-field="group-by-icon-panel" class="fa fa-group pull-right header-s2"></div>
-                    <div ui-field="icon-panel" class="pull-right header-s2"></div>
+                    <div ui-field="filterIconPanel" class="fa fa-filter pull-right header-s2"></div>
+                    <div ui-field="groupByIconPanel" class="fa fa-group pull-right header-s2"></div>
+                    <div ui-field="sortIconPanel" class="pull-right header-s2"></div>
                 </div>
                 <!--fa fa-sort-->
                 <div style="right: 1px;top: -30px;position:absolute;">
-                    <div ui-field="menu-holder"></div>
+                    <div ui-field="menuHolder"></div>
                 </div>
             </div>
         </td>
@@ -497,12 +497,12 @@
         <style-item ui-field="sortDownStyle" class="fa fa-sort-up pull-right"></style-item>
     </template>
 
-    <template ui-field="table-column-filter-header">
+    <template ui-field="tableColumnFilterHeader">
         <td ui-field="root">
-            <div ui-field="text-panel" style="font-weight: bold"></div>
-            <div ui-field="icon-panel" class="pull-right header-s2"></div>
-            <div ui-field="filter-icon-panel" class="fa fa-filter pull-right header-s2"></div>
-            <div ui-field="filter-panel"></div>
+            <div ui-field="textPanel" style="font-weight: bold"></div>
+            <div ui-field="sortIconPanel" class="pull-right header-s2"></div>
+            <div ui-field="filterIconPanel" class="fa fa-filter pull-right header-s2"></div>
+            <div ui-field="filterPanelElement"></div>
         </td>
     </template>
 
@@ -514,7 +514,7 @@
             <button ui-field="button" class="btn btn-secondary dropdown-toggle">
 
             </button>
-            <div ui-field="dropdown-menu" class="dropdown-menu">
+            <div ui-field="dropDownMenu" class="dropdown-menu">
             </div>
         </div>
         <style-item ui-field="dropDownMenuShowStyle" class="show"></style-item>
@@ -572,8 +572,7 @@
             </ul>
             <div ui-field='listPanel' class='autocomplete-scroll-panel'>
                 <dn-text-box ui-field='textBox'></dn-text-box>
-                <div class='scroll-style'>
-                    <dn-list ui-field="list"></dn-list>
+                <div ui-field="listOrTreePanel" class='scroll-style'>
                 </div>
             </div>
         </div>
@@ -602,7 +601,7 @@
                     <span class="sr-only">Previous</span>
                 </a>
             </li>
-            <li class="page-item">
+            <li class="pageItem">
                 <dn-integer-box ui-field="numberField"></dn-integer-box>
                 <!--<input ui-field="pageNumberField" class="form-control" type="text">-->
             </li>
@@ -621,7 +620,7 @@
         </ul>
         <style-item ui-field="disabledStyle" class="disabled"/>
     </template>
-    <template ui-field="pager-item">
+    <template ui-field="pagerItem">
         <li ui-field="root" class="page-item">
             <a ui-field="textPanel" class="page-link" href="javascript:void(0)">1</a>
         </li>
@@ -633,7 +632,7 @@
             <!---->
         </ul>
     </template>
-    <template ui-field="pager-item">
+    <template ui-field="pagerItem">
         <li ui-field="root" class="page-item">
             <a ui-field="textPanel" class="page-link" href="javascript:void(0)">1</a>
         </li>
@@ -664,7 +663,7 @@
 </template>
 <template ui-field="filterPanelList">
     <div ui-field="root" class="d-flex">
-        <div class="btn-group btn-group-sm">
+        <div class="btn-group btn-group-sm" style="width: 100%;">
             <dn-autocomplete ui-field="ac" template-id="acc"></dn-autocomplete>
             <div ui-field="valueHolder"></div>
         </div>
@@ -672,7 +671,7 @@
     </div>
     <template ui-template="acc" ui-field="accTemplate">
         <div ui-field='root' class='btn-group btn-group-sm'>
-            <dn-button ui-field='button' class='btn btn-outline-secondary dropdown-toggle'>
+            <dn-button ui-field='button' class='btn btn-sm btn-outline-secondary dropdown-toggle'>
                 <span ui-field='buttonText'>Choose ...</span>
             </dn-button>
             <div ui-field='listPanel' class='autocomplete-scroll-panel'>
@@ -685,14 +684,13 @@
     </template>
     <template ui-field="autocompleteMs">
         <template ui-field="rootView">
-            <div ui-field='root'
+            <div ui-field='root' style="width: 100%;"
                  class='autocomplete autocomplete-container autocomplete-container-multi autocomplete-container-active'>
-                <ul ui-field="selectionPanel" class="autocomplete-choices">
+                <ul ui-field="selectionPanel" class="autocomplete-choices" style="min-width: auto;">
                 </ul>
                 <div ui-field='listPanel' class='autocomplete-scroll-panel'>
                     <dn-text-box ui-field='textBox'></dn-text-box>
-                    <div class='scroll-style'>
-                        <dn-list ui-field="list"></dn-list>
+                    <div ui-field="listOrTreePanel" class='scroll-style'>
                     </div>
                 </div>
             </div>
@@ -732,22 +730,29 @@
         </nav>
     </aside>
     <template ui-field="treeSideTemplate">
-        <template ui-field="tree-main">
+        <template ui-field="treeMain">
             <ul ui-field="root" class="nav flex-column w-100 demo-nav"></ul>
-            <style-item ui-field="ROW_HEIGHT" class="49"></style-item>
+            <style-item ui-field="rowHeight" class="49"></style-item>
         </template>
-        <template ui-field="tree-item-simple">
+        <template ui-field="treeItemSimple">
             <li ui-field="root" class="nav-item">
-                <a href="javascript:void(0)" class="nav-link" ui-field="valuePanel">
-
+                <a href="javascript:void(0)" class="nav-link">
+                    <span ui-field="iconParent" style="display: none" class="mr-3">
+                      <i ui-field="iconPanel" class="fa fa-user"></i>
+                    </span>
+                    <span ui-field="valuePanel" class="d-inline-flex mr-auto">Loremipsum</span>
                 </a>
             </li>
             <style-item ui-field="modelSelected" class="active"></style-item>
         </template>
-        <template ui-field="tree-item-simple-parent">
+        <template ui-field="treeItemSimpleParent">
             <li ui-field="root" class="nav-item">
-                <a href="javascript:void(0)" class="nav-link dropdown-toggle collapsed" ui-field="valuePanel">
-                    <i ui-field="openCloseElement" class="pull-right">+</i>
+                <a href="javascript:void(0)" class="nav-link dropdown-toggle collapsed" ui-field="valuePanelParent">
+                    <span ui-field="iconParent" style="display: none" class="mr-3">
+                      <i ui-field="iconPanel" class="fa fa-user"></i>
+                    </span>
+                    <span ui-field="valuePanel" class="d-inline-flex mr-auto">Loremipsum</span>
+                    <i ui-field="openCloseElement" class="pull-right"></i>
                 </a>
             </li>
             <style-item ui-field="openStyle" class=""></style-item>

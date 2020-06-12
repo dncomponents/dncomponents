@@ -15,7 +15,7 @@ import elemental2.dom.HTMLTemplateElement;
 @UiTemplate
 public class ParentTableTreeCellViewImpl extends TreeCellParentViewImpl implements ParentTableTreeCellView {
 
-    @UiField("open-close-cell")
+    @UiField
     HTMLElement openCloseCell;
 
     HtmlBinder uiBinder = HtmlBinder.get(ParentTableTreeCellViewImpl.class, this);

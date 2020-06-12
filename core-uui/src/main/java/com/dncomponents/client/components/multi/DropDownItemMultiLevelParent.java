@@ -3,7 +3,7 @@ package com.dncomponents.client.components.multi;
 import com.dncomponents.client.components.tree.TreeNode;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownItemMultiLevelParentView;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownItemView;
-import com.google.gwt.user.client.Timer;
+import elemental2.dom.DomGlobal;
 import elemental2.dom.MouseEvent;
 
 /**
@@ -53,14 +53,10 @@ public class DropDownItemMultiLevelParent<T> extends DropDownItemMultiLevel<T> {
     private void onMouseLeave(MouseEvent event) {
         if (owner.dropDown.getTriggerType().equals(DropDownMultiLevel.TriggerType.HOVER)) {
             mouseOver = false;
-            Timer timer = new Timer() {
-                @Override
-                public void run() {
-                    if (nextDropDownPanel!=null && !nextDropDownPanel.mouseOver)
-                        showMenuItems(false);
-                }
-            };
-            timer.schedule(50);
+            DomGlobal.setTimeout(e -> {
+                if (nextDropDownPanel != null && !nextDropDownPanel.mouseOver)
+                    showMenuItems(false);
+            }, 50);
         }
     }
 

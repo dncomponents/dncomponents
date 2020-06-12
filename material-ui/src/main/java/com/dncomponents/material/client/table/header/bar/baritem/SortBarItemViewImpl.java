@@ -9,7 +9,7 @@ import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.core.ui.table.headers.bar.panelitems.SortBarItemView;
-import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.dncomponents.client.components.core.events.selection.SelectionHandler;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
@@ -22,9 +22,9 @@ public class SortBarItemViewImpl implements SortBarItemView {
     HTMLElement root;
     @UiField
     HTMLElement close;
-    @UiField("action-label")
+    @UiField
     HTMLElement actionLabel;
-    @UiField("column-name")
+    @UiField
     HTMLElement columnName;
     @UiField
     HTMLElement panel;

@@ -17,7 +17,6 @@ public class AutoCompleteEditor<M> extends DefaultCellEditor<M, Autocomplete> {
 
     @Override
     public void startEditing() {
-        //todo at first showing it doesn't load list
         getHasValue().showList(true);
     }
 

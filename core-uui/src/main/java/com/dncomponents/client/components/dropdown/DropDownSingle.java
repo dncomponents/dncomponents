@@ -1,18 +1,22 @@
 package com.dncomponents.client.components.dropdown;
 
-import com.dncomponents.client.components.core.selectionmodel.helper.HasItemSelectionHandlers;
-import com.dncomponents.client.components.core.selectionmodel.helper.ItemSelectionEvent;
-import com.dncomponents.client.components.core.selectionmodel.helper.ItemSelectionHandler;
 import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.components.core.BaseComponent;
 import com.dncomponents.client.components.core.BaseComponentSingleSelection;
 import com.dncomponents.client.components.core.ComponentHtmlParser;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.close.CloseEvent;
+import com.dncomponents.client.components.core.events.close.CloseHandler;
+import com.dncomponents.client.components.core.events.close.HasCloseHandlers;
+import com.dncomponents.client.components.core.events.open.HasOpenHandlers;
+import com.dncomponents.client.components.core.events.open.OpenEvent;
+import com.dncomponents.client.components.core.events.open.OpenHandler;
+import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ClickHandler;
+import com.dncomponents.client.views.MainRenderer;
+import com.dncomponents.client.views.MainRendererImpl;
 import com.dncomponents.client.views.Ui;
-import com.dncomponents.client.views.core.ui.dropdown.DropDownItemViewSlots;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownUi;
-import com.google.gwt.event.logical.shared.*;
-import com.google.gwt.event.shared.HandlerRegistration;
 import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.NodeList;
@@ -25,34 +29,31 @@ import java.util.Map;
  * <p>
  */
 public class DropDownSingle<T> extends BaseComponentSingleSelection<T, DropDownUi, DropDownItem<T>> implements
-        HasOpenHandlers, HasCloseHandlers, HasItemSelectionHandlers<DropDownItem<T>> {
+        HasOpenHandlers, HasCloseHandlers {
 
-    DropDownItem.DropDownItemRenderer<T> renderer = new DropDownItem.DropDownItemRenderer<T>() {
-        @Override
-        public void render(T userObject, DropDownItemViewSlots slots) {
-            slots.getMainSlot().textContent = userObject + "";
-        }
-    };
-
+    MainRenderer<T> renderer = new MainRendererImpl<>();
     boolean menuVisible;
+    HandlerRegistration clickOutHandlerRegistration;
+
 
     public DropDownSingle(DropDownUi ui) {
         super(ui);
-    }
-
-
-    public DropDownSingle() {
-        super(Ui.get().getDropDownUi());
         view.getRootView().addClickOnButton((ClickHandler) mouseEvent -> {
             showMenu(!menuVisible);
-            fireOpenCloseEvent();
-        });
-        view.getRootView().addClickOutOfButton(() -> {
             if (menuVisible) {
-                showMenu(false);
-                fireOpenCloseEvent();
+                clickOutHandlerRegistration = view.getRootView().addClickOutOfButton(evt -> {
+                    if (!DomUtil.isDescendant(this.asElement(), ((Element) evt.target))) {
+                        this.clickOutHandlerRegistration.removeHandler();
+                        this.clickOutHandlerRegistration = null;
+                        this.showMenu(false);
+                    }
+                });
             }
         });
+    }
+
+    public DropDownSingle() {
+        this(Ui.get().getDropDownUi());
     }
 
     private void fireOpenCloseEvent() {
@@ -65,7 +66,6 @@ public class DropDownSingle<T> extends BaseComponentSingleSelection<T, DropDownU
 
     @Override
     public boolean setSelected(DropDownItem<T> tDropDownItem, boolean b, boolean fireEvent) {
-        ItemSelectionEvent.fire(this, tDropDownItem);
         return super.setSelected(tDropDownItem, b, fireEvent);
     }
 
@@ -80,6 +80,7 @@ public class DropDownSingle<T> extends BaseComponentSingleSelection<T, DropDownU
     public void showMenu(boolean b) {
         view.getRootView().showList(b);
         menuVisible = b;
+        fireOpenCloseEvent();
     }
 
     public void addItem(DropDownItem<T> item) {
@@ -99,21 +100,16 @@ public class DropDownSingle<T> extends BaseComponentSingleSelection<T, DropDownU
 
     @Override
     public HandlerRegistration addOpenHandler(OpenHandler handler) {
-        return ensureHandlers().addHandler(OpenEvent.getType(), handler);
+        return handler.addTo(asElement());
     }
 
     @Override
     public HandlerRegistration addCloseHandler(CloseHandler handler) {
-        return ensureHandlers().addHandler(CloseEvent.getType(), handler);
+        return handler.addTo(asElement());
     }
 
-    public void setItemRenderer(DropDownItem.DropDownItemRenderer<T> renderer) {
+    public void setItemRenderer(MainRenderer<T> renderer) {
         this.renderer = renderer;
-    }
-
-    @Override
-    public HandlerRegistration addItemSelectionHandler(ItemSelectionHandler<DropDownItem<T>> handler) {
-        return ensureHandlers().addHandler(ItemSelectionEvent.getType(), handler);
     }
 
     @Override

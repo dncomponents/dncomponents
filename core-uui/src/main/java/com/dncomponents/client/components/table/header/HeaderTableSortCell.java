@@ -47,7 +47,6 @@ public class HeaderTableSortCell extends HeaderTableTextCell implements HeaderTa
      * Sorts descending {@link SortingDirection#DESCENDING}<p>
      * Removes sorting {@code null}
      *
-     * @param direction
      */
     @Override
     public void sort(SortingDirection direction) {
@@ -62,7 +61,6 @@ public class HeaderTableSortCell extends HeaderTableTextCell implements HeaderTa
      * Updates cell view if HeaderSorting is present in event's headers sorting list.
      * Otherwise set activity to false.
      *
-     * @param header
      */
     private void updateView(HeaderSorting header) {
         this.headerSorting = header;

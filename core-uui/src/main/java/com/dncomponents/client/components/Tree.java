@@ -1,9 +1,13 @@
 package com.dncomponents.client.components;
 
-import com.dncomponents.client.components.checkbox.CheckBox;
 import com.dncomponents.client.components.core.*;
 import com.dncomponents.client.components.core.entities.ItemId;
-import com.dncomponents.client.components.filters.Filter;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.close.CloseHandler;
+import com.dncomponents.client.components.core.events.close.HasCloseHandlers;
+import com.dncomponents.client.components.core.events.filters.Filter;
+import com.dncomponents.client.components.core.events.open.HasOpenHandlers;
+import com.dncomponents.client.components.core.events.open.OpenHandler;
 import com.dncomponents.client.components.list.ListTreeMultiSelectionModel;
 import com.dncomponents.client.components.tree.AbstractTreeCell;
 import com.dncomponents.client.components.tree.TreeCellFactory;
@@ -11,8 +15,6 @@ import com.dncomponents.client.components.tree.TreeMultiSelectionModel;
 import com.dncomponents.client.components.tree.TreeNode;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.tree.TreeUi;
-import com.google.gwt.event.logical.shared.*;
-import com.google.gwt.event.shared.HandlerRegistration;
 import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.NodeList;
@@ -27,8 +29,7 @@ import static com.dncomponents.client.dom.DomUtil.isChildOf;
 /**
  * @author nikolasavic
  */
-public class Tree<M> extends AbstractCellComponent<TreeNode<M>, Object, TreeUi> implements HasOpenHandlers<TreeNode>, HasCloseHandlers<TreeNode> {
-
+public class Tree<M> extends AbstractCellComponent<TreeNode<M>, Object, TreeUi> implements HasOpenHandlers<TreeNode>, HasCloseHandlers<TreeNode>, HasTreeData<M> {
 
     static class TreeLogic<M> {
         AbstractCellComponent<TreeNode<M>, Object, ?> owner;
@@ -82,7 +83,7 @@ public class Tree<M> extends AbstractCellComponent<TreeNode<M>, Object, TreeUi> 
             owner.ensureVirtualScroll().calculateAll();
         }
 
-        public void setRoot(TreeNode root) {
+        public void setRoot(TreeNode<M> root) {
             this.root = root;
             List rows = new ArrayList<>();
             rows.add(root);
@@ -146,6 +147,7 @@ public class Tree<M> extends AbstractCellComponent<TreeNode<M>, Object, TreeUi> 
     {
         defaultCellFactory = (TreeCellFactory<M, Object>) c -> AbstractTreeCell.getCell(c.model, isCheckable());
         setSelectionModel(new ListTreeMultiSelectionModel<>(this, view.getRootView()));
+//        setSelectionModel(new TreeMultiSelectionModel(this, view.getRootView()));
     }
 
     public Tree(TreeUi ui) {
@@ -166,7 +168,6 @@ public class Tree<M> extends AbstractCellComponent<TreeNode<M>, Object, TreeUi> 
         this.treeLogic.root = root;
     }
 
-
     @Override
     public AbstractTreeCell getRowCell(int row) {
         return (AbstractTreeCell) super.getRowCell(row);
@@ -181,11 +182,6 @@ public class Tree<M> extends AbstractCellComponent<TreeNode<M>, Object, TreeUi> 
     public List<AbstractTreeCell> getRowCells(List<TreeNode<M>> list) {
         return (List<AbstractTreeCell>) super.getRowCells(list);
     }
-
-//    @Override
-//    public List<AbstractTreeCell<?,M>> getCells() {
-//        return (List<AbstractTreeCell<?,M¬>>) super.getCells();
-//    }
 
     @Override
     public List<AbstractTreeCell<M, Object>> getCells() {
@@ -204,11 +200,7 @@ public class Tree<M> extends AbstractCellComponent<TreeNode<M>, Object, TreeUi> 
     }
 
     protected CellConfig getDefaultCellConfig(TreeNode node) {
-//        ensureRowCellConfig().setCurrentNode(node);
         return ensureRowCellConfig();
-//        if (node.getCellConfig() != null)
-//            return node.getCellConfig();
-//        else return getCellConfig();
     }
 
     public boolean isCheckable() {
@@ -221,11 +213,11 @@ public class Tree<M> extends AbstractCellComponent<TreeNode<M>, Object, TreeUi> 
         getSelectionModel().setNavigator(false);
     }
 
-    public TreeNode getRoot() {
+    public TreeNode<M> getRoot() {
         return treeLogic.root;
     }
 
-    public void setRoot(TreeNode root) {
+    public void setRoot(TreeNode<M> root) {
         this.treeLogic.root = root;
         List rows = new ArrayList<>();
         rows.add(root);
@@ -277,15 +269,17 @@ public class Tree<M> extends AbstractCellComponent<TreeNode<M>, Object, TreeUi> 
         return (ListTreeMultiSelectionModel<TreeNode<M>>) selectionModel;
     }
 
+    public void setTreeSelectionMode() {
+        setSelectionModel(new TreeMultiSelectionModel(this, view.getRootView()));
+    }
+
     public void setScrollHeight(String height) {
         view.getRootView().setScrollHeight(height);
     }
 
-
     public void showChildren(boolean showChildren) {
         treeLogic.showChildren = showChildren;
     }
-
 
     public void showParents(boolean showParents) {
         treeLogic.showParents = showParents;
@@ -309,14 +303,13 @@ public class Tree<M> extends AbstractCellComponent<TreeNode<M>, Object, TreeUi> 
 
     @Override
     public HandlerRegistration addCloseHandler(CloseHandler<TreeNode> handler) {
-        return ensureHandlers().addHandler(CloseEvent.getType(), handler);
+        return addHandler(handler);
     }
 
     @Override
     public HandlerRegistration addOpenHandler(OpenHandler<TreeNode> handler) {
-        return ensureHandlers().addHandler(OpenEvent.getType(), handler);
+        return addHandler(handler);
     }
-
 
     public static class TreeHtmlParser extends AbstractPluginHelper implements ComponentHtmlParser {
 
@@ -383,22 +376,11 @@ public class Tree<M> extends AbstractCellComponent<TreeNode<M>, Object, TreeUi> 
             return Tree.class;
         }
 
-        @Override
-        public boolean isPremium() {
-            return true;
-        }
     }
-
-    //todo
-    public void oneItemExpand(boolean b) {
-
-    }
-
 
     class DefaultTreeRowConfig extends TreeCellConfig<M, Object> {
         public DefaultTreeRowConfig() {
             this(o -> o.getUserObject(), (node, o) -> node.setUserObject((M) o));
-            setCellFactory(DefaultCellFactory.getInstance());
         }
 
         public DefaultTreeRowConfig(Function<TreeNode<M>, Object> fieldGetter) {
@@ -434,23 +416,4 @@ public class Tree<M> extends AbstractCellComponent<TreeNode<M>, Object, TreeUi> 
         mapCfg.put(m, cellConfig);
     }
 
-    public static class DefaultCellFactory<M> implements TreeCellFactory<M, Object> {
-
-        private static DefaultCellFactory instance;
-
-        public static DefaultCellFactory getInstance() {
-            if (instance == null)
-                instance = new DefaultCellFactory();
-            return instance;
-        }
-
-        private DefaultCellFactory() {
-        }
-
-        @Override
-        public AbstractTreeCell getCell(CellContext<TreeNode<M>, Object, Tree<M>> c) {
-            return AbstractTreeCell.getCell(c.model, c.owner.isCheckable());
-        }
-
-    }
 }

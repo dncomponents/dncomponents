@@ -2,19 +2,19 @@ package com.dncomponents.material.client.table.header.bar;
 
 import com.dncomponents.UiField;
 import com.dncomponents.client.components.*;
+import com.dncomponents.client.components.button.Button;
 import com.dncomponents.client.components.core.CellContext;
 import com.dncomponents.client.components.core.CellFactory;
-import com.dncomponents.client.components.list.ListCell;
-import com.dncomponents.client.components.table.header.bar.ColumnChooseBarPanelView;
-import com.dncomponents.client.components.button.Button;
 import com.dncomponents.client.components.core.HtmlBinder;
+import com.dncomponents.client.components.core.events.open.HasOpenHandlers;
 import com.dncomponents.client.components.core.selectionmodel.DefaultMultiSelectionModel;
+import com.dncomponents.client.components.list.ListCell;
 import com.dncomponents.client.components.popover.Popover;
+import com.dncomponents.client.components.table.header.bar.ColumnChooseBarPanelView;
 import com.dncomponents.client.components.tooltip.BaseTooltip;
 import com.dncomponents.client.components.tooltip.Tooltip;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.views.IsElement;
-import com.google.gwt.event.logical.shared.HasOpenHandlers;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
@@ -66,7 +66,7 @@ public class ColumnChooseBarPanelViewImpl implements ColumnChooseBarPanelView {
     }
 
     @Override
-    public HasRows<ColumnConfig> getHasRows() {
+    public HasRowsDataList<ColumnConfig> getHasRows() {
         return list;
     }
 

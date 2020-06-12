@@ -1,11 +1,11 @@
 package com.dncomponents.client.components.core;
 
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.selection.SelectionHandler;
+import com.dncomponents.client.components.core.events.value.HasValue;
 import com.dncomponents.client.components.core.selectionmodel.AbstractMultiSelectionGroup;
 import com.dncomponents.client.components.core.selectionmodel.MultiSelectionModel;
 import com.dncomponents.client.views.core.pcg.View;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.ui.HasValue;
 
 import java.util.List;
 

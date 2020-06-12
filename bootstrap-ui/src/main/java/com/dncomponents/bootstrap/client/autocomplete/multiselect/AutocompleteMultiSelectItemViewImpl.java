@@ -3,8 +3,8 @@ package com.dncomponents.bootstrap.client.autocomplete.multiselect;
 import com.dncomponents.UiField;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.handlers.ClickHandler;
+import com.dncomponents.client.views.MainViewSlots;
 import com.dncomponents.client.views.core.ui.autocomplete.multiselect.AutocompleteMultiSelectItemView;
-import com.dncomponents.client.views.core.ui.autocomplete.multiselect.AutocompleteMultiSelectItemViewSlots;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
@@ -42,15 +42,8 @@ public class AutocompleteMultiSelectItemViewImpl implements AutocompleteMultiSel
         return root;
     }
 
-    AutocompleteMultiSelectItemViewSlots viewSlots = new AutocompleteMultiSelectItemViewSlots() {
-        @Override
-        public HTMLElement getMainSlot() {
-            return mainPanel;
-        }
-    };
-
     @Override
-    public AutocompleteMultiSelectItemViewSlots getViewSlots() {
-        return viewSlots;
+    public MainViewSlots getViewSlots() {
+        return () -> mainPanel;
     }
 }

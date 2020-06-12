@@ -1,11 +1,14 @@
 package com.dncomponents.material.client.autocomplete;
 
 import com.dncomponents.UiField;
+import com.dncomponents.client.components.core.events.Command;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.textbox.TextBox;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.dom.handlers.KeyUpHandler;
 import com.dncomponents.client.views.core.ui.autocomplete.BaseAutocompleteView;
+import elemental2.dom.CustomEvent;
 import elemental2.dom.HTMLElement;
 
 /**
@@ -14,7 +17,7 @@ import elemental2.dom.HTMLElement;
 public abstract class BaseAutocompleteViewImpl<T> implements BaseAutocompleteView<T> {
 
     @UiField
-    HTMLElement root;
+    protected HTMLElement root;
     @UiField
     protected TextBox textBox;
     @UiField
@@ -30,20 +33,21 @@ public abstract class BaseAutocompleteViewImpl<T> implements BaseAutocompleteVie
     }
 
     @Override
-    public void addButtonClickHandler(ClickHandler clickHandler) {
-        DomUtil.addHandler(button, clickHandler);
-//        button.addClickHandler(clickHandler);
+    public HandlerRegistration addButtonClickHandler(ClickHandler clickHandler) {
+        return clickHandler.addTo(button);
     }
 
     @Override
     public void setStringValue(String value) {
-        if (value == null)
-            value = "Choose...";
-        buttonText.innerHTML = value;
+        if (buttonText != null) {
+            if (value == null)
+                value = "Choose...";
+            buttonText.innerHTML = value;
+        }
     }
 
     @Override
-    public void showListPanel(boolean b) {
+    public void showListPanel(boolean b, Command done) {
         if (b) {
             root.classList.add("mdc-select--focused");
             root.classList.add("mdc-select--activated");
@@ -54,6 +58,7 @@ public abstract class BaseAutocompleteViewImpl<T> implements BaseAutocompleteVie
             root.classList.remove("mdc-select--activated");
             listPanel.classList.remove("mdc-menu-surface--open");
         }
+        if (done != null) done.execute();
     }
 
     @Override
@@ -76,5 +81,10 @@ public abstract class BaseAutocompleteViewImpl<T> implements BaseAutocompleteVie
     @Override
     public HTMLElement asElement() {
         return root;
+    }
+
+    @Override
+    public void fireEvent(CustomEvent event) {
+        asElement().dispatchEvent(event);
     }
 }

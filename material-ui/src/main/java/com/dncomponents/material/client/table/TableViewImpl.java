@@ -7,47 +7,47 @@ import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ScrollHandler;
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.core.ui.table.TableView;
-import com.dncomponents.material.client.list.MdcListViewImpl;
-import com.google.gwt.event.shared.HandlerRegistration;
+import com.dncomponents.material.client.list.ListViewImpl;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import elemental2.dom.*;
 
 /**
  * @author nikolasavic
  */
 @UiTemplate
-public class TableViewImpl extends MdcListViewImpl implements TableView {
+public class TableViewImpl extends ListViewImpl implements TableView {
 
-    @UiField("table-content-colgroup")
+    @UiField
     HTMLTableColElement contentColgroupPanel;
-    @UiField("table-content-tbody")
+    @UiField
     HTMLTableSectionElement rowsPanel;
-    @UiField("table-header-colgroup")
+    @UiField
     HTMLTableColElement headerColgroupPanel;
-    @UiField("table-header-row")
+    @UiField
     HTMLTableRowElement headerRow;
     @UiField
     HTMLTableSectionElement headerBodyPanel;
     @UiField
     HTMLTableSectionElement footerBodyPanel;
-    @UiField("table-content")
+    @UiField
     HTMLElement tableContent;
-    @UiField("table-content-panel")
+    @UiField
     public HTMLElement tableContentPanel;
-    @UiField("table-header")
+    @UiField
     HTMLElement tableHeader;
-    @UiField("table-header-bar-row")
+    @UiField
     HTMLElement headerBarRow;
 
     //footer
-    @UiField("table-footer-panel")
+    @UiField
     HTMLElement footerPanel;
-    @UiField("table-footer")
+    @UiField
     HTMLElement tableFooter;
-    @UiField("table-footer-colgroup")
+    @UiField
     HTMLElement tableFooterColGroup;
-    @UiField("table-footer-row")
+    @UiField
     HTMLElement tableFooterRow;
-    @UiField("footer-pager-panel")
+    @UiField
     HTMLElement footerPagerPanel;
 
     HtmlBinder uiBinder = HtmlBinder.get(TableViewImpl.class, this);

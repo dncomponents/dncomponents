@@ -70,4 +70,8 @@ public class TreeNode<T> implements Node<TreeNode<T>> {
         this.expanded = expanded;
     }
 
+    @Override
+    public String toString() {
+        return userObject + "";
+    }
 }

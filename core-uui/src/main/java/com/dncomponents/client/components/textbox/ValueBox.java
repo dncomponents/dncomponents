@@ -1,15 +1,15 @@
 package com.dncomponents.client.components.textbox;
 
 import com.dncomponents.client.components.core.BaseFocusComponent;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.core.events.validator.ValidationEvent;
 import com.dncomponents.client.components.core.events.validator.ValidationHandler;
+import com.dncomponents.client.components.core.events.value.HasValue;
+import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
+import com.dncomponents.client.components.core.events.value.ValueChangeHandler;
 import com.dncomponents.client.dom.handlers.OnBlurHandler;
 import com.dncomponents.client.components.core.events.validator.HasValidationHandlers;
 import com.dncomponents.client.views.core.ui.textbox.TextBoxView;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.ui.HasValue;
 import elemental2.dom.FocusEvent;
 
 import java.text.ParseException;
@@ -96,7 +96,7 @@ public abstract class ValueBox<T> extends BaseFocusComponent<Object, TextBoxView
 
     @Override
     public HandlerRegistration addValueChangeHandler(ValueChangeHandler<T> handler) {
-        return ensureHandlers().addHandler(ValueChangeEvent.getType(), handler);
+        return handler.addTo(asElement());
     }
 
     /**

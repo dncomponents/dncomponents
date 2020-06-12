@@ -76,7 +76,6 @@ public class TableCellRowExpander<T, M> extends TableCell<T, M> {
     }
 
     private void addRowDetailsPanel() {
-        //todo insert after return tr but we need td to render content ? not sure
         insertedRow = getOwner()
                 .getView()
                 .getRootView()

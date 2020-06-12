@@ -1,13 +1,14 @@
 package com.dncomponents.client.components.core.selectionmodel.helper;
 
-import com.google.gwt.event.logical.shared.HasSelectionHandlers;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
+
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.selection.HasSelectionHandlers;
+import com.dncomponents.client.components.core.events.selection.SelectionHandler;
 
 public class AbstractSelectionHandler<T> extends AbstractHandler implements HasSelectionHandlers<T> {
+
     @Override
     public HandlerRegistration addSelectionHandler(SelectionHandler<T> handler) {
-        return ensureHandlers().addHandler(SelectionEvent.getType(), handler);
+        return handler.addTo(ensureHandlers());
     }
 }

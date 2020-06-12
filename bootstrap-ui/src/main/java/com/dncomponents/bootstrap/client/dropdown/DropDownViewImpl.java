@@ -4,12 +4,12 @@ import com.dncomponents.UiField;
 import com.dncomponents.UiStyle;
 import com.dncomponents.UiTemplate;
 import com.dncomponents.client.components.core.HtmlBinder;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.popover.Popper;
 import com.dncomponents.client.dom.handlers.BaseEventListener;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownView;
-import com.google.gwt.user.client.Command;
 import elemental2.dom.DomGlobal;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
@@ -25,7 +25,7 @@ public class DropDownViewImpl implements DropDownView {
     HTMLElement root;
     @UiField
     HTMLElement button;
-    @UiField("dropdown-menu")
+    @UiField
     HTMLElement dropDownMenu;
     @UiStyle
     String dropDownMenuShowStyle;
@@ -95,12 +95,8 @@ public class DropDownViewImpl implements DropDownView {
     }
 
     @Override
-    public void addClickOutOfButton(Command command) {
-        ((ClickHandler) mouseEvent -> {
-            if (!button.contains((Node) mouseEvent.target)) {
-                command.execute();
-            }
-        }).addTo(DomGlobal.document.body);
+    public HandlerRegistration addClickOutOfButton(ClickHandler clickHandler) {
+       return clickHandler.addTo(DomGlobal.document.body);
     }
 
     @Override

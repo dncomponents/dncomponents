@@ -11,9 +11,9 @@ import java.util.Map;
 public class ButtonViewFactory {
 
 
-    public static class DefaultButtonViewFactory extends AbstractPluginHelper implements ViewFactory<MdcButtonViewImpl> {
+    public static class DefaultButtonViewFactory extends AbstractPluginHelper implements ViewFactory<ButtonViewImpl> {
 
-        private static final String VIEW_ID = MdcButtonViewImpl.VIEW_ID;
+        private static final String VIEW_ID = ButtonViewImpl.VIEW_ID;
 
         private static DefaultButtonViewFactory instance;
 
@@ -27,12 +27,12 @@ public class ButtonViewFactory {
         }
 
         @Override
-        public MdcButtonViewImpl getView(Map<String, String> attributes, HTMLTemplateElement templateElement) {
+        public ButtonViewImpl getView(Map<String, String> attributes, HTMLTemplateElement templateElement) {
             ButtonType buttonType = ButtonType.lookUp
-                    .getValue(attributes.get(MdcButtonViewImpl.ButtonBuilder.typeId));
-            MaterialIcons leadingIcon = MaterialIcons.lookUp.getValue(attributes.get(MdcButtonViewImpl.ButtonBuilder.iconId));
-            String label = attributes.get(MdcButtonViewImpl.ButtonBuilder.labelId);
-            return MdcButtonViewImpl.ButtonBuilder.get()
+                    .getValue(attributes.get(ButtonViewImpl.ButtonBuilder.typeId));
+            MaterialIcons leadingIcon = MaterialIcons.lookUp.getValue(attributes.get(ButtonViewImpl.ButtonBuilder.iconId));
+            String label = attributes.get(ButtonViewImpl.ButtonBuilder.labelId);
+            return ButtonViewImpl.ButtonBuilder.get()
                     .type(buttonType)
                     .setLabel(label)
                     .setIcon(leadingIcon)

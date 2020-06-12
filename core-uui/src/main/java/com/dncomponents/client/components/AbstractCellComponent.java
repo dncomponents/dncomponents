@@ -1,27 +1,24 @@
 package com.dncomponents.client.components;
 
 import com.dncomponents.client.components.core.*;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.cell.CellEditHandler;
+import com.dncomponents.client.components.core.events.cell.HasCellEditHandlers;
+import com.dncomponents.client.components.core.events.filters.Filter;
+import com.dncomponents.client.components.core.events.rowdata.RowDataChangedEvent;
+import com.dncomponents.client.components.core.events.rowdata.RowDataChangedHandler;
+import com.dncomponents.client.components.core.events.table.SortEvent;
 import com.dncomponents.client.components.core.selectionmodel.DefaultMultiSelectionModel;
-import com.dncomponents.client.components.events.CellEditEvent;
-import com.dncomponents.client.components.events.RowCountChangedEvent;
-import com.dncomponents.client.components.filters.Filter;
-import com.dncomponents.client.components.table.header.filterevents.SortEvent;
-import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.BaseEventListener;
 import com.dncomponents.client.views.core.pcg.ComponentUi;
 import com.dncomponents.client.views.core.ui.list.ScrollView;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
-import elemental2.dom.Event;
-import elemental2.dom.EventListener;
-import elemental2.dom.HTMLElement;
-import elemental2.dom.Node;
+import elemental2.dom.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.BinaryOperator;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -29,10 +26,10 @@ import java.util.stream.Collectors;
  * @author nikolasavic
  */
 public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extends ScrollView>> extends BaseComponent<Object, W> implements
-        HasRows<T>,
+        HasRowsData<T>,
         HasSelectionModel,
         SortEvent.HasSortHandler,
-        CellEditEvent.HasCellEditHandler<T> {
+        HasCellEditHandlers<T> {
 
     protected List<T> rows = new ArrayList<>();
 
@@ -89,49 +86,24 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
 
 
     //region Handlers registrations
-
-
-    @Override
-    public HandlerRegistration addRowCountChangedHandler(RowCountChangedEvent.Handler handler) {
-        return ensureHandlers().addHandler(RowCountChangedEvent.getType(), handler);
+    public HandlerRegistration addRowDataChangedHandler(RowDataChangedHandler handler) {
+        return handler.addTo(asElement());
     }
 
     @Override
     public HandlerRegistration addSortHandler(SortEvent.SortHandler handler) {
-        return ensureHandlers().addHandler(SortEvent.getType(), handler);
+        return addHandler(handler);
     }
 
     @Override
-    public HandlerRegistration addCellEditHandler(CellEditEvent.CellEditHandler<T> handler) {
-        return ensureHandlers().addHandler(CellEditEvent.getType(), handler);
+    public HandlerRegistration addCellEditHandler(CellEditHandler<T> handler) {
+        return addHandler(handler);
     }
 
-    /**
-     * @return unmodifiableList model list
-     */
-    @Override
-    public List<T> getRowsData() {
-        return rows; //TODO not sure if to keep unmodifiableList
-//        return Collections.unmodifiableList(rows);
-    }
-
-    /**
-     * Sets list of model values to display.
-     *
-     * @param rows
-     */
-    public void setRowsData(List<T> rows) {
-        this.rows = new ArrayList<>(rows);
-        this.rowsFiltered = new ArrayList<>(this.rows);
-        RowCountChangedEvent.fire(this, rows.size(), true);
-    }
-
-    @Override
-    public void drawData() {
-        view.getRootView().clear();
-        visibleCells.clear();
-        filterAndSort();
-        displayFilteredData();
+    public void refreshSelections() {
+        for (BaseCell<T, M> visibleCell : visibleCells) {
+            visibleCell.setSelection();
+        }
     }
 
     /**
@@ -153,7 +125,6 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
         }
     }
 
-    @Override
     public int getRowSize() {
         return rows.size();
     }
@@ -204,31 +175,46 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
     }
 
 
-//    protected abstract CellConfig getDefaultCellConfig(T model);
+    /**
+     * @return unmodifiableList model list
+     */
+    @Override
+    public List<T> getRowsData() {
+        return rows; //TODO not sure if to keep unmodifiableList
+//        return Collections.unmodifiableList(rows);
+    }
+
+    /**
+     * Sets list of model values to display.
+     *
+     */
+    public void setRowsData(List<T> rows) {
+        this.rows = new ArrayList<>(rows);
+        this.rowsFiltered = new ArrayList<>(this.rows);
+        RowDataChangedEvent.fire(this, rows.size());
+    }
 
     @Override
-    public void addRow(T t) {
+    public void drawData() {
+        view.getRootView().clear();
+        visibleCells.clear();
+        filterAndSort();
+        displayFilteredData();
+    }
+
+    protected void addRow(T t) {
         rows.add(t);
         rowsFiltered.add(t);
         createAndInitModelRowCell(t);
     }
 
-    @Override
-    public void insertRow(T t, int index) {
+    protected void insertRow(T t, int index) {
         rows.add(index, t);
         rowsFiltered.add(index, t);
         createAndInitModelRowCell(t);
     }
 
-    public void scrollIntoView(T t) {
-        BaseCell baseCell = getRowCell(t);
-        if (baseCell != null)
-            baseCell.scrollInView();
-    }
-
-    //TODO add insert row fn
-    @Override
-    public void removeRow(T t) {
+    protected void removeRow(T t) {
         BaseCell cell = getRowCell(t);
         if (cell != null) {
             cell.removeFromParent();
@@ -237,6 +223,12 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
             rowsFiltered.remove(t);
         }
 //        RowCountChangedEvent.fire(this, rows.size(), false);
+    }
+
+    public void scrollIntoView(T t) {
+        BaseCell baseCell = getRowCell(t);
+        if (baseCell != null)
+            baseCell.scrollInView();
     }
 
     protected VirtualScroll ensureVirtualScroll() {
@@ -271,7 +263,6 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
      * For performance reasons instead of adding handlers to each cell
      * only one is added to a root component and intercept events from the cells.
      *
-     * @param handler Cell event handler
      */
     public HandlerRegistration addCellHandler(BaseEventListener handler) {
         EventListener listener = new EventListener() {
@@ -284,8 +275,7 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
                 }
             }
         };
-        if (!DomUtil.Junit)
-            asElement().addEventListener(handler.getType(), listener);
+        asElement().addEventListener(handler.getType(), listener);
         return new HandlerRegistration() {
             @Override
             public void removeHandler() {
@@ -326,9 +316,9 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
      * <p>
      * After setting this value, call {@link #drawData()} to change takes an effect.
      * <p>
-     * note: To enable cell editing, field {@link CellConfig#} must be defined.
+     * note: To enable cell editing, field {@link CellConfig} must be defined.
      * see: {@link FieldSetter}
-     * Also it is possible to turn on/of editing for individual columns see {@link CellConfig#}
+     * Also it is possible to turn on/of editing for individual columns see {@link CellConfig}
      * <p>
      *
      * @param editable <code>true</code> to enable editing, <code>false</code>
@@ -371,9 +361,18 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
      * @return {@link Predicate}
      */
     protected Predicate onePredicate() {
+//        return filters
+//                .stream()
+//                .reduce(Predicate::and)
+//                .orElse(o -> true);
         return filters
                 .stream()
-                .reduce(Predicate::and)
+                .reduce(new BinaryOperator<Predicate>() {
+                    @Override
+                    public Predicate apply(Predicate predicate, Predicate predicate2) {
+                        return predicate.and(predicate2);
+                    }
+                })
                 .orElse(o -> true);
     }
 
@@ -418,7 +417,6 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
      * Removes filter from list of registered filters.
      * Call {@link #drawData()} to see changes.
      *
-     * @param rowFilter
      */
     public void removeFilter(Filter rowFilter) {
         filters.remove(rowFilter);
@@ -435,7 +433,6 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
     /**
      * Ads {@link Comparator} to comparator lists.
      *
-     * @param comparator
      * @see AbstractCellComponent#oneComparator() ()
      */
     protected void addComparator(Comparator<T> comparator) {
@@ -463,23 +460,6 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
     }
 
     //endregion
-
-    private HandlerManager handlerManager;
-
-    protected HandlerManager ensureHandlers() {
-        if (handlerManager == null) {
-            handlerManager = new HandlerManager(this);
-        }
-        return handlerManager;
-    }
-
-    @Override
-    public void fireEvent(GwtEvent<?> event) {
-        if (handlerManager != null) {
-            handlerManager.fireEvent(event);
-        }
-    }
-
     void newBlock() {
 //        ListTreeCellNavigator selectionModel = getSelectionModel();
 //        GWT.log(selectionModel () + "");
@@ -509,4 +489,8 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
         getView().getRootView().resetScrollTop(value);
     }
 
+
+    public void setScrollHeight(String height) {
+        view.getRootView().setScrollHeight(height);
+    }
 }

@@ -5,7 +5,7 @@ import com.dncomponents.client.components.core.BaseComponent;
 import com.dncomponents.client.components.core.ComponentHtmlParser;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.textbox.TextBoxView;
-import com.google.gwt.core.client.GWT;
+import elemental2.dom.DomGlobal;
 import elemental2.dom.Element;
 
 import java.util.Map;
@@ -68,7 +68,7 @@ public class DoubleBox extends ValueBox<Double> {
                 try {
                     doubleBox.setValue(Double.parseDouble(value));
                 } catch (Exception ex) {
-                    GWT.log("Warning: error parsing double value: " + value);
+                    DomGlobal.console.warn("Warning: error parsing double value: " + value);
                 }
             }
 

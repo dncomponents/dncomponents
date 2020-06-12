@@ -1,10 +1,12 @@
 package com.dncomponents.client.components.multi;
 
+import com.dncomponents.client.views.Renderer;
 import com.dncomponents.client.views.HasViewSlots;
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.ViewSlots;
 import com.dncomponents.client.views.core.pcg.View;
 import elemental2.dom.HTMLElement;
+
 /**
  * @author nikolasavic
  */
@@ -32,9 +34,6 @@ public abstract class BaseHasView<T, V extends View> implements IsElement {
         return view;
     }
 
-    public interface Renderer<T, R extends ViewSlots> {
-        void render(T t, R slots);
-    }
 
     protected void setRendererBase(Renderer renderer) {
         this.renderer = renderer;

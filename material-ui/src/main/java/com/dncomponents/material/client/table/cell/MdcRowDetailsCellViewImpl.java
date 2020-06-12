@@ -4,8 +4,6 @@ import com.dncomponents.UiField;
 import com.dncomponents.UiTemplate;
 import com.dncomponents.client.components.table.columnclasses.rowexpandercolumn.RowDetailsCellView;
 import com.dncomponents.client.components.core.HtmlBinder;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.IsWidget;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
@@ -15,7 +13,7 @@ import elemental2.dom.HTMLTemplateElement;
 @UiTemplate
 public class MdcRowDetailsCellViewImpl extends TableCellViewImpl implements RowDetailsCellView {
 
-    @UiField("open-close-element")
+    @UiField
     HTMLElement openClosedElement;
 
     HtmlBinder uiBinder = HtmlBinder.get(MdcRowDetailsCellViewImpl.class, this);
@@ -28,16 +26,6 @@ public class MdcRowDetailsCellViewImpl extends TableCellViewImpl implements RowD
     public MdcRowDetailsCellViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);
         uiBinder.bind();
-    }
-
-    @Override
-    public void showRow(HasWidgets insertedRow, IsWidget rowDetailsWidget, int columnSize) {
-
-    }
-
-    @Override
-    public void hideRow() {
-
     }
 
     @Override

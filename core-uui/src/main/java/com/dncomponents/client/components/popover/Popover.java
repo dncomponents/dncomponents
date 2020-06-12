@@ -3,14 +3,20 @@ package com.dncomponents.client.components.popover;
 import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.components.core.ComponentHtmlParser;
 import com.dncomponents.client.components.core.HtmlParser;
+import com.dncomponents.client.views.Renderer;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.close.CloseEvent;
+import com.dncomponents.client.components.core.events.close.CloseHandler;
+import com.dncomponents.client.components.core.events.close.HasCloseHandlers;
+import com.dncomponents.client.components.core.events.open.HasOpenHandlers;
+import com.dncomponents.client.components.core.events.open.OpenEvent;
+import com.dncomponents.client.components.core.events.open.OpenHandler;
 import com.dncomponents.client.components.tooltip.BaseTooltip;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.popover.PopoverView;
 import com.dncomponents.client.views.core.ui.popover.PopoverViewSlots;
-import com.google.gwt.event.logical.shared.*;
-import com.google.gwt.event.shared.HandlerRegistration;
 import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.NodeList;
@@ -67,12 +73,12 @@ public class Popover<T> extends BaseTooltip<T, PopoverView> implements HasCloseH
 
     @Override
     public HandlerRegistration addCloseHandler(CloseHandler<Popover<T>> handler) {
-        return ensureHandlers().addHandler(CloseEvent.getType(), handler);
+        return handler.addTo(asElement());
     }
 
     @Override
     public HandlerRegistration addOpenHandler(OpenHandler<Popover<T>> handler) {
-        return ensureHandlers().addHandler(OpenEvent.getType(), handler);
+        return handler.addTo(asElement());
     }
 
     @Override

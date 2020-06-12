@@ -1,6 +1,5 @@
 package com.dncomponents.client.views.core.ui.tree;
 
-
 import com.dncomponents.client.views.core.pcg.ComponentUi;
 
 /**
@@ -9,13 +8,13 @@ import com.dncomponents.client.views.core.pcg.ComponentUi;
 public interface TreeUi extends ComponentUi<TreeView>,
         HasTreeUi {
 
-    BaseTreeCellView getTreeCellView();
+    BaseTreeCellView getTreeCellView(String icon);
 
-    ParentTreeCellView getParentTreeCellView();
+    ParentTreeCellView getParentTreeCellView(String icon);
 
-    TreeCellCheckboxSimpleView getTreeCellCheckBoxView();
+    TreeCellCheckboxSimpleView getTreeCellCheckBoxView(String icon);
 
-    TreeCellCheckboxParentView getParentTreeCellCheckboxView();
+    TreeCellCheckboxParentView getParentTreeCellCheckboxView(String icon);
 
     @Override
     default TreeUi getTreeUi() {

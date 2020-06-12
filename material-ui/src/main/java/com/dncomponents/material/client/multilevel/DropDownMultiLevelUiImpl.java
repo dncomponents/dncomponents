@@ -10,6 +10,7 @@ import elemental2.dom.HTMLTemplateElement;
  */
 public class DropDownMultiLevelUiImpl implements DropDownMultiLevelUi {
 
+    public static final String VIEW_ID = "default";
     @UiField
     HTMLTemplateElement dropdown;
     @UiField

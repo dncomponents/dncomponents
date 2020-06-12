@@ -1,15 +1,24 @@
 package com.dncomponents.client.components.core;
 
+import com.dncomponents.client.components.ListData;
+import com.dncomponents.client.components.Table;
+import com.dncomponents.client.components.Tree;
 import com.dncomponents.client.components.accordion.Accordion;
+import com.dncomponents.client.components.autocomplete.Autocomplete;
+import com.dncomponents.client.components.autocomplete.AutocompleteMultiSelect;
+import com.dncomponents.client.components.autocomplete.AutocompleteTree;
+import com.dncomponents.client.components.autocomplete.AutocompleteTreeMultiSelect;
 import com.dncomponents.client.components.button.Button;
 import com.dncomponents.client.components.checkbox.CheckBox;
 import com.dncomponents.client.components.checkbox.CheckBoxSelectionGroup;
 import com.dncomponents.client.components.checkbox.Radio;
 import com.dncomponents.client.components.checkbox.RadioSelectionGroup;
 import com.dncomponents.client.components.dropdown.DropDown;
-import com.dncomponents.client.components.modal.ModalDialog;
+import com.dncomponents.client.components.modal.Dialog;
+import com.dncomponents.client.components.multi.DropDownMultiLevel;
 import com.dncomponents.client.components.popover.Popover;
 import com.dncomponents.client.components.progress.Progress;
+import com.dncomponents.client.components.sidemenu.SideMenu;
 import com.dncomponents.client.components.tab.Tab;
 import com.dncomponents.client.components.textarea.TextArea;
 import com.dncomponents.client.components.textbox.*;
@@ -44,7 +53,17 @@ public class HtmlParserService {
         COMPONENT_HTML_PARSERS.add(DropDown.DropDownHtmlParser.getInstance());
         COMPONENT_HTML_PARSERS.add(Popover.PopoverHtmlParser.getInstance());
         COMPONENT_HTML_PARSERS.add(Tooltip.TooltipHtmlParser.getInstance());
-        COMPONENT_HTML_PARSERS.add(ModalDialog.ModalDialogHtmlParser.getInstance());
+        COMPONENT_HTML_PARSERS.add(Dialog.ModalDialogHtmlParser.getInstance());
+        COMPONENT_HTML_PARSERS.add(SideMenu.SideMenuHtmlParser.getInstance());
+        COMPONENT_HTML_PARSERS.add(ListData.ListHtmlParser.getInstance());
+        COMPONENT_HTML_PARSERS.add(Tree.TreeHtmlParser.getInstance());
+        COMPONENT_HTML_PARSERS.add(Table.TableHtmlParser.getInstance());
+        COMPONENT_HTML_PARSERS.add(DropDownMultiLevel.DropDownMultiLevelHtmlParser.getInstance());
+        COMPONENT_HTML_PARSERS.add(Autocomplete.AutocompleteHtmlParser.getInstance());
+        COMPONENT_HTML_PARSERS.add(AutocompleteMultiSelect.AutocompleteMultiSelectHtmlParser.getInstance());
+        COMPONENT_HTML_PARSERS.add(AutocompleteTree.AutocompleteTreeHtmlParser.getInstance());
+        COMPONENT_HTML_PARSERS.add(AutocompleteTreeMultiSelect.AutocompleteTreeMultiSelectHtmlParser.getInstance());
+
         //
         HTML_PARSERS.add(RadioSelectionGroup.RadioSelectionGroupHtmlParser.getInstance());
         HTML_PARSERS.add(CheckBoxSelectionGroup.CheckBoxSelectionGroupHtmlParser.getInstance());

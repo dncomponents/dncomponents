@@ -2,6 +2,8 @@ package com.dncomponents.client.components.tab;
 
 import com.dncomponents.client.components.core.BaseComponent;
 import com.dncomponents.client.components.core.CanSelect;
+import com.dncomponents.client.views.Renderer;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.core.events.beforeselection.BeforeSelectionEvent;
 import com.dncomponents.client.components.core.events.beforeselection.BeforeSelectionHandler;
 import com.dncomponents.client.components.core.events.beforeselection.HasBeforeSelectionHandlers;
@@ -9,7 +11,6 @@ import com.dncomponents.client.components.core.events.selection.SelectionEvent;
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.core.ui.tab.TabItemView;
 import com.dncomponents.client.views.core.ui.tab.TabItemViewSlots;
-import com.google.gwt.event.shared.HandlerRegistration;
 import elemental2.dom.Event;
 import elemental2.dom.EventListener;
 import elemental2.dom.HTMLElement;

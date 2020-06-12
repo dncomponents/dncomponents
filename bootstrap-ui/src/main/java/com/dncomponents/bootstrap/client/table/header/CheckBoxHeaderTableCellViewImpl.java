@@ -4,8 +4,8 @@ import com.dncomponents.UiField;
 import com.dncomponents.UiTemplate;
 import com.dncomponents.client.components.checkbox.CheckBox;
 import com.dncomponents.client.components.core.HtmlBinder;
+import com.dncomponents.client.components.core.events.value.HasValue;
 import com.dncomponents.client.views.core.ui.table.headers.CheckBoxHeaderTableCellView;
-import com.google.gwt.user.client.ui.HasValue;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
@@ -14,7 +14,6 @@ import elemental2.dom.HTMLTemplateElement;
  */
 @UiTemplate
 public class CheckBoxHeaderTableCellViewImpl implements CheckBoxHeaderTableCellView {
-
 
     @UiField
     public HTMLElement textPanel;

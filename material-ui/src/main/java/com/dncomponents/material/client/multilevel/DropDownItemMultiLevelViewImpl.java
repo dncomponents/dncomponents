@@ -4,15 +4,15 @@ import com.dncomponents.UiField;
 import com.dncomponents.UiTemplate;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.handlers.ClickHandler;
+import com.dncomponents.client.views.MainViewSlots;
+import com.dncomponents.client.views.MainViewSlotsImpl;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownItemView;
-import com.dncomponents.client.views.core.ui.dropdown.DropDownItemViewSlots;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
 /**
  * @author nikolasavic
  */
-@UiTemplate
 public class DropDownItemMultiLevelViewImpl implements DropDownItemView {
 
     @UiField
@@ -57,12 +57,7 @@ public class DropDownItemMultiLevelViewImpl implements DropDownItemView {
     }
 
     @Override
-    public DropDownItemViewSlots getViewSlots() {
-        return new DropDownItemViewSlots() {
-            @Override
-            public HTMLElement getMainSlot() {
-                return root;
-            }
-        };
+    public MainViewSlots getViewSlots() {
+        return new MainViewSlotsImpl(root);
     }
 }

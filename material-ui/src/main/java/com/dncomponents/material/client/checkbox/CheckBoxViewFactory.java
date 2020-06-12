@@ -27,17 +27,17 @@ public class CheckBoxViewFactory {
         public CheckBoxView getView(Map<String, String> attributes, HTMLTemplateElement templateElement) {
             if (templateElement == null)
                 templateElement = MaterialUi.getUi().checkbox;
-            return new MdcCheckBoxViewImpl(templateElement);
+            return new CheckBoxViewImpl(templateElement);
         }
 
         @Override
         public String getId() {
-            return MdcCheckBoxViewImpl.VIEW_ID;
+            return CheckBoxViewImpl.VIEW_ID;
         }
 
         @Override
         public Class getClazz() {
-            return MdcCheckBoxViewImpl.class;
+            return CheckBoxViewImpl.class;
         }
     }
 
@@ -59,17 +59,17 @@ public class CheckBoxViewFactory {
         public CheckBoxView getView(Map<String, String> attributes, HTMLTemplateElement templateElement) {
             if (templateElement == null)
                 templateElement = MaterialUi.getUi().simplecheckbox;
-            return new MdcCheckBoxViewImplSimple(templateElement);
+            return new CheckBoxViewImplSimple(templateElement);
         }
 
         @Override
         public String getId() {
-            return MdcCheckBoxViewImplSimple.VIEW_ID;
+            return CheckBoxViewImplSimple.VIEW_ID;
         }
 
         @Override
         public Class getClazz() {
-            return MdcCheckBoxViewImplSimple.class;
+            return CheckBoxViewImplSimple.class;
         }
     }
 

@@ -11,9 +11,9 @@
         <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- dependencies -->
-        <gwt.version>2.8.2</gwt.version>
-        <net.ltgt.gwt.version>1.0-rc-10</net.ltgt.gwt.version>
-        <elemental.version>1.0.0-RC1</elemental.version>
+        <gwt.version>2.9.0</gwt.version>
+        <net.ltgt.gwt.version>1.0.0</net.ltgt.gwt.version>
+        <elemental.version>1.0.0</elemental.version>
     </properties>
 
     <groupId>com.dncomponents.core</groupId>
@@ -22,7 +22,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <name>dn-components</name>
-    <description>Java UI framework</description>
+    <description>Java/Typescript UI framework</description>
     <url>http://dncomponents.com</url>
 
     <licenses>
@@ -55,13 +55,15 @@
         <module>template_annotation_processor</module>
         <module>create-project</module>
         <module>create-project-material</module>
+        <!--                <module>main</module>-->
+        <!--                <module>main-material</module>-->
     </modules>
 
     <dependencies>
         <dependency>
             <groupId>net.ltgt.gwt.maven</groupId>
             <artifactId>gwt-maven-plugin</artifactId>
-            <version>1.0-rc-10</version>
+            <version>${net.ltgt.gwt.version}</version>
         </dependency>
     </dependencies>
 
@@ -70,14 +72,31 @@
             <id>ossrh</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
-<!--        <repository>-->
-<!--            <id>ossrh</id>-->
-<!--            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
-<!--        </repository>-->
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
     </distributionManagement>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <failOnError>false</failOnError>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>net.ltgt.gwt.maven</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
@@ -86,12 +105,18 @@
                 <configuration>
                     <launcherDir>${project.build.directory}/gwt/launcherDir</launcherDir>
                     <skipModule>true</skipModule>
-                    <devmodeArgs>
-                        <moduleName>com.dncomponents.main.App</moduleName>
-                        <devmodeArg>-startupUrl</devmodeArg>
-                        <devmodeArg>com.dncomponents.main.App</devmodeArg>
-                        <arg>-generateJsInteropExports</arg>
-                    </devmodeArgs>
+                    <!--                    <devmodeArgs>-->
+                    <!--                        <moduleName>com.dncomponents.client.main.App</moduleName>-->
+                    <!--                        <devmodeArg>-startupUrl</devmodeArg>-->
+                    <!--                        <devmodeArg>com.dncomponents.client.main.App</devmodeArg>-->
+                    <!--                        <arg>-generateJsInteropExports</arg>-->
+                    <!--                    </devmodeArgs>-->
+<!--                    <devmodeArgs>-->
+<!--                        <moduleName>com.dncomponents.client.main.material.App</moduleName>-->
+<!--                        <devmodeArg>-startupUrl</devmodeArg>-->
+<!--                        <devmodeArg>com.dncomponents.client.main.material.App</devmodeArg>-->
+<!--                        <arg>-generateJsInteropExports</arg>-->
+<!--                    </devmodeArgs>-->
                     <moduleName/>
                 </configuration>
             </plugin>
@@ -109,6 +134,18 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.5</version>
@@ -125,7 +162,7 @@
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.7</version>
+                <version>1.6.8</version>
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh</serverId>

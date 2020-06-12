@@ -18,7 +18,7 @@ public class TableRowViewImpl extends BaseCellViewImpl implements TableRowView {
     HtmlBinder uiBinder = HtmlBinder.get(TableRowViewImpl.class, this);
 
     public TableRowViewImpl() {
-        uiBinder.setTemplateElement(((MdcTableUiImpl) (Ui.get()).getTableUi()).tableRow);
+        uiBinder.setTemplateElement(((TableUiImpl) (Ui.get()).getTableUi()).tableRow);
         uiBinder.bind();
     }
 

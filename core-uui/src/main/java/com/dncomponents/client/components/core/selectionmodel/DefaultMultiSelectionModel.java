@@ -1,13 +1,14 @@
 package com.dncomponents.client.components.core.selectionmodel;
 
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.selection.SelectionEvent;
+import com.dncomponents.client.components.core.events.selection.SelectionHandler;
+import com.dncomponents.client.components.core.events.value.HasValue;
+import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
 import com.dncomponents.client.components.core.selectionmodel.helper.AbstractValueChangeHandler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.ui.HasValue;
+import com.dncomponents.client.dom.DomUtil;
+import elemental2.dom.CustomEvent;
+import elemental2.dom.HTMLElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +19,7 @@ import java.util.List;
 public abstract class DefaultMultiSelectionModel<M> implements MultiSelectionModel<M> {
     protected SelectionMode selectionMode = SelectionMode.MULTI;
     protected List<M> selection = new ArrayList<>();
-    private HandlerManager handlerManager;
-
+    private HTMLElement bus;
 
     public List<M> getSelection() {
         return new ArrayList<>(selection);
@@ -29,11 +29,9 @@ public abstract class DefaultMultiSelectionModel<M> implements MultiSelectionMod
         return !selection.isEmpty() ? selection.get(0) : null;
     }
 
-
     public boolean isSelected(M item) {
         return selection.contains(item);
     }
-
 
     public void setSelected(List<M> models, boolean b, boolean fireEvent) {
         boolean changed = false;
@@ -115,31 +113,27 @@ public abstract class DefaultMultiSelectionModel<M> implements MultiSelectionMod
 
     @Override
     public HandlerRegistration addSelectionHandler(SelectionHandler<List<M>> handler) {
-        return ensureHandlers().addHandler(SelectionEvent.getType(), handler);
+        return handler.addTo(ensureHandlers());
     }
 
     public enum SelectionMode {
         SINGLE, MULTI
     }
 
+    protected HTMLElement ensureHandlers() {
+        if (bus == null)
+            bus = DomUtil.createDiv();
+        return bus;
+    }
 
-    protected HandlerManager ensureHandlers() {
-        if (handlerManager == null) {
-            handlerManager = new HandlerManager(this);
-        }
-        return handlerManager;
+    @Override
+    public void fireEvent(CustomEvent event) {
+        ensureHandlers().dispatchEvent(event);
     }
 
     protected void fireSelectionChange() {
-        SelectionEvent.fire(this, selection);
+        SelectionEvent.fire(this::ensureHandlers, selection);
         ValueChangeEvent.fire(getHasValue(), selection);
-    }
-
-
-    public void fireEvent(GwtEvent<?> event) {
-        if (handlerManager != null) {
-            handlerManager.fireEvent(event);
-        }
     }
 
     class HasValueModel extends AbstractValueChangeHandler<List<M>> {

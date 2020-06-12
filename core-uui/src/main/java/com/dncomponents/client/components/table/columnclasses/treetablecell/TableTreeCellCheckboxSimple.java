@@ -36,6 +36,6 @@ public class TableTreeCellCheckboxSimple<M> extends TableTreeCellSimple<M> {
 
     @Override
     protected void initViewFromOwner() {
-        cellView = getUi().getTreeUi().getTreeCellCheckBoxView();
+        cellView = getUi().getTreeUi().getTreeCellCheckBoxView(null);
     }
 }

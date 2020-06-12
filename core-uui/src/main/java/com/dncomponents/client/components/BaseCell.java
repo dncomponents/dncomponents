@@ -83,7 +83,7 @@ public abstract class BaseCell<P, M> extends AbstractCell<P, M, BaseCellView> {
                     ensureEditor().editCell();
             }
         });
-        cellView.addKeyDownEvent(event -> {
+        cellView.addKeyDownHandler(event -> {
             if (event.code.equals("Enter")) {
                 if (isEditable()) {
                     if (!ensureEditor().isEditing())

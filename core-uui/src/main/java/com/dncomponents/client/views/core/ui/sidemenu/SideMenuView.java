@@ -2,11 +2,11 @@ package com.dncomponents.client.views.core.ui.sidemenu;
 
 import com.dncomponents.client.components.core.CellRenderer;
 import com.dncomponents.client.components.core.TreeCellConfig;
-import com.dncomponents.client.components.filters.Filter;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.filters.Filter;
+import com.dncomponents.client.components.core.events.selection.SelectionHandler;
 import com.dncomponents.client.components.tree.TreeNode;
 import com.dncomponents.client.views.core.pcg.View;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
 
 import java.util.List;
 

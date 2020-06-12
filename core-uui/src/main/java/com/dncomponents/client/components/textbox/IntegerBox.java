@@ -5,7 +5,6 @@ import com.dncomponents.client.components.core.BaseComponent;
 import com.dncomponents.client.components.core.ComponentHtmlParser;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.textbox.TextBoxView;
-import com.google.gwt.core.client.GWT;
 import elemental2.dom.Element;
 
 import java.util.Map;
@@ -68,7 +67,7 @@ public class IntegerBox extends ValueBox<Integer> {
                 } catch (Exception ex) {
                     integerBox.getView().setError(true);
                     integerBox.getView().setErrorMessage("error parsing integer value");
-                    GWT.log("Warning: error parsing integer value: " + value);
+//                    DomGlobal.console.log("Warning: error parsing integer value: " + value);
                 }
             }
             replaceAndCopy(htmlElement, integerBox);

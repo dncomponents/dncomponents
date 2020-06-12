@@ -4,12 +4,12 @@ import com.dncomponents.client.components.core.BaseComponent;
 import com.dncomponents.client.components.core.CanSelect;
 import com.dncomponents.client.components.core.events.beforeselection.BeforeSelectionEvent;
 import com.dncomponents.client.components.core.events.selection.SelectionEvent;
-import com.dncomponents.client.views.IsElement;
+import com.dncomponents.client.components.modal.SetElement;
+import com.dncomponents.client.views.Renderer;
 import com.dncomponents.client.views.core.ui.accordion.AccordionItemView;
 import com.dncomponents.client.views.core.ui.accordion.AccordionItemViewSlots;
 import elemental2.dom.Event;
 import elemental2.dom.EventListener;
-import elemental2.dom.HTMLElement;
 
 /**
  * @author nikolasavic
@@ -37,18 +37,6 @@ public class AccordionItem<T> extends BaseComponent<T, AccordionItemView> implem
         this(accordion, accordion.getView().getAccordionItemView());
         setTitle(titleHtml);
         setContent(contentHtml);
-    }
-
-    public AccordionItem(Accordion accordion, IsElement titleElement, IsElement contentElement) {
-        this(accordion, accordion.getView().getAccordionItemView());
-        setTitle(titleElement);
-        setContent(contentElement);
-    }
-
-    public AccordionItem(Accordion accordion, HTMLElement titleElement, HTMLElement contentElement) {
-        this(accordion, accordion.getView().getAccordionItemView());
-        setTitle(titleElement);
-        setContent(contentElement);
     }
 
     public AccordionItem(Accordion accordion, T userObject) {
@@ -91,10 +79,6 @@ public class AccordionItem<T> extends BaseComponent<T, AccordionItemView> implem
         view.select(b);
     }
 
-    public void setTitle(String html) {
-        view.setItemTitle(html);
-    }
-
     public String getTitle() {
         return view.getTitle();
     }
@@ -103,24 +87,20 @@ public class AccordionItem<T> extends BaseComponent<T, AccordionItemView> implem
         return view.getContent();
     }
 
-    public void setTitle(IsElement element) {
-        view.setItemTitle(element.asElement());
+    public void setTitle(String html) {
+        view.setItemTitle(html);
     }
 
-    public void setTitle(HTMLElement element) {
-        view.setItemTitle(element);
+    public void SetTitle(SetElement se) {
+        se.setHtml(getViewSlots().getTitle());
     }
 
     public void setContent(String html) {
         view.setItemContent(html);
     }
 
-    public void setContent(IsElement content) {
-        view.setItemContent(content.asElement());
-    }
-
-    public void setContent(HTMLElement content) {
-        view.setItemContent(content);
+    public void setContent(SetElement se) {
+        se.setHtml(getViewSlots().getContent());
     }
 
     public interface RenderAccordionItem<T> extends Renderer<T, AccordionItemViewSlots> {

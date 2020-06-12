@@ -15,7 +15,7 @@ public interface BaseCellView extends CellView {
 
     void addDoubleClickHandler(DoubleClickHandler doubleClickHandler);
 
-    void addKeyDownEvent(KeyDownHandler keyDownHandler);
+    void addKeyDownHandler(KeyDownHandler keyDownHandler);
 
     void setErrorStyle(boolean b);
 

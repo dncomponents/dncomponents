@@ -14,10 +14,10 @@ import elemental2.dom.HTMLTemplateElement;
  */
 @UiTemplate
 public class FilterBarPanelUiImpl implements FilterBarPanelUi {
-    @UiField("table-bar-item")
-    HTMLTemplateElement tableBarItemUi;
-    @UiField("table-bar-panel")
-    HTMLTemplateElement tableBarPanelUi;
+    @UiField
+    HTMLTemplateElement tableBarItem;
+    @UiField
+    HTMLTemplateElement tableBarPanel;
     FilterBarPanelView filterBarPanelView;
     HtmlBinder uiBinder = HtmlBinder.get(FilterBarPanelUiImpl.class, this);
 
@@ -33,13 +33,13 @@ public class FilterBarPanelUiImpl implements FilterBarPanelUi {
 
     @Override
     public FilterBarItemView getFilterBarItemView() {
-        return new FilterBarItemViewImpl(tableBarItemUi);
+        return new FilterBarItemViewImpl(tableBarItem);
     }
 
     @Override
     public FilterBarPanelView getRootView() {
         if (filterBarPanelView == null)
-            filterBarPanelView = new FilterBarPanelViewImpl(tableBarPanelUi);
+            filterBarPanelView = new FilterBarPanelViewImpl(tableBarPanel);
         return filterBarPanelView;
     }
 }

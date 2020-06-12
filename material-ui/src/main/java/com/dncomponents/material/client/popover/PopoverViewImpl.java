@@ -5,7 +5,7 @@ import com.dncomponents.UiTemplate;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.views.core.ui.popover.PopoverView;
 import com.dncomponents.client.views.core.ui.popover.PopoverViewSlots;
-import com.dncomponents.material.client.tooltip.MdcTooltipViewImpl;
+import com.dncomponents.material.client.tooltip.TooltipViewImpl;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
@@ -13,8 +13,9 @@ import elemental2.dom.HTMLTemplateElement;
  * @author nikolasavic
  */
 @UiTemplate
-public class PopoverViewImpl extends MdcTooltipViewImpl<PopoverViewSlots> implements PopoverView {
+public class PopoverViewImpl extends TooltipViewImpl<PopoverViewSlots> implements PopoverView {
 
+    public static final String VIEW_ID = "default";
     @UiField
     HTMLElement popoverTitle;
 

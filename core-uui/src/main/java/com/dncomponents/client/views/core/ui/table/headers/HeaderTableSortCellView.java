@@ -1,7 +1,7 @@
 package com.dncomponents.client.views.core.ui.table.headers;
 
+import com.dncomponents.client.components.core.HasText;
 import com.dncomponents.client.components.table.header.SortingDirection;
-import com.google.gwt.user.client.ui.HasText;
 
 /**
  * @author nikolasavic

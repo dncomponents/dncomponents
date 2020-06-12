@@ -16,6 +16,7 @@ import elemental2.dom.HTMLTextAreaElement;
 @UiTemplate
 public class TextAreaViewImpl implements TextBoxView {
 
+    public static final String VIEW_ID = "default";
     @UiField
     HTMLTextAreaElement root;
     HtmlBinder uiBinder = HtmlBinder.get(TextAreaViewImpl.class, this);

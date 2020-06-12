@@ -1,9 +1,9 @@
 package com.dncomponents.client.components.table.columnclasses.treetablecell;
 
+import com.dncomponents.client.components.core.events.close.CloseEvent;
+import com.dncomponents.client.components.core.events.open.OpenEvent;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.core.ui.tree.ParentTreeCellView;
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.OpenEvent;
 
 /**
  * Created by nikolasavic
@@ -52,7 +52,7 @@ public class TableTreeCellParent<M> extends AbstractTableTreeCell<M> {
 
     @Override
     protected void initViewFromOwner() {
-        cellView = getUi().getTreeUi().getParentTreeCellView();
+        cellView = getUi().getTreeUi().getParentTreeCellView(null);
     }
 
 

@@ -1,16 +1,16 @@
 package com.dncomponents.client.components;
 
-import com.dncomponents.client.dom.handlers.*;
 import com.dncomponents.client.components.core.CellEditor;
-import com.dncomponents.client.components.events.CellEditEvent;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.cell.CellEditEvent;
+import com.dncomponents.client.components.core.events.focus.HasBlurHandlers;
 import com.dncomponents.client.components.events.CellValidationException;
 import com.dncomponents.client.components.events.CellValidator;
-import com.dncomponents.client.components.core.events.focus.HasBlurHandlers;
 import com.dncomponents.client.components.textbox.HasValueParser;
 import com.dncomponents.client.dom.DomUtil;
+import com.dncomponents.client.dom.handlers.*;
 import com.dncomponents.client.views.core.pcg.cell.BaseCellView;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.Timer;
+import elemental2.dom.DomGlobal;
 import elemental2.dom.Element;
 import elemental2.dom.Event;
 import elemental2.dom.KeyboardEvent;
@@ -33,7 +33,7 @@ class CellEditing<T, M> {
     private boolean stopBlur;
     private BaseCell<T, M> cell;
     private boolean isEditing = false;
-    HandlerRegistration valuChangeRegistration;
+    HandlerRegistration valueChangeRegistration;
 
     public CellEditing(BaseCell c) {
         this.cell = c;
@@ -56,12 +56,13 @@ class CellEditing<T, M> {
 
     private void onBlurEvent() {
         asElement(cellEditor).remove();
-        valuChangeRegistration.removeHandler();
+//        valueChangeRegistration.removeHandler();
         cellEditor.getHasValue().setValue(null);
         stopEditing();
     }
 
     void stopEditing() {
+        valueChangeRegistration.removeHandler();
         cell.draw();
         isEditing = false;
     }
@@ -74,7 +75,7 @@ class CellEditing<T, M> {
             throw new NullPointerException("Define edit component for the type.");
         }
         cellEditor.getHasValue().setValue(cellValue, false);
-        valuChangeRegistration = cellEditor.getHasValue().addValueChangeHandler(event -> onValueChangedEvent());
+        valueChangeRegistration = cellEditor.getHasValue().addValueChangeHandler(event -> onValueChangedEvent());
         cellEditor.startEditing();
     }
 
@@ -87,7 +88,7 @@ class CellEditing<T, M> {
             if (autoCommit) { //todo autocommit else?
                 originalValue = cell.cellConfig.getFieldGetter().apply(cell.model);
                 cell.getCellConfig().getFieldSetter().accept(cell.model, cellEditor.getHasValue().getValue());
-                cell.getOwner().fireEvent(new CellEditEvent<T>(cell, cellServerResponse));
+                cell.getOwner().fireEvent(new CellEditEvent<T>(cell));
             }
 //            cellView.setValueChangedStyle(true);
             stopEditing();
@@ -102,22 +103,10 @@ class CellEditing<T, M> {
         public void success(boolean b, String message) {
             if (b) {
                 cellView.setValueChangedStyle(true);
-                Timer timer = new Timer() {
-                    @Override
-                    public void run() {
-                        cellView.setValueChangedStyle(false);
-                    }
-                };
-                timer.schedule(1000);
+                DomGlobal.setTimeout(e -> cellView.setValueChangedStyle(false), 1000);
             } else {
                 cellView.setErrorStyle(true);
-                Timer timer = new Timer() {
-                    @Override
-                    public void run() {
-                        cellView.setErrorStyle(false);
-                    }
-                };
-                timer.schedule(1000);
+                DomGlobal.setTimeout(e -> cellView.setErrorStyle(false), 1000);
             }
         }
 

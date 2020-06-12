@@ -1,23 +1,21 @@
 package com.dncomponents.bootstrap.client.checkbox;
 
-
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
 import com.dncomponents.client.components.core.HtmlBinder;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.dom.handlers.OnChangeHandler;
+import com.dncomponents.client.views.MainViewSlots;
+import com.dncomponents.client.views.MainViewSlotsImpl;
 import com.dncomponents.client.views.core.ui.checkbox.CheckBoxView;
-import com.dncomponents.client.views.core.ui.checkbox.CheckBoxViewSlots;
-import com.google.gwt.event.shared.HandlerRegistration;
 import elemental2.dom.*;
 
 /**
  * @author nikolasavic
  */
-@UiTemplate
 public class CheckBoxViewImpl implements CheckBoxView {
-
+    public static final String VIEW_ID = "default";
     @UiField
     public HTMLElement root;
     @UiField
@@ -94,19 +92,9 @@ public class CheckBoxViewImpl implements CheckBoxView {
         return root;
     }
 
-    protected static final String VIEW_ID = "DEFAULT";
-
-
-    CheckBoxViewSlots viewSlots = new CheckBoxViewSlots() {
-        @Override
-        public HTMLElement getMainSlot() {
-            return labelText;
-        }
-    };
-
     @Override
-    public CheckBoxViewSlots getViewSlots() {
-        return viewSlots;
+    public MainViewSlots getViewSlots() {
+        return new MainViewSlotsImpl(labelText);
     }
 
     @Override

@@ -27,7 +27,6 @@ public class ListCell<T, M> extends BaseCell<T, M> {
         cellView = getUi().getListCellView();
     }
 
-
     @Override
     protected ListUi getUi() {
         return (ListUi) super.getUi();

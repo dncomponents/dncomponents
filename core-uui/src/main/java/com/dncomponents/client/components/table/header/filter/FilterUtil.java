@@ -129,10 +129,6 @@ public class FilterUtil {
     }
 
     //end DATE
-
-    //todo create CellEditFactory class with view argument that will hold views of each component of the factory.
-    //todo e.g GintegrBox view etc. that would be
-
     public static <M> CellEditor<M> getComponent(Class clzz) {
         if (clzz == null)
             throw new NullPointerException("Class argument can't be null!");
@@ -146,7 +142,7 @@ public class FilterUtil {
             DoubleBox doubleBox = new DoubleBox();
             return new DefaultCellEditor(doubleBox);
         } else if (clzz == Boolean.class) {
-            CheckBox cb = new CheckBox(); //new GCheckBoxViewImplSimple()
+            CheckBox cb = new CheckBox();
             return new DefaultCellEditor(cb);
         } else if (clzz == Long.class) {
             LongBox lb = new LongBox();

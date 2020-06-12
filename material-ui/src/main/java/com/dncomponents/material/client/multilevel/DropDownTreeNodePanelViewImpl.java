@@ -8,7 +8,7 @@ import com.dncomponents.client.dom.handlers.MouseEnterHandler;
 import com.dncomponents.client.dom.handlers.MouseLeaveHandler;
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownTreeNodePanelView;
-import com.google.gwt.user.client.Timer;
+import elemental2.dom.DomGlobal;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
@@ -16,7 +16,6 @@ import elemental2.dom.HTMLTemplateElement;
  * @author nikolasavic
  */
 public class DropDownTreeNodePanelViewImpl implements DropDownTreeNodePanelView {
-
 
     private HtmlBinder uiBinder = HtmlBinder.get(DropDownTreeNodePanelViewImpl.class, this);
 
@@ -28,20 +27,10 @@ public class DropDownTreeNodePanelViewImpl implements DropDownTreeNodePanelView 
     String showStyle;
     Popper popper;
 
-
     public DropDownTreeNodePanelViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);
         uiBinder.bind();
-        Timer timer = new Timer() {
-            @Override
-            public void run() {
-                root.style.left = "-30px !important";
-            }
-        };
-        timer.schedule(200);
-
-//        root.style.left = "-1px !important";
-
+        DomGlobal.setTimeout(e -> root.style.left = "-30px !important", 200);
     }
 
     private void init() {
@@ -75,17 +64,12 @@ public class DropDownTreeNodePanelViewImpl implements DropDownTreeNodePanelView 
             popper = new Popper(relativeTo.asElement(), this.asElement(), def);
         }
         popper.scheduleUpdate();
-
-        Timer timer = new Timer() {
-            @Override
-            public void run() {
-                if (orientation.equalsIgnoreCase("right-start")) {
-                    DropDownTreeNodePanelViewImpl.this.asElement().style.left = "";
-                    DropDownTreeNodePanelViewImpl.this.asElement().style.top = "20px";
-                }
+        DomGlobal.setTimeout(e -> {
+            if (orientation.equalsIgnoreCase("right-start")) {
+                DropDownTreeNodePanelViewImpl.this.asElement().style.left = "";
+                DropDownTreeNodePanelViewImpl.this.asElement().style.top = "20px";
             }
-        };
-        timer.schedule(200);
+        }, 200);
     }
 
     @Override

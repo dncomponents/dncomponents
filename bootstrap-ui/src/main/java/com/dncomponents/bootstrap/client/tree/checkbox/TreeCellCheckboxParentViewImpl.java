@@ -5,10 +5,10 @@ import com.dncomponents.UiTemplate;
 import com.dncomponents.bootstrap.client.tree.basic.TreeCellParentViewImpl;
 import com.dncomponents.client.components.checkbox.CheckBox;
 import com.dncomponents.client.components.core.HtmlBinder;
+import com.dncomponents.client.components.core.events.value.HasValue;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.core.ui.tree.TreeCellCheckboxParentView;
-import com.google.gwt.user.client.ui.HasValue;
 import elemental2.dom.HTMLTemplateElement;
 import elemental2.dom.MouseEvent;
 
@@ -23,16 +23,22 @@ public class TreeCellCheckboxParentViewImpl extends TreeCellParentViewImpl imple
 
     HtmlBinder uiBinder = HtmlBinder.get(TreeCellCheckboxParentViewImpl.class, this);
 
+    public TreeCellCheckboxParentViewImpl() {
+    }
+
     public TreeCellCheckboxParentViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);
         uiBinder.bind();
+        bind();
+    }
+
+    protected void bind() {
         DomUtil.addHandler(checkBox.asElement(), new ClickHandler() {
             @Override
             public void onClick(MouseEvent mouseEvent) {
                 mouseEvent.stopImmediatePropagation();
             }
         });
-
     }
 
     @Override

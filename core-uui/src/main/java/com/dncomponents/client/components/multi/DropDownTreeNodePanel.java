@@ -3,7 +3,7 @@ package com.dncomponents.client.components.multi;
 import com.dncomponents.client.components.tree.TreeNode;
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownTreeNodePanelView;
-import com.google.gwt.user.client.Timer;
+import elemental2.dom.DomGlobal;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,28 +55,22 @@ public class DropDownTreeNodePanel<T> extends BaseHasView<TreeNode<T>, DropDownT
         view.addMouseEnterHandler(e -> mouseOver = true);
         view.addMouseLeaveHandler(e -> {
             mouseOver = false;
-            Timer timer = new Timer() {
-                @Override
-                public void run() {
-
-                    if (!((nextDropDownPanel != null && nextDropDownPanel.mouseOver)
-                            || isDropDownItemMouseOver()
-                            || isFirstLevel())) {
-                        DropDownTreeNodePanel<T> pnl = DropDownTreeNodePanel.this;
+            DomGlobal.setTimeout(p -> {
+                if (!((nextDropDownPanel != null && nextDropDownPanel.mouseOver)
+                        || isDropDownItemMouseOver()
+                        || isFirstLevel())) {
+                    DropDownTreeNodePanel<T> pnl = DropDownTreeNodePanel.this;
+                    pnl.show(false);
+                    while (pnl != null
+                            && pnl.previousDropDownPanel != null
+                            && !pnl.previousDropDownPanel.mouseOver
+                            && pnl.previousDropDownPanel.visible
+                            && pnl.previousDropDownPanel.getValue().getLevel() >= 0) {
                         pnl.show(false);
-                        while (pnl != null
-                                && pnl.previousDropDownPanel != null
-                                && !pnl.previousDropDownPanel.mouseOver
-                                && pnl.previousDropDownPanel.visible
-                                && pnl.previousDropDownPanel.getValue().getLevel() >= 0) {
-                            pnl.show(false);
-                            pnl = pnl.previousDropDownPanel;
-                        }
+                        pnl = pnl.previousDropDownPanel;
                     }
-
                 }
-            };
-            timer.schedule(50);
+            }, 50);
         });
     }
 

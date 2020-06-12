@@ -1,9 +1,9 @@
 package com.dncomponents.client.components.core.selectionmodel;
 
-import com.google.gwt.event.logical.shared.HasSelectionHandlers;
-import com.google.gwt.user.client.ui.HasValue;
+ import com.dncomponents.client.components.core.events.selection.HasSelectionHandlers;
+ import com.dncomponents.client.components.core.events.value.HasValue;
 
-import java.util.List;
+ import java.util.List;
 
 public interface MultiSelectionModel<T> extends BaseSelectionModel<T>,
         HasSelectionHandlers<List<T>> {

@@ -3,8 +3,8 @@ package com.dncomponents.bootstrap.client.button;
 import com.dncomponents.UiField;
 import com.dncomponents.UiStyle;
 import com.dncomponents.client.components.core.HtmlBinder;
+import com.dncomponents.client.views.MainViewSlots;
 import com.dncomponents.client.views.core.ui.button.ButtonView;
-import com.dncomponents.client.views.core.ui.button.ButtonViewSlots;
 import elemental2.dom.HTMLButtonElement;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
@@ -68,13 +68,8 @@ public class ButtonViewImpl implements ButtonView {
     }
 
     @Override
-    public ButtonViewSlots getViewSlots() {
-        return new ButtonViewSlots() {
-            @Override
-            public HTMLElement getMainSlot() {
-                return asElement();
-            }
-        };
+    public MainViewSlots getViewSlots() {
+        return this::asElement;
     }
 
 

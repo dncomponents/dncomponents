@@ -49,7 +49,7 @@ public class ButtonBuilder {
         if (templateElement == null)
             templateElement = BootstrapUi.getUi().button;
         ButtonViewImpl buttonBootstrapView = new ButtonViewImpl(templateElement);
-        if (colorType == null)
+        if (colorType == null && outlineColorType == null)
             colorType = ButtonColorType.PRIMARY;
         String style = BASE_STYLE + HasStyle.appendString(colorType) + HasStyle.appendString(outlineColorType)
                 + HasStyle.appendString(size);

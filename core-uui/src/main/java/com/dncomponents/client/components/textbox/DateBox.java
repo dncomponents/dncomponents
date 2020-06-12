@@ -5,8 +5,8 @@ import com.dncomponents.client.components.core.BaseComponent;
 import com.dncomponents.client.components.core.ComponentHtmlParser;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.textbox.TextBoxView;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.DateTimeFormat;
+import elemental2.core.JsDate;
+import elemental2.dom.DomGlobal;
 import elemental2.dom.Element;
 
 import java.util.Date;
@@ -14,7 +14,6 @@ import java.util.Map;
 
 public class DateBox extends ValueBox<Date> {
 
-    private DateTimeFormat dateTimeFormat = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
 
     public DateBox() {
         super(Ui.get().getTextBoxView());
@@ -30,31 +29,25 @@ public class DateBox extends ValueBox<Date> {
         Date date = null;
         try {
             if (dateText.length() > 0) {
-                date = dateTimeFormat.parse(dateText);
+                final double jsDate = JsDate.parse(dateText);
+                date = new Date(new Double(jsDate).longValue());
             }
-        } catch (IllegalArgumentException exception) {
-            try {
-                date = new Date(dateText);
-                date = dateTimeFormat.parse(dateTimeFormat.format(date));
-            } catch (IllegalArgumentException e) {
-//                if (reportError) {
-//                    dateBox.addStyleName(DATE_BOX_FORMAT_ERROR);
-//                }
-                return null;
-            }
+        } catch (Exception exception) {
+            return null;
         }
         return date;
     }
 
     @Override
     String render(Date value) {
-        return value == null ? "" : dateTimeFormat.format(value);
+        return value == null ? "" : new JsDate(((double) value.getTime())).toLocaleDateString();
+//        return value == null ? "" : new JsDate((double)value.getTime()).toISOString().split("T")[0];
     }
 
 
-    public void setDateTimeFormat(DateTimeFormat dateTimeFormat) {
-        this.dateTimeFormat = dateTimeFormat;
-    }
+//    public void setDateTimeFormat(DateTimeFormat dateTimeFormat) { //todo
+//        this.dateTimeFormat = dateTimeFormat;
+//    }
 
 
     public static class DateBoxHtmlParser extends AbstractPluginHelper implements ComponentHtmlParser {
@@ -83,7 +76,7 @@ public class DateBox extends ValueBox<Date> {
                 try {
                     dateBox.setValue(dateBox.parseString(value));
                 } catch (Exception ex) {
-                    GWT.log("Warning: error parsing date value: " + value);
+                    DomGlobal.console.warn("Warning: error parsing date value: " + value);
                 }
             }
 

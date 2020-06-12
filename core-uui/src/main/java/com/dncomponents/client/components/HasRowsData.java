@@ -6,14 +6,8 @@ public interface HasRowsData<T> {
 
     List<T> getRowsData();
 
-    void addRow(T t);
-
-    void insertRow(T t, int index);
-
-    void removeRow(T t);
-
-    void setRowsData(List<T> rows);
-
     void drawData();
+
+    void refreshSelections();
 
 }

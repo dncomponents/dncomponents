@@ -3,10 +3,10 @@ package com.dncomponents.bootstrap.client.table.cell;
 import com.dncomponents.UiField;
 import com.dncomponents.UiTemplate;
 import com.dncomponents.bootstrap.client.cell.BaseCellViewImpl;
-import com.dncomponents.client.components.table.columnclasses.checkboxcolumn.TableCellCheckBoxView;
 import com.dncomponents.client.components.checkbox.CheckBox;
 import com.dncomponents.client.components.core.HtmlBinder;
-import com.google.gwt.user.client.ui.HasValue;
+import com.dncomponents.client.components.core.events.value.HasValue;
+import com.dncomponents.client.components.table.columnclasses.checkboxcolumn.TableCellCheckBoxView;
 import elemental2.dom.HTMLTemplateElement;
 
 /**

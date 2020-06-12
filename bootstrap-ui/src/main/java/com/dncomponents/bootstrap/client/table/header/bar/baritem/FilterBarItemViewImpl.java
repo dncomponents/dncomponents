@@ -3,12 +3,12 @@ package com.dncomponents.bootstrap.client.table.header.bar.baritem;
 import com.dncomponents.UiField;
 import com.dncomponents.client.components.autocomplete.Autocomplete;
 import com.dncomponents.client.components.core.HtmlBinder;
+import com.dncomponents.client.components.core.events.value.HasValue;
 import com.dncomponents.client.components.table.header.filter.HasFilterValue;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.core.ui.table.headers.bar.panelitems.FilterBarItemView;
-import com.google.gwt.user.client.ui.HasValue;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
@@ -23,9 +23,9 @@ public class FilterBarItemViewImpl implements FilterBarItemView {
     HTMLElement root;
     @UiField
     HTMLElement close;
-    @UiField("action-label")
+    @UiField
     HTMLElement actionLabel;
-    @UiField("column-name")
+    @UiField
     HTMLElement columnName;
     @UiField
     HTMLElement panel;
@@ -53,7 +53,7 @@ public class FilterBarItemViewImpl implements FilterBarItemView {
         ArrayList<Boolean> lists = new ArrayList<>();
         lists.add(true);
         lists.add(false);
-        orAc.setData(lists);
+        orAc.setRowsData(lists);
         orAc.setValue(true);
 
     }

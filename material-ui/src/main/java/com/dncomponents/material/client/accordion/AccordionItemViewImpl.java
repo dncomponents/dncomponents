@@ -2,33 +2,26 @@ package com.dncomponents.material.client.accordion;
 
 import com.dncomponents.UiField;
 import com.dncomponents.UiStyle;
-import com.dncomponents.UiTemplate;
 import com.dncomponents.client.components.core.HtmlBinder;
+import com.dncomponents.client.components.core.events.Command;
 import com.dncomponents.client.views.core.ui.accordion.AccordionItemView;
 import com.dncomponents.client.views.core.ui.accordion.AccordionItemViewSlots;
-import com.google.gwt.user.client.Command;
 import elemental2.dom.EventListener;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
-@UiTemplate
 public class AccordionItemViewImpl implements AccordionItemView {
 
     @UiField
     HTMLElement root;
-
     @UiField
     HTMLElement accordionItemTitle;
-
     @UiField
     HTMLElement accordionItemTitlePanel;
-
     @UiField
     HTMLElement contentPanel;
-
     @UiField
     HTMLElement contentPanelParent;
-
     @UiStyle
     String showContentStyle;
 

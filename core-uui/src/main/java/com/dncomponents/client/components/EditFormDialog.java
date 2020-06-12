@@ -1,13 +1,13 @@
 package com.dncomponents.client.components;
 
 import com.dncomponents.client.components.button.Button;
+import com.dncomponents.client.components.core.events.Command;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.value.HasValue;
 import com.dncomponents.client.components.html.HtmlComponent;
-import com.dncomponents.client.components.modal.ModalDialog;
+import com.dncomponents.client.components.modal.Dialog;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.views.IsElement;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.ui.HasValue;
 import elemental2.dom.HTMLDivElement;
 import elemental2.dom.HTMLElement;
 
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * @author nikolasavic
  */
-public class EditFormDialog<T> extends ModalDialog<T> {
+public class EditFormDialog<T> extends Dialog<T> {
 
 
     private HTMLElement mainPanel = DomUtil.createDiv();

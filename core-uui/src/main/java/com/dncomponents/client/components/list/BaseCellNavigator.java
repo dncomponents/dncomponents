@@ -1,10 +1,10 @@
 package com.dncomponents.client.components.list;
 
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.dom.handlers.KeyDownHandler;
 import com.dncomponents.client.components.AbstractCellComponent;
 import com.dncomponents.client.components.BaseCell;
-import com.google.gwt.event.shared.HandlerRegistration;
 import elemental2.dom.KeyboardEvent;
 import elemental2.dom.MouseEvent;
 

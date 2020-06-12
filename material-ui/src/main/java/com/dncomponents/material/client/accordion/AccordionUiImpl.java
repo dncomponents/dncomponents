@@ -11,12 +11,12 @@ import elemental2.dom.HTMLTemplateElement;
 /**
  * @author nikolasavic
  */
-@UiTemplate
 public class AccordionUiImpl implements AccordionUi {
 
-    @UiField("accordion")
+    public static final String VIEW_ID = "default";
+    @UiField
     HTMLTemplateElement accordion;
-    @UiField("accordion-item")
+    @UiField
     HTMLTemplateElement accordionItem;
 
     AccordionView accordionView;

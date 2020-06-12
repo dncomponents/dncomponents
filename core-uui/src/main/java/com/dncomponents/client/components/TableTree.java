@@ -1,18 +1,20 @@
 package com.dncomponents.client.components;
 
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.close.CloseHandler;
+import com.dncomponents.client.components.core.events.close.HasCloseHandlers;
+import com.dncomponents.client.components.core.events.open.HasOpenHandlers;
+import com.dncomponents.client.components.core.events.open.OpenHandler;
 import com.dncomponents.client.components.list.ListTreeMultiSelectionModel;
 import com.dncomponents.client.components.table.RowTableCellFactory;
 import com.dncomponents.client.components.tree.TreeMultiSelectionModel;
 import com.dncomponents.client.components.tree.TreeNode;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.table.TableUi;
-import com.google.gwt.event.logical.shared.*;
-import com.google.gwt.event.shared.HandlerRegistration;
 
 import java.util.stream.Collectors;
 
 public class TableTree<T> extends Table<TreeNode<T>> implements HasOpenHandlers<TreeNode<T>>, HasCloseHandlers<TreeNode<T>> {
-
 
     public TableTree() {
         super(Ui.get().getTableTreeUi());
@@ -92,11 +94,11 @@ public class TableTree<T> extends Table<TreeNode<T>> implements HasOpenHandlers<
 
     @Override
     public HandlerRegistration addCloseHandler(CloseHandler<TreeNode<T>> handler) {
-        return ensureHandlers().addHandler(CloseEvent.getType(), handler);
+        return addHandler(handler);
     }
 
     @Override
     public HandlerRegistration addOpenHandler(OpenHandler<TreeNode<T>> handler) {
-        return ensureHandlers().addHandler(OpenEvent.getType(), handler);
+        return addHandler(handler);
     }
 }

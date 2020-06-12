@@ -2,34 +2,34 @@ package com.dncomponents.client.components.autocomplete;
 
 import com.dncomponents.client.components.core.BaseFocusComponent;
 import com.dncomponents.client.components.core.CellConfig;
-import com.dncomponents.client.components.filters.Filter;
-import com.dncomponents.client.dom.handlers.KeyUpHandler;
-import com.dncomponents.client.dom.handlers.OnBlurHandler;
+import com.dncomponents.client.components.core.events.Command;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.filters.Filter;
+import com.dncomponents.client.components.core.events.value.HasValue;
+import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
+import com.dncomponents.client.components.core.events.value.ValueChangeHandler;
+import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.core.ui.autocomplete.BaseAutocompleteView;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.ui.HasValue;
-import elemental2.dom.FocusEvent;
-import elemental2.dom.KeyboardEvent;
+
+import java.util.ArrayList;
+import java.util.function.Function;
 
 /**
  * @author nikolasavic
  */
-public abstract class AbstractAutocomplete<T, V extends BaseAutocompleteView<T>> extends BaseFocusComponent<T, V> implements HasValue<T> {
+public class AbstractAutocomplete<T, V extends BaseAutocompleteView<T>, C> extends BaseFocusComponent<T, V> implements HasValue<C> {
 
     boolean listShowing;
-    private T value;
+    private C value;
     protected CellConfig<T, ?> cellConfig;
     protected final Filter<T> filter = new Filter<T>() {
         @Override
         public boolean test(T o) {
             if (view.getTextBoxCurrentValue() == null)
                 return true;
-            return cellConfig
+            return getRowCellConfig()
                     .getFieldGetter()
                     .apply(o)
-                    .toString()
                     .toLowerCase()
                     .contains(view.getTextBoxCurrentValue().toLowerCase());
         }
@@ -37,91 +37,111 @@ public abstract class AbstractAutocomplete<T, V extends BaseAutocompleteView<T>>
 
     public AbstractAutocomplete(V view) {
         super(view);
-    }
-
-    public AbstractAutocomplete(V view, CellConfig<T, ?> cellConfig) {
-        super(view);
-        this.cellConfig = cellConfig;
         bind();
     }
 
-    protected void bind() {
-        view.showListPanel(false);
-        view.addSelectionHandler(event -> setValue(event.getSelectedItem().stream().findFirst().orElse(null), true));
+    public AbstractAutocomplete(V view, Function<T, String> fieldGetter) {
+        super(view);
+        getRowCellConfig().setFieldGetter(fieldGetter);
+        bind();
+    }
+
+    private boolean isMultiSelect() {
+        return (this instanceof AbstractAutocompleteMultiSelect);
+    }
+
+    private void bind() {
+        view.showListPanel(false, null);
+        view.addSelectionHandler(event -> {
+
+            if (isMultiSelect())
+                setValue((C) new ArrayList<>(event.getSelectedItem()), true);
+            else
+                setValue((C) event.getSelectedItem().stream().findFirst().orElse(null), true);
+        });
+
         view.setFilter(filter);
-        view.setCellConfig(cellConfig);
-        view.addKeyUpHandler(new KeyUpHandler() {
-            @Override
-            public void onKeyUp(KeyboardEvent event) {
-                if ("ArrowDown".equals(event.code)) {
-                    view.focusList();
-                } else
-                    filter.fireFilterChange();
-            }
+        view.addKeyUpHandler(event -> {
+            if (event.code.equals("Escape")) {
+                showList(false);
+            } else if ("ArrowDown".equals(event.code)) {
+                view.focusList();
+            } else
+                filter.fireFilterChange();
         });
         addValueChangeHandler(event -> showList(false));
-        view.addButtonClickHandler(mouseEvent -> showList(!listShowing));
-
-        addBlurHandler(new OnBlurHandler() {
-            @Override
-            public void onBlur(FocusEvent focusEvent) {
-                showList(false);
-            }
+        view.addButtonClickHandler(mouseEvent -> {
+            showList(!listShowing);
         });
+        this.blurRegistration = addBlurHandler(evt -> showList(false));
     }
 
-    @Override
-    public T getValue() {
-        return value;
-    }
-
-    @Override
-    public void setValue(T value) {
-        this.setValue(value, false);
-    }
-
-    public void showList(boolean b) {
-        view.showListPanel(b);
-        view.showListPanel(b);
-        //wait list to show.
-        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                view.setTextBoxFocused(b);
-            }
-        });
-
-        listShowing = b;
-        if (!listShowing) {
-            view.setTextBoxCurrentValue(null);
-
-            filter.fireFilterChange();
-        }
-    }
+    protected HandlerRegistration blurRegistration;
 
     public boolean isListShowing() {
         return listShowing;
     }
 
-    @Override
-    public void setValue(T value, boolean fireEvents) {
-        T oldValue = getValue();
-        this.value = value;
-        if (value != null)
-            view.setStringValue(cellConfig.getFieldGetter().apply(this.value) + "");
-        if (fireEvents) {
-            T newValue = getValue();
-            ValueChangeEvent.fireIfNotEqual(this, oldValue, newValue);
-        }
-    }
-
-    @Override
-    public com.google.gwt.event.shared.HandlerRegistration addValueChangeHandler(ValueChangeHandler<T> handler) {
-        return ensureHandlers().addHandler(ValueChangeEvent.getType(), handler);
+    public void showList(boolean b) {
+        view.showListPanel(b, new Command() {
+            @Override
+            public void execute() {
+                view.setTextBoxFocused(b);
+                listShowing = b;
+                if (!listShowing) {
+                    view.setTextBoxCurrentValue(null);
+                    filter.fireFilterChange();
+                }
+            }
+        });
     }
 
     @Override
     protected V getView() {
         return super.getView();
     }
+
+    public CellConfig<T, String> getRowCellConfig() {
+        return view.getRowCellConfig();
+    }
+
+    @Override
+    public C getValue() {
+        return value;
+    }
+
+    @Override
+    public void setValue(C value) {
+        this.setValue(value, false);
+    }
+
+    @Override
+    public void setValue(C value, boolean fireEvents) {
+        C oldValue = getValue();
+        this.value = value;
+        if (this.value != null) {
+            if (!isMultiSelect())
+                view.setStringValue(getRowCellConfig().getFieldGetter().apply((T) this.value) + "");
+            view.getSelectionModel().setSelected((T) this.value, true, false);
+            view.getHasRowsData().refreshSelections();
+        } else {
+            view.setStringValue("Choose");
+            view.getSelectionModel().clearSelection(false);
+            view.getHasRowsData().refreshSelections();
+        }
+        if (fireEvents) {
+            C newValue = getValue();
+            ValueChangeEvent.fireIfNotEqual(this, oldValue, newValue);
+        }
+    }
+
+    @Override
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<C> handler) {
+        return handler.addTo(asElement());
+    }
+
+    public HandlerRegistration addClickHandler(ClickHandler handler) {
+        return view.addButtonClickHandler(handler);
+    }
+
 }

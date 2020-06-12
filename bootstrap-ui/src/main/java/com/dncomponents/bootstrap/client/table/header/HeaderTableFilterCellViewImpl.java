@@ -20,13 +20,13 @@ public class HeaderTableFilterCellViewImpl implements HeaderTableFilterCellView 
 
     @UiField
     HTMLElement root;
-    @UiField("text-panel")
+    @UiField
     HTMLElement textPanel;
-    @UiField("filter-icon-panel")
+    @UiField
     HTMLElement filterIconPanel;
-    @UiField("filter-panel")
+    @UiField
     HTMLElement filterPanelElement;
-    @UiField("icon-panel")
+    @UiField
     HTMLElement sortIconPanel;
 
     HtmlBinder uiBinder = HtmlBinder.get(HeaderTableFilterCellViewImpl.class, this);

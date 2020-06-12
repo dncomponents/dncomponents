@@ -7,7 +7,7 @@ import com.dncomponents.client.dom.handlers.MouseEnterHandler;
 import com.dncomponents.client.dom.handlers.MouseLeaveHandler;
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownTreeNodePanelView;
-import com.google.gwt.user.client.Timer;
+import elemental2.dom.DomGlobal;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
@@ -25,13 +25,7 @@ public class DropDownTreeNodePanelViewImpl implements DropDownTreeNodePanelView 
     public DropDownTreeNodePanelViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);
         uiBinder.bind();
-        Timer timer = new Timer() {
-            @Override
-            public void run() {
-                root.style.left = "-30px !important";
-            }
-        };
-        timer.schedule(200);
+        DomGlobal.setTimeout(e -> root.style.left = "-30px !important", 200);
     }
 
 

@@ -7,7 +7,8 @@ import com.dncomponents.client.components.core.TemplateParser;
 import com.dncomponents.client.components.core.selectionmodel.AbstractMultiSelectionGroup;
 import com.dncomponents.client.components.core.selectionmodel.DefaultMultiSelectionModel;
 import com.dncomponents.client.dom.DomUtil;
-import com.dncomponents.client.views.core.ui.checkbox.CheckBoxViewSlots;
+import com.dncomponents.client.views.MainRenderer;
+import com.dncomponents.client.views.MainRendererImpl;
 import elemental2.dom.Element;
 import elemental2.dom.NodeList;
 
@@ -49,11 +50,10 @@ public class CheckBoxSelectionGroup<T> extends AbstractMultiSelectionGroup<T, Ch
         items.forEach(t -> addItem(new CheckBox<T>(t, this)));
     }
 
-    public void addEntityItems(List<T> items, CheckBox.CheckBoxRenderer<T> defaultRenderer) {
+    public void addEntityItems(List<T> items, MainRenderer<T> defaultRenderer) {
         setDefaultRenderer(defaultRenderer);
         addEntityItems(items);
     }
-
 
     @Override
     public void setSelectedInView(CheckBox<T> model, boolean b) {
@@ -63,18 +63,13 @@ public class CheckBoxSelectionGroup<T> extends AbstractMultiSelectionGroup<T, Ch
     // ui binder field
     protected String uiField;
 
-    CheckBox.CheckBoxRenderer<T> defaultRenderer = new CheckBox.CheckBoxRenderer<T>() {
-        @Override
-        public void render(T t, CheckBoxViewSlots slots) {
-            slots.getMainSlot().textContent = t + "";
-        }
-    };
+    MainRenderer<T> defaultRenderer = new MainRendererImpl<>();
 
-    public void setDefaultRenderer(CheckBox.CheckBoxRenderer<T> defaultRenderer) {
+    public void setDefaultRenderer(MainRenderer<T> defaultRenderer) {
         this.defaultRenderer = defaultRenderer;
     }
 
-    public CheckBox.CheckBoxRenderer<T> getDefaultRenderer() {
+    public MainRenderer<T> getDefaultRenderer() {
         return defaultRenderer;
     }
 

@@ -7,7 +7,7 @@ import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.core.ui.tree.TreeCellCheckboxSimpleView;
 import com.dncomponents.material.client.tree.basic.TreeCellViewImpl;
-import com.google.gwt.user.client.ui.HasValue;
+import com.dncomponents.client.components.core.events.value.HasValue;
 import elemental2.dom.HTMLTemplateElement;
 import elemental2.dom.MouseEvent;
 

@@ -6,15 +6,15 @@ import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.dom.handlers.MouseEnterHandler;
 import com.dncomponents.client.dom.handlers.MouseLeaveHandler;
+import com.dncomponents.client.views.MainViewSlots;
+import com.dncomponents.client.views.MainViewSlotsImpl;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownItemMultiLevelParentView;
-import com.dncomponents.client.views.core.ui.dropdown.DropDownItemViewSlots;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
 /**
  * @author nikolasavic
  */
-@UiTemplate
 public class DropDownItemMultiLevelParentViewImpl implements DropDownItemMultiLevelParentView {
 
     @UiField
@@ -60,13 +60,8 @@ public class DropDownItemMultiLevelParentViewImpl implements DropDownItemMultiLe
     }
 
     @Override
-    public DropDownItemViewSlots getViewSlots() {
-        return new DropDownItemViewSlots() {
-            @Override
-            public HTMLElement getMainSlot() {
-                return textPanel;
-            }
-        };
+    public MainViewSlots getViewSlots() {
+        return new MainViewSlotsImpl(textPanel);
     }
 
     @Override

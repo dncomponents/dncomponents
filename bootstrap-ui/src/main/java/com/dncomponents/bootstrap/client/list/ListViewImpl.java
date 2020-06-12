@@ -4,11 +4,11 @@ import com.dncomponents.UiField;
 import com.dncomponents.UiStyle;
 import com.dncomponents.UiTemplate;
 import com.dncomponents.client.components.core.HtmlBinder;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.KeyDownHandler;
 import com.dncomponents.client.dom.handlers.ScrollHandler;
 import com.dncomponents.client.views.core.ui.list.ListView;
-import com.google.gwt.event.shared.HandlerRegistration;
 import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
@@ -22,7 +22,7 @@ public class ListViewImpl implements ListView {
     @UiField
     public HTMLElement root;
 
-    @UiField("ROW_HEIGHT")
+    @UiField
     String rowHeight;
 
     double currentScrollTop;

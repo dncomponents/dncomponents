@@ -50,5 +50,4 @@ public class TreeCellParentViewImpl extends TreeCellViewImpl implements ParentTr
     public void addOpenCloseHandler(BaseEventListener handler) {
         handler.addTo(openCloseElement);
     }
-
 }

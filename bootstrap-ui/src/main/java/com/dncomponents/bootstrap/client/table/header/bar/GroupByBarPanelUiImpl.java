@@ -15,9 +15,9 @@ import elemental2.dom.HTMLTemplateElement;
 @UiTemplate
 public class GroupByBarPanelUiImpl implements GroupByBarPanelUi {
 
-    @UiField("table-bar-item")
+    @UiField
     HTMLTemplateElement tableBarItem;
-    @UiField("table-bar-panel")
+    @UiField
     HTMLTemplateElement tableBarPanel;
 
     GroupByBarPanelView groupByBarPanelView;

@@ -12,7 +12,7 @@
     </template>
 </template>
 
-<style-item ui-field="ROW_HEIGHT" class="49"></style-item>
+<style-item ui-field="rowHeight" class="49"></style-item>
 <!--   SIDE MENU -->
 <template ui-field="treeCellIconView">
     <li ui-field="root" class="list-group-item">
@@ -134,15 +134,15 @@
         </div>
     </div>
 </template>
-<template ui-field="textbox-builder">
+<template ui-field="textBoxBuilder">
     <style-item ui-field="base" class="mdc-text-field"></style-item>
     <style-item ui-field="outlined" class="mdc-text-field--outlined"></style-item>
     <style-item ui-field="fullwidth" class="mdc-text-field--fullwidth"></style-item>
     <style-item ui-field="textarea" class="mdc-text-field--textarea"></style-item>
     <style-item ui-field="disabled" class="mdc-text-field--disabled"></style-item>
     <style-item ui-field="dense" class="mdc-text-field--dense"></style-item>
-    <style-item ui-field="with-leading-icon" class="mdc-text-field--with-leading-icon"></style-item>
-    <style-item ui-field="with-trailing-icon" class="mdc-text-field--with-trailing-icon"></style-item>
+    <style-item ui-field="withLeadingIcon" class="mdc-text-field--with-leading-icon"></style-item>
+    <style-item ui-field="withTrailingIcon" class="mdc-text-field--with-trailing-icon"></style-item>
     <style-item ui-field="focused" class="mdc-text-field--focused"></style-item>
     <style-item ui-field="noLabel" class="mdc-text-field--no-label"></style-item>
     <!--O-->
@@ -246,7 +246,7 @@
         <span ui-field="textPanel" class="mdc-button__label">Button</span>
     </button>
 </template>
-<template ui-field="button-builder">
+<template ui-field="buttonBuilder">
     <style-item ui-field="base" class="mdc-button"></style-item>
     <style-item ui-field="raised" class="mdc-button--raised"></style-item>
     <style-item ui-field="unelevated" class="mdc-button--unelevated"></style-item>
@@ -313,12 +313,12 @@
 
 
 <!--  ACCORDION  -->
-<template ui-field="accordion-ui">
+<template ui-field="accordionUi">
     <template ui-field="accordion">
         <div ui-field="root" class="accordion-style">
         </div>
     </template>
-    <template ui-field="accordion-item">
+    <template ui-field="accordionItem">
         <div ui-field="root" class="header-accordion">
             <div ui-field="accordionItemTitlePanel" class="accordion-header-style">
                 <span ui-field="accordionItemTitle" style="font-size: 15px;font-weight: 600;"></span>
@@ -335,7 +335,7 @@
 <!-- end ACCORDION  -->
 
 <!--DROPDOWN-->
-<template ui-field="dropdown-ui">
+<template ui-field="dropDownUi">
     <template ui-field="dropdown">
         <div ui-field='root' class='mdc-select'>
             <div ui-field='button' class="mdc-select__anchor custom-enhanced-select-width mdc-ripple-upgraded">
@@ -346,7 +346,7 @@
             </div>
             <div ui-field="dropDownMenuPanel" style="left: 1px;min-width: 200px;"
                  class="mdc-select__menu mdc-menu mdc-menu-surface demo-enhanced-select custom-enhanced-select-width">
-                <ul ui-field='dropdown-menu' class='mdc-list'
+                <ul ui-field='dropDownMenu' class='mdc-list'
                     style="transform-origin: center top;left: 0px;top: 56px;max-height: 519px;">
                 </ul>
             </div>
@@ -354,12 +354,10 @@
         </div>
         <style-item ui-field="dropDownMenuShowStyle" class="mdc-menu-surface--open"></style-item>
     </template>
-    <template ui-field="dropdown-item">
+    <template ui-field="dropDownItem">
         <li ui-field="root" class="mdc-list-item"></li>
     </template>
 </template>
-
-
 
 <template ui-field="listCellIconView">
     <li ui-field="root" class="mdc-list-item">
@@ -441,7 +439,7 @@
         </div>
     </div>
 </template>
-<template ui-field="progress-builder">
+<template ui-field="progressBuilder">
     <style-item ui-field="indeterminate" class="mdc-linear-progress--indeterminate"/>
     <style-item ui-field="reversed" class="mdc-linear-progress--reversed"/>
     <style-item ui-field="closed" class="mdc-linear-progress--closed"/>
@@ -451,20 +449,20 @@
 <!--CELLS-->
 <!--  LIST  -->
 <template ui-field="list">
-    <template ui-field="list-main">
+    <template ui-field="listMain">
         <ul ui-field="root" class="mdc-list scroll-style"></ul>
         <style-item ui-field='scrollableStyle' class='scroll-style'></style-item>
-        <style-item ui-field="ROW_HEIGHT" class="49"></style-item>
+        <style-item ui-field="rowHeight" class="49"></style-item>
     </template>
 
-    <template ui-field="list-item">
+    <template ui-field="listItem">
         <li ui-field="root" class="mdc-list-item">
             <span ui-field="valuePanel" class="mdc-list-item__text"></span>
         </li>
         <style-item ui-field="modelSelected" class="mdc-list-item--activated"></style-item>
     </template>
 
-    <template ui-field="list-item-checkbox">
+    <template ui-field="listItemCheckbox">
         <li ui-field="root" class="mdc-list-item" style="padding-left:  30px;">
             <dn-checkbox ui-field="checkBox"></dn-checkbox>
             <span ui-field="valuePanel"></span>
@@ -474,11 +472,11 @@
 </template>
 <!--   TREE  -->
 <template ui-field="tree">
-    <template ui-field="tree-main">
+    <template ui-field="treeMain">
         <ul ui-field="root" class="mdc-list scroll-style" style="border: 1px solid lightgrey;"></ul>
-        <style-item ui-field="ROW_HEIGHT" class="49"></style-item>
+        <style-item ui-field="rowHeight" class="49"></style-item>
     </template>
-    <template ui-field="tree-item-simple">
+    <template ui-field="treeItemSimple">
         <li ui-field="root" class="mdc-list-item">
                 <span style="margin-left:48px;">
                   <span ui-field="valuePanel"></span>
@@ -486,7 +484,7 @@
         </li>
         <style-item ui-field="modelSelected" class="mdc-list-item--selected"></style-item>
     </template>
-    <template ui-field="tree-item-simple-parent">
+    <template ui-field="treeItemSimpleParent">
         <li ui-field="root" class="mdc-list-item">
             <i ui-field="openCloseElement" class="material-icons" style="margin-right:  10px;"></i>
             <span ui-field="valuePanel"></span>
@@ -498,7 +496,7 @@
         <style-item ui-field="modelSelected" class="mdc-list-item--selected"></style-item>
     </template>
 
-    <template ui-field="tree-item-simple-checkbox">
+    <template ui-field="treeItemSimpleCheckbox">
         <li class="mdc-list-item" ui-field="root">
                 <span style="margin-left:  48px;">
                     <dn-checkbox ui-field="checkBox"></dn-checkbox>
@@ -506,7 +504,7 @@
                 </span>
         </li>
     </template>
-    <template ui-field="tree-item-simple-parent-checkbox">
+    <template ui-field="treeItemSimpleParentCheckbox">
         <li ui-field="root" class="mdc-list-item">
             <i ui-field="openCloseElement" class="material-icons" style="margin-right:  30px;"></i>
             <dn-checkbox ui-field="checkBox"></dn-checkbox>
@@ -554,22 +552,20 @@
         <style-item ui-field="booleanMainPanelStyle"
                     class="d-flex justify-content-between align-items-center"></style-item>
     </template>
-
-
-    <template ui-field="table-row-expander-item">
-        <th ui-field="root" class="mdc-data-table__header-cell">
-            <i ui-field="open-close-element" class="material-icons pull-right">chevron_right</i>
-        </th>
-    </template>
-
-    <template ui-field="table-checkbox-column">
+    <template ui-field="tableCheckBoxColumn">
         <td ui-field="root" class="mdc-data-table__cell mdc-data-table__cell--checkbox">
             <dn-checkbox ui-field="checkBox"
                          style="margin-left: 12px"></dn-checkbox>
         </td>
     </template>
 
-    <template ui-field="table-header-checkbox">
+    <template ui-field="tableRowExpanderItem">
+        <th ui-field="root" class="mdc-data-table__header-cell">
+            <i ui-field="openClosedElement" class="material-icons pull-right">chevron_right</i>
+        </th>
+    </template>
+
+    <template ui-field="tableHeaderCheckbox">
         <th ui-field="root" class="mdc-data-table__header-cell">
             <dn-checkbox ui-field="checkBox" style="margin-left: 12px;"></dn-checkbox>
             <span ui-field="textPanel"></span>
@@ -581,9 +577,9 @@
         </td>
     </template>
 
-    <template ui-field="table-bar-ui">
+    <template ui-field="tableBarUi">
 
-        <template ui-field="table-bar">
+        <template ui-field="tableBar">
             <div ui-field="root">
 
             </div>
@@ -593,15 +589,15 @@
 
             </div>
         </template>
-        <template ui-field="table-bar-groupby-ui">
-            <template ui-field="table-bar-item">
+        <template ui-field="tableBarGroupByUi">
+            <template ui-field="tableBarItem">
                 <div ui-field="root" class="bar-item">
                     <i ui-field="close" class="material-icons" style="font-size: 16px;margin-left: 10px">
                         close
                     </i>
 
-                    <span ui-field="action-label"></span>
-                    <span ui-field="column-name"></span>
+                    <span ui-field="actionLabel"></span>
+                    <span ui-field="columnName"></span>
                     <div style="display:flex;" ui-field="panel">
 
                     </div>
@@ -610,18 +606,18 @@
                     </div>
                 </div>
             </template>
-            <template ui-field="table-bar-panel">
+            <template ui-field="tableBarPanel">
                 <div ui-field="root">
-                    <div ui-field="table-bar-panel-content" style="margin-bottom: 50px"></div>
-                    <div ui-field="dropdown-holder"></div>
+                    <div ui-field="contentPanel" style="margin-bottom: 50px"></div>
+                    <div ui-field="dropDownHolder"></div>
                 </div>
             </template>
         </template>
     </template>
 
-    <template ui-field="table-tree-item-simple-parent">
+    <template ui-field="tableTreeItemSimpleParent">
         <tr ui-field="root">
-            <td ui-field="open-close-cell">
+            <td ui-field="openCloseCell">
                 <div class="horizontal-div">
                     <i ui-field="openCloseElement" class="material-icons"></i>
                     <div style="width: 10px;"></div>
@@ -633,83 +629,83 @@
         <style-item ui-field="closeStyle" class="expand_more"></style-item>
     </template>
 
-    <template ui-field="table-main">
-        <style-item ui-field="ROW_HEIGHT" class="49"></style-item>
+    <template ui-field="tableMain">
+        <style-item ui-field="rowHeight" class="49"></style-item>
         <div ui-field="root" class="table-main mdc-data-table">
-            <div style="display: none" ui-field="table-header-bar-row" class="header-bar">
+            <div style="display: none" ui-field="headerBarRow" class="header-bar">
                 <!--header bar content here-->
             </div>
-            <div ui-field="table-header-panel" style="border-bottom: 2px solid rgba(0, 0, 0, 0.12);">
-                <table ui-field="table-header" class="mdc-data-table__table"
+            <div ui-field="tableHeaderPanel" style="border-bottom: 2px solid rgba(0, 0, 0, 0.12);">
+                <table ui-field="tableHeader" class="mdc-data-table__table"
                        style="margin-bottom: 0px;border-bottom-width: 0px;">
-                    <colgroup ui-field="table-header-colgroup"></colgroup>
+                    <colgroup ui-field="headerColgroupPanel"></colgroup>
                     <thead ui-field="headerBodyPanel">
-                    <tr ui-field="table-header-row" class="mdc-data-table__header-row">
+                    <tr ui-field="headerRow" class="mdc-data-table__header-row">
                         <!--header cells here-->
                     </tr>
                     </thead>
                 </table>
             </div>
-            <div ui-field="table-content-panel" class="table-content-panel scroll-style">
-                <table ui-field="table-content" class="mdc-w mdc-table" style="width: 100%">
-                    <colgroup ui-field="table-content-colgroup"></colgroup>
-                    <tbody ui-field="table-content-tbody" class="mdc-data-table__content">
+            <div ui-field="tableContentPanel" class="table-content-panel scroll-style">
+                <table ui-field="tableContent" class="mdc-w mdc-table" style="width: 100%">
+                    <colgroup ui-field="contentColgroupPanel"></colgroup>
+                    <tbody ui-field="rowsPanel" class="mdc-data-table__content">
                     <!--main content here-->
                     </tbody>
                 </table>
             </div>
-            <div ui-field="table-footer-panel">
-                <table ui-field="table-footer" class="mdc-w mdc-table"
+            <div ui-field="footerPanel">
+                <table ui-field="tableFooter" class="mdc-w mdc-table"
                        style="width: 100%;border-top: 1px solid lightgray;">
-                    <colgroup ui-field="table-footer-colgroup"></colgroup>
+                    <colgroup ui-field="tableFooterColGroup"></colgroup>
                     <tbody class="mdc-data-table__content" ui-field="footerBodyPanel">
-                    <tr class="mdc-data-table__header-row" ui-field="table-footer-row">
+                    <tr class="mdc-data-table__header-row" ui-field="tableFooterRow">
                         <!--footer content here-->
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <div ui-field="footer-pager-panel">
+            <div ui-field="footerPagerPanel">
                 <!--pager goes here-->
             </div>
         </div>
     </template>
-    <template ui-field="table-row">
+    <template ui-field="tableRow">
         <tr ui-field="root" class="mdc-data-table__row"></tr>
         <style-item ui-field="modelSelected" class="mdc-data-table__row--selected"></style-item>
     </template>
-    <template ui-field="table-column">
+    <template ui-field="tableColumn">
         <td ui-field="root" class="mdc-data-table__cell"></td>
     </template>
-    <template ui-field="table-header-column">
+    <template ui-field="tableHeaderColumn">
         <th ui-field="root" class="mdc-data-table__header-cell"></th>
     </template>
 
-    <template ui-field="table-column-sort-header">
+    <template ui-field="tableColumnSortHeader">
         <th ui-field="root" class="mdc-data-table__cell">
-            <div ui-field="text-panel" style="float: left;"></div>
+            <div ui-field="textPanel" style="float: left;"></div>
             <div style="position: relative;" class="pull-right">
                 <div style="right: 5px;position:absolute;">
-                    <i ui-field="icon-panel" class="material-icons pull-right">sort</i>
-                    <i ui-field="icon-panel-order" class="pull-right"></i>
+                    <i ui-field="sortIcon" class="material-icons pull-right">sort</i>
+                    <i ui-field="sortIconOrder" class="pull-right"></i>
                 </div>
             </div>
         </th>
         <style-item ui-field="active" class="active"></style-item>
     </template>
-    <template ui-field="table-column-menu-header">
+    <template ui-field="tableColumnMenuHeader">
         <th ui-field="root">
-            <div ui-field="text-panel"></div>
+            <div ui-field="textPanel"></div>
 
             <div style="position: relative;" class="pull-right">
                 <div style="left: -100px;top: -19px;position:absolute;">
-                    <div ui-field="filter-icon-panel" class="fa fa-filter pull-right header-s2"></div>
-                    <div ui-field="group-by-icon-panel" class="fa fa-group pull-right header-s2"></div>
-                    <div ui-field="icon-panel" class="pull-right header-s2"></div>
+                    <div ui-field="filterIconPanel" class="fa fa-filter pull-right header-s2"></div>
+                    <div ui-field="groupByIconPanel" class="fa fa-group pull-right header-s2"></div>
+                    <div ui-field="sortIconPanel" class="pull-right header-s2"></div>
                 </div>
                 <!--fa fa-sort-->
                 <div style="right: 1px;top: -30px;position:absolute;">
-                    <div ui-field="menu-holder"></div>
+                    <div ui-field="menuHolder"></div>
                 </div>
             </div>
         </th>
@@ -718,12 +714,12 @@
         <style-item ui-field="sortDownStyle" class="fa fa-sort-up pull-right"></style-item>
     </template>
 
-    <template ui-field="table-column-filter-header">
+    <template ui-field="tableColumnFilterHeader">
         <th ui-field="root">
-            <div ui-field="text-panel" style="text-align: left;margin-left: 10px;"></div>
-            <div ui-field="icon-panel" class="pull-right header-s2"></div>
-            <div ui-field="filter-icon-panel" class="fa fa-filter pull-right header-s2"></div>
-            <div ui-field="filter-panel"></div>
+            <div ui-field="textPanel" style="text-align: left;margin-left: 10px;"></div>
+            <div ui-field="sortIconPanel" class="pull-right header-s2"></div>
+            <div ui-field="filterIconPanel" class="fa fa-filter pull-right header-s2"></div>
+            <div ui-field="filterPanelElement"></div>
         </th>
     </template>
 
@@ -762,7 +758,7 @@
     </template>
 </template>
 <!--  AUTOCOMPLETE  -->
-<template ui-template="autocomplete">
+<template ui-field="autocomplete">
     <div ui-field='root' class='mdc-select'>
         <div ui-field='button' class="mdc-select__anchor demo-width-class">
             <i class="mdc-select__dropdown-icon"></i>
@@ -779,7 +775,7 @@
     </div>
 </template>
 <!--  AUTOCOMPLETE  TREE-->
-<template ui-field="autocomplete-tree">
+<template ui-field="autocompleteTree">
     <div ui-field='root' class='mdc-select'>
         <div ui-field='button' class="mdc-select__anchor demo-width-class">
             <i class="mdc-select__dropdown-icon"></i>
@@ -794,10 +790,9 @@
             <dn-tree ui-field="tree"></dn-tree>
         </div>
     </div>
-
 </template>
 <!--AUTOCOMPLETE MULTISELECT-->
-<template ui-field="autocomplete-multi-select">
+<template ui-field="autocompleteMultiSelect">
     <template ui-field="rootView">
         <div ui-field='root' class='autocomplete-multiselect'>
             <div ui-field="selectionPanel" class="mdc-chip-set">
@@ -806,7 +801,8 @@
             <div ui-field='listPanel' style="width: 100%"
                  class='mdc-select__menu mdc-menu mdc-menu-surface demo-width-class'>
                 <dn-text-box ui-field='textBox' style="width: 100%;left: 0"></dn-text-box>
-                <dn-list ui-field="list"></dn-list>
+                <div ui-field="listOrTreePanel">
+                </div>
             </div>
         </div>
     </template>
@@ -823,7 +819,7 @@
     </template>
 </template>
 <!--PAGER-->
-<template ui-field="pager-ui">
+<template ui-field="pagerUi">
     <template ui-field="pager">
         <div ui-field="root" class="pagination">
             <span ui-field="textPanel" style="margin-right: 20px;"></span>
@@ -854,20 +850,20 @@
         </div>
         <style-item ui-field="disabledStyle" class="disabled"/>
     </template>
-    <template ui-field="pager-item">
+    <template ui-field="pagerItem">
         <div ui-field="root" class="page-item">
             <span ui-field="textPanel" class="page-link">1</span>
         </div>
     </template>
 </template>
 <!--PAGER List-->
-<template ui-field="pager-list-ui">
+<template ui-field="pagerListUi">
     <template ui-field="pager">
         <div ui-field="root" class="pagination" style="margin: 5px;">
             <!---->
         </div>
     </template>
-    <template ui-field="pager-item">
+    <template ui-field="pagerItem">
         <div ui-field="root" class="page-item">
             <span ui-field="textPanel" class="page-link">1</span>
         </div>
@@ -897,20 +893,30 @@
         </div>
     </aside>
     <template ui-field="treeSideTemplate">
-        <template ui-field="tree-main">
+        <template ui-field="treeMain">
             <ul ui-field="root" class="mdc-list"></ul>
-            <style-item ui-field="ROW_HEIGHT" class="49"></style-item>
+            <style-item ui-field="rowHeight" class="49"></style-item>
         </template>
-        <template ui-field="tree-item-simple">
+        <template ui-field="treeItemSimple">
             <li ui-field="root" class="mdc-list-item">
-            <span ui-field="valuePanel">
+                    <span ui-field="iconParent" style="display: none" class="mr-3">
+                        <span ui-field="iconPanel" class="mdc-list-item__graphic material-icons"
+                              style="vertical-align: middle;" aria-hidden="true">star</span>
+                    </span>
+
+                <span ui-field="valuePanel">
 
             </span>
             </li>
             <style-item ui-field="modelSelected" class="mdc-list-item--activated"></style-item>
         </template>
-        <template ui-field="tree-item-simple-parent">
+        <template ui-field="treeItemSimpleParent">
             <li ui-field="root" class="mdc-list-item">
+                   <span ui-field="iconParent" style="display: none">
+                      <span ui-field="iconPanel" class="mdc-list-item__graphic material-icons"
+                            style="vertical-align: middle;" aria-hidden="true">star</span>
+                    </span>
+                <span ui-field="valuePanelParent"></span>
                 <span style="font-weight: bold" ui-field="valuePanel"></span>
                 <i ui-field="openCloseElement"
                    class="material-icons mdc-layout-grid--align-right">keyboard_arrow_down</i>

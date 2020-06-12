@@ -20,9 +20,9 @@ public class TextBoxBuilderConst {
     public String disabled;
     @UiField
     public String dense;
-    @UiField("with-leading-icon")
+    @UiField
     public String withLeadingIcon;
-    @UiField("with-trailing-icon")
+    @UiField
     public String withTrailingIcon;
     @UiField
     public String focused;

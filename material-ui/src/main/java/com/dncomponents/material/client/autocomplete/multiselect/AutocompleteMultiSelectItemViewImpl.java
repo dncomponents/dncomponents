@@ -4,11 +4,11 @@ import com.dncomponents.UiField;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ClickHandler;
+import com.dncomponents.client.views.MainViewSlots;
+import com.dncomponents.client.views.MainViewSlotsImpl;
 import com.dncomponents.client.views.core.ui.autocomplete.multiselect.AutocompleteMultiSelectItemView;
-import com.dncomponents.client.views.core.ui.autocomplete.multiselect.AutocompleteMultiSelectItemViewSlots;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
-import elemental2.dom.MouseEvent;
 
 public class AutocompleteMultiSelectItemViewImpl implements AutocompleteMultiSelectItemView {
 
@@ -34,12 +34,9 @@ public class AutocompleteMultiSelectItemViewImpl implements AutocompleteMultiSel
     @Override
     public void addRemoveClickHandler(ClickHandler clickHandler) {
         clickHandler.addTo(removeBtn);
-        DomUtil.addHandler(removeBtn, new ClickHandler() {
-            @Override
-            public void onClick(MouseEvent mouseEvent) {
-                mouseEvent.stopImmediatePropagation();
-                mouseEvent.stopPropagation();
-            }
+        DomUtil.addHandler(removeBtn, (ClickHandler) mouseEvent -> {
+            mouseEvent.stopImmediatePropagation();
+            mouseEvent.stopPropagation();
         });
     }
 
@@ -48,15 +45,8 @@ public class AutocompleteMultiSelectItemViewImpl implements AutocompleteMultiSel
         return root;
     }
 
-    AutocompleteMultiSelectItemViewSlots viewSlots = new AutocompleteMultiSelectItemViewSlots() {
-        @Override
-        public HTMLElement getMainSlot() {
-            return mainPanel;
-        }
-    };
-
     @Override
-    public AutocompleteMultiSelectItemViewSlots getViewSlots() {
-        return viewSlots;
+    public MainViewSlots getViewSlots() {
+        return () -> mainPanel;
     }
 }

@@ -16,7 +16,7 @@ public class TableTreeCellSimple<M> extends AbstractTableTreeCell<M> {
 
     @Override
     protected void initViewFromOwner() {
-        cellView = getUi().getTreeUi().getTreeCellView();
+        cellView = getUi().getTreeUi().getTreeCellView(null);
     }
 
 }

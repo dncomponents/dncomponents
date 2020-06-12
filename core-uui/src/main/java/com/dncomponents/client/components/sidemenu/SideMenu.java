@@ -2,16 +2,16 @@ package com.dncomponents.client.components.sidemenu;
 
 import com.dncomponents.client.components.core.*;
 import com.dncomponents.client.components.core.entities.ItemId;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.filters.Filter;
 import com.dncomponents.client.components.core.events.selection.HasSelectionHandlers;
 import com.dncomponents.client.components.core.events.selection.SelectionEvent;
 import com.dncomponents.client.components.core.events.selection.SelectionHandler;
-import com.dncomponents.client.components.filters.Filter;
 import com.dncomponents.client.components.tree.TreeNode;
+import com.dncomponents.client.dom.History;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.appview.PlaceManager;
 import com.dncomponents.client.views.core.ui.sidemenu.SideMenuView;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.History;
 import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.NodeList;
@@ -61,12 +61,14 @@ public class SideMenu<T> extends BaseComponent<Object, SideMenuView> implements 
 
     private void init() {
         view.registerFilter(filter);
-        view.addSelectionHandler(new com.google.gwt.event.logical.shared.SelectionHandler<List<TreeNode<T>>>() {
+        view.addSelectionHandler(new SelectionHandler<List<TreeNode<T>>>() {
             @Override
-            public void onSelection(com.google.gwt.event.logical.shared.SelectionEvent<List<TreeNode<T>>> event) {
-                SelectionEvent.fire(SideMenu.this, event.getSelectedItem().get(0).getUserObject());
+            public void onSelection(SelectionEvent<List<TreeNode<T>>> event) {
+                SelectionEvent.fire((HasSelectionHandlers<T>) SideMenu.this, event.getSelectedItem().get(0).getUserObject());
             }
         });
+//        view.addSelectionHandler((SelectionHandler<List<TreeNode<T>>>) event ->
+//                SelectionEvent.fire((HasSelectionHandlers<T>) SideMenu.this, event.getSelectedItem().get(0).getUserObject()));
     }
 
     public void showFilter(boolean b) {
@@ -122,8 +124,15 @@ public class SideMenu<T> extends BaseComponent<Object, SideMenuView> implements 
     public void setPlaceManager(PlaceManager placeManager) {
         if (this.placeManager == null) {
             this.placeManager = placeManager;
-            addSelectionHandler(event ->
-                    History.newItem(((ItemId) event.getItem()).getId(), true));
+            addSelectionHandler(new SelectionHandler<T>() {
+                @Override
+                public void onSelection(SelectionEvent<T> event) {
+                    if (event.getSelectedItem() instanceof ItemId)
+                        History.newItem(((ItemId) event.getSelectedItem()).getId(), true);
+                    else
+                        History.newItem(event.getSelectedItem() + "", true);
+                }
+            });
             placeManager.addValueChangeHandler(event -> {
                 final String historyToken = placeManager.getHistoryToken(event.getValue());
                 for (TreeNode item : getAllItems()) {
@@ -167,7 +176,7 @@ public class SideMenu<T> extends BaseComponent<Object, SideMenuView> implements 
                         r.cell.getModel().getUserObject().getContent() + ""
                 );
                 sideMenu.setFilterField(itemIdTreeNode -> itemIdTreeNode.getUserObject().getContent());
-                parseItem((HTMLElement) htmlElement, root, sideMenu, elements);
+                parseItem((HTMLElement) htmlElement, root);
                 sideMenu.setRootMenuItem(root);
                 sideMenu.draw();
             }
@@ -176,10 +185,7 @@ public class SideMenu<T> extends BaseComponent<Object, SideMenuView> implements 
         }
 
 
-        public static String SIDE_MENU_TREE_CELL_VIEW = "SIDE_MENU_TREE_CELL_VIEW";
-        public static String SIDE_MENU_TREE_CELL_PARENT_VIEW = "SIDE_MENU_TREE_CELL_PARENT_VIEW";
-
-        public void parseItem(HTMLElement node, TreeNode<ItemId> treeNode, SideMenu<ItemId> sideMenu, Map<String, ?> el) {
+        public void parseItem(HTMLElement node, TreeNode<ItemId> treeNode) {
             NodeList<Element> elements = node.getElementsByTagName(ITEM);
             for (int i = 0; i < elements.length; i++) {
                 Element at = elements.getAt(i);
@@ -188,17 +194,9 @@ public class SideMenu<T> extends BaseComponent<Object, SideMenuView> implements 
                 }
                 TreeNode<ItemId> item;
                 ItemId idItem = getIdItem(at);
-                if (at.hasAttribute(CONTENT)) {
-                    item = new TreeNode<>(idItem);
-//                    sideMenu.setCellConfig(item, new TreeCellConfig<>().setCellFactory(c ->
-//                            new TreeCellParent(getViewFor(SIDE_MENU_TREE_CELL_PARENT_VIEW, at, el))));
-//                    can we just give view from main template sidemenu
-                    parseItem((HTMLElement) at, item, sideMenu, el);
-                } else {
-                    item = new TreeNode<>(idItem);
-//                    sideMenu.setCellConfig(item, new TreeCellConfig<>().setCellFactory(c ->
-//                            new TreeCellSimple(getViewFor(SIDE_MENU_TREE_CELL_VIEW, at, el))));
-                }
+                item = new TreeNode<>(idItem);
+                if (at.hasAttribute(CONTENT))
+                    parseItem((HTMLElement) at, item);
                 treeNode.add(item);
             }
         }
@@ -213,14 +211,6 @@ public class SideMenu<T> extends BaseComponent<Object, SideMenuView> implements 
             return SideMenu.class;
         }
 
-        @Override
-        public boolean isPremium() {
-            return true;
-        }
-    }
-
-
-    private void setCellRenderer(CellRenderer<TreeNode<T>, String> cellRenderer) {
     }
 
     public void setHeight(String height) {

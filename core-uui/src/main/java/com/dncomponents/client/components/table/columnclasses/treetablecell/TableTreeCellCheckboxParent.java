@@ -42,7 +42,7 @@ public class TableTreeCellCheckboxParent<M> extends TableTreeCellParent<M> {
 
     @Override
     protected void initViewFromOwner() {
-        cellView = getUi().getTreeUi().getParentTreeCellCheckboxView();
+        cellView = getUi().getTreeUi().getParentTreeCellCheckboxView(null);
     }
 
     TreeMultiSelectionModel getSelectionModel() {

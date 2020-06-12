@@ -2,8 +2,6 @@ package com.dncomponents.client.components.core;
 
 import elemental2.dom.HTMLTemplateElement;
 
-import javax.validation.constraints.NotNull;
-
 public abstract class HtmlBinder<T> {
 
     protected T tw;
@@ -49,7 +47,7 @@ public abstract class HtmlBinder<T> {
         template.clazz = clazz;
     }
 
-    public void setTemplateElement(@NotNull HTMLTemplateElement templateElement) {
+    public void setTemplateElement(HTMLTemplateElement templateElement) {
         if (templateElement == null)
             throw new NullPointerException("Template element can't be null!");
         template = new TemplateParser(templateElement);

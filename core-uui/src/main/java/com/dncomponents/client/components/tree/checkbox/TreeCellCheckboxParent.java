@@ -38,7 +38,7 @@ public class TreeCellCheckboxParent<T, M> extends TreeCellParent<T, M> {
 
     @Override
     protected void initViewFromOwner() {
-        cellView = getUi().getParentTreeCellCheckboxView();
+        cellView = getUi().getParentTreeCellCheckboxView(icon);
     }
 
     TreeMultiSelectionModel getSelectionModel() {

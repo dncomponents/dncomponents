@@ -5,7 +5,7 @@ import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.appview.AcceptsOneElement;
 import com.dncomponents.client.views.appview.PlaceManager;
-import com.google.gwt.user.client.History;
+import com.dncomponents.client.dom.History;
 import ${package}.client.greeting.GreetingPlace;
 import ${package}.client.home.HomePlace;
 import elemental2.dom.HTMLElement;

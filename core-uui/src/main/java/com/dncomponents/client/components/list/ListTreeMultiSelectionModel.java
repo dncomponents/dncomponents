@@ -43,7 +43,7 @@ public class ListTreeMultiSelectionModel<T> extends DefaultMultiSelectionModel<T
         cellNavigator.setHandler(new BaseCellNavigator.Handler() {
             @Override
             public void onKeyFocused(Object currentFocusedModel, Object lastFocusedModel, KeyboardEvent event) {
-                if (invokeType == InvokeType.ON_FOCUS && selectionMode == SelectionMode.SINGLE) {//                    if (lastFocusedModel != null)
+                if (invokeType == InvokeType.ON_FOCUS && selectionMode == SelectionMode.SINGLE) {
                     setSelected((T) currentFocusedModel, true, true);
                 } else if (selectionMode == SelectionMode.MULTI && event.shiftKey) {
                     selectRegion(currentFocusedModel);
@@ -84,9 +84,10 @@ public class ListTreeMultiSelectionModel<T> extends DefaultMultiSelectionModel<T
     }
 
     //todo when this is uncommented it selects item in view properly (e.g sidemenu)
-    //todo but performance are very bed on big data (list big data 300 000 items)
+//    //todo but performance are very bed on big data (list big data 300 000 items)
 //    @Override
 //    public void setSelectedInView(T model, boolean b) {
+//        this.getOwner().drawData();
 //        final BaseCell rowCell = getOwner().getRowCell(model);
 //        if (rowCell != null) {
 //            rowCell.draw();

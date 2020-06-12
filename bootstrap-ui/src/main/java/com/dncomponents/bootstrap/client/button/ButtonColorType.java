@@ -5,7 +5,7 @@ import com.dncomponents.client.views.core.HasStyle;
 
 import static com.dncomponents.bootstrap.client.button.ButtonBuilderConst.getInstance;
 
-/**
+/**`
  * @author nikolasavic
  */
 public enum ButtonColorType implements HasStyle {

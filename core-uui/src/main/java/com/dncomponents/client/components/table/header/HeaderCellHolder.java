@@ -3,15 +3,15 @@ package com.dncomponents.client.components.table.header;
 import com.dncomponents.client.components.ColumnConfig;
 import com.dncomponents.client.components.Table;
 import com.dncomponents.client.components.TreeGroupBy;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.table.AbstractModifierEvent;
+import com.dncomponents.client.components.core.events.table.FilterEvent;
+import com.dncomponents.client.components.core.events.table.GroupByEvent;
+import com.dncomponents.client.components.core.events.table.SortEvent;
 import com.dncomponents.client.components.table.AbstractHeaderCell;
 import com.dncomponents.client.components.table.header.bar.BaseBarPanel;
-import com.dncomponents.client.components.table.header.filterevents.AbstractModifierEvent;
-import com.dncomponents.client.components.table.header.filterevents.FilterEvent;
-import com.dncomponents.client.components.table.header.filterevents.GroupByEvent;
-import com.dncomponents.client.components.table.header.filterevents.SortEvent;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
+import elemental2.dom.CustomEvent;
+import elemental2.dom.HTMLElement;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -39,18 +39,15 @@ public class HeaderCellHolder implements
 
     Table<Object> table;
     TreeGroupBy groupBy;
-    private HandlerManager handlerManager;
 
     public HeaderCellHolder(Table table, TreeGroupBy groupBy) {
         this.table = table;
         this.groupBy = groupBy;
     }
 
-
     public void addCell(AbstractHeaderCell cell) {
         cell.setHeaderCellHolder(this);
     }
-
 
     public void filtered(HeaderFiltering cell) {
         sortOrFilter(cell, filtersInOrder, multiFiltering);
@@ -146,39 +143,27 @@ public class HeaderCellHolder implements
                 .collect(Collectors.toList());
     }
 
-    protected HandlerManager ensureHandlers() {
-        if (handlerManager == null) {
-            handlerManager = new HandlerManager(this);
-        }
-        return handlerManager;
+    protected HTMLElement ensureHandlers() {
+        return table.asElement();
     }
-
 
     public Table getTable() {
         return table;
     }
 
     @Override
-    public void fireEvent(GwtEvent<?> event) {
-        if (handlerManager != null) {
-            handlerManager.fireEvent(event);
-        }
-    }
-
-    @Override
     public HandlerRegistration addGroupByHandler(GroupByEvent.GroupByHandler handler) {
-        return ensureHandlers().addHandler(GroupByEvent.getType(), handler);
+        return handler.addTo(ensureHandlers());
     }
-
 
     @Override
     public HandlerRegistration addSortHandler(SortEvent.SortHandler handler) {
-        return ensureHandlers().addHandler(SortEvent.getType(), handler);
+        return handler.addTo(ensureHandlers());
     }
 
     @Override
     public HandlerRegistration addFilterHandler(FilterEvent.FilterHandler handler) {
-        return ensureHandlers().addHandler(FilterEvent.getType(), handler);
+        return handler.addTo(ensureHandlers());
     }
 
     public void setMultiSorting(boolean multiSorting) {
@@ -187,5 +172,10 @@ public class HeaderCellHolder implements
 
     public boolean isMultiSorting() {
         return multiSorting;
+    }
+
+    @Override
+    public void fireEvent(CustomEvent event) {
+        ensureHandlers().dispatchEvent(event);
     }
 }

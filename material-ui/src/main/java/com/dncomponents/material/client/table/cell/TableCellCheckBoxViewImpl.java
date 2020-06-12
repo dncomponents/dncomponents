@@ -6,7 +6,7 @@ import com.dncomponents.client.components.table.columnclasses.checkboxcolumn.Tab
 import com.dncomponents.client.components.checkbox.CheckBox;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.material.client.cell.BaseCellViewImpl;
-import com.google.gwt.user.client.ui.HasValue;
+import com.dncomponents.client.components.core.events.value.HasValue;
 import elemental2.dom.HTMLTemplateElement;
 
 /**

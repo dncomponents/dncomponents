@@ -5,18 +5,15 @@ import com.dncomponents.UiStyle;
 import com.dncomponents.UiTemplate;
 import com.dncomponents.client.components.table.columnclasses.rowexpandercolumn.RowDetailsCellView;
 import com.dncomponents.client.components.core.HtmlBinder;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.IsWidget;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
 /**
  * @author nikolasavic
  */
-@UiTemplate
 public class RowDetailsCellViewImpl extends TableCellViewImpl implements RowDetailsCellView {
 
-    @UiField("open-close-element")
+    @UiField
     HTMLElement openClosedElement;
     @UiStyle
     String openStyle;
@@ -33,16 +30,6 @@ public class RowDetailsCellViewImpl extends TableCellViewImpl implements RowDeta
     public RowDetailsCellViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);
         uiBinder.bind();
-    }
-
-    @Override
-    public void showRow(HasWidgets insertedRow, IsWidget rowDetailsWidget, int columnSize) {
-
-    }
-
-    @Override
-    public void hideRow() {
-
     }
 
     @Override
