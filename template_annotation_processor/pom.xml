@@ -19,7 +19,7 @@
     <groupId>com.dncomponents.core</groupId>
     <artifactId>template_annotation_processor</artifactId>
     <packaging>jar</packaging>
-    <version>2.3.0</version>
+    <version>${project.version}</version>
     <dependencies>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -27,12 +27,9 @@
             <version>1.8</version>
         </dependency>
         <dependency>
-            <groupId>com.sun</groupId>
-            <artifactId>tools</artifactId>
-            <version>LATEST</version>
-            <scope>system</scope>
-            <systemPath>${java.home}/../lib/tools.jar</systemPath>
-<!--                        <systemPath>${JAVA_HOME}/lib/tools.jar</systemPath>-->
+            <groupId>com.github.olivergondza</groupId>
+            <artifactId>maven-jdk-tools-wrapper</artifactId>
+            <version>0.1</version>
         </dependency>
     </dependencies>
 </project>

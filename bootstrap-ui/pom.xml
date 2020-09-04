@@ -10,13 +10,13 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>gwt-lib</packaging>
     <artifactId>bootstrap-ui</artifactId>
-    <version>2.3.0</version>
+    <version>${project.version}</version>
 
     <dependencies>
         <dependency>
             <groupId>com.dncomponents.core</groupId>
             <artifactId>template_annotation_processor</artifactId>
-            <version>2.3.0</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.elemental2</groupId>
@@ -31,7 +31,7 @@
         <dependency>
             <groupId>com.dncomponents.core</groupId>
             <artifactId>core-uui</artifactId>
-            <version>2.3.0</version>
+            <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
