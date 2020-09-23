@@ -19,7 +19,7 @@
     <groupId>com.dncomponents.core</groupId>
     <artifactId>template_annotation_processor</artifactId>
     <packaging>jar</packaging>
-    <version>${project.version}</version>
+    <version>1.0-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>org.apache.commons</groupId>

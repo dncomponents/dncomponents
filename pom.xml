@@ -14,7 +14,6 @@
         <gwt.version>2.9.0</gwt.version>
         <net.ltgt.gwt.version>1.0.0</net.ltgt.gwt.version>
         <elemental.version>1.0.0</elemental.version>
-        <project.version>2.3.1</project.version>
     </properties>
 
     <groupId>com.dncomponents.core</groupId>
@@ -106,18 +105,18 @@
                 <configuration>
                     <launcherDir>${project.build.directory}/gwt/launcherDir</launcherDir>
                     <skipModule>true</skipModule>
+<!--                                        <devmodeArgs>-->
+<!--                                            <moduleName>com.dncomponents.client.main.App</moduleName>-->
+<!--                                            <devmodeArg>-startupUrl</devmodeArg>-->
+<!--                                            <devmodeArg>com.dncomponents.client.main.App</devmodeArg>-->
+<!--                                            <arg>-generateJsInteropExports</arg>-->
+<!--                                        </devmodeArgs>-->
                     <!--                    <devmodeArgs>-->
-                    <!--                        <moduleName>com.dncomponents.client.main.App</moduleName>-->
+                    <!--                        <moduleName>com.dncomponents.client.main.material.App</moduleName>-->
                     <!--                        <devmodeArg>-startupUrl</devmodeArg>-->
-                    <!--                        <devmodeArg>com.dncomponents.client.main.App</devmodeArg>-->
+                    <!--                        <devmodeArg>com.dncomponents.client.main.material.App</devmodeArg>-->
                     <!--                        <arg>-generateJsInteropExports</arg>-->
                     <!--                    </devmodeArgs>-->
-<!--                    <devmodeArgs>-->
-<!--                        <moduleName>com.dncomponents.client.main.material.App</moduleName>-->
-<!--                        <devmodeArg>-startupUrl</devmodeArg>-->
-<!--                        <devmodeArg>com.dncomponents.client.main.material.App</devmodeArg>-->
-<!--                        <arg>-generateJsInteropExports</arg>-->
-<!--                    </devmodeArgs>-->
                     <moduleName/>
                 </configuration>
             </plugin>

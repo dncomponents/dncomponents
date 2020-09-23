@@ -33,6 +33,7 @@ public class TemplateProcessor extends AbstractProcessor {
     private static String EXTENSION = "Binder";
     private static List<TemplateProp> templateProps = new ArrayList<>();
     private static Map<Element, Element> elementSubElement = new HashMap<>();
+    private static boolean firstRound = true;
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -95,10 +96,11 @@ public class TemplateProcessor extends AbstractProcessor {
                 e.printStackTrace();
             }
         }
-
-        if (roundEnv.processingOver()) {
+        if(firstRound){
             try {
                 generateTemplateService();
+                System.out.println("done");
+                firstRound = false;
             } catch (Exception e) {
                 e.printStackTrace();
             }

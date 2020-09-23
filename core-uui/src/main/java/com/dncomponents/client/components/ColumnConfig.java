@@ -114,8 +114,9 @@ public class ColumnConfig<T, M> extends CellConfig<T, M> {
         }
     }
 
-    public void setComparator(Comparator<T> comparator) {
+    public ColumnConfig<T, M> setComparator(Comparator<T> comparator) {
         this.comparator = comparator;
+        return this;
     }
 
     public String getColumnWidth() {
