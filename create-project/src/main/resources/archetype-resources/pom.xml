@@ -101,9 +101,28 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>codegeneration</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>com.dncomponents.Main</mainClass>
+                            <arguments>
+                                <argument>${project.build.sourceDirectory}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>8</source>
                     <target>8</target>
@@ -115,30 +134,19 @@
                     </annotationProcessors>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>net.ltgt.gwt.maven</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
                 <version>${net.ltgt.gwt.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <launcherDir>${project.build.directory}/gwt/launcherDir</launcherDir>
                     <skipModule>true</skipModule>
                     <devmodeArgs>
                         <devmodeArg>-startupUrl</devmodeArg>
                         <devmodeArg>${groupId}.${mainapp}</devmodeArg>
-                        <arg>-generateJsInteropExports</arg>
                     </devmodeArgs>
-                    <logLevel>INFO</logLevel>
                     <moduleName>${groupId}.${mainapp}</moduleName>
                     <moduleShortName>${mainapp}</moduleShortName>
-                    <compilerArgs>
-                        <arg>-generateJsInteropExports</arg>
-                    </compilerArgs>
-                    <useCompilerArgsForTests>true</useCompilerArgsForTests>
-                    <codeserverArgs>
-                        <arg>-generateJsInteropExports</arg>
-                    </codeserverArgs>
                 </configuration>
             </plugin>
         </plugins>
