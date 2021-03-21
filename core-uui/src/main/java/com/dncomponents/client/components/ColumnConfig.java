@@ -1,6 +1,10 @@
 package com.dncomponents.client.components;
 
 import com.dncomponents.client.components.core.CellConfig;
+import com.dncomponents.client.components.core.CellEditorFactory;
+import com.dncomponents.client.components.core.CellFactory;
+import com.dncomponents.client.components.core.CellRenderer;
+import com.dncomponents.client.components.core.validation.Validator;
 import com.dncomponents.client.components.table.TableCell;
 import com.dncomponents.client.components.table.columnclasses.FooterCellFactory;
 import com.dncomponents.client.components.table.columnclasses.GroupRowRenderer;
@@ -8,10 +12,8 @@ import com.dncomponents.client.components.table.columnclasses.TableHeaderCellFac
 import com.dncomponents.client.components.table.footer.FooterCell;
 import com.dncomponents.client.components.table.header.HeaderTableSortCell;
 import com.dncomponents.client.components.table.header.filter.FilterPanelFactory;
-import elemental2.dom.HTMLElement;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -20,42 +22,23 @@ import java.util.function.Function;
  */
 public class ColumnConfig<T, M> extends CellConfig<T, M> {
 
-    private String columnName = "";
     protected Comparator<T> comparator;
     private String columnWidth = "100px";
     private boolean visible = true;
     private boolean editable;
     private FilterPanelFactory<T> filterPanelFactory;
+    private boolean sortable = true;
+    private TableHeaderCellFactory headerCellFactory = () -> new HeaderTableSortCell().setText(getName());
+    private FooterCellFactory<T, M> footerCellFactory = null;
+    private GroupRowRenderer<T, M> groupRowRenderer = (value, groupedValues, htmlElement) -> htmlElement.innerHTML = value + "";
 
     {
-        setCellFactory(c -> new TableCell<T, M>().initWithBuilder(builder));
-        builder = new TableCell.Builder<>();
+        setCellFactory(c -> new TableCell<>());
     }
-
-    private GroupRowRenderer<T, M> groupRowRenderer = new GroupRowRenderer<T, M>() {
-
-        @Override
-        public void render(M value, List<T> groupedValues, HTMLElement htmlElement) {
-            htmlElement.innerHTML = value + "";
-        }
-    };
-
-    private boolean sortable = true;
-
-    private TableHeaderCellFactory headerCellFactory = () -> new HeaderTableSortCell().setText(columnName);
-
-    private FooterCellFactory<T, M> footerCellFactory;
-
-    private FooterCellFactory<T, M> defaultFooterCellFactory = FooterCell::new;
-
-    public FooterCellFactory<T, M> getDefaultFooterCellFactory() {
-        return defaultFooterCellFactory;
-    }
-
 
     public ColumnConfig(Function<T, M> fieldGetter, String columnName) {
         super(fieldGetter);
-        this.columnName = columnName;
+        this.setName(columnName);
     }
 
     public ColumnConfig(Function<T, M> fieldGetter) {
@@ -68,35 +51,23 @@ public class ColumnConfig<T, M> extends CellConfig<T, M> {
 
     public ColumnConfig(Function<T, M> fieldGetter, BiConsumer<T, M> fieldSetter, String columnName) {
         super(fieldGetter, fieldSetter);
-        setColumnName(columnName);
+        setName(columnName);
     }
 
     public FooterCellFactory<T, M> getFooterCellFactory() {
         return footerCellFactory;
     }
 
-    public ColumnConfig<T, M> setFooterCellFactory(FooterCellFactory<T, M> footerCellFactory) {
+    public void setFooterCellFactory(FooterCellFactory<T, M> footerCellFactory) {
         this.footerCellFactory = footerCellFactory;
-        return this;
     }
 
-    public ColumnConfig<T, M> setHeaderCellFactory(TableHeaderCellFactory headerCellFactory) {
+    public void setHeaderCellFactory(TableHeaderCellFactory headerCellFactory) {
         this.headerCellFactory = headerCellFactory;
-        return this;
     }
 
     public TableHeaderCellFactory getHeaderCellFactory() {
         return headerCellFactory;
-    }
-
-
-    public String getColumnName() {
-        return columnName;
-    }
-
-    public ColumnConfig<T, M> setColumnName(String columnName) {
-        this.columnName = columnName;
-        return this;
     }
 
     public Comparator<T> getComparator() {
@@ -114,18 +85,16 @@ public class ColumnConfig<T, M> extends CellConfig<T, M> {
         }
     }
 
-    public ColumnConfig<T, M> setComparator(Comparator<T> comparator) {
+    public void setComparator(Comparator<T> comparator) {
         this.comparator = comparator;
-        return this;
     }
 
     public String getColumnWidth() {
         return columnWidth;
     }
 
-    public ColumnConfig<T, M> setColumnWidth(String width) {
+    public void setColumnWidth(String width) {
         this.columnWidth = width;
-        return this;
     }
 
     public boolean isSortable() {
@@ -136,9 +105,8 @@ public class ColumnConfig<T, M> extends CellConfig<T, M> {
         return groupRowRenderer;
     }
 
-    public ColumnConfig<T, M> setGroupRowRenderer(GroupRowRenderer<T, M> groupRowRenderer) {
+    public void setGroupRowRenderer(GroupRowRenderer<T, M> groupRowRenderer) {
         this.groupRowRenderer = groupRowRenderer;
-        return this;
     }
 
     @Override
@@ -146,60 +114,201 @@ public class ColumnConfig<T, M> extends CellConfig<T, M> {
         return (TableCellFactory) cellFactory;
     }
 
-
-    public ColumnConfig<T, M> setCellFactory(TableCellFactory<T, M> cellFactory) {
+    public void setCellFactory(TableCellFactory<T, M> cellFactory) {
         super.setCellFactory(cellFactory);
-        return this;
     }
 
     @Override
     public String toString() {
-        return columnName + "";
+        return getName() + "";
     }
 
     public boolean isVisible() {
         return visible;
     }
 
-    public ColumnConfig<T, M> setVisible(boolean visible) {
+    public void setVisible(boolean visible) {
         this.visible = visible;
-        return this;
     }
 
     public boolean isEditable() {
         return editable;
     }
 
-    public ColumnConfig<T, M> setEditable(boolean editable) {
+    public void setEditable(boolean editable) {
         this.editable = editable;
-        return this;
-    }
-
-    public ColumnConfig<T, M> setClazz(Class clazz) {
-        return super.setClazz(clazz);
-    }
-
-    @Override
-    public TableCell.Builder<T, M> getCellBuilder() {
-        return (TableCell.Builder<T, M>) super.getCellBuilder();
-    }
-
-    public ColumnConfig<T, M> setCellBuilder(BuilderSet<T, M> b) {
-        b.setBuilder(getCellBuilder());
-        return this;
     }
 
     public FilterPanelFactory<T> getFilterPanelFactory() {
         return filterPanelFactory;
     }
 
-    public ColumnConfig<T, M> setFilterPanelFactory(FilterPanelFactory<T> filterPanelFactory) {
+    public void setFilterPanelFactory(FilterPanelFactory<T> filterPanelFactory) {
         this.filterPanelFactory = filterPanelFactory;
-        return this;
     }
 
-    public interface BuilderSet<T, M> {
-        void setBuilder(TableCell.Builder<T, M> b);
-    }
+    public static class Builder<T, M> {
+        private BiConsumer<T, M> fieldSetter;
+        private Function<T, M> fieldGetter;
+        private Validator<M> validator;
+        private CellEditorFactory<T, M> cellEditorFactory;
+        private Class clazz;
+        private CellFactory<T, M, ? extends AbstractCellComponent<T, ?, ?>> cellFactory;
+        private CellRenderer<T, M> cellRenderer;
+        private String name;
+        private String helperText;
+        private String validText;
+        private Comparator<T> comparator;
+        private String columnWidth;
+        private Boolean visible;
+        private Boolean editable;
+        private FilterPanelFactory<T> filterPanelFactory;
+        private TableHeaderCellFactory headerCellFactory;
+        private FooterCellFactory<T, M> footerCellFactory;
+        private GroupRowRenderer<T, M> groupRowRenderer;
 
+        public Builder() {
+        }
+
+        public Builder(Function<T, M> fieldGetter, BiConsumer<T, M> fieldSetter) {
+            this.fieldSetter = fieldSetter;
+            this.fieldGetter = fieldGetter;
+        }
+
+        public Builder(Function<T, M> fieldGetter) {
+            this.fieldGetter = fieldGetter;
+        }
+
+        public Builder<T, M> setFieldSetter(BiConsumer<T, M> fieldSetter) {
+            this.fieldSetter = fieldSetter;
+            return this;
+        }
+
+        public Builder<T, M> setFieldGetter(Function<T, M> fieldGetter) {
+            this.fieldGetter = fieldGetter;
+            return this;
+        }
+
+        public Builder<T, M> setValidator(Validator<M> validator) {
+            this.validator = validator;
+            return this;
+        }
+
+        public Builder<T, M> setCellEditorFactory(CellEditorFactory<T, M> cellEditorFactory) {
+            this.cellEditorFactory = cellEditorFactory;
+            return this;
+        }
+
+        public Builder<T, M> setClazz(Class clazz) {
+            this.clazz = clazz;
+            return this;
+        }
+
+        public Builder<T, M> setCellFactory(TableCellFactory<T, M> cellFactory) {
+            this.cellFactory = cellFactory;
+            return this;
+        }
+
+        public Builder<T, M> setCellRenderer(CellRenderer<T, M> cellRenderer) {
+            this.cellRenderer = cellRenderer;
+            return this;
+        }
+
+        public Builder<T, M> setName(String columnName) {
+            this.name = columnName;
+            return this;
+        }
+
+        public Builder<T, M> setHelperText(String helperText) {
+            this.helperText = helperText;
+            return this;
+        }
+
+        public Builder<T, M> setValidText(String validText) {
+            this.validText = validText;
+            return this;
+        }
+
+        public Builder<T, M> setVisible(Boolean visible) {
+            this.visible = visible;
+            return this;
+        }
+
+        public Builder<T, M> setComparator(Comparator<T> comparator) {
+            this.comparator = comparator;
+            return this;
+        }
+
+        public Builder<T, M> setColumnWidth(String columnWidth) {
+            this.columnWidth = columnWidth;
+            return this;
+        }
+
+        public Builder<T, M> setVisible(boolean visible) {
+            this.visible = visible;
+            return this;
+        }
+
+        public Builder<T, M> setEditable(boolean editable) {
+            this.editable = editable;
+            return this;
+        }
+
+        public Builder<T, M> setFilterPanelFactory(FilterPanelFactory<T> filterPanelFactory) {
+            this.filterPanelFactory = filterPanelFactory;
+            return this;
+        }
+
+        public Builder<T, M> setFooterCellFactory(FooterCellFactory<T, M> footerCellFactory) {
+            this.footerCellFactory = footerCellFactory;
+            return this;
+        }
+
+        public Builder<T, M> setGroupRowRenderer(GroupRowRenderer<T, M> groupRowRenderer) {
+            this.groupRowRenderer = groupRowRenderer;
+            return this;
+        }
+
+        public Builder<T, M> setHeaderCellFactory(TableHeaderCellFactory headerCellFactory) {
+            this.headerCellFactory = headerCellFactory;
+            return this;
+        }
+
+        public ColumnConfig<T, M> build() {
+            final ColumnConfig<T, M> columnConfig = new ColumnConfig<>(this.fieldGetter, this.fieldSetter);
+            if (this.cellEditorFactory != null)
+                columnConfig.setCellEditorFactory(this.cellEditorFactory);
+            if (this.editable != null)
+                columnConfig.setEditable(this.editable);
+            if (this.name != null)
+                columnConfig.setName(this.name);
+            if (this.helperText != null)
+                columnConfig.setHelperText(this.helperText);
+            if (this.validText != null)
+                columnConfig.setSuccessText(this.validText);
+            if (this.cellFactory != null)
+                columnConfig.setCellFactory(this.cellFactory);
+            if (this.validator != null)
+                columnConfig.setValidator(this.validator);
+            if (this.visible != null)
+                columnConfig.setVisible(this.visible);
+            if (this.comparator != null)
+                columnConfig.setComparator(this.comparator);
+            if (this.clazz != null)
+                columnConfig.setClazz(this.clazz);
+            if (this.columnWidth != null)
+                columnConfig.setColumnWidth(this.columnWidth);
+            if (this.filterPanelFactory != null)
+                columnConfig.setFilterPanelFactory(this.filterPanelFactory);
+            if (this.headerCellFactory != null)
+                columnConfig.setHeaderCellFactory(this.headerCellFactory);
+            if (this.footerCellFactory != null)
+                columnConfig.setFooterCellFactory(this.footerCellFactory);
+            if (this.groupRowRenderer != null)
+                columnConfig.setGroupRowRenderer(this.groupRowRenderer);
+            if (this.cellRenderer != null)
+                columnConfig.setCellRenderer(this.cellRenderer);
+            return columnConfig;
+        }
+    }
 }

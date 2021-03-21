@@ -6,19 +6,22 @@ import com.dncomponents.client.components.core.HtmlParser;
 import com.dncomponents.client.components.core.TemplateParser;
 import com.dncomponents.client.components.core.selectionmodel.AbstractSingleSelectionGroup;
 import com.dncomponents.client.dom.DomUtil;
+import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.MainRenderer;
 import com.dncomponents.client.views.MainRendererImpl;
 import elemental2.dom.Element;
+import elemental2.dom.HTMLElement;
 import elemental2.dom.NodeList;
 
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class RadioSelectionGroup<T> extends AbstractSingleSelectionGroup<T, Radio<T>> {
+public class RadioSelectionGroup<T> extends AbstractSingleSelectionGroup<T, Radio<T>> implements HasIsElement{
 
     private static int id = 0;
     private String groupName;
+    HTMLElement elementToWrap;
 
     public RadioSelectionGroup() {
         setGroupName("radioGroup-" + id++);
@@ -68,7 +71,21 @@ public class RadioSelectionGroup<T> extends AbstractSingleSelectionGroup<T, Radi
             setSelected(value, true);
         }
     }
+    public void setElementToWrap(HTMLElement elementToWrap) {
+        this.elementToWrap = elementToWrap;
+    }
 
+    public HTMLElement getElementToWrap() {
+        return elementToWrap;
+    }
+
+    @Override
+    public IsElement asIsElement() {
+        if (elementToWrap == null)
+            elementToWrap = DomUtil.createDiv();
+        getItems().forEach(e -> elementToWrap.appendChild(e.asElement()));
+        return () -> elementToWrap;
+    }
     // ui binder field
     protected String uiField;
 

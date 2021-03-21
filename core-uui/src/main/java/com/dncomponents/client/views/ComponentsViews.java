@@ -11,6 +11,7 @@ import com.dncomponents.client.views.core.ui.button.ButtonView;
 import com.dncomponents.client.views.core.ui.checkbox.CheckBoxView;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownMultiLevelUi;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownUi;
+import com.dncomponents.client.views.core.ui.form.FormUi;
 import com.dncomponents.client.views.core.ui.list.ListUi;
 import com.dncomponents.client.views.core.ui.modal.DialogView;
 import com.dncomponents.client.views.core.ui.pager.PagerListUi;
@@ -90,5 +91,7 @@ public interface ComponentsViews {
     PagerUi getPagerUi();
 
     PagerListUi getPagerListUi();
+
+    FormUi getFormUi();
 
 }

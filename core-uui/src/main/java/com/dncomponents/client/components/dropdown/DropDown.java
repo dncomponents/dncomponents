@@ -99,7 +99,7 @@ public class DropDown<T> extends BaseComponentMultiSelection<T, DropDownUi, Drop
     }
 
     @Override
-    protected DropDownItem<T> createItem(T t) {
+    public DropDownItem<T> createItem(T t) {
         return new DropDownItem<>(this, t);
     }
 

@@ -17,7 +17,7 @@ public class BarItem<T extends HeaderWithModifiers, V extends BarItemView> exten
         super(view);
         this.baseBarPanel = baseBarPanel;
         this.userObject = header;
-        view.setColumnName(header.getColumn().getColumnName());
+        view.setColumnName(header.getColumn().getName());
         view.addDeleteHandler(mouseEvent -> delete());
     }
 

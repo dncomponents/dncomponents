@@ -2,20 +2,22 @@ package com.dncomponents.client.components;
 
 import com.dncomponents.client.components.core.CellEditor;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
-import com.dncomponents.client.components.core.events.cell.CellEditEvent;
+import com.dncomponents.client.components.core.events.cell.CellEditingStartedEvent;
+import com.dncomponents.client.components.core.events.cell.CellEditingStoppedEvent;
+import com.dncomponents.client.components.core.events.cell.CellValueChangedEvent;
 import com.dncomponents.client.components.core.events.focus.HasBlurHandlers;
-import com.dncomponents.client.components.events.CellValidationException;
-import com.dncomponents.client.components.events.CellValidator;
+import com.dncomponents.client.components.core.events.validator.CanShowError;
+import com.dncomponents.client.components.core.events.validator.CanShowSuccess;
+import com.dncomponents.client.components.core.validation.ValidationException;
+import com.dncomponents.client.components.core.validation.Validator;
+import com.dncomponents.client.components.table.TableCell;
 import com.dncomponents.client.components.textbox.HasValueParser;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.*;
 import com.dncomponents.client.views.core.pcg.cell.BaseCellView;
-import elemental2.dom.DomGlobal;
 import elemental2.dom.Element;
 import elemental2.dom.Event;
 import elemental2.dom.KeyboardEvent;
-
-import java.text.ParseException;
 
 /**
  * Defines cell editing behavior.
@@ -24,30 +26,52 @@ import java.text.ParseException;
  *
  * @author nikolasavic
  */
-class CellEditing<T, M> {
+public class CellEditing<T, M> {
 
-    protected CellValidator<T, M> validator;
-    private final boolean autoCommit = true;
+    protected Validator<M> validator;
+    final boolean autoCommit = true;
     BaseCellView cellView;
     CellEditor<M> cellEditor;
-    private boolean stopBlur;
-    private BaseCell<T, M> cell;
-    private boolean isEditing = false;
+    boolean stopBlur;
+    BaseCell<T, M> cell;
+    boolean isEditing = false;
     HandlerRegistration valueChangeRegistration;
+    protected boolean hasError;
+    public boolean fromRow;
 
     public CellEditing(BaseCell c) {
         this.cell = c;
+        if (cell instanceof TableCell)
+            fromRow = ((TableCell<T, M>) cell).getRowTable().fromRow;
         cellView = cell.getCellView();
+        validator = cell.getCellConfig().getValidator();
+        DomUtil.addHandler(cell.asElement(), (OnFocusHandler) focusEvent -> {
+            if (isEditing) {
+                focus();
+                cellEditor.startEditing();
+            }
+        });
+    }
+
+    public boolean hasChanges() {
+        return cellEditor != null && cellEditor.getHasValue() != null && cellEditor.getHasValue().getValue() != cell.cellConfig.getFieldGetter().apply(cell.model);
+    }
+
+    void saveChanges() {
+        cell.getCellConfig().getFieldSetter().accept(cell.model, cellEditor.getHasValue().getValue());
+        newValue = cell.cellConfig.getFieldGetter().apply(cell.model);
+        stopEditing();
     }
 
     void editCell() {
         startEditing();
         addToValuePanel();
         stopPropagation();
-        focus();
+        if (!fromRow)
+            focus();
         addKeyUpHandlerToEditComponent(CellEditing.this::onKeyUpEvent);
         addBlurHandlerToEditComponent(focusEvent -> {
-            if (!stopBlur) {
+            if (!stopBlur && !fromRow) {
                 onBlurEvent();
             }
         });
@@ -56,18 +80,18 @@ class CellEditing<T, M> {
 
     private void onBlurEvent() {
         asElement(cellEditor).remove();
-//        valueChangeRegistration.removeHandler();
         cellEditor.getHasValue().setValue(null);
         stopEditing();
     }
 
-    void stopEditing() {
+    public void stopEditing() {
         valueChangeRegistration.removeHandler();
         cell.draw();
         isEditing = false;
+        CellEditingStoppedEvent.fire(cell.getOwner(), cell);
     }
 
-    private void startEditing() {
+    public void startEditing() {
         isEditing = true;
         final M cellValue = cell.getCellConfig().getFieldGetter().apply(cell.model);
         cellEditor = cell.getCellEditor();
@@ -75,59 +99,57 @@ class CellEditing<T, M> {
             throw new NullPointerException("Define edit component for the type.");
         }
         cellEditor.getHasValue().setValue(cellValue, false);
-        valueChangeRegistration = cellEditor.getHasValue().addValueChangeHandler(event -> onValueChangedEvent());
-        cellEditor.startEditing();
+        valueChangeRegistration = cellEditor.getHasValue().addValueChangeHandler(event -> {
+            onValueChangedEvent();
+        });
+        cellEditor.showErrorMessage(null);
+        if (!fromRow)
+            cellEditor.startEditing();
+        cell.getOwner().fireEvent(new CellEditingStartedEvent<>(cell));
     }
 
-    private M originalValue = null;
+    M originalValue = null;
+    M newValue = null;
 
     private void onValueChangedEvent() {
         stopBlur = true;
+        final CellValueChangedEvent<T> cellEvent = new CellValueChangedEvent<>(cell);
         try {
             validateEnteredValue();
-            if (autoCommit) { //todo autocommit else?
+            if (autoCommit) {
                 originalValue = cell.cellConfig.getFieldGetter().apply(cell.model);
+                if (fromRow)
+                    return;
+                cellEvent.setOldValue(originalValue);
                 cell.getCellConfig().getFieldSetter().accept(cell.model, cellEditor.getHasValue().getValue());
-                cell.getOwner().fireEvent(new CellEditEvent<T>(cell));
+                newValue = cell.cellConfig.getFieldGetter().apply(cell.model);
+                cellEvent.setNewValue(newValue);
+                cell.getOwner().fireEvent(cellEvent);
             }
-//            cellView.setValueChangedStyle(true);
             stopEditing();
         } catch (Exception ex) {
-            cellView.setErrorStyle(true);
+
         }
         stopBlur = false;
     }
 
-    private CellServerResponse cellServerResponse = new CellServerResponse() {
-        @Override
-        public void success(boolean b, String message) {
-            if (b) {
-                cellView.setValueChangedStyle(true);
-                DomGlobal.setTimeout(e -> cellView.setValueChangedStyle(false), 1000);
-            } else {
-                cellView.setErrorStyle(true);
-                DomGlobal.setTimeout(e -> cellView.setErrorStyle(false), 1000);
-            }
-        }
+    void setValueChangedStyle(boolean b) {
+        cellView.setValueChangedStyle(b);
+    }
 
-        @Override
-        public void revertLastValue() {
-            cell.cellConfig.getFieldSetter().accept(cell.model, originalValue);
-            cell.draw();
-        }
-    };
+    void setErrorStyle(boolean b) {
+        cellView.setErrorStyle(b);
+    }
+
+    void revertValueBeforeEdit() {
+        cell.cellConfig.getFieldSetter().accept(cell.model, originalValue);
+        cell.draw();
+    }
 
     private void onKeyUpEvent(KeyboardEvent event) {
         stopBlur = true;
-        if (event.code.equals("Escape")) {
+        if (event.code.equals("Escape") && fromRow) {
             onBlurEvent();
-        } else {
-            try {
-                validateAsYouType();
-                cellView.setErrorStyle(false);
-            } catch (Exception e) {
-                cellView.setErrorStyle(true);
-            }
         }
         stopBlur = false;
     }
@@ -162,35 +184,58 @@ class CellEditing<T, M> {
         return cellEdit.getIsElement().asElement();
     }
 
-    private HasValueParser asValueParser(Object obj) {
-        if (obj instanceof HasValueParser)
-            return ((HasValueParser) obj);
+    private HasValueParser asValueParser(CellEditor obj) {
+        if (obj.getHasValue() instanceof HasValueParser)
+            return ((HasValueParser) obj.getHasValue());
         return null;
     }
 
-    private void validateAsYouType() throws ParseException, CellValidationException {
+    void validateEnteredValue() throws ValidationException {
+        hasError = false;
         if (validator != null) {
-            if (asValueParser(cellEditor) != null) {
-                M value = (M) asValueParser(cellEditor).getValueOrThrow();
-                validator.validate(value, cell.getModel());
+            try {
+                validator.validate(cellEditor.getHasValue().getValue());
+                cellEditor.showErrorMessage(null);
+                cellView.setErrorStyle(false);
+                setSuccess(true);
+                cellView.showSuccessMessage(cell.cellConfig.getSuccessText());
+            } catch (ValidationException ex) {
+                setError(true);
+                cellView.showErrorMessage(ex.getMessage());
+                throw ex;
             }
         }
     }
 
-    private void validateEnteredValue() throws CellValidationException {
-        if (validator != null) {
-            if (asValueParser(cellEditor) != null)
-                validator.validate(cellEditor.getHasValue().getValue(), cell.getModel());
+
+    private void showError(String error) {
+        if (cellEditor.getHasValue() instanceof CanShowError)
+            cellEditor.showErrorMessage(error);
+    }
+
+    private void setError(boolean error) {
+        if (cellEditor.getHasValue() instanceof CanShowError)
+            ((CanShowError) cellEditor.getHasValue()).setErrorStyle(error);
+    }
+
+    private void showSuccess(String success) {
+        if (cellEditor.getHasValue() instanceof CanShowSuccess && success != null) {
+            ((CanShowSuccess) cellEditor.getHasValue()).showSuccessMessage(success);
         }
+    }
+
+    private void setSuccess(boolean success) {
+        if (cellEditor.getHasValue() instanceof CanShowSuccess) {
+            ((CanShowSuccess) cellEditor.getHasValue()).setSuccessStyle(success);
+        }
+    }
+
+    public boolean hasError() {
+        return this.hasError;
     }
 
     public boolean isEditing() {
         return isEditing;
     }
 
-    //for testing only
-    void setCell(BaseCell cell) {
-        this.cell = cell;
-        cellView = cell.getCellView();
-    }
 }

@@ -4,19 +4,20 @@ import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.core.events.selection.SelectionHandler;
 import com.dncomponents.client.components.core.events.value.HasValue;
 import com.dncomponents.client.components.core.selectionmodel.AbstractMultiSelectionGroup;
+import com.dncomponents.client.components.core.selectionmodel.HasEntityMultiSelectionModel;
 import com.dncomponents.client.components.core.selectionmodel.MultiSelectionModel;
 import com.dncomponents.client.views.core.pcg.View;
 
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class BaseComponentMultiSelection<T, V extends View, C extends HasUserValue<T> & CanSelect>
-        extends BaseComponent<T, V> implements MultiSelectionModel<C> {
+        extends BaseComponent<T, V> implements MultiSelectionModel<C>, HasEntityMultiSelectionModel<T> {
 
 
     protected AbstractMultiSelectionGroup<T, C> selectionGroup = new AbstractMultiSelectionGroup<T, C>() {
         @Override
         public void setSelectedInView(C model, boolean b) {
-//            setSelectedModel(model, b); //todo #1?
             model.setSelected(b);
         }
     };
@@ -60,6 +61,11 @@ public abstract class BaseComponentMultiSelection<T, V extends View, C extends H
         return selectionGroup.addSelectionHandler(handler);
     }
 
+    @Override
+    public void setSelected(List<C> models, boolean b, boolean fireEvent) {
+        selectionGroup.setSelected(models, b, fireEvent);
+    }
+
     public void addItem(C item) {
         selectionGroup.addItem(item);
     }
@@ -76,12 +82,13 @@ public abstract class BaseComponentMultiSelection<T, V extends View, C extends H
         selectionGroup.addItems(items);
     }
 
-    public void addEntityItems(List<T> items) {
-        items.forEach(t -> addItem(createItem(t)));
+    public void addEntityItems(T... items) {
+        Arrays.stream(items).forEach(t -> addItem(createItem(t)));
     }
 
-    protected abstract C createItem(T t);
+    public abstract C createItem(T t);
 
+    @Override
     public MultiSelectionModel<T> getEntitySelectionModel() {
         return selectionGroup.getEntitySelectionModel();
     }

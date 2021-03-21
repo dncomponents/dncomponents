@@ -4,12 +4,14 @@ import com.dncomponents.client.components.core.*;
 import com.dncomponents.client.components.core.entities.ItemId;
 import com.dncomponents.client.components.core.entities.RowItemId;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.row.*;
 import com.dncomponents.client.components.list.ListTreeMultiSelectionModel;
 import com.dncomponents.client.components.pager.Pager;
 import com.dncomponents.client.components.table.AbstractHeaderCell;
 import com.dncomponents.client.components.table.RowTableCellFactory;
 import com.dncomponents.client.components.table.TableCell;
 import com.dncomponents.client.components.table.columnclasses.FooterCellFactory;
+import com.dncomponents.client.components.table.footer.FooterCell;
 import com.dncomponents.client.components.table.header.HeaderCellHolder;
 import com.dncomponents.client.components.table.header.HeaderTableFilterCell;
 import com.dncomponents.client.components.table.header.HeaderTableTextCell;
@@ -20,6 +22,7 @@ import elemental2.dom.EventListener;
 import elemental2.dom.*;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -27,7 +30,7 @@ import java.util.stream.IntStream;
 /**
  * @author nikolasavic
  */
-public class Table<T> extends AbstractCellComponent<T, List, TableUi> implements HasRowsDataList<T> {
+public class Table<T> extends AbstractCellComponent<T, List, TableUi> implements HasRowsDataList<T>, HasRowValueChangedHandlers<T>, HasRowEditingStoppedHandlers<T>, HasRowEditingStartedHandlers<T> {
 
     public TreeGroupBy groupBy;
 
@@ -68,6 +71,7 @@ public class Table<T> extends AbstractCellComponent<T, List, TableUi> implements
     // popup editing
     private boolean popupEditing;
 
+    private BiConsumer<EditFormDialog<T>, RowTable<T>> dialogConsumer;
 
     public Table(TableUi ui, List<T> rows) {
         super(ui, rows);
@@ -147,8 +151,8 @@ public class Table<T> extends AbstractCellComponent<T, List, TableUi> implements
             for (ColumnConfig config : columnConfigs) {
                 if (!config.isVisible()) continue;
                 FooterCellFactory footerCellFactory = config.getFooterCellFactory();
-                if (footerCellFactory == null)
-                    footerCellFactory = config.getDefaultFooterCellFactory();
+                if(footerCellFactory==null)
+                    footerCellFactory= FooterCell::new;
                 AbstractFooterCell tableFooterCell = footerCellFactory.getCell();
                 footerCells.add(tableFooterCell);
                 initCell(tableFooterCell, new Object(), config, this);
@@ -175,7 +179,18 @@ public class Table<T> extends AbstractCellComponent<T, List, TableUi> implements
      */
     public void setPopupEditing(boolean popupEditing) {
         this.popupEditing = popupEditing;
+        this.setCellEditMode(!popupEditing);
     }
+
+    public void setPopupEditing(boolean popupEditing, BiConsumer<EditFormDialog<T>, RowTable<T>> dialogConsumer) {
+        this.setPopupEditing(popupEditing);
+        this.dialogConsumer = dialogConsumer;
+    }
+
+    BiConsumer<EditFormDialog<T>, RowTable<T>> getDialogConsumer() {
+        return dialogConsumer;
+    }
+
 
     //filterBar is added only once.
     // For situation where we need to update header call it explicitly.
@@ -218,6 +233,12 @@ public class Table<T> extends AbstractCellComponent<T, List, TableUi> implements
      */
     public void addColumn(ColumnConfig<T, ?>... columns) {
         Collections.addAll(columnConfigs, columns);
+        addHeader=false;
+    }
+
+    public void removeColumn(ColumnConfig<T,?> column){
+        columnConfigs.remove(column);
+        addHeader=false;
     }
 
     public List<ColumnConfig> getColumnConfigs() {
@@ -273,7 +294,7 @@ public class Table<T> extends AbstractCellComponent<T, List, TableUi> implements
         elemental2.dom.EventListener listener = new EventListener() {
             @Override
             public void handleEvent(Event evt) {
-                DomGlobal.console.log(evt.target);
+//                DomGlobal.console.log(evt.target);
                 for (RowTable<T> rowTable : getCells()) {
                     if (rowTable.asElement() == evt.target || rowTable.asElement().contains((Node) evt.target)) {
                         handler.handleEvent(evt);
@@ -332,6 +353,58 @@ public class Table<T> extends AbstractCellComponent<T, List, TableUi> implements
         return null;
     }
 
+    private RowTable<T> currentRowEdited;
+
+    public RowTable<T> getCurrentRowEdited() {
+        return currentRowEdited;
+    }
+
+    void setCurrentRowEdited(RowTable<T> currentRowEdited) {
+        this.currentRowEdited = currentRowEdited;
+    }
+
+    public void stopCurrentRowEdited() {
+        if (currentRowEdited != null)
+            currentRowEdited.stopEditing();
+    }
+
+    protected List<? extends BaseCell<T, ?>> editedCells = new ArrayList<>();
+
+    @Override
+    public HandlerRegistration addRowEditingStartedHandler(RowEditingStartedHandler<T> handler) {
+        return handler.addTo(this.asElement());
+    }
+
+    @Override
+    public HandlerRegistration addRowEditingStoppedEvent(RowEditingStoppedHandler<T> handler) {
+        return handler.addTo(this.asElement());
+    }
+
+    @Override
+    public HandlerRegistration addRowValueChangedHandler(RowValueChangedHandler<T> handler) {
+        return handler.addTo(this.asElement());
+    }
+
+
+    class EditConfig {
+        private EditMode editMode = EditMode.CELL;
+
+        public void setEditMode(EditMode editMode) {
+            this.editMode = editMode;
+        }
+
+        public EditMode getEditMode() {
+            return editMode;
+        }
+    }
+
+
+    enum EditMode {
+        CELL, ROW, POPUP, BATCH, FORM
+    }
+
+    public EditConfig editConfig = new EditConfig();
+
     public static class TableHtmlParser extends AbstractPluginHelper implements ComponentHtmlParser {
 
         private static TableHtmlParser instance;
@@ -341,7 +414,6 @@ public class Table<T> extends AbstractCellComponent<T, List, TableUi> implements
 
         private static String HEADER_TAG = "header";
         private static String FOOTER_TAG = "footer";
-
 
         private TableHtmlParser() {
         }
@@ -354,8 +426,12 @@ public class Table<T> extends AbstractCellComponent<T, List, TableUi> implements
 
         @Override
         public BaseComponent parse(Element htmlElement, Map<String, ?> templateElement) {
-            Table<RowItemId> table = new Table<>();
-
+            Table<RowItemId> table;
+            TableUi view = getView(Table.class, htmlElement, templateElement);
+            if (view != null)
+                table = new Table(view);
+            else
+                table = new Table();
             if (htmlElement.hasChildNodes()) {
                 List<ItemId> headerItems = new ArrayList<>();
                 List<RowItemId> rowItems = new ArrayList<>();
@@ -473,6 +549,16 @@ public class Table<T> extends AbstractCellComponent<T, List, TableUi> implements
         super.insertRow(t, index);
     }
 
+    public RowTable<T> createTempCell(T t) {
+        final RowTable<T> row = (RowTable<T>) super.createAndInitTempModelRowCell(t);
+        row.temp = true;
+        return row;
+    }
+
+    public <T> void insertTempRow(RowTable<T> rowTable) {
+        getView().getRootView().addItemAtTop(rowTable);
+    }
+
     public void removeRow(T t) {
         super.removeRow(t);
     }
@@ -485,19 +571,7 @@ public class Table<T> extends AbstractCellComponent<T, List, TableUi> implements
 
         public TableRowCellConfig() {
             super(t -> null);
-//            builder = new BaseCell.BaseCellBuilder<T, M, BaseCell.BaseCellBuilder>() {
-//                @Override
-//                public <H extends BaseCell<T, M>> H build() {
-//                    return null;
-//                }
-//            };
-            builder = new RowTable.Builder<>();
-            this.setCellFactory(new RowTableCellFactory<T>() {
-                @Override
-                public RowTable<T> getCell(CellContext<T, List, Table<T>> c) {
-                    return new RowTable<T>().initWithBuilder(builder);
-                }
-            });
+            this.setCellFactory((RowTableCellFactory<T>) c -> new RowTable<T>());
         }
 
         public TableRowCellConfig<T, M> setCellFactory(RowTableCellFactory<T> cellFactory) {

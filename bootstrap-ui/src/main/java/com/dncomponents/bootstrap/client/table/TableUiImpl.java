@@ -4,10 +4,12 @@ import com.dncomponents.UiField;
 import com.dncomponents.bootstrap.client.BootstrapUi;
 import com.dncomponents.bootstrap.client.table.cell.RowDetailsCellViewImpl;
 import com.dncomponents.bootstrap.client.table.cell.TableCellCheckBoxViewImpl;
+import com.dncomponents.bootstrap.client.table.cell.TableCellEditViewImpl;
 import com.dncomponents.bootstrap.client.table.cell.TableCellViewImpl;
 import com.dncomponents.bootstrap.client.table.footer.FooterCellViewImpl;
 import com.dncomponents.bootstrap.client.table.group.ParentTableTreeCellViewImpl;
 import com.dncomponents.bootstrap.client.table.header.CheckBoxHeaderTableCellViewImpl;
+import com.dncomponents.bootstrap.client.table.header.HeaderTableEditCellViewImpl;
 import com.dncomponents.bootstrap.client.table.header.HeaderTableFilterCellViewImpl;
 import com.dncomponents.bootstrap.client.table.header.bar.TableBarUiImpl;
 import com.dncomponents.bootstrap.client.table.header.filter.FilterPanelViewImpl;
@@ -16,6 +18,7 @@ import com.dncomponents.bootstrap.client.table.header.sort.HeaderTableSortCellVi
 import com.dncomponents.bootstrap.client.table.header.text.HeaderTableTextCellViewImpl;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.table.columnclasses.checkboxcolumn.TableCellCheckBoxView;
+import com.dncomponents.client.components.table.columnclasses.editcolumn.TableCellEditView;
 import com.dncomponents.client.views.core.pcg.cell.BaseCellView;
 import com.dncomponents.client.views.core.pcg.cell.CellView;
 import com.dncomponents.client.views.core.ui.table.TableRowView;
@@ -58,6 +61,10 @@ public class TableUiImpl implements TableUi {
     HTMLTemplateElement tableBarUi;
     @UiField
     HTMLTemplateElement filterPanel;
+    @UiField
+    HTMLTemplateElement tableCellEdit;
+    @UiField
+    HTMLTemplateElement headerEdit;
 
 
     public TableUiImpl() {
@@ -121,6 +128,11 @@ public class TableUiImpl implements TableUi {
     }
 
     @Override
+    public TableCellEditView getTableCellEditView() {
+        return new TableCellEditViewImpl(tableCellEdit);
+    }
+
+    @Override
     public TableView getRootView() {
         return tableView;
     }
@@ -170,4 +182,8 @@ public class TableUiImpl implements TableUi {
         return new FilterPanelViewImpl(filterPanel);
     }
 
+    @Override
+    public HeaderTableEditCellView getHeaderTableEditCellView() {
+        return new HeaderTableEditCellViewImpl(headerEdit);
+    }
 }

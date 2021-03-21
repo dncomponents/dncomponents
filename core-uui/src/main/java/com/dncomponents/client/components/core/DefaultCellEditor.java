@@ -1,36 +1,51 @@
 package com.dncomponents.client.components.core;
 
+import com.dncomponents.client.components.HasSelectionModel;
+import com.dncomponents.client.components.checkbox.HasIsElement;
 import com.dncomponents.client.components.core.events.Command;
 import com.dncomponents.client.components.core.events.focus.Focusable;
 import com.dncomponents.client.components.core.events.focus.HasBlurHandlers;
 import com.dncomponents.client.components.core.events.value.HasValue;
+import com.dncomponents.client.components.core.selectionmodel.HasEntityMultiSelectionModel;
+import com.dncomponents.client.components.core.selectionmodel.HasEntitySingleSelectionModel;
 import com.dncomponents.client.views.IsElement;
+
 /**
  * @author nikolasavic
  */
-public class DefaultCellEditor<M, C extends HasValue & Focusable & IsElement & HasBlurHandlers> implements CellEditor<M> {
+public class DefaultCellEditor<M> implements CellEditor<M> {
 
-    C c;
+    protected Object c;
 
     protected Command endEditing;
 
-    public DefaultCellEditor(C c) {
+    public DefaultCellEditor(Object c) {
         this.c = c;
     }
 
     @Override
     public HasValue<M> getHasValue() {
-        return c;
+        if (c instanceof HasEntitySingleSelectionModel)
+            return ((HasEntitySingleSelectionModel) c).getEntitySelectionModel().getHasValue();
+        else if (c instanceof HasEntityMultiSelectionModel)
+            return ((HasEntityMultiSelectionModel) c).getEntitySelectionModel().getHasValue();
+        else if (c instanceof HasSelectionModel)
+            return ((HasSelectionModel) c).getSelectionModel().getHasValue();
+        else
+            return (HasValue<M>) c;
     }
 
     @Override
     public Focusable getFocusable() {
-        return c;
+        return (Focusable) c;
     }
 
     @Override
     public IsElement getIsElement() {
-        return c;
+        if (c instanceof HasIsElement)
+            return ((HasIsElement) c).asIsElement();
+        else
+            return (IsElement) c;
     }
 
     @Override
@@ -40,7 +55,7 @@ public class DefaultCellEditor<M, C extends HasValue & Focusable & IsElement & H
 
     @Override
     public HasBlurHandlers getHasBlurHandler() {
-        return c;
+        return (HasBlurHandlers) c;
     }
 
     @Override

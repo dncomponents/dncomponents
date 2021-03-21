@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * @author nikolasavic
  */
-public class CheckBox<T> extends AbstractCheckBox<T> implements HasValue<Boolean> {
+public class CheckBox<T> extends AbstractCheckBox<T>  {
 
     protected CheckBoxSelectionGroup<T> group;
 

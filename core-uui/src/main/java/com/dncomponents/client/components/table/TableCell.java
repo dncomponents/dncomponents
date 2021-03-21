@@ -31,7 +31,7 @@ public class TableCell<T, M> extends AbstractTableCell<T, M> {
         return rowTable;
     }
 
-     public void setRowTable(RowTable rowTable) {
+    public void setRowTable(RowTable rowTable) {
         this.rowTable = rowTable;
     }
 
@@ -50,22 +50,9 @@ public class TableCell<T, M> extends AbstractTableCell<T, M> {
         cellView = getUi().getTableCellView();
     }
 
-//    @Override
-//    public TableCell<T, M> initWithBuilder(BaseCellBuilder builder) {
-//        return super.initWithBuilder(builder);
-//    }
-
     @Override
     public boolean isEditable() {
         return super.isEditable() && getCellConfig().isEditable() && !isPopupEditing();
-    }
-
-    public static class Builder<T, M> extends AbstractTableCell.Builder<T, M> {
-
-        @Override
-        public TableCell<T, M> build() {
-            return null;
-        }
     }
 
 }

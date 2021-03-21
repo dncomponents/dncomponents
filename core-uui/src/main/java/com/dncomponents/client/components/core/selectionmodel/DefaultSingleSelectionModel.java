@@ -3,6 +3,9 @@ package com.dncomponents.client.components.core.selectionmodel;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.core.events.selection.SelectionEvent;
 import com.dncomponents.client.components.core.events.selection.SelectionHandler;
+import com.dncomponents.client.components.core.events.value.HasValue;
+import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
+import com.dncomponents.client.components.core.selectionmodel.helper.AbstractValueChangeHandler;
 import com.dncomponents.client.dom.DomUtil;
 import elemental2.dom.CustomEvent;
 import elemental2.dom.HTMLElement;
@@ -46,6 +49,7 @@ public abstract class DefaultSingleSelectionModel<T> implements SingleSelectionM
 
     protected void fireSelectionChange() {
         SelectionEvent.fire(ensureHandlers(), selection);
+        ValueChangeEvent.fire(hasValue, selection);
     }
 
     @Override
@@ -75,5 +79,28 @@ public abstract class DefaultSingleSelectionModel<T> implements SingleSelectionM
         if (bus == null)
             bus = DomUtil.createDiv();
         return bus;
+    }
+
+    class HasValueModel extends AbstractValueChangeHandler<T> {
+
+        @Override
+        public T getValue() {
+            return getSelection();
+        }
+
+        @Override
+        public void setValue(T value, boolean fireEvents) {
+            T oldValue = getValue();
+            setSelected(value, true, true);
+            if (fireEvents)
+                ValueChangeEvent.fireIfNotEqual(this, oldValue, getValue());
+        }
+    }
+
+    private HasValue<T> hasValue = new HasValueModel();
+
+    @Override
+    public HasValue<T> getHasValue() {
+        return hasValue;
     }
 }

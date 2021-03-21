@@ -127,9 +127,8 @@ public class AutocompleteTree<T> extends AbstractAutocomplete<TreeNode<T>, Autoc
             if (htmlElement.hasChildNodes()) {
                 TreeNode<ItemId> root = new TreeNode<>(new ItemId("root", "root"));
                 parseItem((HTMLElement) htmlElement, root, this);
-                autocomplete.getRowCellConfig().getCellBuilder()
-                        .setCellRenderer(r -> r.valuePanel.innerHTML =
-                                r.cell.getModel().getUserObject().getContent());
+                autocomplete.getRowCellConfig().setCellRenderer(r -> r.valuePanel.innerHTML =
+                        r.cell.getModel().getUserObject().getContent());
                 autocomplete.setRoot(root);
             }
 

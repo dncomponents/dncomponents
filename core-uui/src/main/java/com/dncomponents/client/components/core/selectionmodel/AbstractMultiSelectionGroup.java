@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class AbstractMultiSelectionGroup<T, C extends HasUserValue<T>>
-        extends DefaultMultiSelectionModel<C> {
+        extends DefaultMultiSelectionModel<C> implements HasEntityMultiSelectionModel<T> {
 
     List<C> possibleValues = new ArrayList<>();
 
@@ -54,7 +54,8 @@ public class AbstractMultiSelectionGroup<T, C extends HasUserValue<T>>
     protected void fireSelectionChange() {
         super.fireSelectionChange();
         SelectionEvent.fire(entitySelectionModel, entitySelectionModel.getSelection());
-        ValueChangeEvent.fire(entitySelectionModel.getHasValue(), entitySelectionModel.getHasValue().getValue());
+        ValueChangeEvent.fire(entitySelectionModel.getHasValue(),
+                selection.stream().map(c -> c.getUserObject()).collect(Collectors.toList()));
     }
 
     @Override
@@ -86,6 +87,11 @@ public class AbstractMultiSelectionGroup<T, C extends HasUserValue<T>>
             return AbstractMultiSelectionGroup.this.possibleValues.stream().map(HasUserValue::getUserObject).collect(Collectors.toList());
         }
 
+        @Override
+        public void setSelected(List<T> models, boolean b, boolean fireEvent) {
+            AbstractMultiSelectionGroup.this.setSelected(models.stream().map(t -> getElementByModel(t)).collect(Collectors.toList()), true, fireEvent);
+        }
+
         class HasValueModel extends AbstractValueChangeHandler<List<T>> {
 
             @Override
@@ -95,7 +101,7 @@ public class AbstractMultiSelectionGroup<T, C extends HasUserValue<T>>
 
             @Override
             public void setValue(List<T> value, boolean fireEvents) {
-                for (T t : value) setSelected(t, fireEvents);
+                setSelected(value, true, fireEvents);
             }
 
         }
@@ -103,6 +109,7 @@ public class AbstractMultiSelectionGroup<T, C extends HasUserValue<T>>
 
     private MultiSelectionModel<T> entitySelectionModel = new EntitySelectionModel();
 
+    @Override
     public MultiSelectionModel<T> getEntitySelectionModel() {
         return entitySelectionModel;
     }

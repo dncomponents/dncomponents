@@ -3,6 +3,7 @@ package com.dncomponents.client.components.table.columnclasses.treetablecell;
 import com.dncomponents.client.components.core.events.close.CloseEvent;
 import com.dncomponents.client.components.core.events.open.OpenEvent;
 import com.dncomponents.client.dom.handlers.ClickHandler;
+import com.dncomponents.client.views.core.ui.table.ParentTableTreeCellView;
 import com.dncomponents.client.views.core.ui.tree.ParentTreeCellView;
 
 /**
@@ -42,12 +43,13 @@ public class TableTreeCellParent<M> extends AbstractTableTreeCell<M> {
     @Override
     public void draw() {
         super.draw();
+        getCellView().setSpan(getOwner().getColumnConfigs().size());
         getCellView().setOpened(getModel().isExpanded());
     }
 
     @Override
-    public ParentTreeCellView getCellView() {
-        return (ParentTreeCellView) super.getCellView();
+    public ParentTableTreeCellView getCellView() {
+        return (ParentTableTreeCellView) super.getCellView();
     }
 
     @Override

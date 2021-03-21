@@ -7,7 +7,7 @@ import com.dncomponents.client.views.core.pcg.cell.CellView;
 /**
  * @author nikolasavic
  */
-public abstract class AbstractHeaderCell extends BaseTableCell<Object, Object, CellView> {
+public abstract class AbstractHeaderCell<T> extends BaseTableCell<T, Object, CellView> {
 
     protected HeaderCellHolder headerCellHolder;
 

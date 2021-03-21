@@ -39,7 +39,7 @@ public class ColumnChooseBarPanelViewImpl implements ColumnChooseBarPanelView {
     public ColumnChooseBarPanelViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);
         uiBinder.bind();
-        list = new ListData<>(ColumnConfig::getColumnName);
+        list = new ListData<>(ColumnConfig::getName);
         list.getRowCellConfig().setCellFactory(new CellFactory<ColumnConfig, String, AbstractCellComponent<ColumnConfig, ?, ?>>() {
             @Override
             public BaseCell<ColumnConfig, String> getCell(CellContext<ColumnConfig, String, AbstractCellComponent<ColumnConfig, ?, ?>> c) {

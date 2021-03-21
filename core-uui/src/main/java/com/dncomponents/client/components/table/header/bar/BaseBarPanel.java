@@ -1,14 +1,16 @@
 package com.dncomponents.client.components.table.header.bar;
 
 import com.dncomponents.client.components.ColumnConfig;
+import com.dncomponents.client.components.core.BaseComponent;
+import com.dncomponents.client.components.table.columnclasses.editcolumn.ColumnEdit;
 import com.dncomponents.client.components.table.header.HeaderCellHolder;
 import com.dncomponents.client.components.table.header.HeaderWithModifiers;
-import com.dncomponents.client.components.core.BaseComponent;
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.core.pcg.ComponentUi;
 import com.dncomponents.client.views.core.ui.table.headers.bar.panel.BaseBarPanelView;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Base class for showing list of {@link HeaderWithModifiers} items.
@@ -25,9 +27,11 @@ public abstract class BaseBarPanel<M extends HeaderWithModifiers, T extends Base
         view.getRootView().setPresenter(this);
     }
 
-
     private List<ColumnConfig> getColumnsName() {
-        return headerCellHolder.getTable().getColumnConfigs();
+        return (List<ColumnConfig>) headerCellHolder.getTable().getColumnConfigs()
+                .stream()
+                .filter(o -> !(o instanceof ColumnEdit))
+                .collect(Collectors.toList());
     }
 
     @Override

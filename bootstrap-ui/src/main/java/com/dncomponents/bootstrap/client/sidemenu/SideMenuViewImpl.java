@@ -164,7 +164,7 @@ public class SideMenuViewImpl implements SideMenuView {
 
     @Override
     public <T> void setRenderer(CellRenderer<TreeNode<T>, Object> renderer) {
-        tree.getRowCellConfig().getCellBuilder().setCellRenderer(renderer);
+        tree.getRowCellConfig().setCellRenderer(renderer);
     }
 
     @Override

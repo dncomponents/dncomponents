@@ -14,6 +14,7 @@ import com.dncomponents.client.components.checkbox.CheckBoxSelectionGroup;
 import com.dncomponents.client.components.checkbox.Radio;
 import com.dncomponents.client.components.checkbox.RadioSelectionGroup;
 import com.dncomponents.client.components.dropdown.DropDown;
+import com.dncomponents.client.components.form.Form;
 import com.dncomponents.client.components.modal.Dialog;
 import com.dncomponents.client.components.multi.DropDownMultiLevel;
 import com.dncomponents.client.components.popover.Popover;
@@ -63,8 +64,10 @@ public class HtmlParserService {
         COMPONENT_HTML_PARSERS.add(AutocompleteMultiSelect.AutocompleteMultiSelectHtmlParser.getInstance());
         COMPONENT_HTML_PARSERS.add(AutocompleteTree.AutocompleteTreeHtmlParser.getInstance());
         COMPONENT_HTML_PARSERS.add(AutocompleteTreeMultiSelect.AutocompleteTreeMultiSelectHtmlParser.getInstance());
+        COMPONENT_HTML_PARSERS.add(Form.FormHtmlParser.getInstance());
 
         //
+        HTML_PARSERS.add(Form.FormHtmlParserAfter.getInstance());
         HTML_PARSERS.add(RadioSelectionGroup.RadioSelectionGroupHtmlParser.getInstance());
         HTML_PARSERS.add(CheckBoxSelectionGroup.CheckBoxSelectionGroupHtmlParser.getInstance());
         HTML_PARSERS.add(StyleHtmlParser.getInstance());

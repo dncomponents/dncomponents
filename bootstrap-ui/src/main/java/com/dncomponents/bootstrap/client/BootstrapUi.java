@@ -11,12 +11,13 @@ import com.dncomponents.bootstrap.client.button.ButtonViewFactory;
 import com.dncomponents.bootstrap.client.button.ButtonViewImpl;
 import com.dncomponents.bootstrap.client.checkbox.CheckBoxViewFactory;
 import com.dncomponents.bootstrap.client.checkbox.CheckBoxViewImpl;
-import com.dncomponents.bootstrap.client.dropdown.DropDownUiImpl;
-import com.dncomponents.bootstrap.client.dropdown.DropdownViewFactory;
-import com.dncomponents.bootstrap.client.list.ListDataViewFactory;
-import com.dncomponents.bootstrap.client.list.ListUiImpl;
 import com.dncomponents.bootstrap.client.dialog.DialogViewFactory;
 import com.dncomponents.bootstrap.client.dialog.DialogViewImpl;
+import com.dncomponents.bootstrap.client.dropdown.DropDownUiImpl;
+import com.dncomponents.bootstrap.client.dropdown.DropdownViewFactory;
+import com.dncomponents.bootstrap.client.form.FormUiImpl;
+import com.dncomponents.bootstrap.client.list.ListDataViewFactory;
+import com.dncomponents.bootstrap.client.list.ListUiImpl;
 import com.dncomponents.bootstrap.client.multilevel.DropDownMultiLevelUiImpl;
 import com.dncomponents.bootstrap.client.multilevel.DropDownMultiLevelViewFactory;
 import com.dncomponents.bootstrap.client.pager.PagerListUiImpl;
@@ -78,6 +79,7 @@ import com.dncomponents.client.views.core.ui.button.ButtonView;
 import com.dncomponents.client.views.core.ui.checkbox.CheckBoxView;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownMultiLevelUi;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownUi;
+import com.dncomponents.client.views.core.ui.form.FormUi;
 import com.dncomponents.client.views.core.ui.list.ListUi;
 import com.dncomponents.client.views.core.ui.modal.DialogView;
 import com.dncomponents.client.views.core.ui.pager.PagerListUi;
@@ -108,7 +110,7 @@ public class BootstrapUi implements ComponentsViews {
 
     @UiField
     public HTMLTemplateElement dropDownUi;
-     @UiField
+    @UiField
     public HTMLTemplateElement accordionUi;
     @UiField
     public HTMLTemplateElement button;
@@ -165,7 +167,8 @@ public class BootstrapUi implements ComponentsViews {
     public HTMLTemplateElement pagerUi;
     @UiField
     public HTMLTemplateElement pagerListUi;
-
+    @UiField
+    HTMLTemplateElement formUi;
 
     protected MultiMap<Class, ViewFactory> registeredViewFactoriesList = new MultiMap<>();
 
@@ -321,7 +324,7 @@ public class BootstrapUi implements ComponentsViews {
         return AutocompleteListOrTreeMultiSelectViewImpl.getInstance(autocompleteMultiSelect, tree);
     }
 
-     @Override
+    @Override
     public AutocompleteTreeView getAutocompleteTreeView() {
         return new AutocompleteTreeViewImpl(autocompleteTree);
     }
@@ -377,4 +380,8 @@ public class BootstrapUi implements ComponentsViews {
         return new PagerListUiImpl(pagerListUi);
     }
 
+    @Override
+    public FormUi getFormUi() {
+        return new FormUiImpl(formUi);
+    }
 }

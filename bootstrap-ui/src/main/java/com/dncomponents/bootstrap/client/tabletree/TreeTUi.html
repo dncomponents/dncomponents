@@ -18,8 +18,8 @@
         <i ui-field="openCloseElement" style="margin-right:  10px;"></i>
         <span ui-field="valuePanel"></span>
     </td>
-    <style-item ui-field="openStyle" class="fa fa-plus-square-o"></style-item>
-    <style-item ui-field="closeStyle" class="fa fa-minus-square-o"></style-item>
+    <style-item ui-field="openStyle" class="fas fa-plus pexp"></style-item>
+    <style-item ui-field="closeStyle" class="fas fa-minus pexp"></style-item>
     <style-item ui-field="modelSelected" class="active"></style-item>
 </template>
 
@@ -37,6 +37,19 @@
         <dn-checkbox ui-field="checkBox" view="SIMPLE"></dn-checkbox>
         <span ui-field="valuePanel"></span>
     </td>
-    <style-item ui-field="openStyle" class="fa fa-plus-square-o"></style-item>
-    <style-item ui-field="closeStyle" class="fa fa-minus-square-o"></style-item>
+    <style-item ui-field="openStyle" class="fas fa-plus pexp"></style-item>
+    <style-item ui-field="closeStyle" class="fas fa-minus pexp"></style-item>
+</template>
+<template ui-field="tableTreeItemSimpleParent">
+    <tr ui-field="root">
+        <td ui-field="openCloseCell">
+            <div class="horizontal-div">
+                <i ui-field="openCloseElement"></i>
+                <div style="width: 10px;"></div>
+                <div ui-field="valuePanel"></div>
+            </div>
+        </td>
+    </tr>
+    <style-item ui-field="openStyle" class="fas fa-plus pexp"></style-item>
+    <style-item ui-field="closeStyle" class="fas fa-minus pexp"></style-item>
 </template>

@@ -4,7 +4,6 @@ import com.dncomponents.client.components.core.CellConfig;
 import com.dncomponents.client.components.core.CellEditor;
 import com.dncomponents.client.components.core.CellRenderer;
 import com.dncomponents.client.components.core.RendererContext;
-import com.dncomponents.client.components.table.header.filter.FilterUtil;
 import com.dncomponents.client.views.core.pcg.ComponentUi;
 import com.dncomponents.client.views.core.pcg.cell.BaseCellView;
 import elemental2.dom.HTMLElement;
@@ -78,7 +77,7 @@ public abstract class BaseCell<P, M> extends AbstractCell<P, M, BaseCellView> {
     protected void bind() {
         cellView.addClickHandler(this::onClick1);
         cellView.addDoubleClickHandler(mouseEvent -> {
-            if (isEditable()) {
+            if (isEditable() && getOwner().isCellEditMode()) {
                 if (!ensureEditor().isEditing())
                     ensureEditor().editCell();
             }
@@ -115,8 +114,6 @@ public abstract class BaseCell<P, M> extends AbstractCell<P, M, BaseCellView> {
         return focusable;
     }
 
-
-    //todo can we have protected ?
     public void setFocus(boolean b) {
         if (isFocusable()) {
             cellView.setFocus(b);
@@ -126,7 +123,6 @@ public abstract class BaseCell<P, M> extends AbstractCell<P, M, BaseCellView> {
     public boolean isEditable() {
         return editable && getOwner().isEditable();
     }
-
 
     public boolean isEnabled() {
         return enabled;
@@ -140,7 +136,6 @@ public abstract class BaseCell<P, M> extends AbstractCell<P, M, BaseCellView> {
     public void scrollInView() {
         getCellView().asElement().scrollIntoView();
     }
-
 
     @Override
     protected BaseCellView getCellView() {
@@ -160,28 +155,31 @@ public abstract class BaseCell<P, M> extends AbstractCell<P, M, BaseCellView> {
             ensureEditor().editCell();
     }
 
-    private CellEditing ensureEditor() {
+    public void stopEditing() {
+        if (isEditable())
+            ensureEditor().stopEditing();
+    }
+
+    protected CellEditing<P, M> ensureEditor() {
         if (cellEditing == null)
             cellEditing = new CellEditing<>(this);
         return cellEditing;
     }
 
     protected CellRenderer<P, M> getCellRenderer() {
-        if (cellRenderer == null) {
-            cellRenderer = getDefaultCellRenderer();
-        }
+        if (cellRenderer == null)
+            cellRenderer = cellConfig.getCellRenderer();
         return cellRenderer;
     }
-
 
     public <C extends BaseCell<P, M>> C setCellEditor(CellEditor<M> cellEditor) {
         this.cellEditor = cellEditor;
         return (C) this;
     }
 
-    protected CellEditor getCellEditor() {
+    protected CellEditor<M> getCellEditor() {
         if (cellEditor == null)
-            cellEditor = FilterUtil.getComponent(getCellConfig().getClazz());
+            cellEditor = cellConfig.getCellEditorFactory().getCellEditor(getModel());
         return cellEditor;
     }
 
@@ -200,94 +198,28 @@ public abstract class BaseCell<P, M> extends AbstractCell<P, M, BaseCellView> {
         return (C) this;
     }
 
-    protected CellRenderer<P, M> getDefaultCellRenderer() {
-        return CellRendererDefault.getInstance();
+    public void setValueChangedStyle(boolean b) {
+        ensureEditor().setValueChangedStyle(b);
+    }
+
+    public void revertValueBeforeEdit() {
+        ensureEditor().revertValueBeforeEdit();
+    }
+
+    public M oldValue() {
+        return ensureEditor().originalValue;
+    }
+
+    public M newValue() {
+        return ensureEditor().newValue;
+    }
+
+    public void setErrorStyle(boolean b) {
+        ensureEditor().setErrorStyle(b);
     }
 
     protected ComponentUi getUi() {
         return getOwner().getView();
     }
 
-    private static class CellRendererDefault<P, M> implements CellRenderer<P, M> {
-        @Override
-        public void setValue(RendererContext<P, M> r) {
-            r.valuePanel.innerHTML = r.value == null ? "" : r.value + "";
-        }
-
-        private static CellRendererDefault instance;
-
-        public static CellRendererDefault getInstance() {
-            if (instance == null)
-                instance = new CellRendererDefault();
-            return instance;
-        }
-    }
-
-    protected BaseCell(BaseCellBuilder<P, M, ?> builder) {
-        initWithBuilder(builder);
-    }
-
-    public <C extends BaseCell<P, M>> C initWithBuilder(BaseCellBuilder builder) {
-        if (builder.editable != null)
-            this.editable = builder.editable;
-        if (builder.cellRenderer != null)
-            this.cellRenderer = builder.cellRenderer;
-        if (builder.cellEditor != null)
-            this.cellEditor = builder.cellEditor;
-        if (builder.selected != null)
-            this.selected = builder.selected;//todo selectable instead?
-        if (builder.baseCellView != null)
-            this.cellView = builder.baseCellView;
-        return (C) this;
-    }
-
-    public abstract static class BaseCellBuilder<P, M, C extends BaseCellBuilder<P, M, C>> {
-
-        private CellRenderer<P, M> cellRenderer;
-        private CellEditor<M> cellEditor;
-        private Boolean editable;
-        private Boolean selected;
-        private BaseCellView baseCellView;
-
-        protected void initWithBuilder(BaseCellBuilder builder) {
-            this.editable = builder.editable;
-            this.cellRenderer = builder.cellRenderer;
-            this.cellEditor = builder.cellEditor;
-            this.selected = builder.selected;
-            this.baseCellView = builder.baseCellView;
-        }
-
-
-        public C setCellRenderer(CellRenderer<P, M> cellRenderer) {
-            this.cellRenderer = cellRenderer;
-            return (C) this;
-        }
-
-        public C setCellEditor(CellEditor<M> cellEditor) {
-            this.cellEditor = cellEditor;
-            return (C) this;
-        }
-
-        public C setEditable(boolean editable) {
-            this.editable = editable;
-            return (C) this;
-        }
-
-        public C setSelected(boolean selected) {
-            this.selected = selected;
-            return (C) this;
-        }
-
-        public C setBaseCellView(BaseCellView baseCellView) {
-            this.baseCellView = baseCellView;
-            return (C) this;
-        }
-
-
-        public abstract <H extends BaseCell<P, M>> H build();
-
-        public static BaseCellBuilder create() {
-            return null;
-        }
-    }
 }

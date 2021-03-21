@@ -5,6 +5,7 @@
     <inherits name="com.dncomponents.CoreUi"/>
     <stylesheet src="bootstrap.css"/>
     <stylesheet src="dn_bootstrap.css"/>
+    <stylesheet src="font-awesome/css/all.css"/>
 
     <source path="client"/>
     <public path="public"/>

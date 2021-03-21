@@ -50,15 +50,4 @@ public class TreeCellCheckboxParent<T, M> extends TreeCellParent<T, M> {
         return (TreeCellCheckboxParentView) super.getCellView();
     }
 
-    protected TreeCellCheckboxParent(BaseCellBuilder<TreeNode<T>, M, ?> builder) {
-        super(builder);
-    }
-
-    public static abstract class Builder<T, M> extends AbstractTreeCell.Builder<T, M> {
-        @Override
-        public TreeCellCheckboxParent<T, M> build() {
-            return new TreeCellCheckboxParent<>(this);
-        }
-    }
-
 }

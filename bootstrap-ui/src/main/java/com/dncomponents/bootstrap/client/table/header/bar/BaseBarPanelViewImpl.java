@@ -31,8 +31,8 @@ public abstract class BaseBarPanelViewImpl<T extends HeaderWithModifiers> implem
     @UiField
     HTMLElement dropDownHolder;
 
-    protected static String defaultBtnStyle = "btn btn-outline-secondary mr-3 mb-3";
-    protected Autocomplete<ColumnConfig> autocomplete = new Autocomplete<>(ColumnConfig::getColumnName);
+    protected static String defaultBtnStyle = "btn btn-outline-secondary me-3 mb-3";
+    protected Autocomplete<ColumnConfig> autocomplete = new Autocomplete<>(ColumnConfig::getName);
 
     protected Presenter<T> presenter;
 
@@ -61,9 +61,7 @@ public abstract class BaseBarPanelViewImpl<T extends HeaderWithModifiers> implem
                 autocomplete.setValue(null);
             }
         });
-
     }
-
 
     @Override
     public void initColumns(List<ColumnConfig> columns) {

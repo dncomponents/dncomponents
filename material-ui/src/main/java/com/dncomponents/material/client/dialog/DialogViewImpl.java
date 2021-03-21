@@ -70,6 +70,11 @@ public class DialogViewImpl implements DialogView {
     }
 
     @Override
+    public void addOkHandler(ClickHandler clickHandler, String text) {
+
+    }
+
+    @Override
     public void addCloseHandler(Command onCloseCmd) {
         final ClickHandler clkHandler = mouseEvent -> {
             mouseEvent.stopImmediatePropagation();

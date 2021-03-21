@@ -20,9 +20,21 @@ public interface TextBoxView extends FocusComponentView {
 
     void addOnKeyUpHandler(KeyUpHandler handler);
 
+    void setPlaceHolder(String placeHolder);
+
     void setError(boolean b);
 
     void setErrorMessage(String errorMessage);
 
-    void setPlaceHolder(String placeHolder);
+    default void setValid(boolean b) {
+
+    }
+
+    default void setHelperText(String helperText) {
+
+    }
+
+    default void setLabel(String labelText) {
+
+    }
 }

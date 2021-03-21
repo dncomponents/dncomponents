@@ -80,7 +80,7 @@ public abstract class BaseTextView implements TextBoxView {
         }
     }
 
-    protected void setLabel(String label) {
+    public void setLabel(String label) {
         if (currentLabel != null && label != null)
             currentLabel.innerHTML = label;
     }

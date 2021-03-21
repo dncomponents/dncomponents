@@ -50,6 +50,12 @@ public class ListViewImpl implements ListView {
     }
 
     @Override
+    public void addItemAtTop(Element element) {
+        if (getItemPanel().hasChildNodes())
+            getItemPanel().insertBefore(element, getItemPanel().childNodes.getAt(0));
+    }
+
+    @Override
     public void clear() {
         getItemPanel().innerHTML = "";
     }
@@ -64,7 +70,7 @@ public class ListViewImpl implements ListView {
 
     @Override
     public void setScrollHeight(String height) {
-        DomUtil.setMaxHeight(root, height);
+        DomUtil.setMaxHeight(getScrollPanel(), height);
     }
 
     @Override

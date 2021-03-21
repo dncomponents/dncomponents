@@ -1,6 +1,7 @@
 package com.dncomponents.client.components.table.columnclasses.treetablecell;
 
 import com.dncomponents.client.components.tree.TreeMultiSelectionModel;
+import com.dncomponents.client.views.core.ui.table.ParentTableTreeCheckboxCellView;
 import com.dncomponents.client.views.core.ui.tree.TreeCellCheckboxParentView;
 
 /**
@@ -50,7 +51,7 @@ public class TableTreeCellCheckboxParent<M> extends TableTreeCellParent<M> {
     }
 
     @Override
-    public TreeCellCheckboxParentView getCellView() {
-        return (TreeCellCheckboxParentView) super.getCellView();
+    public ParentTableTreeCheckboxCellView getCellView() {
+        return (ParentTableTreeCheckboxCellView) super.getCellView();
     }
 }

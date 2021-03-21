@@ -44,7 +44,7 @@ public class ColumnChooseBarPanelViewImpl implements ColumnChooseBarPanelView {
     public ColumnChooseBarPanelViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);
         uiBinder.bind();
-        list = new ListData<>(columnConfig -> columnConfig.getColumnName());
+        list = new ListData<>(columnConfig -> columnConfig.getName());
         list.getRowCellConfig().setCellFactory(c -> new ListCellCheckbox<>());
         list.getSelectionModel().setSelectionMode(DefaultMultiSelectionModel.SelectionMode.MULTI);
         this.asElement().appendChild(list.asElement());
@@ -78,7 +78,7 @@ public class ColumnChooseBarPanelViewImpl implements ColumnChooseBarPanelView {
     public void update(int size) {
         if (size > 0) {
             label.setText("Hidden <span class=\"badge badge-light\">" + size + "</span>" + (size > 1 ? " fields" : " field") + "\n");
-            DomUtil.setStyle(label, "btn btn-primary mr-3 mb-3");
+            DomUtil.setStyle(label, "btn btn-primary me-3 mb-3");
         } else {
             label.setText("Hide fields");
             DomUtil.setStyle(label, defaultBtnStyle);

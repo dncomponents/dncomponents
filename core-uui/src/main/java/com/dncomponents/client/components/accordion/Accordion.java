@@ -12,6 +12,7 @@ import elemental2.dom.HTMLElement;
 import elemental2.dom.NodeList;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -52,7 +53,7 @@ public class Accordion<T> extends BaseComponentMultiSelection<T, AccordionUi, Ac
     }
 
     @Override
-    protected AccordionItem<T> createItem(T t) {
+    public AccordionItem<T> createItem(T t) {
         return new AccordionItem<>(this, t);
     }
 

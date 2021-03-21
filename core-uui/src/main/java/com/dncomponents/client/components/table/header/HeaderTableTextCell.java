@@ -26,14 +26,13 @@ public class HeaderTableTextCell extends AbstractHeaderCell {
 
     @Override
     public void draw() {
-        getCellView().setText(text == null ? getCellConfig().getColumnName() : text);
+        getCellView().setText(text == null ? getCellConfig().getName() : text);
     }
 
     public HeaderTableTextCell setText(String columnName) {
         this.text = columnName;
         return this;
     }
-
 
     public String getText() {
         return text;

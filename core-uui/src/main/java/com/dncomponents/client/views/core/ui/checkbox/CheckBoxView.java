@@ -23,4 +23,6 @@ public interface CheckBoxView extends FocusComponentView, MainViewSlots.HasMainV
     void setName(String nameOfGroup);
 
     String getLabel();
+
+//    void setHelperText(String helperText);
 }

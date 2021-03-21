@@ -3,6 +3,7 @@ package com.dncomponents.client.components.textbox;
 import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.components.core.BaseComponent;
 import com.dncomponents.client.components.core.ComponentHtmlParser;
+import com.dncomponents.client.components.core.validation.ValidationException;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.textbox.TextBoxView;
 import elemental2.dom.DomGlobal;
@@ -24,12 +25,12 @@ public class LongBox extends ValueBox<Long> {
     }
 
     @Override
-    Long parseString(String str) {
+    Long parseString(String str) throws ValidationException {
         Long result;
         try {
             result = Long.parseLong(str);
         } catch (NumberFormatException ex) {
-            result = null;
+            throw new ValidationException(ex.getMessage());
         }
         return result;
     }

@@ -1,8 +1,9 @@
 package com.dncomponents.client.components.multi;
 
-import com.dncomponents.client.views.Renderer;
+import com.dncomponents.client.components.core.events.value.TakesValue;
 import com.dncomponents.client.views.HasViewSlots;
 import com.dncomponents.client.views.IsElement;
+import com.dncomponents.client.views.Renderer;
 import com.dncomponents.client.views.ViewSlots;
 import com.dncomponents.client.views.core.pcg.View;
 import elemental2.dom.HTMLElement;
@@ -10,7 +11,7 @@ import elemental2.dom.HTMLElement;
 /**
  * @author nikolasavic
  */
-public abstract class BaseHasView<T, V extends View> implements IsElement {
+public abstract class BaseHasView<T, V extends View> implements TakesValue<T>, IsElement {
 
     protected Renderer renderer;
 

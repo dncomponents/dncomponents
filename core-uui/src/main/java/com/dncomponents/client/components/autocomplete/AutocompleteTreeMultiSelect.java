@@ -8,7 +8,6 @@ import com.dncomponents.client.components.core.entities.ItemId;
 import com.dncomponents.client.components.tree.TreeNode;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.views.Ui;
-import com.dncomponents.client.views.core.ui.autocomplete.AutocompleteTreeView;
 import com.dncomponents.client.views.core.ui.autocomplete.multiselect.AutocompleteMultiSelectView;
 import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
@@ -61,6 +60,7 @@ public class AutocompleteTreeMultiSelect<T> extends AbstractAutocompleteMultiSel
         ((Tree<T>) view.getHasRowsData()).setRoot(root);
         view.getHasRowsData().drawData();
     }
+
     public static class AutocompleteTreeMultiSelectHtmlParser extends AbstractPluginHelper implements ComponentHtmlParser {
 
         private static AutocompleteTreeMultiSelectHtmlParser instance;
@@ -86,9 +86,8 @@ public class AutocompleteTreeMultiSelect<T> extends AbstractAutocompleteMultiSel
             if (htmlElement.hasChildNodes()) {
                 TreeNode<ItemId> root = new TreeNode<>(new ItemId("root", "root"));
                 parseItem((HTMLElement) htmlElement, root, this);
-                autocomplete.getRowCellConfig().getCellBuilder()
-                        .setCellRenderer(r -> r.valuePanel.innerHTML =
-                                r.cell.getModel().getUserObject().getContent());
+                autocomplete.getRowCellConfig().setCellRenderer(r -> r.valuePanel.innerHTML =
+                        r.cell.getModel().getUserObject().getContent());
                 autocomplete.setRoot(root);
             }
 

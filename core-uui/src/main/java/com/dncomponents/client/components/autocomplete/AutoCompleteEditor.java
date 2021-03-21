@@ -4,7 +4,7 @@ import com.dncomponents.client.components.core.DefaultCellEditor;
 
 import java.util.List;
 
-public class AutoCompleteEditor<M> extends DefaultCellEditor<M, Autocomplete> {
+public class AutoCompleteEditor<M> extends DefaultCellEditor<M> {
 
     public AutoCompleteEditor(List list) {
         this();

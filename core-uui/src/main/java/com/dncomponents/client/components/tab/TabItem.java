@@ -2,13 +2,13 @@ package com.dncomponents.client.components.tab;
 
 import com.dncomponents.client.components.core.BaseComponent;
 import com.dncomponents.client.components.core.CanSelect;
-import com.dncomponents.client.views.Renderer;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.core.events.beforeselection.BeforeSelectionEvent;
 import com.dncomponents.client.components.core.events.beforeselection.BeforeSelectionHandler;
 import com.dncomponents.client.components.core.events.beforeselection.HasBeforeSelectionHandlers;
 import com.dncomponents.client.components.core.events.selection.SelectionEvent;
-import com.dncomponents.client.views.IsElement;
+import com.dncomponents.client.components.modal.SetElement;
+import com.dncomponents.client.views.Renderer;
 import com.dncomponents.client.views.core.ui.tab.TabItemView;
 import com.dncomponents.client.views.core.ui.tab.TabItemViewSlots;
 import elemental2.dom.Event;
@@ -22,6 +22,15 @@ public class TabItem<T> extends BaseComponent<T, TabItemView> implements CanSele
 
     final Tab<T> tab;
     boolean selected;
+
+    {
+        setRenderer(new RenderTabItem<T>() {
+            @Override
+            public void render(T t, TabItemViewSlots slots) {
+                slots.getContent().textContent = t + "";
+            }
+        });
+    }
 
     public TabItem(Tab tab) {
         super(tab.getView().getTabItemView());
@@ -41,18 +50,6 @@ public class TabItem<T> extends BaseComponent<T, TabItemView> implements CanSele
         this(tab, tab.getView().getTabItemView());
         setTitle(titleHtml);
         setContent(contentHtml);
-    }
-
-    public TabItem(Tab tab, IsElement titleElement, IsElement contentElement) {
-        this(tab, tab.getView().getTabItemView());
-        setTitle(titleElement);
-        setContent(contentElement);
-    }
-
-    public TabItem(Tab tab, HTMLElement titleElement, HTMLElement contentElement) {
-        this(tab, tab.getView().getTabItemView());
-        setTitle(titleElement);
-        setContent(contentElement);
     }
 
     public TabItem(Tab tab, T userObject) {
@@ -86,7 +83,6 @@ public class TabItem<T> extends BaseComponent<T, TabItemView> implements CanSele
         return view.getTabItemContent();
     }
 
-
     @Override
     protected TabItemView getView() {
         return super.getView();
@@ -105,24 +101,20 @@ public class TabItem<T> extends BaseComponent<T, TabItemView> implements CanSele
         view.setItemTitleHtml(html);
     }
 
-    public void setTitle(IsElement element) {
-        view.setItemTitle(element.asElement());
-    }
-
-    public void setTitle(HTMLElement element) {
-        view.setItemTitle(element);
+    public void setTitle(SetElement se) {
+        se.setHtml(getViewSlots().getTitle());
     }
 
     public void setContent(String html) {
         view.setItemContent(html);
     }
 
-    public void setContent(IsElement content) {
-        view.setItemContent(content.asElement());
-    }
-
     public void setContent(HTMLElement content) {
         view.setItemContent(content);
+    }
+
+    public void setContent(SetElement se) {
+        se.setHtml(getViewSlots().getContent());
     }
 
     public int getOrder() {

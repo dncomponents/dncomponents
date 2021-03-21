@@ -12,6 +12,9 @@
     </template>
 </template>
 <!--  TEXTBOX  -->
+<template>
+    <style-item ui-field="disabledStyle" class="disabled"/>
+</template>
 <template ui-field="textbox">
     <input ui-field="root" class="form-control" type="text">
 </template>
@@ -198,25 +201,23 @@
 </template>
 <!--DIALOG-->
 <template ui-field="modalDialog">
-    <div ui-field="root" class="modal fade">
+    <div ui-field="root" class="modal fade" tabindex="-1">
         <div ui-field="modalDialogPanel" class="modal-dialog">
             <div class="modal-content">
                 <div ui-field="header" class="modal-header">
                     <h5 ui-field="titleHeader" class="modal-title">
 
                     </h5>
-                    <button ui-field="closeHeader" type="button" class="close" data-dismiss="modal"
-                            aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button ui-field="closeHeader" type="button" class="btn-close" data-dismiss="modal"
+                            aria-label="Close"></button>
                 </div>
                 <div ui-field="body" class="modal-body">
 
                 </div>
                 <div ui-field="footer" class="modal-footer">
-                    <button ui-field="closeButton" type="button" class="btn btn-secondary"
-                            data-dismiss="modal">
-                        Close
+                    <button ui-field="closeButton" type="button" class="btn btn-secondary">Close</button>
+                    <button ui-field="okButton" type="button" class="btn btn-primary" style="display: none;">Save
+                        changes
                     </button>
                 </div>
             </div>
@@ -282,8 +283,8 @@
             <i ui-field="openCloseElement" style="margin-right:  10px;"></i>
             <span ui-field="valuePanel"></span>
         </li>
-        <style-item ui-field="openStyle" class="fa fa-plus-square-o"></style-item>
-        <style-item ui-field="closeStyle" class="fa fa-minus-square-o"></style-item>
+        <style-item ui-field="openStyle" class="fas fa-plus pexp"></style-item>
+        <style-item ui-field="closeStyle" class="fas fa-minus pexp"></style-item>
         <style-item ui-field="modelSelected" class="active"></style-item>
     </template>
 
@@ -301,8 +302,8 @@
             <dn-checkbox ui-field="checkBox" view="SIMPLE"></dn-checkbox>
             <span ui-field="valuePanel"></span>
         </li>
-        <style-item ui-field="openStyle" class="fa fa-plus-square-o"></style-item>
-        <style-item ui-field="closeStyle" class="fa fa-minus-square-o"></style-item>
+        <style-item ui-field="openStyle" class="fas fa-plus pexp"></style-item>
+        <style-item ui-field="closeStyle" class="fas fa-minus pexp"></style-item>
     </template>
 </template>
 <!--   TABLE  -->
@@ -314,7 +315,7 @@
                 <dn-autocomplete ui-field="ac" template-id="acc"></dn-autocomplete>
                 <div ui-field="valueHolder"></div>
             </div>
-            <button ui-field="clear" class="btn btn-sm btn-outline-secondary ml-2">x</button>
+            <button ui-field="clear" class="btn btn-sm btn-outline-secondary ms-2">x</button>
         </div>
         <style-item ui-field="booleanMainPanelStyle"
                     class="d-flex justify-content-between align-items-center"></style-item>
@@ -334,11 +335,11 @@
     </template>
 
     <template ui-field="tableRowExpanderItem">
-        <td ui-field="root">
-            <i ui-field="openClosedElement" class="fa fa-close"></i>
+        <td ui-field="root" class="text-center pexp">
+            <i ui-field="openClosedElement" class="fas fa-times pexp"></i>
         </td>
-        <style-item ui-field="openStyle" class="fa fa-plus-square-o"></style-item>
-        <style-item ui-field="closeStyle" class="fa fa-minus-square-o"></style-item>
+        <style-item ui-field="openStyle" class="fas fa-plus"></style-item>
+        <style-item ui-field="closeStyle" class="fas fa-minus"></style-item>
     </template>
 
     <template ui-field="tableCheckboxColumn">
@@ -349,9 +350,24 @@
     </template>
 
     <template ui-field="tableHeaderCheckbox">
-        <td ui-field="root">
+        <th ui-field="root">
             <dn-checkbox ui-field="checkBox" style="margin-left: 12px;"></dn-checkbox>
             <span ui-field="textPanel"></span>
+        </th>
+    </template>
+
+    <template ui-field="headerEdit">
+        <th ui-field="root">
+            <button ui-field="addBtn" class="btn btn-outline-info btn-sm">Add</button>
+        </th>
+    </template>
+
+    <template ui-field="tableCellEdit">
+        <td ui-field="root">
+            <button ui-field="btnEdit" class="btn btn-outline-info btn-sm">Edit</button>
+            <button ui-field="btnSave" class="btn btn-outline-info btn-sm">Save</button>
+            <button ui-field="btnCancel" class="btn btn-outline-danger btn-sm">Cancel</button>
+            <button ui-field="btnDelete" class="btn btn-outline-danger btn-sm">Delete</button>
         </td>
     </template>
 
@@ -376,7 +392,7 @@
             <template ui-field="tableBarItem">
                 <div ui-field="root" class="row p-1">
                     <div class="col-1">
-                        <i ui-field="close" class="fa fa-close"></i>
+                        <i ui-field="close" class="fas fa-times pexp"></i>
                     </div>
                     <div class="col-2">
                         <span ui-field="actionLabel"></span>
@@ -397,7 +413,7 @@
             <template ui-field="tableBarPanel">
                 <div ui-field="root">
                     <div ui-field="contentPanel" class="p-2"></div>
-                    <div ui-field="dropDownHolder" class="pl-2 mb-3 mt-3"></div>
+                    <div ui-field="dropDownHolder" class="ps-2 mb-3 mt-3"></div>
                 </div>
             </template>
         </template>
@@ -413,8 +429,8 @@
                 </div>
             </td>
         </tr>
-        <style-item ui-field="openStyle" class="fa fa-plus-square-o"></style-item>
-        <style-item ui-field="closeStyle" class="fa fa-minus-square-o"></style-item>
+        <style-item ui-field="openStyle" class="fas fa-plus pexp"></style-item>
+        <style-item ui-field="closeStyle" class="fas fa-minus pexp"></style-item>
     </template>
 
     <template ui-field="tableMain">
@@ -462,29 +478,31 @@
     </template>
     <template ui-field="tableColumn">
         <td ui-field="root"></td>
+        <style-item ui-field="valueChanged" class="valueChanged"></style-item>
+        <style-item ui-field="errorCell" class="errorCell"></style-item>
     </template>
 
     <template ui-field="tableColumnSortHeader">
         <td ui-field="root">
             <div ui-field="textPanel"></div>
-            <div style="position: relative;" class="pull-right">
+            <div style="position: relative;" class="float-end">
                 <div style="right: 1px;top: -19px;position:absolute;">
-                    <div ui-field="sortIcon" class="pull-right header-s2"></div>
+                    <div ui-field="sortIcon" class="float-end header-s2"></div>
                 </div>
             </div>
         </td>
-        <style-item ui-field="sortUpStyle" class="fa fa-sort-down pull-right"></style-item>
-        <style-item ui-field="sortDownStyle" class="fa fa-sort-up pull-right"></style-item>
+        <style-item ui-field="sortUpStyle" class="fa fa-sort-down float-end"></style-item>
+        <style-item ui-field="sortDownStyle" class="fa fa-sort-up float-end"></style-item>
     </template>
     <template ui-field="tableColumnMenuHeader">
         <td ui-field="root">
             <div ui-field="textPanel"></div>
 
-            <div style="position: relative;" class="pull-right">
+            <div style="position: relative;" class="float-end">
                 <div style="left: -100px;top: -19px;position:absolute;">
-                    <div ui-field="filterIconPanel" class="fa fa-filter pull-right header-s2"></div>
-                    <div ui-field="groupByIconPanel" class="fa fa-group pull-right header-s2"></div>
-                    <div ui-field="sortIconPanel" class="pull-right header-s2"></div>
+                    <div ui-field="filterIconPanel" class="fa fa-filter float-end header-s2"></div>
+                    <div ui-field="groupByIconPanel" class="fa fa-group float-end header-s2"></div>
+                    <div ui-field="sortIconPanel" class="float-end header-s2"></div>
                 </div>
                 <!--fa fa-sort-->
                 <div style="right: 1px;top: -30px;position:absolute;">
@@ -492,16 +510,16 @@
                 </div>
             </div>
         </td>
-        <style-item ui-field="sortStyle" class="fa fa-sort pull-right"></style-item>
-        <style-item ui-field="sortUpStyle" class="fa fa-sort-down pull-right"></style-item>
-        <style-item ui-field="sortDownStyle" class="fa fa-sort-up pull-right"></style-item>
+        <style-item ui-field="sortStyle" class="fa fa-sort float-end"></style-item>
+        <style-item ui-field="sortUpStyle" class="fa fa-sort-down float-end"></style-item>
+        <style-item ui-field="sortDownStyle" class="fa fa-sort-up float-end"></style-item>
     </template>
 
     <template ui-field="tableColumnFilterHeader">
         <td ui-field="root">
             <div ui-field="textPanel" style="font-weight: bold"></div>
-            <div ui-field="sortIconPanel" class="pull-right header-s2"></div>
-            <div ui-field="filterIconPanel" class="fa fa-filter pull-right header-s2"></div>
+            <div ui-field="sortIconPanel" class="float-end header-s2"></div>
+            <div ui-field="filterIconPanel" class="fa fa-filter float-end header-s2"></div>
             <div ui-field="filterPanelElement"></div>
         </td>
     </template>
@@ -580,7 +598,7 @@
     <template ui-field="itemView">
         <li class="search-choice" ui-field="root">
             <span ui-field="mainPanel"></span>
-            <a class="fa fa-close" style="position: relative;right: -16px" ui-field="removeBtn"></a>
+            <a class="fas fa-times pexp" style="position: relative;right: -16px" ui-field="removeBtn"></a>
         </li>
     </template>
 </template>
@@ -654,7 +672,7 @@
             <i ui-field="iconPanel" class="fa fa-bus"></i>
             <span ui-field="valuePanel"></span>
             <span class="pull-right-container">
-                <i ui-field="openCloseElement" class="fa fa-angle-down pull-right"></i>
+                <i ui-field="openCloseElement" class="fa fa-angle-down float-end"></i>
                  </span>
         </a>
     </li>
@@ -667,7 +685,7 @@
             <dn-autocomplete ui-field="ac" template-id="acc"></dn-autocomplete>
             <div ui-field="valueHolder"></div>
         </div>
-        <button ui-field="clear" class="btn btn-sm btn-outline-secondary ml-2">x</button>
+        <button ui-field="clear" class="btn btn-sm btn-outline-secondary ms-2">x</button>
     </div>
     <template ui-template="acc" ui-field="accTemplate">
         <div ui-field='root' class='btn-group btn-group-sm'>
@@ -698,19 +716,18 @@
         <template ui-field="itemView">
             <li class="search-choice" ui-field="root">
                 <span ui-field="mainPanel"></span>
-                <a class="fa fa-close" style="position: relative;right: -16px" ui-field="removeBtn"></a>
+                <a class="fas fa-times pexp" style="position: relative;right: -16px" ui-field="removeBtn"></a>
             </li>
         </template>
     </template>
 </template>
-
 <!--SIDEMENU-->
 <template ui-field="sidemenu">
-    <aside ui-field="root" class="col-12 col-md-3 col-xl-2 border-right scroll-style" style="max-height: 100%">
+    <aside ui-field="root" class="col-12 col-md-3 col-xl-2 border-end scroll-style" style="max-height: 100%">
         <div class="d-flex flex-row-reverse justify-content-between align-items-center d-md-block">
-            <div class="w-100 ml-3 ml-md-0">
+            <div class="w-100 ms-3 ms-md-0">
                 <form>
-                    <dn-text-box ui-field="searchBox" addclass="w-100"></dn-text-box>
+                    <dn-text-box ui-field="searchBox" placeHolder="Search..." addclass="w-100"></dn-text-box>
                 </form>
             </div>
             <hr class="d-none d-md-block mb-2">
@@ -737,10 +754,10 @@
         <template ui-field="treeItemSimple">
             <li ui-field="root" class="nav-item">
                 <a href="javascript:void(0)" class="nav-link">
-                    <span ui-field="iconParent" style="display: none" class="mr-3">
+                    <span ui-field="iconParent" style="display: none" class="me-3">
                       <i ui-field="iconPanel" class="fa fa-user"></i>
                     </span>
-                    <span ui-field="valuePanel" class="d-inline-flex mr-auto">Loremipsum</span>
+                    <span ui-field="valuePanel" class="d-inline-flex me-auto">Loremipsum</span>
                 </a>
             </li>
             <style-item ui-field="modelSelected" class="active"></style-item>
@@ -748,11 +765,11 @@
         <template ui-field="treeItemSimpleParent">
             <li ui-field="root" class="nav-item">
                 <a href="javascript:void(0)" class="nav-link dropdown-toggle collapsed" ui-field="valuePanelParent">
-                    <span ui-field="iconParent" style="display: none" class="mr-3">
+                    <span ui-field="iconParent" style="display: none" class="me-3">
                       <i ui-field="iconPanel" class="fa fa-user"></i>
                     </span>
-                    <span ui-field="valuePanel" class="d-inline-flex mr-auto">Loremipsum</span>
-                    <i ui-field="openCloseElement" class="pull-right"></i>
+                    <span ui-field="valuePanel" class="d-inline-flex me-auto">Loremipsum</span>
+                    <i ui-field="openCloseElement" class="float-end"></i>
                 </a>
             </li>
             <style-item ui-field="openStyle" class=""></style-item>
@@ -762,4 +779,19 @@
 
     <style-item ui-field="collapsedStyle" class="collapsed"></style-item>
     <style-item ui-field="showNavBarPanelStyle" class="show"></style-item>
+</template>
+<template ui-field="formUi">
+    <template ui-field="form">
+        <div ui-field="root">
+            <div ui-field="mainPanel"></div>
+            <dn-button ui-field="submitBtn">Save</dn-button>
+        </div>
+    </template>
+    <template ui-field="formItem">
+        <div ui-field="root" class="mb-3">
+            <label ui-field="labelElement" class="form-label"></label>
+            <div ui-field="mainPanel"></div>
+            <div ui-field="helperTextElement" class="form-text"></div>
+        </div>
+    </template>
 </template>

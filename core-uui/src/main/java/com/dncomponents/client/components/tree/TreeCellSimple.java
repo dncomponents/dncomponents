@@ -20,16 +20,4 @@ public class TreeCellSimple<T, M> extends AbstractTreeCell<T, M> {
         cellView = getUi().getTreeCellView(icon);
     }
 
-    protected TreeCellSimple(BaseCellBuilder<TreeNode<T>, M, ?> builder) {
-        super(builder);
-    }
-
-    public static class Builder<T, M> extends AbstractTreeCell.Builder<T, M> {
-
-        @Override
-        public TreeCellSimple<T, M> build() {
-            return new TreeCellSimple<>(this);
-        }
-    }
-
 }

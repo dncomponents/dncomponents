@@ -66,14 +66,22 @@ public class TextBoxViewImpl implements TextBoxView {
     @Override
     public void setError(boolean b) {
         if (b)
-            root.classList.add("errorStyle");
+            root.classList.add("is-invalid");
         else
-            root.classList.remove("errorStyle");
+            root.classList.remove("is-invalid");
     }
 
     @Override
     public void setErrorMessage(String errorMessage) {
+        setError(errorMessage != null);
+    }
 
+    @Override
+    public void setValid(boolean b) {
+        if (b)
+            root.classList.add("is-valid");
+        else
+            root.classList.remove("is-valid");
     }
 
     @Override
@@ -81,9 +89,14 @@ public class TextBoxViewImpl implements TextBoxView {
         root.setAttribute("placeholder", placeHolder);
     }
 
+    @Override
+    public void setLabel(String label) {
+
+    }
 
     @Override
     public HTMLInputElement asElement() {
         return root;
     }
+
 }

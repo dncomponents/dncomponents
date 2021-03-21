@@ -3,7 +3,6 @@ package com.dncomponents.client.components.modal;
 import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.components.core.BaseComponent;
 import com.dncomponents.client.components.core.ComponentHtmlParser;
-import com.dncomponents.client.views.Renderer;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.core.events.hide.HasHideHandlers;
 import com.dncomponents.client.components.core.events.hide.HideEvent;
@@ -12,6 +11,8 @@ import com.dncomponents.client.components.core.events.show.HasShowHandlers;
 import com.dncomponents.client.components.core.events.show.ShowEvent;
 import com.dncomponents.client.components.core.events.show.ShowHandler;
 import com.dncomponents.client.dom.DomUtil;
+import com.dncomponents.client.dom.handlers.ClickHandler;
+import com.dncomponents.client.views.Renderer;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.modal.DialogView;
 import com.dncomponents.client.views.core.ui.modal.DialogViewSlots;
@@ -77,7 +78,6 @@ public class Dialog<T> extends BaseComponent<T, DialogView> implements HasShowHa
         return handler.addTo(asElement());
     }
 
-
     @Override
     public HandlerRegistration addHideHandler(HideHandler handler) {
         return handler.addTo(asElement());
@@ -98,6 +98,14 @@ public class Dialog<T> extends BaseComponent<T, DialogView> implements HasShowHa
         se.setHtml(getView().getViewSlots().getContentPanel());
     }
 
+    public void setHeader(String header) {
+        setHeader(se -> se.textContent = header);
+    }
+
+    public void setContent(String content) {
+        setContent(se -> se.textContent = content);
+    }
+
     public void setFooter(SetElement se) {
         se.setHtml(getView().getViewSlots().getFooterPanel());
     }
@@ -115,6 +123,10 @@ public class Dialog<T> extends BaseComponent<T, DialogView> implements HasShowHa
     public void setDraggable(boolean draggable) {
         this.draggable = draggable;
         view.setDraggable(draggable);
+    }
+
+    public void addOKHandler(ClickHandler clickHandler, String text) {
+        view.addOkHandler(clickHandler, text);
     }
 
     public boolean isDraggable() {
@@ -139,6 +151,18 @@ public class Dialog<T> extends BaseComponent<T, DialogView> implements HasShowHa
 
     public int getLeftPosition() {
         return view.getLeftPosition();
+    }
+
+    public static <T> Dialog<T> show(String title, String content) {
+        Dialog dialog = new Dialog();
+        dialog.setHeader(title);
+        dialog.setContent(content);
+        dialog.show();
+        return dialog;
+    }
+
+    public static <T> Dialog<T> show(String content) {
+        return show("", content);
     }
 
     public static class ModalDialogHtmlParser extends AbstractPluginHelper implements ComponentHtmlParser {
@@ -201,7 +225,6 @@ public class Dialog<T> extends BaseComponent<T, DialogView> implements HasShowHa
         public Class getClazz() {
             return Dialog.class;
         }
-
     }
 
 }

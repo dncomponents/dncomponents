@@ -338,9 +338,8 @@ public class Tree<M> extends AbstractCellComponent<TreeNode<M>, Object, TreeUi> 
                 TreeNode<ItemId> root = new TreeNode<>(new ItemId("root", "root"));
                 parseItem((HTMLElement) htmlElement, root, this);
                 tree.setRoot(root);
-                tree.getRowCellConfig().getCellBuilder()
-                        .setCellRenderer(r -> r.valuePanel.innerHTML =
-                                r.cell.getModel().getUserObject().getContent());
+                tree.getRowCellConfig().setCellRenderer(r -> r.valuePanel.innerHTML =
+                        r.cell.getModel().getUserObject().getContent());
                 tree.drawData();
             }
             replaceAndCopy(htmlElement, tree);

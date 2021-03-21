@@ -1,6 +1,7 @@
 package com.dncomponents.client.views.core.ui.modal;
 
 import com.dncomponents.client.components.core.events.Command;
+import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.HasViewSlots;
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.core.pcg.View;
@@ -20,6 +21,8 @@ public interface DialogView extends View, HasViewSlots<DialogViewSlots> {
     void setTitle(String title);
 
     void addCloseHandler(Command onCloseCmd);
+
+    void addOkHandler(ClickHandler clickHandler,String text);
 
     void show();
 

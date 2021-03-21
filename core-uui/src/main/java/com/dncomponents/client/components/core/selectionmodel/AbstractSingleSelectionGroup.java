@@ -1,11 +1,12 @@
 package com.dncomponents.client.components.core.selectionmodel;
 
+import com.dncomponents.client.components.core.HasUserValue;
 import com.dncomponents.client.components.core.events.selection.SelectionEvent;
 import com.dncomponents.client.components.core.events.value.HasValue;
 import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
 import com.dncomponents.client.components.core.selectionmodel.helper.AbstractSelectionHandler;
 import com.dncomponents.client.components.core.selectionmodel.helper.AbstractValueChangeHandler;
-import com.dncomponents.client.components.core.HasUserValue;
+import elemental2.dom.HTMLElement;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +15,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class AbstractSingleSelectionGroup<T, C extends HasUserValue<T>>
-        extends DefaultSingleSelectionModel<C> {
+        extends DefaultSingleSelectionModel<C> implements HasEntitySingleSelectionModel<T> {
 
     List<C> possibleValues = new ArrayList<>();
 
@@ -55,15 +56,20 @@ public class AbstractSingleSelectionGroup<T, C extends HasUserValue<T>>
     protected void fireSelectionChange() {
         super.fireSelectionChange();
         SelectionEvent.fire(entitySelectionModel, entitySelectionModel.getSelection());
-        ValueChangeEvent.fire(hasValue, entitySelectionModel.getSelection());
+        ValueChangeEvent.fire(entitySelectionModel.getHasValue(), selection.getUserObject());
     }
 
-
     private class EntitySingleSelectionModel extends AbstractSelectionHandler<T> implements SingleSelectionModel<T> {
+        private HasValue<T> entityHasValue = new HasValueModel();
 
         @Override
         public T getSelection() {
             return AbstractSingleSelectionGroup.this.selection == null ? null : AbstractSingleSelectionGroup.this.selection.getUserObject();
+        }
+
+        @Override
+        public HasValue<T> getHasValue() {
+            return entityHasValue;
         }
 
         @Override
@@ -75,31 +81,27 @@ public class AbstractSingleSelectionGroup<T, C extends HasUserValue<T>>
         public List<T> getItems() {
             return possibleValues.stream().map(HasUserValue::getUserObject).collect(Collectors.toList());
         }
+
+        private class HasValueModel extends AbstractValueChangeHandler<T> {
+
+            @Override
+            public T getValue() {
+                return getSelection();
+            }
+
+            @Override
+            public void setValue(T value, boolean fireEvents) {
+                setSelected(value, true, fireEvents);
+            }
+        }
     }
 
-    private class HasValueModel extends AbstractValueChangeHandler<T> {
-
-        @Override
-        public T getValue() {
-            return entitySelectionModel.getSelection();
-        }
-
-        @Override
-        public void setValue(T value, boolean fireEvents) {
-            entitySelectionModel.setSelected(value, true, fireEvents);
-        }
-
-    }
 
     private SingleSelectionModel<T> entitySelectionModel = new EntitySingleSelectionModel();
-    private HasValue<T> hasValue = new HasValueModel();
 
-
+    @Override
     public SingleSelectionModel<T> getEntitySelectionModel() {
         return entitySelectionModel;
     }
 
-    public HasValue<T> getHasValue() {
-        return hasValue;
-    }
 }

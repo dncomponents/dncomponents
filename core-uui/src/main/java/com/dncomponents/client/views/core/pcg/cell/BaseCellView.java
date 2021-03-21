@@ -28,4 +28,8 @@ public interface BaseCellView extends CellView {
     void setToValuePanel(Element element);
 
     HTMLElement getValuePanel();
+
+    void showSuccessMessage(String successText);
+
+    void showErrorMessage(String message);
 }

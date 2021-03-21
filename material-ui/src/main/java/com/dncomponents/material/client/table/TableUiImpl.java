@@ -3,6 +3,7 @@ package com.dncomponents.material.client.table;
 import com.dncomponents.UiField;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.table.columnclasses.checkboxcolumn.TableCellCheckBoxView;
+import com.dncomponents.client.components.table.columnclasses.editcolumn.TableCellEditView;
 import com.dncomponents.client.views.core.pcg.cell.BaseCellView;
 import com.dncomponents.client.views.core.pcg.cell.CellView;
 import com.dncomponents.client.views.core.ui.table.TableRowView;
@@ -18,6 +19,7 @@ import com.dncomponents.material.client.table.cell.TableCellViewImpl;
 import com.dncomponents.material.client.table.footer.FooterCellViewImpl;
 import com.dncomponents.material.client.table.group.ParentTableTreeCellViewImpl;
 import com.dncomponents.material.client.table.header.CheckBoxHeaderTableCellViewImpl;
+import com.dncomponents.material.client.table.header.HeaderTableEditCellViewImpl;
 import com.dncomponents.material.client.table.header.HeaderTableFilterCellViewImpl;
 import com.dncomponents.material.client.table.header.bar.TableBarUiImpl;
 import com.dncomponents.material.client.table.header.cell.MdcHeaderTableSortCellViewImpl;
@@ -58,6 +60,10 @@ public class TableUiImpl implements TableUi {
     HTMLTemplateElement tableBarUi;
     @UiField
     HTMLTemplateElement filterPanel;
+    @UiField
+    HTMLTemplateElement tableCellEdit;
+    @UiField
+    HTMLTemplateElement headerEdit;
 
 
     public TableUiImpl() {
@@ -121,6 +127,11 @@ public class TableUiImpl implements TableUi {
     }
 
     @Override
+    public TableCellEditView getTableCellEditView() {
+        return null;
+    }
+
+    @Override
     public TableView getRootView() {
         return tableView;
     }
@@ -170,4 +181,8 @@ public class TableUiImpl implements TableUi {
         return new FilterPanelViewImpl(filterPanel);
     }
 
+    @Override
+    public HeaderTableEditCellViewImpl getHeaderTableEditCellView() {
+        return new HeaderTableEditCellViewImpl(headerEdit);
+    }
 }

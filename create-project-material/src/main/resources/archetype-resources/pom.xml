@@ -113,7 +113,7 @@
                         <configuration>
                             <mainClass>com.dncomponents.Main</mainClass>
                             <arguments>
-                                <argument>${project.build.sourceDirectory}</argument>
+                                <argument>${project.build.directory}/generated-sources/annotations</argument>
                             </arguments>
                         </configuration>
                     </execution>
@@ -124,8 +124,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <compilerArgs>
                         <arg>-Aregister=AppTemplates</arg>
                     </compilerArgs>

@@ -44,14 +44,22 @@ public class TextAreaViewImpl implements TextBoxView {
     @Override
     public void setError(boolean b) {
         if (b)
-            root.classList.add("invalid");
+            root.classList.add("is-invalid");
         else
-            root.classList.remove("invalid");
+            root.classList.remove("is-invalid");
+    }
+
+    @Override
+    public void setValid(boolean b) {
+        if (b)
+            root.classList.add("is-valid");
+        else
+            root.classList.remove("is-valid");
     }
 
     @Override
     public void setErrorMessage(String errorMessage) {
-
+        setError(errorMessage != null);
     }
 
     @Override

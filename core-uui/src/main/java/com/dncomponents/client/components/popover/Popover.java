@@ -3,7 +3,6 @@ package com.dncomponents.client.components.popover;
 import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.components.core.ComponentHtmlParser;
 import com.dncomponents.client.components.core.HtmlParser;
-import com.dncomponents.client.views.Renderer;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.core.events.close.CloseEvent;
 import com.dncomponents.client.components.core.events.close.CloseHandler;
@@ -14,6 +13,7 @@ import com.dncomponents.client.components.core.events.open.OpenHandler;
 import com.dncomponents.client.components.tooltip.BaseTooltip;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.views.IsElement;
+import com.dncomponents.client.views.Renderer;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.popover.PopoverView;
 import com.dncomponents.client.views.core.ui.popover.PopoverViewSlots;
@@ -218,4 +218,5 @@ public class Popover<T> extends BaseTooltip<T, PopoverView> implements HasCloseH
     protected PopoverViewSlots getViewSlots() {
         return (PopoverViewSlots) super.getViewSlots();
     }
+
 }

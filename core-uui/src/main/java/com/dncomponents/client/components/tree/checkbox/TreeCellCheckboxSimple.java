@@ -1,9 +1,7 @@
 package com.dncomponents.client.components.tree.checkbox;
 
 import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
-import com.dncomponents.client.components.tree.AbstractTreeCell;
 import com.dncomponents.client.components.tree.TreeCellSimple;
-import com.dncomponents.client.components.tree.TreeNode;
 import com.dncomponents.client.views.core.ui.tree.TreeCellCheckboxSimpleView;
 
 /**
@@ -36,17 +34,5 @@ public class TreeCellCheckboxSimple<T, M> extends TreeCellSimple<T, M> {
     protected void initViewFromOwner() {
         cellView = getUi().getTreeCellCheckBoxView(icon);
     }
-
-    protected TreeCellCheckboxSimple(BaseCellBuilder<TreeNode<T>, M, ?> builder) {
-        super(builder);
-    }
-
-    public static abstract class Builder<T, M> extends AbstractTreeCell.Builder<T, M> {
-        @Override
-        public TreeCellCheckboxSimple<T, M> build() {
-            return new TreeCellCheckboxSimple<>(this);
-        }
-    }
-
 
 }

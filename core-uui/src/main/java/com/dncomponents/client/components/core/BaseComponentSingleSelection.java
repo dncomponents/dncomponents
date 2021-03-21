@@ -2,14 +2,17 @@ package com.dncomponents.client.components.core;
 
 import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.core.events.selection.SelectionHandler;
+import com.dncomponents.client.components.core.events.value.HasValue;
 import com.dncomponents.client.components.core.selectionmodel.AbstractSingleSelectionGroup;
+import com.dncomponents.client.components.core.selectionmodel.HasEntitySingleSelectionModel;
 import com.dncomponents.client.components.core.selectionmodel.SingleSelectionModel;
 import com.dncomponents.client.views.core.pcg.View;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class BaseComponentSingleSelection<T, V extends View, C extends HasUserValue<T> & CanSelect>
-        extends BaseComponent<T, V> implements SingleSelectionModel<C> {
+public abstract class BaseComponentSingleSelection<T, V extends View, C extends HasUserValue<T> & CanSelect>
+        extends BaseComponent<T, V> implements SingleSelectionModel<C>, HasEntitySingleSelectionModel<T> {
 
     protected AbstractSingleSelectionGroup<T, C> selectionGroup = new AbstractSingleSelectionGroup<T, C>() {
         @Override
@@ -38,6 +41,11 @@ public class BaseComponentSingleSelection<T, V extends View, C extends HasUserVa
     }
 
     @Override
+    public HasValue<C> getHasValue() {
+        return selectionGroup.getHasValue();
+    }
+
+    @Override
     public List<C> getItems() {
         return selectionGroup.getItems();
     }
@@ -46,7 +54,6 @@ public class BaseComponentSingleSelection<T, V extends View, C extends HasUserVa
     public C getSelection() {
         return selectionGroup.getSelection();
     }
-
 
     public void addItem(C item) {
         selectionGroup.addItem(item);
@@ -60,6 +67,13 @@ public class BaseComponentSingleSelection<T, V extends View, C extends HasUserVa
         selectionGroup.addItems(items);
     }
 
+    public void addEntityItems(T... items) {
+        Arrays.stream(items).forEach(t -> addItem(createItem(t)));
+    }
+
+    public abstract C createItem(T t);
+
+    @Override
     public SingleSelectionModel<T> getEntitySelectionModel() {
         return selectionGroup.getEntitySelectionModel();
     }

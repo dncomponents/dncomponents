@@ -2,51 +2,39 @@ package com.dncomponents.client.components.textbox;
 
 import com.dncomponents.client.components.core.BaseFocusComponent;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.validator.CanShowError;
+import com.dncomponents.client.components.core.events.validator.CanShowSuccess;
 import com.dncomponents.client.components.core.events.validator.ValidationEvent;
 import com.dncomponents.client.components.core.events.validator.ValidationHandler;
 import com.dncomponents.client.components.core.events.value.HasValue;
 import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
 import com.dncomponents.client.components.core.events.value.ValueChangeHandler;
+import com.dncomponents.client.components.core.validation.HasValidation;
+import com.dncomponents.client.components.core.validation.ValidationException;
+import com.dncomponents.client.components.core.validation.Validator;
 import com.dncomponents.client.dom.handlers.OnBlurHandler;
-import com.dncomponents.client.components.core.events.validator.HasValidationHandlers;
 import com.dncomponents.client.views.core.ui.textbox.TextBoxView;
+import elemental2.dom.DomGlobal;
 import elemental2.dom.FocusEvent;
-
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author nikolasavic
  */
 public abstract class ValueBox<T> extends BaseFocusComponent<Object, TextBoxView> implements
-        HasValue<T>, HasValueParser<T>, HasValidationHandlers<T> {
+        HasValue<T>, HasValueParser<T>, CanShowError, HasValidation<T>, CanShowSuccess {
 
     T value;
     private boolean triggerOnBlur = true;
-
-    private List<Validator<T>> validators = new ArrayList<>();
-    public void addValidator(Validator<T> validator) {
-        validators.add(validator);
-    }
-
-
-    public List<String> validate(T value) {
-        List<String> errors = new ArrayList<>();
-        for (Validator<T> validator : validators) {
-            String errMsg = validator.validate(value);
-            if (errMsg != null)
-                errors.add(errMsg);
-        }
-        return errors;
-    }
+    private Validator<T> validator;
+    private boolean valid = true;
+    private String errorMsg;
 
     public ValueBox(TextBoxView view) {
         super(view);
         bind();
     }
 
-    abstract T parseString(String str);
+    abstract T parseString(String str) throws ValidationException;
 
     abstract String render(T t);
 
@@ -55,14 +43,27 @@ public abstract class ValueBox<T> extends BaseFocusComponent<Object, TextBoxView
             @Override
             public void onBlur(FocusEvent focusEvent) {
                 if (!triggerOnBlur) return;
-                T parsedValue = parseString(view.getValue());
-                setValue(parsedValue, true);
+                setParsedValue();
             }
         });
         view.addOnKeyUpHandler(event -> {
             if (event.key.equals("Enter"))
-                setValue(parseString(view.getValue()), true);
+                setParsedValue();
         });
+    }
+
+    private void setParsedValue() {
+        T parsedValue;
+        try {
+            parsedValue = parseString(view.getValue());
+            setValue(parsedValue, true);
+        } catch (ValidationException ex) {
+            handleValidationException(ex);
+            DomGlobal.setTimeout(e -> {
+                view.setValue(render(value));
+                view.setError(false);
+            }, 300);
+        }
     }
 
     @Override
@@ -77,21 +78,25 @@ public abstract class ValueBox<T> extends BaseFocusComponent<Object, TextBoxView
 
     @Override
     public void setValue(T value, boolean fireEvents) {
-        List<String> validationErrors = validate(value);
-        if (!validationErrors.isEmpty()) {
-            ValidationEvent.fire(ValueBox.this, value, validationErrors);
-            view.setError(true);
-            return;
+        try {
+            validate(value);
+            T oldValue = getValue();
+            this.value = value;
+            view.setValue(render(value));
+            if (fireEvents) {
+                T newValue = getValue();
+                ValueChangeEvent.fireIfNotEqual(this, oldValue, newValue);
+            }
+        } catch (ValidationException e) {
+            handleValidationException(e);
         }
-        view.setError(false);
-        T oldValue = getValue();
-        this.value = value;
-        view.setValue(render(value));
-        if (fireEvents) {
-            T newValue = getValue();
-            ValueChangeEvent.fireIfNotEqual(this, oldValue, newValue);
-        }
-//        ValidationEvent.fire(this, value, validationErrors);
+    }
+
+    private void handleValidationException(ValidationException e) {
+        valid = false;
+        ValidationEvent.fire(ValueBox.this, value, e.getMessage());
+        view.setError(true);
+        view.setErrorMessage(e.getMessage());
     }
 
     @Override
@@ -113,19 +118,49 @@ public abstract class ValueBox<T> extends BaseFocusComponent<Object, TextBoxView
      * {@inheritDoc}
      */
     @Override
-    public T getValueOrThrow() throws ParseException {
+    public T getValueOrThrow() throws ValidationException {
         String text = view.getValue();
-
         T parseResult = parseString(text);
-
         if ("".equals(text)) {
             return null;
         }
-
         return parseResult;
     }
 
-    public void setPlaceHolder(String placeHolder){
+    public void setLabel(String label) {
+        view.setLabel(label);
+    }
+
+    public void setHelperText(String helperText) {
+        view.setHelperText(helperText);
+    }
+
+    /**
+     * @param error message to show
+     *              null to remove error message and error styling
+     */
+    @Override
+    public void showErrorMessage(String error) {
+        this.errorMsg = error;
+        view.setErrorMessage(error);
+    }
+
+    @Override
+    public void showSuccessMessage(String valid) {
+        view.setValid(valid != null);
+    }
+
+    @Override
+    public void setErrorStyle(boolean b) {
+        view.setError(b);
+    }
+
+    @Override
+    public void setSuccessStyle(boolean b) {
+        view.setValid(b);
+    }
+
+    public void setPlaceHolder(String placeHolder) {
         view.setPlaceHolder(placeHolder);
     }
 
@@ -136,4 +171,23 @@ public abstract class ValueBox<T> extends BaseFocusComponent<Object, TextBoxView
 
     protected static final String VALUE = "val";
 
+    @Override
+    public boolean isValidEntry() {
+        return valid;
+    }
+
+    @Override
+    public void setValidator(Validator<T> validator) {
+        this.validator = validator;
+    }
+
+    @Override
+    public void validate(T value) throws ValidationException {
+        if (validator != null) {
+            validator.validate(value);
+            this.valid = true;
+            if (errorMsg == null)
+                view.setError(false);
+        }
+    }
 }

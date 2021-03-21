@@ -7,20 +7,22 @@ import com.dncomponents.client.components.core.TemplateParser;
 import com.dncomponents.client.components.core.selectionmodel.AbstractMultiSelectionGroup;
 import com.dncomponents.client.components.core.selectionmodel.DefaultMultiSelectionModel;
 import com.dncomponents.client.dom.DomUtil;
+import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.MainRenderer;
 import com.dncomponents.client.views.MainRendererImpl;
 import elemental2.dom.Element;
+import elemental2.dom.HTMLElement;
 import elemental2.dom.NodeList;
 
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class CheckBoxSelectionGroup<T> extends AbstractMultiSelectionGroup<T, CheckBox<T>> {
+public class CheckBoxSelectionGroup<T> extends AbstractMultiSelectionGroup<T, CheckBox<T>> implements HasIsElement {
 
     private static int id = 0;
     private String groupName;
-
+    HTMLElement elementToWrap;
 
     public CheckBoxSelectionGroup() {
         setSelectionMode(DefaultMultiSelectionModel.SelectionMode.MULTI);
@@ -44,6 +46,22 @@ public class CheckBoxSelectionGroup<T> extends AbstractMultiSelectionGroup<T, Ch
     public void addItem(CheckBox<T> value) {
         super.addItem(value);
         value.setGroup(this);
+    }
+
+    public void setElementToWrap(HTMLElement elementToWrap) {
+        this.elementToWrap = elementToWrap;
+    }
+
+    public HTMLElement getElementToWrap() {
+        return elementToWrap;
+    }
+
+    @Override
+    public IsElement asIsElement() {
+        if (elementToWrap == null)
+            elementToWrap = DomUtil.createDiv();
+        getItems().forEach(e -> elementToWrap.appendChild(e.asElement()));
+        return () -> elementToWrap;
     }
 
     public void addEntityItems(List<T> items) {

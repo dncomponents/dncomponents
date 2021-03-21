@@ -32,7 +32,7 @@ public abstract class BaseBarPanelViewImpl<T extends HeaderWithModifiers> implem
     HTMLElement dropDownHolder;
 
 
-    protected Autocomplete<ColumnConfig> autocomplete = new Autocomplete<>(ColumnConfig::getColumnName);
+    protected Autocomplete<ColumnConfig> autocomplete = new Autocomplete<>(ColumnConfig::getName);
 
     protected Presenter<T> presenter;
 

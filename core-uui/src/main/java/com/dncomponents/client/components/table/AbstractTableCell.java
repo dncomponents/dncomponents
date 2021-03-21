@@ -1,6 +1,7 @@
 package com.dncomponents.client.components.table;
 
 import com.dncomponents.client.components.BaseCell;
+import com.dncomponents.client.components.CellEditing;
 import com.dncomponents.client.components.ColumnConfig;
 import com.dncomponents.client.components.Table;
 import com.dncomponents.client.views.core.pcg.cell.BaseCellView;
@@ -38,16 +39,6 @@ public abstract class AbstractTableCell<T, M> extends BaseCell<T, M> {
         return (TableUi) super.getUi();
     }
 
-
-    protected AbstractTableCell(Builder<T, M> builder) {
-        super(builder);
-    }
-
-    public static abstract class Builder<T, M> extends BaseCellBuilder<T, M, Builder<T, M>> {
-
-        @Override
-        public abstract AbstractTableCell<T, M> build();
-    }
 
     protected boolean isPopupEditing() {
         return getOwner().isEditable() && getOwner().isPopupEditing();

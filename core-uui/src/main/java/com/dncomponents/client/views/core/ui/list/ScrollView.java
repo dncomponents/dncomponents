@@ -11,9 +11,16 @@ import elemental2.dom.HTMLElement;
  * @author nikolasavic
  */
 public interface ScrollView extends View { //HasScrollHandlers
+
     int getRowHeight();
 
     void addItem(Element element);
+
+    void addItemAtTop(Element element);
+
+    default void addItemAtTop(IsElement element) {
+        addItemAtTop(element.asElement());
+    }
 
     default void addItem(IsElement element) {
         addItem(element.asElement());

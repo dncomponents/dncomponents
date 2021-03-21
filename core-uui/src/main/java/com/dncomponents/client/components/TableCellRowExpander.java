@@ -105,21 +105,4 @@ public class TableCellRowExpander<T, M> extends TableCell<T, M> {
         return this;
     }
 
-    @Override
-    public <C extends BaseCell<T, M>> C initWithBuilder(BaseCellBuilder builder) {
-        if (((RowExpanderBuilder) builder).rowDetailsRenderer != null)
-            this.rowDetailsRenderer = ((RowExpanderBuilder) builder).rowDetailsRenderer;
-        return super.initWithBuilder(builder);
-
-    }
-
-    public static class RowExpanderBuilder<T, M> extends TableCell.Builder<T, M> {
-        private RowDetailsRenderer<T> rowDetailsRenderer;
-
-        public RowExpanderBuilder<T, M> setRowDetailsRenderer(RowDetailsRenderer<T> rowDetailsRenderer) {
-            this.rowDetailsRenderer = rowDetailsRenderer;
-            return this;
-        }
-    }
-
 }

@@ -42,6 +42,7 @@ public abstract class BaseCellViewImpl implements BaseCellView {
         keyDownHandler.addTo(asElement());
     }
 
+
     @Override
     public void setErrorStyle(boolean b) {
         if (b)
@@ -85,6 +86,16 @@ public abstract class BaseCellViewImpl implements BaseCellView {
     @Override
     public HTMLElement getValuePanel() {
         return valuePanel;
+    }
+
+    @Override
+    public void showSuccessMessage(String successText) {
+
+    }
+
+    @Override
+    public void showErrorMessage(String message) {
+
     }
 
 

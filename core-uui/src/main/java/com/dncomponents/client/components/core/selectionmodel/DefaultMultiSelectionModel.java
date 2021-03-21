@@ -33,10 +33,11 @@ public abstract class DefaultMultiSelectionModel<M> implements MultiSelectionMod
         return selection.contains(item);
     }
 
+    @Override
     public void setSelected(List<M> models, boolean b, boolean fireEvent) {
         boolean changed = false;
         for (M model : models) {
-            boolean b1 = setSelected(model, b, fireEvent);
+            boolean b1 = setSelected(model, b, false);
             if (b1 && !changed) {
                 changed = true;
             }

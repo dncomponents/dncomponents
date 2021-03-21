@@ -3,6 +3,7 @@ package com.dncomponents.client.components.textbox;
 import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.components.core.BaseComponent;
 import com.dncomponents.client.components.core.ComponentHtmlParser;
+import com.dncomponents.client.components.core.validation.ValidationException;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.textbox.TextBoxView;
 import elemental2.dom.Element;
@@ -23,12 +24,12 @@ public class IntegerBox extends ValueBox<Integer> {
     }
 
     @Override
-    Integer parseString(String str) {
+    Integer parseString(String str) throws ValidationException {
         Integer result;
         try {
             result = Integer.parseInt(str);
         } catch (NumberFormatException ex) {
-            result = null;
+            throw new ValidationException(ex.getMessage());
         }
         return result;
     }

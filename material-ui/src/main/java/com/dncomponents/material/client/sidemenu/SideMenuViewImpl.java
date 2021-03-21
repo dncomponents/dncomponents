@@ -6,21 +6,17 @@ import com.dncomponents.client.components.Tree;
 import com.dncomponents.client.components.core.CellRenderer;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.core.TreeCellConfig;
-import com.dncomponents.client.components.core.selectionmodel.DefaultMultiSelectionModel;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.core.events.filters.Filter;
+import com.dncomponents.client.components.core.events.selection.SelectionHandler;
+import com.dncomponents.client.components.core.selectionmodel.DefaultMultiSelectionModel;
 import com.dncomponents.client.components.tree.TreeNode;
 import com.dncomponents.client.dom.DomUtil;
-import com.dncomponents.client.dom.handlers.BaseEventListener;
-import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.dom.handlers.KeyUpHandler;
 import com.dncomponents.client.views.core.ui.sidemenu.SideMenuView;
 import com.dncomponents.client.views.core.ui.tree.BaseTreeCellView;
 import com.dncomponents.client.views.core.ui.tree.ParentTreeCellView;
 import com.dncomponents.material.client.tree.TreeUiImpl;
-import com.dncomponents.material.client.tree.basic.TreeCellParentViewImpl;
-import com.dncomponents.material.client.tree.basic.TreeCellViewImpl;
-import com.dncomponents.client.components.core.events.selection.SelectionHandler;
-import com.dncomponents.client.components.core.events.HandlerRegistration;
 import elemental2.dom.*;
 import jsinterop.base.Js;
 
@@ -168,7 +164,7 @@ public class SideMenuViewImpl implements SideMenuView {
 
     @Override
     public <T> void setRenderer(CellRenderer<TreeNode<T>, Object> renderer) {
-        tree.getRowCellConfig().getCellBuilder().setCellRenderer(renderer);
+        tree.getRowCellConfig().setCellRenderer(renderer);
     }
 
     @Override

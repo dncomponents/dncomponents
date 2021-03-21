@@ -37,7 +37,7 @@ public class SortBarPanelViewImpl extends BaseBarPanelViewImpl<HeaderSorting> im
     public void update(int size) {
         if (size > 0) {
             label.setText("Sorted by: <span class=\"badge badge-light\">" + size + "</span>" + (size > 1 ? " fields" : " field") + "\n");
-            DomUtil.setStyle(label, "btn btn-success mr-3 mb-3");
+            DomUtil.setStyle(label, "btn btn-success me-3 mb-3");
         } else {
             label.setText("Sort");
             DomUtil.setStyle(label, defaultBtnStyle);

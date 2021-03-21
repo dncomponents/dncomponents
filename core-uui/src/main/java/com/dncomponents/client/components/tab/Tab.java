@@ -36,6 +36,11 @@ public class Tab<T> extends BaseComponentSingleSelection<T, TabUi, TabItem<T>> i
     }
 
     @Override
+    public TabItem<T> createItem(T t) {
+        return new TabItem<>(this, t);
+    }
+
+    @Override
     public HandlerRegistration addBeforeSelectionHandler(BeforeSelectionHandler<TabItem<T>> handler) {
         return handler.addTo(asElement());
     }

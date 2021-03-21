@@ -37,7 +37,7 @@ public class FilterBarPanelViewImpl extends BaseBarPanelViewImpl<HeaderFiltering
     public void update(int size) {
         if (size > 0) {
             label.setText("Filtered by: <span class=\"badge badge-light\">" + size + "</span>" + (size > 1 ? " fields" : " field") + "\n");
-            DomUtil.setStyle(label, "btn btn-danger mr-3 mb-3");
+            DomUtil.setStyle(label, "btn btn-danger me-3 mb-3");
         } else {
             label.setText("Filter");
             DomUtil.setStyle(label, defaultBtnStyle);

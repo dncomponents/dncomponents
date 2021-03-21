@@ -91,7 +91,7 @@ public class AccordionItem<T> extends BaseComponent<T, AccordionItemView> implem
         view.setItemTitle(html);
     }
 
-    public void SetTitle(SetElement se) {
+    public void setTitle(SetElement se) {
         se.setHtml(getViewSlots().getTitle());
     }
 

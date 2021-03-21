@@ -15,7 +15,6 @@ import elemental2.dom.HTMLTemplateElement;
 @UiTemplate
 public class GroupByBarPanelViewImpl extends BaseBarPanelViewImpl<HeaderGrouping> implements GroupByBarPanelView {
 
-
     HtmlBinder uiBinder = HtmlBinder.get(GroupByBarPanelViewImpl.class, this);
 
     public GroupByBarPanelViewImpl(String template) {
@@ -30,9 +29,7 @@ public class GroupByBarPanelViewImpl extends BaseBarPanelViewImpl<HeaderGrouping
         init();
     }
 
-
     CheckBox expandAll = new CheckBox("expand all");
-
 
     private void init() {
         bind();
@@ -51,7 +48,7 @@ public class GroupByBarPanelViewImpl extends BaseBarPanelViewImpl<HeaderGrouping
     public void update(int size) {
         if (size > 0) {
             label.setText("Grouped by: <span class=\"badge badge-light\">" + size + "</span>" + (size > 1 ? " fields" : " field") + "\n");
-            DomUtil.setStyle(label, "btn btn-warning mr-3 mb-3");
+            DomUtil.setStyle(label, "btn btn-warning me-3 mb-3");
         } else {
             label.setText("Group");
             DomUtil.setStyle(label, defaultBtnStyle);
@@ -62,4 +59,5 @@ public class GroupByBarPanelViewImpl extends BaseBarPanelViewImpl<HeaderGrouping
     public void addExpandAllHandler(ValueChangeHandler<Boolean> handler) {
         expandAll.addValueChangeHandler(handler);
     }
+
 }

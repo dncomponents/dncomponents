@@ -16,6 +16,10 @@ public class HtmlComponent implements IsElement {
         setHtml(content);
     }
 
+    public void setAttribute(String key, String value) {
+        element.setAttribute(key, value);
+    }
+
     @Override
     public HTMLElement asElement() {
         return element;

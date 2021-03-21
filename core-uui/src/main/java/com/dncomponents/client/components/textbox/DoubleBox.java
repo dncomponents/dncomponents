@@ -3,6 +3,7 @@ package com.dncomponents.client.components.textbox;
 import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.components.core.BaseComponent;
 import com.dncomponents.client.components.core.ComponentHtmlParser;
+import com.dncomponents.client.components.core.validation.ValidationException;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.textbox.TextBoxView;
 import elemental2.dom.DomGlobal;
@@ -24,12 +25,12 @@ public class DoubleBox extends ValueBox<Double> {
     }
 
     @Override
-    Double parseString(String str) {
+    Double parseString(String str) throws ValidationException {
         Double result;
         try {
             result = Double.parseDouble(str);
         } catch (NumberFormatException ex) {
-            result = null;
+            throw new ValidationException(ex.getMessage());
         }
         return result;
     }

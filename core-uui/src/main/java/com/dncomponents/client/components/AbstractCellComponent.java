@@ -2,12 +2,17 @@ package com.dncomponents.client.components;
 
 import com.dncomponents.client.components.core.*;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
-import com.dncomponents.client.components.core.events.cell.CellEditHandler;
-import com.dncomponents.client.components.core.events.cell.HasCellEditHandlers;
+import com.dncomponents.client.components.core.events.cell.CellValueChangedHandler;
+import com.dncomponents.client.components.core.events.cell.HasCellValueChangedHandlers;
 import com.dncomponents.client.components.core.events.filters.Filter;
+import com.dncomponents.client.components.core.events.form.HasModelChangedHandlers;
+import com.dncomponents.client.components.core.events.form.ModelChangedHandler;
+import com.dncomponents.client.components.core.events.row.*;
 import com.dncomponents.client.components.core.events.rowdata.RowDataChangedEvent;
 import com.dncomponents.client.components.core.events.rowdata.RowDataChangedHandler;
 import com.dncomponents.client.components.core.events.table.SortEvent;
+import com.dncomponents.client.components.core.events.value.HasValue;
+import com.dncomponents.client.components.core.events.value.HasValueSelection;
 import com.dncomponents.client.components.core.selectionmodel.DefaultMultiSelectionModel;
 import com.dncomponents.client.dom.handlers.BaseEventListener;
 import com.dncomponents.client.views.core.pcg.ComponentUi;
@@ -19,6 +24,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -26,10 +32,9 @@ import java.util.stream.Collectors;
  * @author nikolasavic
  */
 public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extends ScrollView>> extends BaseComponent<Object, W> implements
-        HasRowsData<T>,
-        HasSelectionModel,
-        SortEvent.HasSortHandler,
-        HasCellEditHandlers<T> {
+        HasRowsData<T>, HasSelectionModel, HasModelChangedHandlers<T>, SortEvent.HasSortHandler,
+        HasCellValueChangedHandlers<T>, HasValueSelection<List<T>>, HasRowRemovedHandlers<T>,
+        HasRowAddedHandlers<T> {
 
     protected List<T> rows = new ArrayList<>();
 
@@ -37,7 +42,6 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
 
     //selection
     protected DefaultMultiSelectionModel<T> selectionModel;
-
 
     protected CellConfig<T, M> rowCellConfig;
 
@@ -47,13 +51,14 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
     protected List<Comparator> comparators = new ArrayList<>();
 
     protected List<T> rowsFiltered = new ArrayList<>();
-//    protected boolean filterOn = false;
 
     protected VirtualScroll virtualScroll;
 
     protected CellFactory<T, M, ? extends AbstractCellComponent<T, ?, ?>> defaultCellFactory;
 
     private boolean editable = true;
+
+    private boolean cellEditMode = true;
 
     public AbstractCellComponent(W ui) {
         super(ui);
@@ -85,7 +90,7 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
     }
 
 
-    //region Handlers registrations
+    //#region Handlers registrations
     public HandlerRegistration addRowDataChangedHandler(RowDataChangedHandler handler) {
         return handler.addTo(asElement());
     }
@@ -96,9 +101,49 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
     }
 
     @Override
-    public HandlerRegistration addCellEditHandler(CellEditHandler<T> handler) {
+    public HandlerRegistration addCellValueChangedHandler(CellValueChangedHandler<T> handler) {
         return addHandler(handler);
     }
+
+    @Override
+    public HandlerRegistration addModelChangedHandler(ModelChangedHandler<T> handler) {
+        return handler.addTo(this.asElement());
+    }
+
+    @Override
+    public HandlerRegistration addRowRemovedHandler(RowRemovedHandler<T> handler) {
+        return handler.addTo(this.asElement());
+    }
+
+    @Override
+    public HandlerRegistration addRowAddedHandler(RowAddedHandler<T> handler) {
+        return handler.addTo(this.asElement());
+    }
+
+    /**
+     * For performance reasons instead of adding handlers to each cell
+     * only one is added to a root component and intercept events from the cells.
+     */
+    public HandlerRegistration addCellHandler(BaseEventListener handler) {
+        EventListener listener = new EventListener() {
+            @Override
+            public void handleEvent(Event evt) {
+                for (BaseCell baseCell : getCells()) {
+                    if (baseCell.asElement().contains(((Node) evt.target))) {
+                        handler.handleEvent(evt);
+                    }
+                }
+            }
+        };
+        asElement().addEventListener(handler.getType(), listener);
+        return new HandlerRegistration() {
+            @Override
+            public void removeHandler() {
+                asElement().removeEventListener(handler.getType(), listener);
+            }
+        };
+    }
+    //#endregion Handlers registrations
 
     public void refreshSelections() {
         for (BaseCell<T, M> visibleCell : visibleCells) {
@@ -151,6 +196,11 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
         return selectionModel;
     }
 
+    @Override
+    public HasValue<List<T>> getHasValue() {
+        return getSelectionModel().getHasValue();
+    }
+
     protected void setSelectionModel(DefaultMultiSelectionModel selectionModel) {
         //On selection change updates cells selection view
         this.selectionModel = selectionModel;
@@ -174,19 +224,26 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
         return cell;
     }
 
+    protected BaseCell createAndInitTempModelRowCell(T model) {
+        CellConfig<T, M> cc = ensureRowCellConfig(model);
+        BaseCell cell = cc.getCellFactory().getCell(new CellContext(cc, defaultCellFactory, model, this));
+        initCell(cell, model, cc, this);
+        cell.draw();
+        return cell;
+    }
+
 
     /**
      * @return unmodifiableList model list
      */
     @Override
     public List<T> getRowsData() {
-        return rows; //TODO not sure if to keep unmodifiableList
+        return rows;
 //        return Collections.unmodifiableList(rows);
     }
 
     /**
      * Sets list of model values to display.
-     *
      */
     public void setRowsData(List<T> rows) {
         this.rows = new ArrayList<>(rows);
@@ -203,26 +260,47 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
     }
 
     protected void addRow(T t) {
-        rows.add(t);
-        rowsFiltered.add(t);
-        createAndInitModelRowCell(t);
+        insertRowP(t, rows.size(), true);
     }
 
     protected void insertRow(T t, int index) {
+        insertRowP(t, index, true);
+    }
+
+    private BaseCell insertRowP(T t, int index, boolean fireEvent) {
         rows.add(index, t);
         rowsFiltered.add(index, t);
-        createAndInitModelRowCell(t);
+        final BaseCell cell = createAndInitModelRowCell(t);
+        if (fireEvent)
+            RowAddedEvent.fire(this, cell, (Consumer<T>) t1 -> {
+                removeRowFromComp(cell);
+                insertRowP(t1, 0, false).draw();
+                drawData();
+            }, () -> {
+                removeRowFromComp(cell);
+                drawData();
+            });
+        return cell;
+    }
+
+    private void removeRowFromComp(BaseCell<T, ?> cell) {
+        T t = cell.getModel();
+        cell.removeFromParent();
+        rowsFiltered.remove(t);
+        visibleCells.remove(cell);
+        rows.remove(t);
     }
 
     protected void removeRow(T t) {
         BaseCell cell = getRowCell(t);
         if (cell != null) {
-            cell.removeFromParent();
-            visibleCells.remove(cell);
-            rows.remove(t);
-            rowsFiltered.remove(t);
+            final int index = rows.indexOf(t);
+            RowRemovedEvent.fire(this, cell, () -> {
+                insertRowP(t, index, false);
+                drawData();
+            });
+            removeRowFromComp(cell);
         }
-//        RowCountChangedEvent.fire(this, rows.size(), false);
     }
 
     public void scrollIntoView(T t) {
@@ -256,32 +334,6 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
     @Override
     protected W getView() {
         return super.getView();
-    }
-
-
-    /**
-     * For performance reasons instead of adding handlers to each cell
-     * only one is added to a root component and intercept events from the cells.
-     *
-     */
-    public HandlerRegistration addCellHandler(BaseEventListener handler) {
-        EventListener listener = new EventListener() {
-            @Override
-            public void handleEvent(Event evt) {
-                for (BaseCell baseCell : getCells()) {
-                    if (baseCell.asElement().contains(((Node) evt.target))) {
-                        handler.handleEvent(evt);
-                    }
-                }
-            }
-        };
-        asElement().addEventListener(handler.getType(), listener);
-        return new HandlerRegistration() {
-            @Override
-            public void removeHandler() {
-                asElement().removeEventListener(handler.getType(), listener);
-            }
-        };
     }
 
     public BaseCell<T, ?> getCell(HTMLElement element) {
@@ -328,7 +380,15 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
         this.editable = editable;
     }
 
-    //region filter and sorting
+    public void setCellEditMode(boolean cellEditMode) {
+        this.cellEditMode = cellEditMode;
+    }
+
+    public boolean isCellEditMode() {
+        return cellEditMode;
+    }
+
+    //#region filter and sorting
 
     /**
      * Applies filters and sort data.
@@ -416,7 +476,6 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
     /**
      * Removes filter from list of registered filters.
      * Call {@link #drawData()} to see changes.
-     *
      */
     public void removeFilter(Filter rowFilter) {
         filters.remove(rowFilter);
@@ -459,10 +518,8 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
         return comparators;
     }
 
-    //endregion
+    //#endregion
     void newBlock() {
-//        ListTreeCellNavigator selectionModel = getSelectionModel();
-//        GWT.log(selectionModel () + "");
     }
 
     public CellConfig<T, M> getRowCellConfig() {
@@ -492,5 +549,15 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
 
     public void setScrollHeight(String height) {
         view.getRootView().setScrollHeight(height);
+    }
+
+    public static void resetScrollOnPage(HTMLElement el) {
+        NodeList<Element> childNodes = el.querySelectorAll("*");
+        for (int i = 0; i < childNodes.length; i++) {
+            final Object o = BaseComponent.allComponents.get(childNodes.getAt(i));
+            if (o instanceof AbstractCellComponent) {
+                ((AbstractCellComponent<?, ?, ?>) o).resetScrollPosition();
+            }
+        }
     }
 }

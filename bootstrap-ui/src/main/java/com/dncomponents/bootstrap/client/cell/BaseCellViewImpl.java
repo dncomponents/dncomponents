@@ -2,11 +2,13 @@ package com.dncomponents.bootstrap.client.cell;
 
 import com.dncomponents.UiField;
 import com.dncomponents.UiStyle;
+import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.dom.handlers.DoubleClickHandler;
 import com.dncomponents.client.dom.handlers.KeyDownHandler;
 import com.dncomponents.client.views.core.pcg.cell.BaseCellView;
 import elemental2.dom.Element;
+import elemental2.dom.HTMLDivElement;
 import elemental2.dom.HTMLElement;
 
 /**
@@ -88,8 +90,40 @@ public abstract class BaseCellViewImpl implements BaseCellView {
     }
 
 
+    private HTMLDivElement successDiv = DomUtil.createDiv();
+    private HTMLDivElement errorDiv = DomUtil.createDiv();
+
+    @Override
+    public void showSuccessMessage(String successText) {
+        errorDiv.remove();
+        if (successText == null)
+            successDiv.remove();
+        else {
+            successDiv.style.position = "absolute";
+            successDiv.style.set("width","100%");
+            successDiv.innerHTML = "<div class=\"valid-tooltip d-block\">" + successText + "</div>";
+            getValuePanel().appendChild(successDiv);
+        }
+    }
+
+    @Override
+    public void showErrorMessage(String message) {
+        successDiv.remove();
+        if (message == null)
+            errorDiv.remove();
+        else {
+            errorDiv.style.position = "absolute";
+            errorDiv.style.set("width","100%");
+            errorDiv.innerHTML = "<div class=\"invalid-tooltip  d-block\">" + message + "</div>";
+            getValuePanel().appendChild(errorDiv);
+        }
+    }
+
+
     @Override
     public HTMLElement asElement() {
         return root;
     }
+
+
 }

@@ -35,6 +35,7 @@ import com.dncomponents.client.views.core.ui.button.ButtonView;
 import com.dncomponents.client.views.core.ui.checkbox.CheckBoxView;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownMultiLevelUi;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownUi;
+import com.dncomponents.client.views.core.ui.form.FormUi;
 import com.dncomponents.client.views.core.ui.list.ListUi;
 import com.dncomponents.client.views.core.ui.modal.DialogView;
 import com.dncomponents.client.views.core.ui.pager.PagerListUi;
@@ -241,12 +242,10 @@ public class MaterialUi implements ComponentsViews {
         return new RadioViewImpl(radio);
     }
 
-
     @Override
     public DropDownUi getDropDownUi() {
         return new DropDownUiImpl(dropDownUi);
     }
-
 
     @Override
     public TextBoxView getTextAreaView() {
@@ -267,7 +266,6 @@ public class MaterialUi implements ComponentsViews {
     public DialogView getModalDialogView() {
         return new DialogViewImpl(modalDialog);
     }
-
 
     @Override
     public TabUi getTabUi() {
@@ -304,7 +302,6 @@ public class MaterialUi implements ComponentsViews {
         return new AutocompleteViewImpl(autocomplete);
     }
 
-
     @Override
     public AutocompleteTreeView getAutocompleteTreeView() {
         return new AutocompleteTreeViewImpl(autocompleteTree);
@@ -319,7 +316,6 @@ public class MaterialUi implements ComponentsViews {
     public TreeUi getTreeUi() {
         return new TreeUiImpl(tree);
     }
-
 
     @Override
     public TableUi getTableUi() {
@@ -339,6 +335,11 @@ public class MaterialUi implements ComponentsViews {
     @Override
     public PagerListUi getPagerListUi() {
         return new PagerListUiImpl(pagerListUi);
+    }
+
+    @Override
+    public FormUi getFormUi() {
+        return null;
     }
 
     @Override
@@ -365,7 +366,6 @@ public class MaterialUi implements ComponentsViews {
     public DropDownMultiLevelUi getDropDownMultiLevelUi() {
         return new DropDownMultiLevelUiImpl(dropDownMultiLevelUi);
     }
-
 
     public static MaterialUi getUi() {
         return (MaterialUi) Ui.get();

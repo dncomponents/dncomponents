@@ -3,6 +3,7 @@ package com.dncomponents.client.components.textbox;
 import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.components.core.BaseComponent;
 import com.dncomponents.client.components.core.ComponentHtmlParser;
+import com.dncomponents.client.components.core.validation.ValidationException;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.textbox.TextBoxView;
 import elemental2.core.JsDate;
@@ -25,15 +26,15 @@ public class DateBox extends ValueBox<Date> {
 
 
     @Override
-    public Date parseString(String dateText) {
+    public Date parseString(String dateText) throws ValidationException {
         Date date = null;
         try {
             if (dateText.length() > 0) {
                 final double jsDate = JsDate.parse(dateText);
                 date = new Date(new Double(jsDate).longValue());
             }
-        } catch (Exception exception) {
-            return null;
+        } catch (Exception ex) {
+            throw new ValidationException(ex.getMessage());
         }
         return date;
     }

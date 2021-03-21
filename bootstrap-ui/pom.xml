@@ -64,6 +64,7 @@
                     <useCompilerArgsForTests>true</useCompilerArgsForTests>
                     <codeserverArgs>
                         <arg>-generateJsInteropExports</arg>
+                        <arg>-port</arg><arg>9877</arg>
                     </codeserverArgs>
                 </configuration>
             </plugin>
@@ -102,6 +103,8 @@
                     <compilerArgs>
                         <arg>-Aregister=BootstrapTemplates</arg>
                     </compilerArgs>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>

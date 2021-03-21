@@ -3,11 +3,11 @@ package com.dncomponents.material.client.list;
 import com.dncomponents.UiField;
 import com.dncomponents.UiStyle;
 import com.dncomponents.client.components.core.HtmlBinder;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.KeyDownHandler;
 import com.dncomponents.client.dom.handlers.ScrollHandler;
 import com.dncomponents.client.views.core.ui.list.ListView;
-import com.dncomponents.client.components.core.events.HandlerRegistration;
 import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
@@ -45,6 +45,12 @@ public class ListViewImpl implements ListView {
     }
 
     @Override
+    public void addItemAtTop(Element element) {
+        if (getItemPanel().hasChildNodes())
+            getItemPanel().insertBefore(element, getItemPanel().childNodes.getAt(0));
+    }
+
+    @Override
     public void clear() {
         getItemPanel().innerHTML = "";
     }
@@ -59,7 +65,7 @@ public class ListViewImpl implements ListView {
 
     @Override
     public void setScrollHeight(String height) {
-        DomUtil.setMaxHeight(root, height);
+        DomUtil.setMaxHeight(getScrollPanel(), height);
     }
 
     @Override

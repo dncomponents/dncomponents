@@ -2,6 +2,7 @@ package com.dncomponents.client.components.checkbox;
 
 import com.dncomponents.client.components.core.BaseFocusComponent;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.validator.CanShowError;
 import com.dncomponents.client.components.core.events.value.HasValue;
 import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
 import com.dncomponents.client.components.core.events.value.ValueChangeHandler;
@@ -10,7 +11,7 @@ import com.dncomponents.client.views.MainRenderer;
 import com.dncomponents.client.views.MainRendererImpl;
 import com.dncomponents.client.views.core.ui.checkbox.CheckBoxView;
 
-public abstract class AbstractCheckBox<T> extends BaseFocusComponent<T, CheckBoxView> implements HasValue<Boolean> {
+public abstract class AbstractCheckBox<T> extends BaseFocusComponent<T, CheckBoxView> implements HasValue<Boolean>, CanShowError {
     Boolean value;
 
     protected boolean fromView;
@@ -69,6 +70,16 @@ public abstract class AbstractCheckBox<T> extends BaseFocusComponent<T, CheckBox
 
     public void setName(String nameOfGroup) {
         view.setName(nameOfGroup);
+    }
+
+    @Override
+    public void showErrorMessage(String error) {
+        //view.showError todo
+    }
+
+    @Override
+    public void setErrorStyle(boolean b) {
+
     }
 
     public void setRenderer(MainRenderer<T> renderer) {

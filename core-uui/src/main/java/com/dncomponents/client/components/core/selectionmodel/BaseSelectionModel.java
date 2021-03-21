@@ -1,8 +1,11 @@
 package com.dncomponents.client.components.core.selectionmodel;
 
+import com.dncomponents.client.components.core.events.selection.HasSelectionHandlers;
+import com.dncomponents.client.components.core.events.value.HasValueSelection;
+
 import java.util.List;
 
-public interface BaseSelectionModel<T> {
+public interface BaseSelectionModel<T, P> extends HasSelectionHandlers<P>, HasValueSelection<P> {
 
     boolean setSelected(T model, boolean b, boolean fireEvent);
 
@@ -12,6 +15,7 @@ public interface BaseSelectionModel<T> {
 
     boolean isSelected(T value);
 
-    List<T> getItems();
+    P getSelection();
 
+    List<T> getItems();
 }

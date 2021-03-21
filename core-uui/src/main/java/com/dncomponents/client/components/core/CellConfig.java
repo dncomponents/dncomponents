@@ -1,7 +1,6 @@
 package com.dncomponents.client.components.core;
 
 import com.dncomponents.client.components.AbstractCellComponent;
-import com.dncomponents.client.components.BaseCell;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -9,29 +8,21 @@ import java.util.function.Function;
 /**
  * @author nikolasavic
  */
-public class CellConfig<T, M> {
+public class CellConfig<T, M> extends FieldConfig<T, M> {
 
-    protected Function<T, M> fieldGetter;
-    protected BiConsumer<T, M> fieldSetter;
     protected CellFactory<T, M, ? extends AbstractCellComponent<T, ?, ?>> cellFactory;
-    private Class clazz; //TODO remove
+    protected CellRenderer<T, M> cellRenderer = r -> r.valuePanel.innerHTML = r.value == null ? "" : r.value + "";
 
     public CellConfig(Function<T, M> fieldGetter) {
-        this.fieldGetter = fieldGetter;
+        super(fieldGetter);
     }
 
     public CellConfig(Function<T, M> fieldGetter, BiConsumer<T, M> fieldSetter) {
-        this.fieldGetter = fieldGetter;
-        this.fieldSetter = fieldSetter;
+        super(fieldGetter, fieldSetter);
     }
 
     public BiConsumer<T, M> getFieldSetter() {
         return fieldSetter;
-    }
-
-    public <C extends CellConfig<T, M>> C setFieldSetter(BiConsumer<T, M> fieldSetter) {
-        this.fieldSetter = fieldSetter;
-        return (C) this;
     }
 
     public <C extends CellFactory<T, M, ? extends AbstractCellComponent<T, ?, ?>>> C getCellFactory() {
@@ -39,32 +30,15 @@ public class CellConfig<T, M> {
         return (C) cellFactory;
     }
 
-    public <C extends CellConfig<T, M>> C setCellFactory(CellFactory<T, M, ? extends AbstractCellComponent<T, ?, ?>> cellFactory) {
+    public void setCellFactory(CellFactory<T, M, ? extends AbstractCellComponent<T, ?, ?>> cellFactory) {
         this.cellFactory = cellFactory;
-        return (C) this;
     }
 
-    public Function<T, M> getFieldGetter() {
-        return fieldGetter;
+    public void setCellRenderer(CellRenderer<T, M> cellRenderer) {
+        this.cellRenderer = cellRenderer;
     }
 
-    public <C extends CellConfig<T, M>> C setFieldGetter(Function<T, M> fieldGetter) {
-        this.fieldGetter = fieldGetter;
-        return (C) this;
-    }
-
-    public <C extends CellConfig<T, M>> C setClazz(Class clazz) {
-        this.clazz = clazz;
-        return (C) this;
-    }
-
-    public Class getClazz() { //TODO remove
-        return clazz;
-    }
-
-    protected BaseCell.BaseCellBuilder<T, M, ?> builder;
-
-    public BaseCell.BaseCellBuilder<T, M, ?> getCellBuilder() {
-        return builder;
+    public CellRenderer<T, M> getCellRenderer() {
+        return cellRenderer;
     }
 }

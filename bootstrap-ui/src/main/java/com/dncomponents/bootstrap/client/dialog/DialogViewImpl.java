@@ -30,6 +30,8 @@ public class DialogViewImpl implements DialogView {
     @UiField
     public HTMLElement closeButton;
     @UiField
+    public HTMLElement okButton;
+    @UiField
     public HTMLElement closeHeader;
     @UiField
     public HTMLElement titleHeader;
@@ -62,7 +64,6 @@ public class DialogViewImpl implements DialogView {
         backDropDiv.remove();
         modalDialogPanel.style.marginRight = CSSProperties.MarginRightUnionType.of(0);
         modalDialogPanel.style.marginLeft = CSSProperties.MarginLeftUnionType.of(0);
-        asElement().style.overflow = "hidden";
     }
 
 
@@ -90,6 +91,13 @@ public class DialogViewImpl implements DialogView {
     }
 
     @Override
+    public void addOkHandler(ClickHandler clickHandler, String text) {
+        okButton.style.display="block";
+        clickHandler.addTo(okButton);
+        okButton.textContent = text;
+    }
+
+    @Override
     public void addCloseHandler(Command onCloseCmd) {
         final ClickHandler clkHandler = mouseEvent -> {
             mouseEvent.stopPropagation();
@@ -104,7 +112,7 @@ public class DialogViewImpl implements DialogView {
     public void show() {
         asElement().style.display = "block";
         asElement().classList.add("show");
-
+        bodyClassShown(true);
         modalDialogPanel.style.top = ((DomGlobal.window.innerHeight / 2) - (modalDialogPanel.offsetHeight / 2)) + "px";
         modalDialogPanel.style.left = ((DomGlobal.window.innerWidth / 2) - (modalDialogPanel.offsetWidth / 2)) + "px";
         if (backdrop)
@@ -113,10 +121,18 @@ public class DialogViewImpl implements DialogView {
             root.focus();
     }
 
+    private void bodyClassShown(boolean b) {
+        if (b)
+            DomGlobal.document.body.classList.add("modal-open");
+        else
+            DomGlobal.document.body.classList.remove("modal-open");
+    }
+
     @Override
     public void hide() {
         asElement().classList.remove("show");
         asElement().style.display = "none";
+        bodyClassShown(false);
         if (backdrop)
             DomGlobal.document.body.removeChild(backDropDiv);
     }

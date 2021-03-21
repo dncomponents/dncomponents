@@ -10,8 +10,11 @@ import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.core.ui.table.headers.bar.panelitems.SortBarItemView;
+import elemental2.dom.DomGlobal;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
+
+import java.util.Arrays;
 
 /**
  * @author nikolasavic
@@ -57,7 +60,7 @@ public class SortBarItemViewImpl implements SortBarItemView {
     @Override
     public void addToPanel(IsElement element) {
         HTMLElement column = DomUtil.createDiv();
-        column.className = "mr-2";
+        column.className = "me-2";
         column.appendChild(element.asElement());
         panel.appendChild(column);
     }

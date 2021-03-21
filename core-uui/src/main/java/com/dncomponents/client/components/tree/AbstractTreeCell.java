@@ -55,10 +55,6 @@ public abstract class AbstractTreeCell<T, M> extends BaseCell<TreeNode<T>, M> {
         getCellView().setPadding(getModel().getLevel() * 10 + 5);
     }
 
-    protected AbstractTreeCell(BaseCellBuilder<TreeNode<T>, M, ?> builder) {
-        super(builder);
-    }
-
     @Override
     public Tree getOwner() {
         return (Tree) super.getOwner();
@@ -77,11 +73,4 @@ public abstract class AbstractTreeCell<T, M> extends BaseCell<TreeNode<T>, M> {
     public void setVisible(boolean b) {
         cellView.asElement().setAttribute("style", b ? "display:block" : "display: none;");
     }
-
-
-    public static abstract class Builder<T, M> extends BaseCellBuilder<TreeNode<T>, M, Builder<T, M>> {
-        @Override
-        public abstract AbstractTreeCell<T, M> build();
-    }
-
 }

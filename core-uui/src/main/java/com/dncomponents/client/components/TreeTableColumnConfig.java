@@ -4,7 +4,6 @@ import com.dncomponents.client.components.core.CellContext;
 import com.dncomponents.client.components.table.TableCell;
 import com.dncomponents.client.components.tree.TreeNode;
 
-import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -34,7 +33,7 @@ public class TreeTableColumnConfig<T, M> extends ColumnConfig<TreeNode<T>, M> {
                 //cast exception
             }
         });
-        setColumnName(columnConfig.getColumnName());
+        setName(columnConfig.getName());
         setClazz(columnConfig.getClazz());
         setEditable(columnConfig.isEditable());
         setColumnWidth(columnConfig.getColumnWidth());

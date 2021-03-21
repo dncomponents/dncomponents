@@ -32,15 +32,4 @@ public class ListCell<T, M> extends BaseCell<T, M> {
         return (ListUi) super.getUi();
     }
 
-    protected ListCell(BaseCellBuilder<T, M, ?> builder) {
-        super(builder);
-    }
-
-    public static class Builder<T, M> extends BaseCellBuilder<T, M, Builder<T, M>> {
-        @Override
-        public ListCell<T, M> build() {
-            return new ListCell<>(this);
-        }
-    }
-
 }

@@ -49,14 +49,4 @@ public class TreeCellParent<T, M> extends AbstractTreeCell<T, M> {
         cellView = getUi().getParentTreeCellView(icon);
     }
 
-    protected TreeCellParent(BaseCellBuilder<TreeNode<T>, M, ?> builder) {
-        super(builder);
-    }
-
-    public static abstract class Builder<T, M> extends AbstractTreeCell.Builder<T, M> {
-        @Override
-        public TreeCellParent<T, M> build() {
-            return new TreeCellParent<>(this);
-        }
-    }
 }
