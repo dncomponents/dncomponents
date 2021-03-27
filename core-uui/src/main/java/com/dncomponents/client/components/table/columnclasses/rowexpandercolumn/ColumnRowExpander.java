@@ -19,7 +19,7 @@ public class ColumnRowExpander<T> extends ColumnConfig<T, Object> {
     }
 
     public ColumnRowExpander() {
-        super(t -> t);
+        super(t -> "");
         this.setColumnWidth("15px");
         this.setHeaderCellFactory(HeaderTableTextCell::new);
         this.setCellFactory(c -> new TableCellRowExpander<T, Object>().setRowDetailsRenderer(rowDetailsRenderer));

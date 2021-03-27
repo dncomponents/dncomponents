@@ -76,7 +76,7 @@ public class RowTable<T> extends AbstractTableCell<T, List> {
             tableCell.ensureEditor().fromRow = fromRow;
             tableCell.startEditing();
         }
-        firstCell.cellEditing.focus();
+        firstCell.ensureEditor().focus();
         getOwner().setCurrentRowEdited(this);
         getOwner().fireEvent(new RowEditingStartedEvent<>(this));
     }
@@ -134,7 +134,7 @@ public class RowTable<T> extends AbstractTableCell<T, List> {
                     getOwner().insertRow(getModel(), 0);
                 this.asElement().remove();
                 getOwner().drawData();
-            } else {
+            } else if (hasChangedCells()) {
                 ModelChangedEvent.fire(getOwner(), getModel());
                 final RowValueChangedEvent<T> rowValueChangedEvent = new RowValueChangedEvent<>(this);
                 rowValueChangedEvent.setChangedCells(changedCells);

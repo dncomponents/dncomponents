@@ -226,3 +226,6 @@ li.nav-item.active {
     color: rgba(0, 0, 0, .85);
 }
 
+.pex {
+    cursor: pointer;
+}

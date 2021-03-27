@@ -50,6 +50,10 @@ public class FormItem<T, M> extends BaseHasView<M, FormItemView> implements HasM
         initValueHandler();
     }
 
+    public HasValue getHasValue() {
+        return this.hasValue;
+    }
+
     public void setIsElement(IsElement element) {
         view.setContent(element.asElement());
     }
@@ -58,6 +62,10 @@ public class FormItem<T, M> extends BaseHasView<M, FormItemView> implements HasM
         this.fieldConfig = fieldConfig;
         view.setLabelText(fieldConfig.getName());
         view.setHelperText(fieldConfig.getHelperText());
+    }
+
+    public FieldConfig<T, M> getFieldConfig() {
+        return fieldConfig;
     }
 
     public boolean isEditable() {
@@ -112,7 +120,7 @@ public class FormItem<T, M> extends BaseHasView<M, FormItemView> implements HasM
         try {
             if (getValidator() != null) {
                 setModelToValidator(getValidator(), getModel());
-                Validator val=getValidator();
+                Validator val = getValidator();
                 getValidator().validate(value);
             }
             setValueCmd = this::setValueToModel;

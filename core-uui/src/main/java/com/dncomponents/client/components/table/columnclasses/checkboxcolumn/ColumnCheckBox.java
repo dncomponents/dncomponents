@@ -11,7 +11,7 @@ public class ColumnCheckBox<T> extends ColumnConfig<T, Boolean> {
 
     public ColumnCheckBox() {
         super(t -> Boolean.TRUE);
-        this.setColumnWidth("25px");
+        this.setColumnWidth("20px");
         this.setHeaderCellFactory(() -> new HeaderTableCheckBoxCell());
         this.setCellFactory(c -> new TableCellCheckBox());
     }

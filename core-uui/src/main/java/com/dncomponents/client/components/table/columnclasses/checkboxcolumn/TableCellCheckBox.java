@@ -4,8 +4,10 @@ import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
 import com.dncomponents.client.components.list.ListTreeMultiSelectionModel;
 import com.dncomponents.client.components.table.TableCell;
 import com.dncomponents.client.components.AbstractCellComponent;
+import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.dom.handlers.KeyDownHandler;
 import elemental2.dom.KeyboardEvent;
+import elemental2.dom.MouseEvent;
 
 /**
  * Created by nikolasavic
@@ -33,6 +35,12 @@ public class TableCellCheckBox extends TableCell {
                 if (event.key.equals("space")) {
                     getCellView().getCheckbox().setValue(!getCellView().getCheckbox().getValue(), true);
                 }
+            }
+        });
+        getCellView().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(MouseEvent mouseEvent) {
+                getCellView().getCheckbox().setValue(!getCellView().getCheckbox().getValue(),true);
             }
         });
         getOwner().getSelectionModel().addSelectionHandler(event -> draw());

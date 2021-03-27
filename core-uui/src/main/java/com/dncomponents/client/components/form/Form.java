@@ -45,7 +45,7 @@ public class Form<T> extends BaseComponent<T, FormUi> implements HasModelChanged
         init();
     }
 
-    boolean areFieldsValid() {
+    public boolean areFieldsValid() {
         boolean allValid = true;
         for (FormItem field : fields) {
             if (!field.isEditable()) continue;
@@ -122,6 +122,18 @@ public class Form<T> extends BaseComponent<T, FormUi> implements HasModelChanged
 
     public List<FieldConfig<T, ?>> getFieldConfigs() {
         return fieldConfigs;
+    }
+
+    public FormItem<T, ?> getFormItemFromFieldConfig(FieldConfig fieldConfig) {
+        for (FormItem<T, ?> field : fields) {
+            if (field.getFieldConfig().equals(fieldConfig))
+                return field;
+        }
+        return null;
+    }
+
+    public <M> M getValue(FieldConfig fieldConfig) {
+        return (M) getFormItemFromFieldConfig(fieldConfig).getHasValue().getValue();
     }
 
     public void showInDialog(IsElement owner, Command cmd) {
