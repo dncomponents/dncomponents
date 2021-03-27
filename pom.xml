@@ -53,7 +53,7 @@
         <module>template_annotation_processor</module>
         <module>create-project</module>
         <module>create-project-material</module>
-        <module>main</module>
+<!--        <module>main</module>-->
 <!--        <module>main-material</module>-->
     </modules>
 
@@ -103,12 +103,12 @@
                 <configuration>
                     <launcherDir>${project.build.directory}/gwt/launcherDir</launcherDir>
                     <skipModule>true</skipModule>
-                    <devmodeArgs>
-                        <moduleName>com.dncomponents.client.main.App</moduleName>
-                        <devmodeArg>-startupUrl</devmodeArg>
-                        <devmodeArg>com.dncomponents.client.main.App</devmodeArg>
-                        <arg>-generateJsInteropExports</arg>
-                    </devmodeArgs>
+<!--                    <devmodeArgs>-->
+<!--                        <moduleName>com.dncomponents.client.main.App</moduleName>-->
+<!--                        <devmodeArg>-startupUrl</devmodeArg>-->
+<!--                        <devmodeArg>com.dncomponents.client.main.App</devmodeArg>-->
+<!--                        <arg>-generateJsInteropExports</arg>-->
+<!--                    </devmodeArgs>-->
                     <!--                    <devmodeArgs>-->
                     <!--                        <moduleName>com.dncomponents.client.main.material.App</moduleName>-->
                     <!--                        <devmodeArg>-startupUrl</devmodeArg>-->
