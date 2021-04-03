@@ -99,14 +99,9 @@ public class HeaderTableMenuCellViewImpl implements HeaderTableMenuCellView {
         }
 
         menu.addItem(di);
-        menu.addSelectionHandler(new SelectionHandler<List<DropDownItem<MenuItem>>>() {
-            @Override
-            public void onSelection(SelectionEvent<List<DropDownItem<MenuItem>>> event) {
-                if (!event.getSelectedItem().isEmpty()) {
-                    final DropDownItem<MenuItem> item = event.getSelectedItem().get(0);
-                    item.getUserObject().execute(item.isSelected());
-                }
-            }
+        menu.addSelectionHandler(event -> {
+            DropDownItem<MenuItem> item = event.getSelectedItem();
+            item.getUserObject().execute(item.isSelected());
         });
     }
 

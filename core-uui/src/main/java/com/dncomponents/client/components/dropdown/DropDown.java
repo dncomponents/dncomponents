@@ -2,7 +2,7 @@ package com.dncomponents.client.components.dropdown;
 
 import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.components.core.BaseComponent;
-import com.dncomponents.client.components.core.BaseComponentMultiSelection;
+import com.dncomponents.client.components.core.BaseComponentSingleSelection;
 import com.dncomponents.client.components.core.ComponentHtmlParser;
 import com.dncomponents.client.components.core.entities.ItemId;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
@@ -12,8 +12,6 @@ import com.dncomponents.client.components.core.events.close.HasCloseHandlers;
 import com.dncomponents.client.components.core.events.open.HasOpenHandlers;
 import com.dncomponents.client.components.core.events.open.OpenEvent;
 import com.dncomponents.client.components.core.events.open.OpenHandler;
-import com.dncomponents.client.components.core.events.selection.SelectionEvent;
-import com.dncomponents.client.components.core.selectionmodel.DefaultMultiSelectionModel;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.MainRenderer;
@@ -30,7 +28,7 @@ import java.util.Map;
 /**
  * @author nikolasavic
  */
-public class DropDown<T> extends BaseComponentMultiSelection<T, DropDownUi, DropDownItem<T>> implements
+public class DropDown<T> extends BaseComponentSingleSelection<T, DropDownUi, DropDownItem<T>> implements
         HasOpenHandlers, HasCloseHandlers {
 
     MainRenderer<T> renderer = new MainRendererImpl<>();
@@ -41,18 +39,17 @@ public class DropDown<T> extends BaseComponentMultiSelection<T, DropDownUi, Drop
         super(ui);
         view.getRootView().addClickOnButton((ClickHandler) mouseEvent -> {
             showMenu(!menuVisible);
-            fireOpenCloseEvent();
             if (menuVisible) {
                 clickOutHandlerRegistration = view.getRootView().addClickOutOfButton(evt -> {
                     if (!DomUtil.isDescendant(this.asElement(), ((Element) evt.target))) {
                         this.clickOutHandlerRegistration.removeHandler();
                         this.clickOutHandlerRegistration = null;
-                        this.showMenu(false);
+                        if (menuVisible)
+                            this.showMenu(false);
                     }
                 });
             }
         });
-        selectionGroup.setSelectionMode(DefaultMultiSelectionModel.SelectionMode.SINGLE);
     }
 
 
@@ -69,12 +66,6 @@ public class DropDown<T> extends BaseComponentMultiSelection<T, DropDownUi, Drop
 
     }
 
-    @Override
-    public boolean setSelected(DropDownItem<T> tDropDownItem, boolean b, boolean fireEvent) {
-        SelectionEvent.fire(this, tDropDownItem);
-        return super.setSelected(tDropDownItem, b, fireEvent);
-    }
-
     public void setButtonContent(String content) {
         view.getRootView().setButtonContent(content);
     }
@@ -86,6 +77,7 @@ public class DropDown<T> extends BaseComponentMultiSelection<T, DropDownUi, Drop
     public void showMenu(boolean b) {
         view.getRootView().showList(b);
         menuVisible = b;
+        fireOpenCloseEvent();
     }
 
     public void addItem(DropDownItem<T> item) {

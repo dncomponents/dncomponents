@@ -6,13 +6,10 @@ import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.core.events.beforeselection.BeforeSelectionEvent;
 import com.dncomponents.client.components.core.events.beforeselection.BeforeSelectionHandler;
 import com.dncomponents.client.components.core.events.beforeselection.HasBeforeSelectionHandlers;
-import com.dncomponents.client.components.core.events.selection.SelectionEvent;
 import com.dncomponents.client.components.modal.SetElement;
 import com.dncomponents.client.views.Renderer;
 import com.dncomponents.client.views.core.ui.tab.TabItemView;
 import com.dncomponents.client.views.core.ui.tab.TabItemViewSlots;
-import elemental2.dom.Event;
-import elemental2.dom.EventListener;
 import elemental2.dom.HTMLElement;
 
 /**
@@ -24,12 +21,8 @@ public class TabItem<T> extends BaseComponent<T, TabItemView> implements CanSele
     boolean selected;
 
     {
-        setRenderer(new RenderTabItem<T>() {
-            @Override
-            public void render(T t, TabItemViewSlots slots) {
-                slots.getContent().textContent = t + "";
-            }
-        });
+        setRenderer((t, slots) ->
+                slots.getContent().textContent = t + "");
     }
 
     public TabItem(Tab tab) {
@@ -65,13 +58,9 @@ public class TabItem<T> extends BaseComponent<T, TabItemView> implements CanSele
     }
 
     private void bind() {
-        view.addItemSelectedHandler(new EventListener() {
-            @Override
-            public void handleEvent(Event evt) {
-                BeforeSelectionEvent.fire(tab, this);
-                tab.setSelected(TabItem.this, !TabItem.this.isSelected(), true);
-                SelectionEvent.fire(tab, this);
-            }
+        view.addItemSelectedHandler(evt -> {
+            BeforeSelectionEvent.fire(tab, TabItem.this);
+            tab.setSelected(TabItem.this, !TabItem.this.isSelected(), true);
         });
     }
 

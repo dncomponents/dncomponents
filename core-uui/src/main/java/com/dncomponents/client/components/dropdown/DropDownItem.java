@@ -2,11 +2,9 @@ package com.dncomponents.client.components.dropdown;
 
 import com.dncomponents.client.components.core.BaseComponent;
 import com.dncomponents.client.components.core.CanSelect;
-import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.MainRenderer;
 import com.dncomponents.client.views.core.ui.dropdown.DropDownItemView;
 import elemental2.dom.HTMLElement;
-import elemental2.dom.MouseEvent;
 
 /**
  * @author nikolasavic
@@ -30,12 +28,8 @@ public class DropDownItem<T> extends BaseComponent<T, DropDownItemView> implemen
     }
 
     private void init() {
-        view.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(MouseEvent mouseEvent) {
-                dropDown.setSelected(DropDownItem.this, !DropDownItem.this.isSelected(), true);
-            }
-        });
+        view.addClickHandler(mouseEvent ->
+                dropDown.setSelected(DropDownItem.this, !DropDownItem.this.isSelected(), true));
     }
 
     public void setContent(String content) {
