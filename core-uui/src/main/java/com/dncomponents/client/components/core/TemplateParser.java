@@ -161,14 +161,14 @@ public class TemplateParser {
     }
 
     private void i18e(HTMLTemplateElement template) {
-        if (template != null && template.innerHTML.contains(DnI18e.START_TAG)) {
+        if (template != null && template.innerHTML.contains(DnI18n.START_TAG)) {
             String content = template.innerHTML;
             do {
-                final String between = DnI18e.getBetween(content, DnI18e.START_TAG, DnI18e.END_TAG);
+                final String between = DnI18n.getBetween(content, DnI18n.START_TAG, DnI18n.END_TAG);
                 if (between == null || between.isEmpty())
                     break;
-                String value = DnI18e.get().getValue(between);
-                content = content.replace(DnI18e.START_TAG + between + DnI18e.END_TAG, value);
+                String value = DnI18n.get().getValue(between);
+                content = content.replace(DnI18n.START_TAG + between + DnI18n.END_TAG, value);
             } while (true);
             template.innerHTML = content;
         }

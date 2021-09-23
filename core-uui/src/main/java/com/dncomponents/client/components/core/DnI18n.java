@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
  * I18n.get("MyCustomMessages").getValue("someProperty")...
  * or from html file {{MyCustomMessages:someProperty}}
  */
-public class DnI18e {
+public class DnI18n {
 
     public static String DEFAULT = "AppMessages";
 
@@ -31,10 +31,10 @@ public class DnI18e {
     //e.g default name AppMessages can have different I18n objects
     //if you want to switch to e.g spanish version you register AppMessage_spanish i18n object
     //I18e.put(new AppMessage_spanish()); this will set AppMessages - AppMessage_spanish pair to lfiles
-    private static Map<String, DnI18e> lfiles = new HashMap<>();
+    private static Map<String, DnI18n> lfiles = new HashMap<>();
 
 
-    private DnI18e fallback;
+    private DnI18n fallback;
 
     private static final String SEPARATOR = ":";
     private static final String MORE_THAN = ">";
@@ -48,11 +48,11 @@ public class DnI18e {
         this.name = name;
     }
 
-    public DnI18e getFallback() {
+    public DnI18n getFallback() {
         return fallback;
     }
 
-    public void setFallback(DnI18e fallback) {
+    public void setFallback(DnI18n fallback) {
         this.fallback = fallback;
     }
 
@@ -154,24 +154,27 @@ public class DnI18e {
         text.replace(text, value);
     }
 
-    public static DnI18e get(String s) {
+    public static DnI18n get(String s) {
         return lfiles.get(s);
     }
 
-    public static DnI18e get() {
+    public static DnI18n get() {
         return lfiles.get(DEFAULT);
     }
 
+    public static String t(String key, Object... args) {
+        return get().getValue(key,args);
+    }
 
-    public static void put(String name, DnI18e i18e) {
+    public static void put(String name, DnI18n i18e) {
         lfiles.put(name, i18e);
     }
 
-    public static void set(DnI18e i18e) {
+    public static void set(DnI18n i18e) {
         lfiles.put(checkName(i18e), i18e);
     }
 
-    private static String checkName(DnI18e i18e) {
+    private static String checkName(DnI18n i18e) {
         String name = i18e.getClass().getSimpleName();
         if (name.contains("_")) {
             name = name.substring(0, name.indexOf('_'));
