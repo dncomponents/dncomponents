@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 dncomponents
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.dncomponents.client.components.core.selectionmodel;
 
 import com.dncomponents.client.components.core.events.HandlerRegistration;
@@ -33,13 +49,31 @@ public abstract class DefaultMultiSelectionModel<M> implements MultiSelectionMod
         return selection.contains(item);
     }
 
+    List<M> oldSelection=new ArrayList<>();
+
     @Override
     public void setSelected(List<M> models, boolean b, boolean fireEvent) {
+        oldSelection = new ArrayList<>(selection);
         boolean changed = false;
-        for (M model : models) {
-            boolean b1 = setSelected(model, b, false);
-            if (b1 && !changed) {
+        if (models == null || models.isEmpty()) {
+            if (!selection.isEmpty()) {
+                selection.clear();
                 changed = true;
+            }
+        } else {
+            List<M> diff = getSelection();
+            diff.removeAll(models);
+            for (M model : diff) {
+                boolean b1 = setSelected(model, false, false);
+                if (b1 && !changed) {
+                    changed = true;
+                }
+            }
+            for (M model : models) {
+                boolean b1 = setSelected(model, b, false);
+                if (b1 && !changed) {
+                    changed = true;
+                }
             }
         }
         if (changed && fireEvent)
@@ -53,6 +87,8 @@ public abstract class DefaultMultiSelectionModel<M> implements MultiSelectionMod
 
     public boolean setSelected(M model, boolean b, boolean fireEvent) {
         boolean changed = false;
+        oldSelection = new ArrayList<>(selection);
+
         if (!getItems().contains(model))
             return false;
         if (b) {
@@ -69,6 +105,7 @@ public abstract class DefaultMultiSelectionModel<M> implements MultiSelectionMod
                 changed = true;
             }
         }
+
         if (changed)
             setSelectedInView(model, b);
 
@@ -133,8 +170,8 @@ public abstract class DefaultMultiSelectionModel<M> implements MultiSelectionMod
     }
 
     protected void fireSelectionChange() {
-        SelectionEvent.fire(this::ensureHandlers, selection);
-        ValueChangeEvent.fire(getHasValue(), selection);
+        SelectionEvent.fire(this::ensureHandlers, new ArrayList<>(selection));
+        ValueChangeEvent.fire(getHasValue(), new ArrayList<>(selection), new ArrayList<>(oldSelection));
     }
 
     class HasValueModel extends AbstractValueChangeHandler<List<M>> {

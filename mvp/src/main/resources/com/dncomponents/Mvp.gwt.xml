@@ -1,0 +1,5 @@
+<module rename-to="app">
+    <inherits name="com.dncomponents.Core"/>
+    <source path="client"/>
+    <public path="public"/>
+</module>

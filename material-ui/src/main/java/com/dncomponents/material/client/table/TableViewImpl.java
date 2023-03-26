@@ -118,13 +118,6 @@ public class TableViewImpl extends ListViewImpl implements TableView {
     }
 
     @Override
-    public void setHeaderBar(IsElement bar, int size) {
-        headerBarRow.innerHTML = "";
-        headerBarRow.appendChild(bar.asElement());
-        headerBarRow.style.display = "block";
-    }
-
-    @Override
     public HTMLElement insertAfter(IsElement rowTable, int size) {
         HTMLElement tr = addToRow(size);
         if (rowTable != null && rowTable.asElement().parentNode != null)

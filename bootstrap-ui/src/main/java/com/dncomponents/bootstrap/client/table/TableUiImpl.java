@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 dncomponents
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.dncomponents.bootstrap.client.table;
 
 import com.dncomponents.UiField;
@@ -11,7 +27,6 @@ import com.dncomponents.bootstrap.client.table.group.ParentTableTreeCellViewImpl
 import com.dncomponents.bootstrap.client.table.header.CheckBoxHeaderTableCellViewImpl;
 import com.dncomponents.bootstrap.client.table.header.HeaderTableEditCellViewImpl;
 import com.dncomponents.bootstrap.client.table.header.HeaderTableFilterCellViewImpl;
-import com.dncomponents.bootstrap.client.table.header.bar.TableBarUiImpl;
 import com.dncomponents.bootstrap.client.table.header.filter.FilterPanelViewImpl;
 import com.dncomponents.bootstrap.client.table.header.menu.HeaderTableMenuCellViewImpl;
 import com.dncomponents.bootstrap.client.table.header.sort.HeaderTableSortCellViewImpl;
@@ -25,7 +40,6 @@ import com.dncomponents.client.views.core.ui.table.TableRowView;
 import com.dncomponents.client.views.core.ui.table.TableUi;
 import com.dncomponents.client.views.core.ui.table.TableView;
 import com.dncomponents.client.views.core.ui.table.headers.*;
-import com.dncomponents.client.views.core.ui.table.headers.bar.TableBarUi;
 import com.dncomponents.client.views.core.ui.tree.*;
 import elemental2.dom.HTMLTemplateElement;
 
@@ -57,8 +71,6 @@ public class TableUiImpl implements TableUi {
     HTMLTemplateElement tableHeaderCheckbox;
     @UiField
     HTMLTemplateElement footerCell;
-    @UiField
-    HTMLTemplateElement tableBarUi;
     @UiField
     HTMLTemplateElement filterPanel;
     @UiField
@@ -117,10 +129,6 @@ public class TableUiImpl implements TableUi {
         return new FooterCellViewImpl(footerCell);
     }
 
-    @Override
-    public TableBarUi getTableBarUi() {
-        return new TableBarUiImpl(tableBarUi);
-    }
 
     @Override
     public CheckBoxHeaderTableCellView getCheckBoxHeaderCellView() {

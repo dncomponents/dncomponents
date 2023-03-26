@@ -10,7 +10,6 @@ import com.dncomponents.client.views.core.ui.table.TableRowView;
 import com.dncomponents.client.views.core.ui.table.TableUi;
 import com.dncomponents.client.views.core.ui.table.TableView;
 import com.dncomponents.client.views.core.ui.table.headers.*;
-import com.dncomponents.client.views.core.ui.table.headers.bar.TableBarUi;
 import com.dncomponents.client.views.core.ui.tree.*;
 import com.dncomponents.material.client.MaterialUi;
 import com.dncomponents.material.client.table.cell.MdcRowDetailsCellViewImpl;
@@ -21,7 +20,6 @@ import com.dncomponents.material.client.table.group.ParentTableTreeCellViewImpl;
 import com.dncomponents.material.client.table.header.CheckBoxHeaderTableCellViewImpl;
 import com.dncomponents.material.client.table.header.HeaderTableEditCellViewImpl;
 import com.dncomponents.material.client.table.header.HeaderTableFilterCellViewImpl;
-import com.dncomponents.material.client.table.header.bar.TableBarUiImpl;
 import com.dncomponents.material.client.table.header.cell.MdcHeaderTableSortCellViewImpl;
 import com.dncomponents.material.client.table.header.filter.FilterPanelViewImpl;
 import com.dncomponents.material.client.table.header.menu.HeaderTableMenuCellViewImpl;
@@ -56,8 +54,6 @@ public class TableUiImpl implements TableUi {
     HTMLTemplateElement tableHeaderCheckbox;
     @UiField
     HTMLTemplateElement footerCell;
-    @UiField
-    HTMLTemplateElement tableBarUi;
     @UiField
     HTMLTemplateElement filterPanel;
     @UiField
@@ -114,11 +110,6 @@ public class TableUiImpl implements TableUi {
     @Override
     public CellView getFooterCellView() {
         return new FooterCellViewImpl(footerCell);
-    }
-
-    @Override
-    public TableBarUi getTableBarUi() {
-        return new TableBarUiImpl(tableBarUi);
     }
 
     @Override

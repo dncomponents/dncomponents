@@ -1,3 +1,19 @@
+<!--
+  ~ Copyright 2023 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
 <template ui-field="checkBoxFactory">
     <template ui-field="checkBoxDefault">
         <div ui-field="root" class="form-check">
@@ -349,7 +365,7 @@
     </template>
 
     <template ui-field="tableHeaderCheckbox">
-        <th ui-field="root" class="text-center pex" >
+        <th ui-field="root" class="text-center pex">
             <dn-checkbox ui-field="checkBox" style="display: inline-block;padding-left: 2rem;"></dn-checkbox>
             <span ui-field="textPanel"></span>
         </th>
@@ -373,49 +389,6 @@
     <template ui-field="footerCell">
         <td ui-field="root">
         </td>
-    </template>
-
-    <template ui-field="tableBarUi">
-
-        <template ui-field="tableBar">
-            <div ui-field="root">
-
-            </div>
-        </template>
-        <template ui-field="columnChooseBar">
-            <div ui-field="root">
-
-            </div>
-        </template>
-        <template ui-field="tableBarGroupByUi">
-            <template ui-field="tableBarItem">
-                <div ui-field="root" class="row p-1">
-                    <div class="col-1">
-                        <i ui-field="close" class="fas fa-times pexp"></i>
-                    </div>
-                    <div class="col-2">
-                        <span ui-field="actionLabel"></span>
-                    </div>
-                    <div class="col-2">
-                        <span ui-field="columnName"></span>
-                    </div>
-                    <div class="col-6">
-                        <div class="row" ui-field="panel">
-
-                        </div>
-                    </div>
-                    <div class="col-1">
-                        :::
-                    </div>
-                </div>
-            </template>
-            <template ui-field="tableBarPanel">
-                <div ui-field="root">
-                    <div ui-field="contentPanel" class="p-2"></div>
-                    <div ui-field="dropDownHolder" class="ps-2 mb-3 mt-3"></div>
-                </div>
-            </template>
-        </template>
     </template>
 
     <template ui-field="tableTreeItemSimpleParent">

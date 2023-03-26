@@ -1,13 +1,27 @@
+/*
+ * Copyright 2023 dncomponents
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.dncomponents;
 
+import com.google.auto.service.AutoService;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Type;
 import org.apache.commons.text.StringEscapeUtils;
 
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
+import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.PackageElement;
@@ -28,12 +42,14 @@ import java.util.stream.Collectors;
 @SupportedAnnotationTypes({"com.dncomponents.UiField", "com.dncomponents.UiTemplate", "com.dncomponents.UiStyle",
         "com.dncomponents.I18n"})
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
+@AutoService(Processor.class)
 public class TemplateProcessor extends AbstractProcessor {
 
     private static String EXTENSION = "Binder";
     private static List<TemplateProp> templateProps = new ArrayList<>();
     private static Map<Element, Element> elementSubElement = new HashMap<>();
     private static boolean firstRound = true;
+    private static String APP_TEMPLATE_NAME = "AppTemplates";
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -96,7 +112,7 @@ public class TemplateProcessor extends AbstractProcessor {
                 e.printStackTrace();
             }
         }
-        if(firstRound){
+        if (firstRound) {
             try {
                 generateTemplateService();
                 System.out.println("done");
@@ -326,6 +342,8 @@ public class TemplateProcessor extends AbstractProcessor {
     private void generateTemplateService() throws Exception {
         final String registerString = "    public static void register() {\n";
         String name = processingEnv.getOptions().get("register");
+        if (name == null)
+            name = APP_TEMPLATE_NAME;
         String generatedFullClassName = "com.dncomponents.client.components.core." + name;
 
         FileObject resource = null;

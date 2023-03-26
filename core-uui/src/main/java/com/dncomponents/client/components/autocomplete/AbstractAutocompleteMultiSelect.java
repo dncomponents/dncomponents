@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 dncomponents
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.dncomponents.client.components.autocomplete;
 
 import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
@@ -8,23 +24,32 @@ import com.dncomponents.client.views.core.ui.autocomplete.multiselect.Autocomple
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
  * Created by nikolasavic
  */
-public abstract class AbstractAutocompleteMultiSelect<T, C> extends AbstractAutocomplete<T, AutocompleteMultiSelectView<T>, C> {
+public abstract class AbstractAutocompleteMultiSelect<T> extends AbstractAutocomplete<T, AutocompleteMultiSelectView<T>, List<T>> {
 
     protected MainRenderer<T> itemRenderer = new MainRendererImpl<>();
 
     protected List<AutocompleteMultiSelectItem<T>> items = new ArrayList<>();
+    private Consumer<Consumer<Boolean>> removeItemConsumer;
 
     public void setItemRenderer(MainRenderer<T> itemRenderer) {
         this.itemRenderer = itemRenderer;
     }
 
+
+    public void onItemRemoved(Consumer<Consumer<Boolean>> removeItemConsumer) {
+        this.removeItemConsumer = removeItemConsumer;
+    }
+
+
     void remove(AutocompleteMultiSelectItem item) {
         view.getSelectionModel().setSelected((T) item.getUserObject(), false, true);
+        view.getHasRowsData().refreshSelections();
     }
 
     public AbstractAutocompleteMultiSelect(AutocompleteMultiSelectView<T> view) {
@@ -39,20 +64,31 @@ public abstract class AbstractAutocompleteMultiSelect<T, C> extends AbstractAuto
 
     private void bind() {
         addValueChangeHandler(event -> showList(false));
-        view.getSelectionModel().getHasValue().addValueChangeHandler(new ValueChangeHandler<List<T>>() {
-            @Override
-            public void onValueChange(ValueChangeEvent<List<T>> event) {
-                changed(event.getValue());
-                showList(true);
+        view.getSelectionModel().getHasValue().addValueChangeHandler(event -> {
+            if (event.getOldValue().size() > event.getValue().size()) {
+                List<T> oldValue = event.getOldValue();
+                if (removeItemConsumer != null) {
+                    removeItemConsumer.accept(ok -> {
+                        if (ok) {
+                            setValue(event.getValue(), true);
+                        } else {
+                            view.getSelectionModel().setSelected(oldValue, true, false);
+                            view.getHasRowsData().refreshSelections();
+                        }
+                    });
+                } else {
+                    setValue(event.getValue(), true);
+                }
+            } else {
+                setValue(event.getValue(), true);
             }
         });
     }
 
     @Override
-    public void setValue(C value, boolean fireEvents) {
+    public void setValue(List<T> value, boolean fireEvents) {
         super.setValue(value, fireEvents);
-        if (value == null)
-            changed(null);
+        changed(value);
     }
 
     protected void changed(List<T> value) {
@@ -62,8 +98,6 @@ public abstract class AbstractAutocompleteMultiSelect<T, C> extends AbstractAuto
                 AutocompleteMultiSelectItem<T> item = new AutocompleteMultiSelectItem<T>(AbstractAutocompleteMultiSelect.this, t);
                 view.addItem(item);
             }
-        } else {
-            view.clearItems();
         }
     }
 

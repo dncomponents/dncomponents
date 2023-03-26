@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 dncomponents
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.dncomponents.client.components.autocomplete;
 
 import com.dncomponents.client.components.core.BaseFocusComponent;
@@ -11,7 +27,7 @@ import com.dncomponents.client.components.core.events.value.ValueChangeHandler;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.core.ui.autocomplete.BaseAutocompleteView;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -34,6 +50,7 @@ public class AbstractAutocomplete<T, V extends BaseAutocompleteView<T>, C> exten
                     .contains(view.getTextBoxCurrentValue().toLowerCase());
         }
     };
+    protected HandlerRegistration blurRegistration;
 
     public AbstractAutocomplete(V view) {
         super(view);
@@ -53,10 +70,7 @@ public class AbstractAutocomplete<T, V extends BaseAutocompleteView<T>, C> exten
     private void bind() {
         view.showListPanel(false, null);
         view.addSelectionHandler(event -> {
-
-            if (isMultiSelect())
-                setValue((C) new ArrayList<>(event.getSelectedItem()), true);
-            else
+            if (!isMultiSelect())
                 setValue((C) event.getSelectedItem().stream().findFirst().orElse(null), true);
         });
 
@@ -73,16 +87,20 @@ public class AbstractAutocomplete<T, V extends BaseAutocompleteView<T>, C> exten
         view.addButtonClickHandler(mouseEvent -> {
             showList(!listShowing);
         });
+//        view.addResetButtonClickHandler(event -> {
+//            setValue(null, true);
+//        });
         this.blurRegistration = addBlurHandler(evt -> showList(false));
     }
-
-    protected HandlerRegistration blurRegistration;
 
     public boolean isListShowing() {
         return listShowing;
     }
 
     public void showList(boolean b) {
+        if (!this.isEnabled()) {
+            return;
+        }
         view.showListPanel(b, new Command() {
             @Override
             public void execute() {
@@ -120,12 +138,16 @@ public class AbstractAutocomplete<T, V extends BaseAutocompleteView<T>, C> exten
         C oldValue = getValue();
         this.value = value;
         if (this.value != null) {
-            if (!isMultiSelect())
-                view.setStringValue(getRowCellConfig().getFieldGetter().apply((T) this.value) + "");
-            view.getSelectionModel().setSelected((T) this.value, true, false);
+            if (isMultiSelect()) {
+                view.getSelectionModel().setSelected((List<T>) this.value, true, false);
+            } else {
+                String strValue = getRowCellConfig().getFieldGetter().apply((T) this.value);
+                view.setStringValue(strValue == null ? "" : strValue);
+                view.getSelectionModel().setSelected((T) this.value, true, false);
+            }
             view.getHasRowsData().refreshSelections();
         } else {
-            view.setStringValue("Choose");
+            view.setStringValue("");
             view.getSelectionModel().clearSelection(false);
             view.getHasRowsData().refreshSelections();
         }
@@ -144,4 +166,7 @@ public class AbstractAutocomplete<T, V extends BaseAutocompleteView<T>, C> exten
         return view.addButtonClickHandler(handler);
     }
 
+    public void drawData() {
+        view.getHasRowsData().drawData();
+    }
 }

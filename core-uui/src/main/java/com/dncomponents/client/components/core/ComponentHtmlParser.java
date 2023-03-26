@@ -1,8 +1,23 @@
+/*
+ * Copyright 2023 dncomponents
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.dncomponents.client.components.core;
 
 import com.dncomponents.client.components.core.entities.ItemId;
 import com.dncomponents.client.dom.DomUtil;
-import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ViewFactory;
 import com.dncomponents.client.views.core.pcg.View;
@@ -31,7 +46,7 @@ import java.util.Set;
  *
  * <input class="textClass" size="40">
  */
-public interface ComponentHtmlParser extends HtmlParser<BaseComponent> {
+public interface ComponentHtmlParser extends IsElementHtmlParser<BaseComponent> {
 
     String VIEW = "view";
     String TEMPLATE_ID = "template-id";
@@ -41,35 +56,6 @@ public interface ComponentHtmlParser extends HtmlParser<BaseComponent> {
     String ICON = "icon";
 
     String ITEM = "item";
-
-    static void copyStyle(Element element1, Element element2) {
-        String style = element1.getAttribute("class");
-        if (style != null)
-            element2.className = style;
-    }
-
-    static void addStyle(Element element1, Element element2) {
-        String style = element1.getAttribute("addclass");
-        if (style != null) {
-            if (style.contains(" ")) {
-                final String[] words = style.split(" ");
-                for (String word : words) {
-                    if (!word.isEmpty())
-                        element2.classList.add(word);
-                }
-            } else {
-                element2.classList.add(style);
-            }
-            element2.removeAttribute("addclass");
-        }
-    }
-
-    default void replaceAndCopy(Element element1, IsElement element2) {
-        DomUtil.copyAllAttributes(element1, element2.asElement());
-        DomUtil.replace(element2.asElement(), element1);
-        addStyle(element1, element2.asElement());
-        copyStyle(element1, element2.asElement());
-    }
 
     default ItemId getIdItem(Element element) {
         ItemId idItem = new ItemId();
