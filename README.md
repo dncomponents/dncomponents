@@ -18,7 +18,7 @@ http://dncomponents.com
 ### Build User Interface only with elemental2 
 
 To build User Interface using [HTML binder](https://dncomponents.com/documentation-html-binder.html) with elemental2 elements  java and html use only <b>core</b> framework.
-Sample project is here
+Sample project is [here](https://github.com/dncomponents/dncomponents-java-elemental-starter)
 
 ### Build User Interface with dncomponents
 
