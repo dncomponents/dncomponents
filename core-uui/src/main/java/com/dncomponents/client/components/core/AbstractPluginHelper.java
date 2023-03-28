@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractPluginHelper implements PluginHelper {
+public abstract class AbstractPluginHelper implements HasTag {
 
     protected Map<String, List<String>> arguments = new HashMap<>();
     protected Map<String, List<String>> tags = new HashMap<>();

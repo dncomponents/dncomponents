@@ -74,8 +74,10 @@ public class ListTreeMultiSelectionModel<T> extends DefaultMultiSelectionModel<T
             }
 
             @Override
-            public void onClickEventEquals(Object model) {
-//                selectAll(false, false);
+            public void onClickEventEquals(Object model, MouseEvent mouseEvent) {
+                if (!mouseEvent.metaKey) {
+                    selectAll(false, false);
+                }
                 setSelected((T) model, !isSelected((T) model), true);
             }
         });
@@ -94,7 +96,7 @@ public class ListTreeMultiSelectionModel<T> extends DefaultMultiSelectionModel<T
         } else if (mouseEvent != null && mouseEvent.shiftKey) {
             selectRegion(model);
         } else {
-//            selectAll(false, false);
+            selectAll(false, false);
             setSelected((T) model, !isSelected((T) model), true);
         }
     }

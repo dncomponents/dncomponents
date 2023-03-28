@@ -56,7 +56,7 @@ abstract class BaseCellNavigator {
         if (currentFocusedModel != lastFocusedModel)
             handler.onClickEvent(currentFocusedModel, lastFocusedModel, mouseEvent);
         else
-            handler.onClickEventEquals(currentFocusedModel);
+            handler.onClickEventEquals(currentFocusedModel,mouseEvent);
 //        }
     }
 
@@ -140,7 +140,7 @@ abstract class BaseCellNavigator {
 
         void onClickEvent(Object currentFocusedModel, Object lastFocusedModel, MouseEvent event);
 
-        void onClickEventEquals(Object currentFocusedModel);
+        void onClickEventEquals(Object currentFocusedModel, MouseEvent mouseEvent);
     }
 
 }

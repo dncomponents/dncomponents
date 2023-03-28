@@ -16,9 +16,26 @@
 
 package com.dncomponents.client.components.core;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author nikolasavic
  */
 public interface HasTag {
     String getId();
+
+    //below methods are for the dn Intellij plugin
+    default Class getClazz() {
+        return Object.class;
+    }
+
+    default Map<String, List<String>> getArguments() {
+        return new HashMap<>();
+    }
+
+    default Map<String, List<String>> getTags() {
+        return new HashMap<>();
+    }
 }
