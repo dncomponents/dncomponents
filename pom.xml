@@ -55,6 +55,7 @@
         <module>material-ui</module>
         <module>create-project</module>
         <module>create-project-material</module>
+        <module>main</module>
     </modules>
 
     <dependencies>

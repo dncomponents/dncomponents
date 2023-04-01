@@ -20,8 +20,7 @@ import com.dncomponents.client.components.core.HasUserValue;
 import com.dncomponents.client.components.core.events.selection.SelectionEvent;
 import com.dncomponents.client.components.core.events.value.HasValue;
 import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
-import com.dncomponents.client.components.core.selectionmodel.helper.AbstractSelectionHandler;
-import com.dncomponents.client.components.core.selectionmodel.helper.AbstractValueChangeHandler;
+import com.dncomponents.client.components.core.events.value.AbstractValueChangeHandler;
 import elemental2.dom.CustomEvent;
 
 import java.util.ArrayList;

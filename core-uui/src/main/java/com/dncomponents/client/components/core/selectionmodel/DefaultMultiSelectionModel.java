@@ -21,7 +21,7 @@ import com.dncomponents.client.components.core.events.selection.SelectionEvent;
 import com.dncomponents.client.components.core.events.selection.SelectionHandler;
 import com.dncomponents.client.components.core.events.value.HasValue;
 import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
-import com.dncomponents.client.components.core.selectionmodel.helper.AbstractValueChangeHandler;
+import com.dncomponents.client.components.core.events.value.AbstractValueChangeHandler;
 import com.dncomponents.client.dom.DomUtil;
 import elemental2.dom.CustomEvent;
 import elemental2.dom.HTMLElement;

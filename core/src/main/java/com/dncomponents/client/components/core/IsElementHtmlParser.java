@@ -51,6 +51,7 @@ public interface IsElementHtmlParser<T extends IsElement> extends HtmlParser<T> 
                 newStyle += style2;
             }
             element2.setAttribute("style", newStyle);
+            element2.removeAttribute("addstyle");
         }
     }
 

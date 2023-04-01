@@ -14,11 +14,18 @@
  * limitations under the License.
  */
 
-package com.dncomponents.client.components.core.events.value;
+package com.dncomponents.client.components.core.selectionmodel;
 
+
+import com.dncomponents.client.components.core.events.AbstractHandler;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
-import com.dncomponents.client.components.core.events.HasHandlers;
+import com.dncomponents.client.components.core.events.selection.HasSelectionHandlers;
+import com.dncomponents.client.components.core.events.selection.SelectionHandler;
 
-public interface HasValueChangeHandlers<T> extends HasHandlers {
-    HandlerRegistration addValueChangeHandler(ValueChangeHandler<T> handler);
+public class AbstractSelectionHandler<T> extends AbstractHandler implements HasSelectionHandlers<T> {
+
+    @Override
+    public HandlerRegistration addSelectionHandler(SelectionHandler<T> handler) {
+        return handler.addTo(ensureHandlers());
+    }
 }

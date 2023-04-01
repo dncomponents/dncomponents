@@ -16,26 +16,18 @@
 
 package com.dncomponents.client.components.core.events.value;
 
-import com.dncomponents.client.dom.handlers.BaseEventListener;
-import elemental2.dom.CustomEvent;
-import elemental2.dom.Event;
-import jsinterop.base.Js;
+import com.dncomponents.client.components.core.events.AbstractHandler;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
 
-public interface ValueChangeHandler<T> extends BaseEventListener {
+public abstract class AbstractValueChangeHandler<T> extends AbstractHandler implements HasValue<T> {
 
+    @Override
+    public void setValue(T value) {
+        setValue(value, false);
+    }
 
-  void onValueChange(ValueChangeEvent<T> event);
-
-  String TYPE = "valueChangeEvent";
-
-  @Override
-  default void handleEvent(Event evt) {
-    onValueChange(Js.cast(((CustomEvent) evt).detail));
-  }
-
-  @Override
-  default String getType() {
-    return TYPE;
-  }
-
+    @Override
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<T> handler) {
+        return handler.addTo(ensureHandlers());
+    }
 }

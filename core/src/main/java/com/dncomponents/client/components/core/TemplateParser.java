@@ -17,13 +17,12 @@
 package com.dncomponents.client.components.core;
 
 
+import com.dncomponents.client.dom.MultiMap;
 import com.dncomponents.client.views.IsElement;
 import elemental2.dom.*;
+import jsinterop.base.Js;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TemplateParser {
 
@@ -32,6 +31,21 @@ public class TemplateParser {
     private HTMLTemplateElement templateElement;
 
     private Map elementsMap = new HashMap();
+
+    private Map<String, String> valueMap = new HashMap<>();
+
+    //looks for element value <div>{{value}}</div>
+    private MultiMap<String, ElementValue> multiMapValueElements = new MultiMap<>();
+
+    //looks for element attribute value <div title='{{value}}>Something</div>
+    private MultiMap<String, ElementValue> multiMapValueAttributeElements = new MultiMap<>();
+
+    //looks for style properties <div style='color:{{value}}>Something</div>
+    private MultiMap<String, ElementValue> multiMapValueStyleAttributeElements = new MultiMap<>();
+    private Map<String, ArrayList<Element>> eventsElementMap = new HashMap<>();
+
+    //events list to search for
+    List<String> eventsListAttributes = Arrays.asList("(click)", "(onfocus)");
 
     private Node clonedNode;
 
@@ -67,11 +81,14 @@ public class TemplateParser {
                 this.templateElement.innerHTML = templateContent;
             }
         elementsMap.clear();
-        i18e(this.templateElement);
+//        i18e(this.templateElement); //todo change string limiter, disabled for now
         this.clonedNode = this.templateElement.content.cloneNode(true);
         parseTemplates(TEMPLATE_KEY, this.clonedNode);
+        parseValueElements(this.clonedNode);
         parseElements(KEY, this.clonedNode);
         parseOther(KEY, this.clonedNode);
+        parseValueElementsAtAttributes(this.clonedNode);
+        parseEventsElements(this.clonedNode);
         clearKeyTags(KEY, getCloned());
     }
 
@@ -114,7 +131,7 @@ public class TemplateParser {
     private Map<String, ?> mapCustomElements(String key, Node root) {
         Map<String, Object> result = null;
         NodeList<Element> allElements = root.querySelectorAll("*");
-         for (int i = 0; i < allElements.length; i++) {
+        for (int i = 0; i < allElements.length; i++) {
             Element at = allElements.getAt(i);
             if (HtmlParserService.isComponentParserTag(at)) {
                 result = new HashMap<>();
@@ -180,11 +197,122 @@ public class TemplateParser {
 
     }
 
+
+    private void updateValueElements(String valueElement) {
+        for (ElementValue element : multiMapValueElements.get(valueElement)) {
+            element.updateValue();
+        }
+    }
+
+    private void updateValueAttributeElements(String valueElement) {
+        for (ElementValue element : multiMapValueAttributeElements.get(valueElement)) {
+            element.updateAttribute();
+        }
+    }
+
+    private void updateValueStyleAttributeElements(String valueElement) {
+        for (ElementValue element : multiMapValueStyleAttributeElements.get(valueElement)) {
+            element.updateStyle();
+        }
+    }
+
+    public void updateValueUi(String valueElementName, String value) {
+        valueMap.put(valueElementName, value);
+        updateValueElements(valueElementName);
+        updateValueAttributeElements(valueElementName);
+        updateValueStyleAttributeElements(valueElementName);
+    }
+
+    public Map<String, ArrayList<Element>> getEventsElementMap() {
+        return eventsElementMap;
+    }
+
+    private void parseValueElements(Node root) {
+        NodeList<Element> elements = root.querySelectorAll("*");
+        for (int i = 0; i < elements.length; i++) {
+            Element at = elements.getAt(i);
+            if (at.childElementCount == 0 && at.innerHTML.contains("{{")) {
+                String content = at.innerHTML;
+                final String between = getBetween(content, "{{", "}}");
+                if (between == null || between.isEmpty())
+                    continue;
+                multiMapValueElements.put(between, new ElementValue(Js.cast(at), "", at.innerHTML));
+                at.innerHTML = "";
+            }
+        }
+    }
+
+
+    private String replaceAll(String stringWithValues) {
+        String str = stringWithValues;
+        for (Map.Entry<String, String> entry : valueMap.entrySet()) {
+            String toReplace = DnI18n.START_TAG + entry.getKey() + DnI18n.END_TAG;
+            str = new String(str).replaceAll(toReplace, entry.getValue());
+        }
+        return str;
+    }
+
+    private String getBetween(String text, String c1, String c2) {
+        try {
+            return text.substring(text.indexOf(c1) + c1.length(), text.indexOf(c2));
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    private void parseValueElementsAtAttributes(Node root) {
+        NodeList<Element> elements = root.querySelectorAll("*");
+        for (int i = 0; i < elements.length; i++) {
+            Element at = elements.getAt(i);
+            if (at.attributes == null || at.attributes.length == 0) continue;
+            for (Attr attr : at.attributes.asList()) {
+                if (attr.name.equals("style") && attr.value.contains("{{")) {
+                    final String style = at.getAttribute("style");
+                    final String[] split = style.split(";");
+                    for (String property : split) {
+                        final String[] keyValue = property.split(":");
+                        if (keyValue.length == 2) {
+                            final String between = getBetween(keyValue[1], "{{", "}}");
+                            if (between != null) {
+                                multiMapValueStyleAttributeElements
+                                        .put(between, new ElementValue(Js.cast(at), keyValue[0], keyValue[1]));
+                            }
+                        }
+                    }
+                } else if (attr.value.contains("{{")) {
+                    final String between = getBetween(attr.value, "{{", "}}");
+                    if (between == null || between.isEmpty())
+                        continue;
+                    multiMapValueAttributeElements.put(between, new ElementValue(Js.cast(at), attr.name, attr.value));
+                }
+            }
+        }
+    }
+
+    private void parseEventsElements(Node root) {
+        NodeList<Element> elements = root.querySelectorAll("*");
+        for (String keyEvent : eventsListAttributes) {
+            ArrayList<Element> eventElements = new ArrayList<>();
+            for (int i = 0; i < elements.length; i++) {
+                Element at = elements.getAt(i);
+                if (at.attributes == null || at.attributes.length == 0) continue;
+                String value = at.getAttribute(keyEvent);
+                if (value != null) {
+                    eventElements.add(at);
+                    if (!debug)
+                        at.removeAttribute(keyEvent);
+                }
+            }
+            if (!eventElements.isEmpty())
+                eventsElementMap.put(keyEvent, eventElements);
+        }
+    }
+
     private void i18e(HTMLTemplateElement template) {
         if (template != null && template.innerHTML.contains(DnI18n.START_TAG)) {
             String content = template.innerHTML;
             do {
-                final String between = DnI18n.getBetween(content, DnI18n.START_TAG, DnI18n.END_TAG);
+                final String between = getBetween(content, DnI18n.START_TAG, DnI18n.END_TAG);
                 if (between == null || between.isEmpty())
                     break;
                 String value = DnI18n.get().getValue(between);
@@ -200,5 +328,29 @@ public class TemplateParser {
 
     public static boolean isDebug() {
         return debug;
+    }
+
+    class ElementValue {
+        HTMLElement element;
+        String arg;
+        String argValue;
+
+        public ElementValue(HTMLElement element, String arg, String argValue) {
+            this.element = element;
+            this.arg = arg;
+            this.argValue = argValue;
+        }
+
+        public void updateAttribute() {
+            element.setAttribute(arg, replaceAll(argValue));
+        }
+
+        public void updateStyle() {
+            element.style.setProperty(arg, replaceAll(argValue));
+        }
+
+        public void updateValue() {
+            element.innerHTML = replaceAll(argValue);
+        }
     }
 }
