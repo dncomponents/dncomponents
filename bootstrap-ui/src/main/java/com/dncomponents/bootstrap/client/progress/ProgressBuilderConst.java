@@ -21,6 +21,7 @@ import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.bootstrap.client.BootstrapUi;
 
 public class ProgressBuilderConst {
+    HtmlBinder binder = HtmlBinder.create(ProgressBuilderConst.class, this);
     @UiField
     String striped;
     @UiField
@@ -43,8 +44,8 @@ public class ProgressBuilderConst {
     }
 
     private ProgressBuilderConst() {
-        HtmlBinder.get(ProgressBuilderConst.class, this).setTemplateElement(BootstrapUi.getUi().progressBuilder);
-        HtmlBinder.get(ProgressBuilderConst.class, this).bind();
+        binder.setTemplateElement(BootstrapUi.getUi().progressBuilder);
+        binder.bind();
     }
 
 }

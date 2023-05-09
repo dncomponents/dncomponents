@@ -12,7 +12,7 @@ import elemental2.dom.HTMLTemplateElement;
  */
 public class AccordionViewImpl implements AccordionView {
 
-    HtmlBinder uiBinder = HtmlBinder.get(AccordionViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(AccordionViewImpl.class, this);
 
     @UiField
     HTMLElement root;

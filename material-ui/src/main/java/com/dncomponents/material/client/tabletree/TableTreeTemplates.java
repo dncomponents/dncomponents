@@ -16,7 +16,7 @@ public class TableTreeTemplates implements IsElement {
     public HTMLTemplateElement treeItemSimpleParentCheckbox;
 
     {
-        HtmlBinder.get(TableTreeTemplates.class, this).bind();
+        HtmlBinder.create(TableTreeTemplates.class, this).bind();
     }
 
     public TableTreeTemplates() {

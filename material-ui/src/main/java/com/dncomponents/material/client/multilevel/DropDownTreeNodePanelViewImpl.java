@@ -1,7 +1,6 @@
 package com.dncomponents.material.client.multilevel;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.popover.Popper;
 import com.dncomponents.client.dom.handlers.MouseEnterHandler;
@@ -17,13 +16,13 @@ import elemental2.dom.HTMLTemplateElement;
  */
 public class DropDownTreeNodePanelViewImpl implements DropDownTreeNodePanelView {
 
-    private HtmlBinder uiBinder = HtmlBinder.get(DropDownTreeNodePanelViewImpl.class, this);
+    private HtmlBinder uiBinder = HtmlBinder.create(DropDownTreeNodePanelViewImpl.class, this);
 
     @UiField
     public HTMLElement root;
     @UiField
     public HTMLElement listRoot;
-    @UiStyle
+    @UiField
     String showStyle;
     Popper popper;
 

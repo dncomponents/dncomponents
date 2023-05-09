@@ -17,7 +17,6 @@
 package com.dncomponents.bootstrap.client.button;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.views.MainViewSlots;
 import com.dncomponents.client.views.core.ui.button.ButtonView;
@@ -32,10 +31,10 @@ public class ButtonViewImpl implements ButtonView {
 
     @UiField
     HTMLButtonElement root;
-    @UiStyle
+    @UiField
     String disabledStyle;
 
-    HtmlBinder uiBinder = HtmlBinder.get(ButtonViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(ButtonViewImpl.class, this);
 
     public ButtonViewImpl(String template) {
         uiBinder.setTemplateContent(template);

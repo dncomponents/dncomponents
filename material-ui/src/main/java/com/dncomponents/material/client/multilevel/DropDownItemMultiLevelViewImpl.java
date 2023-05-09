@@ -1,7 +1,6 @@
 package com.dncomponents.material.client.multilevel;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.MainViewSlots;
@@ -19,7 +18,7 @@ public class DropDownItemMultiLevelViewImpl implements DropDownItemView {
     HTMLElement root;
 
 
-    HtmlBinder uiBinder = HtmlBinder.get(DropDownItemMultiLevelViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(DropDownItemMultiLevelViewImpl.class, this);
 
     @Override
     public void setContent(String content) {

@@ -1,7 +1,6 @@
 package com.dncomponents.material.client.dialog;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ClickHandler;
@@ -30,10 +29,10 @@ public class DialogViewImpl implements DialogView {
     public HTMLElement closeButton;
     @UiField
     public HTMLElement titleHeader;
-    @UiStyle
+    @UiField
     String showDialogStyle;
 
-    HtmlBinder uiBinder = HtmlBinder.get(DialogViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(DialogViewImpl.class, this);
 
     public DialogViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);

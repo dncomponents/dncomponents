@@ -1,7 +1,6 @@
 package com.dncomponents.material.client.multilevel;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.dom.handlers.MouseEnterHandler;
@@ -22,7 +21,7 @@ public class DropDownItemMultiLevelParentViewImpl implements DropDownItemMultiLe
     @UiField
     HTMLElement textPanel;
 
-    HtmlBinder uiBinder = HtmlBinder.get(DropDownItemMultiLevelParentViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(DropDownItemMultiLevelParentViewImpl.class, this);
 
     @Override
     public void setContent(String content) {

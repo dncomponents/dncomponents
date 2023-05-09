@@ -1,7 +1,7 @@
 package com.dncomponents.material.client.popover;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.views.core.ui.popover.PopoverView;
 import com.dncomponents.client.views.core.ui.popover.PopoverViewSlots;
@@ -12,14 +12,14 @@ import elemental2.dom.HTMLTemplateElement;
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class PopoverViewImpl extends TooltipViewImpl<PopoverViewSlots> implements PopoverView {
 
     public static final String VIEW_ID = "default";
     @UiField
     HTMLElement popoverTitle;
 
-    HtmlBinder uiBinder = HtmlBinder.get(PopoverViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(PopoverViewImpl.class, this);
 
     public PopoverViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);

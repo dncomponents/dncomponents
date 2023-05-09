@@ -17,7 +17,7 @@
 package com.dncomponents.bootstrap.client.tabletree;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.bootstrap.client.table.group.ParentTableTreeCellViewImpl;
 import com.dncomponents.bootstrap.client.tree.TreeUiImpl;
 import com.dncomponents.client.components.core.HtmlBinder;
@@ -27,11 +27,11 @@ import elemental2.dom.HTMLTemplateElement;
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class TreeTUi extends TreeUiImpl {
 
 
-    HtmlBinder binder = HtmlBinder.get(TreeTUi.class, this);
+    HtmlBinder binder = HtmlBinder.create(TreeTUi.class, this);
     @UiField
     HTMLTemplateElement tableTreeItemSimpleParent;
 

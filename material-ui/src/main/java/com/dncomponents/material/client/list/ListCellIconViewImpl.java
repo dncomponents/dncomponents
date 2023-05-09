@@ -18,14 +18,14 @@ public class ListCellIconViewImpl extends BaseCellViewImpl {
     HTMLElement valuePanel;
 
     public ListCellIconViewImpl() {
-        HtmlBinder uiBinder = HtmlBinder.get(ListCellIconViewImpl.class, this);
+        HtmlBinder uiBinder = HtmlBinder.create(ListCellIconViewImpl.class, this);
         uiBinder.setTemplateElement(MaterialUi.getUi().listCellIconView);
         uiBinder.bind();
 
     }
 
     public ListCellIconViewImpl(HTMLTemplateElement templateElement) {
-        HtmlBinder uiBinder = HtmlBinder.get(ListCellIconViewImpl.class, this);
+        HtmlBinder uiBinder = HtmlBinder.create(ListCellIconViewImpl.class, this);
         uiBinder.setTemplateElement(templateElement);
         uiBinder.bind();
     }

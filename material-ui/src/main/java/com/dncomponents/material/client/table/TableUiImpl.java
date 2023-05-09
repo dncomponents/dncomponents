@@ -32,6 +32,7 @@ import elemental2.dom.HTMLTemplateElement;
 public class TableUiImpl implements TableUi {
 
     public static final String VIEW_ID = "default";
+    HtmlBinder binder = HtmlBinder.create(TableUiImpl.class, this);
     @UiField
     HTMLTemplateElement tableMain;
     @UiField
@@ -63,14 +64,12 @@ public class TableUiImpl implements TableUi {
 
 
     public TableUiImpl() {
-        HtmlBinder.get(TableUiImpl.class, this).setTemplateElement(MaterialUi.getUi().tableUi);
-        HtmlBinder.get(TableUiImpl.class, this).bind();
-        tableView = new TableViewImpl(tableMain);
+        this(MaterialUi.getUi().tableUi);
     }
 
     public TableUiImpl(HTMLTemplateElement templateElement) {
-        HtmlBinder.get(TableUiImpl.class, this).setTemplateElement(templateElement);
-        HtmlBinder.get(TableUiImpl.class, this).bind();
+        binder.setTemplateElement(templateElement);
+        binder.bind();
         tableView = new TableViewImpl(tableMain);
     }
 

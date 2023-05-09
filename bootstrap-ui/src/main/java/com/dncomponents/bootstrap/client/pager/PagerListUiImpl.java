@@ -30,7 +30,7 @@ public class PagerListUiImpl implements PagerListUi {
     @UiField
     HTMLTemplateElement pager;
 
-    HtmlBinder uiBinder = HtmlBinder.get(PagerListUiImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(PagerListUiImpl.class, this);
 
 
      public PagerListUiImpl(HTMLTemplateElement templateElement) {

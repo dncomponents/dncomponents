@@ -1,8 +1,7 @@
 package com.dncomponents.material.client.tree.basic;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.views.Ui;
@@ -15,10 +14,10 @@ import elemental2.dom.HTMLTemplateElement;
  * @author nikolasavic
  */
 //tree-item-simple
-@UiTemplate
+@Component
 public class TreeCellViewImpl extends BaseCellViewImpl implements BaseTreeCellView {
 
-    @UiStyle
+    @UiField
     String activeStyle;
     @UiField
     HTMLElement iconPanel;
@@ -27,7 +26,7 @@ public class TreeCellViewImpl extends BaseCellViewImpl implements BaseTreeCellVi
     String icon;
 
 
-    HtmlBinder uiBinder = HtmlBinder.get(TreeCellViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(TreeCellViewImpl.class, this);
 
     public TreeCellViewImpl() {
     }

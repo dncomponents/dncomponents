@@ -59,7 +59,7 @@ public class DialogViewImpl implements DialogView {
     private HandlerRegistration backDrophandlerRegistration;
     private HandlerRegistration escapeHandlerRegistration;
     private HandlerRegistration mouseDownHandlerRegistration;
-    HtmlBinder uiBinder = HtmlBinder.get(DialogViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(DialogViewImpl.class, this);
 
     public DialogViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);

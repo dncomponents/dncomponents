@@ -14,7 +14,7 @@ public class FooterCellViewImpl implements CellView {
     @UiField
     HTMLElement root;
 
-    HtmlBinder uiBinder = HtmlBinder.get(FooterCellViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(FooterCellViewImpl.class, this);
 
     public FooterCellViewImpl(String template) {
         uiBinder.setTemplateContent(template);

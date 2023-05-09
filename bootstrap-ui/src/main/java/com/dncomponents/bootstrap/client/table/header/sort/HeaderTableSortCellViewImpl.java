@@ -17,8 +17,7 @@
 package com.dncomponents.bootstrap.client.table.header.sort;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.table.header.SortingDirection;
 import com.dncomponents.client.dom.handlers.ClickHandler;
@@ -33,7 +32,7 @@ import static com.dncomponents.client.components.table.header.SortingDirection.D
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class HeaderTableSortCellViewImpl implements HeaderTableSortCellView {
 
     @UiField
@@ -42,15 +41,15 @@ public class HeaderTableSortCellViewImpl implements HeaderTableSortCellView {
     HTMLElement textPanel;
     @UiField
     HTMLElement sortIcon;
-    @UiStyle
+    @UiField
     String sortUpStyle;
-    @UiStyle
+    @UiField
     String sortDownStyle;
 
     SortingDirection currentDirection;
     SortPresenter presenter;
 
-    HtmlBinder uiBinder = HtmlBinder.get(HeaderTableSortCellViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(HeaderTableSortCellViewImpl.class, this);
 
     public HeaderTableSortCellViewImpl(String template) {
         uiBinder.setTemplateContent(template);

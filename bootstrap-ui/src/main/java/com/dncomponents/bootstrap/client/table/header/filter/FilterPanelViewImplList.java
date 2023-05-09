@@ -37,7 +37,7 @@ public class FilterPanelViewImplList<T> extends FilterPanelViewImpl<T> implement
     public HTMLTemplateElement autocompleteMs;
 
 
-    HtmlBinder uiBinder = HtmlBinder.get(FilterPanelViewImplList.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(FilterPanelViewImplList.class, this);
 
     public FilterPanelViewImplList(HTMLTemplateElement templateElement) {
         super(templateElement);

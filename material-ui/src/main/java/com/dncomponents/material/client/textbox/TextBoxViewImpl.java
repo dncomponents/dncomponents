@@ -22,7 +22,7 @@ public class TextBoxViewImpl extends BaseTextView {
     HTMLElement trailingIcon;
 
 
-    HtmlBinder uiBinder = HtmlBinder.get(TextBoxViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(TextBoxViewImpl.class, this);
 
     private TextBoxViewImpl(String template) {
         uiBinder.setTemplateContent(template);

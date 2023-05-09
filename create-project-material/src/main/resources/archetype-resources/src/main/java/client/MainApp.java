@@ -17,7 +17,7 @@ public class MainApp implements AcceptsOneElement, IsElement {
     PlaceManager placeManager = new PlaceManager(this);
 
     {
-        HtmlBinder.get(MainApp.class, this).bind();
+        HtmlBinder.create(MainApp.class, this).bind();
 
     }
 

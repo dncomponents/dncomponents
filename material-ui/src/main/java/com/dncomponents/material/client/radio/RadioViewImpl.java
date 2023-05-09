@@ -1,6 +1,6 @@
 package com.dncomponents.material.client.radio;
 
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ClickHandler;
@@ -13,12 +13,12 @@ import elemental2.dom.MouseEvent;
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class RadioViewImpl extends CheckBoxViewImpl implements RadioView {
 
     public static final String VIEW_ID = "default";
 
-    HtmlBinder uiBinder = HtmlBinder.get(RadioViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(RadioViewImpl.class, this);
 
     public RadioViewImpl(String template) {
         uiBinder.setTemplateContent(template);

@@ -1,8 +1,7 @@
 package com.dncomponents.material.client.table.header.cell;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.table.header.SortingDirection;
 import com.dncomponents.client.dom.handlers.ClickHandler;
@@ -17,7 +16,7 @@ import static com.dncomponents.client.components.table.header.SortingDirection.D
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class MdcHeaderTableSortCellViewImpl implements HeaderTableSortCellView {
 
     @UiField
@@ -28,13 +27,13 @@ public class MdcHeaderTableSortCellViewImpl implements HeaderTableSortCellView {
     HTMLElement sortIcon;
     @UiField
     HTMLElement sortIconOrder;
-    @UiStyle
+    @UiField
     String active;
 
     SortingDirection currentDirection;
     SortPresenter presenter;
 
-    HtmlBinder uiBinder = HtmlBinder.get(MdcHeaderTableSortCellViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(MdcHeaderTableSortCellViewImpl.class, this);
 
     public MdcHeaderTableSortCellViewImpl(String template) {
         uiBinder.setTemplateContent(template);

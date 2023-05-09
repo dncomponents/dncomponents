@@ -46,7 +46,7 @@ public class FilterPanelViewImpl<T> implements FilterPanelView<T> {
 
     CellEditor<T> cellEditor;
 
-    HtmlBinder uiBinder = HtmlBinder.get(FilterPanelViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(FilterPanelViewImpl.class, this);
     @UiField
     public HTMLDivElement mainPanel;
     @UiField

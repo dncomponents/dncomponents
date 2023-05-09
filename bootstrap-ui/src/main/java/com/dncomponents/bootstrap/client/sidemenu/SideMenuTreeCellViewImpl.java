@@ -16,7 +16,7 @@
 
 package com.dncomponents.bootstrap.client.sidemenu;
 
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.bootstrap.client.tree.basic.TreeCellViewImpl;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.DomUtil;
@@ -27,11 +27,11 @@ import elemental2.dom.MouseEvent;
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class SideMenuTreeCellViewImpl extends TreeCellViewImpl {
 
 
-    HtmlBinder uiBinder = HtmlBinder.get(SideMenuTreeCellViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(SideMenuTreeCellViewImpl.class, this);
 
     public SideMenuTreeCellViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);

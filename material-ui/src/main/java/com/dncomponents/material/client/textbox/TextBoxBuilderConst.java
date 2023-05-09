@@ -2,12 +2,13 @@ package com.dncomponents.material.client.textbox;
 
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.material.client.MaterialUi;
 
-@UiTemplate
+@Component
 public class TextBoxBuilderConst {
+    HtmlBinder binder = HtmlBinder.create(TextBoxBuilderConst.class, this);
     @UiField
     public String base;
     @UiField
@@ -51,8 +52,8 @@ public class TextBoxBuilderConst {
     }
 
     private TextBoxBuilderConst() {
-        HtmlBinder.get(TextBoxBuilderConst.class, this).setTemplateElement(MaterialUi.getUi().textBoxBuilder);
-        HtmlBinder.get(TextBoxBuilderConst.class, this).bind();
+        binder.setTemplateElement(MaterialUi.getUi().textBoxBuilder);
+        binder.bind();
     }
 
 }

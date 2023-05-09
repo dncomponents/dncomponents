@@ -17,7 +17,7 @@
 package com.dncomponents.bootstrap.client.table.header;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.table.header.SortingDirection;
 import com.dncomponents.client.dom.DomUtil;
@@ -31,7 +31,7 @@ import elemental2.dom.HTMLTemplateElement;
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class HeaderTableFilterCellViewImpl implements HeaderTableFilterCellView {
 
     @UiField
@@ -45,7 +45,7 @@ public class HeaderTableFilterCellViewImpl implements HeaderTableFilterCellView 
     @UiField
     HTMLElement sortIconPanel;
 
-    HtmlBinder uiBinder = HtmlBinder.get(HeaderTableFilterCellViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(HeaderTableFilterCellViewImpl.class, this);
 
     public HeaderTableFilterCellViewImpl(String template) {
         uiBinder.setTemplateContent(template);

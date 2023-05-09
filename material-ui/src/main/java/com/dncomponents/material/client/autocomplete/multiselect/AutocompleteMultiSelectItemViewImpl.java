@@ -5,7 +5,6 @@ import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.MainViewSlots;
-import com.dncomponents.client.views.MainViewSlotsImpl;
 import com.dncomponents.client.views.core.ui.autocomplete.multiselect.AutocompleteMultiSelectItemView;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
@@ -19,7 +18,7 @@ public class AutocompleteMultiSelectItemViewImpl implements AutocompleteMultiSel
     @UiField
     HTMLElement removeBtn;
 
-    HtmlBinder uiBinder = HtmlBinder.get(AutocompleteMultiSelectItemViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(AutocompleteMultiSelectItemViewImpl.class, this);
 
     public AutocompleteMultiSelectItemViewImpl(String template) {
         uiBinder.setTemplateContent(template);

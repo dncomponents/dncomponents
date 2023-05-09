@@ -17,11 +17,8 @@
 package com.dncomponents.bootstrap.client.table.header.menu;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
 import com.dncomponents.client.components.ColumnConfig;
 import com.dncomponents.client.components.core.HtmlBinder;
-import com.dncomponents.client.components.core.events.selection.SelectionEvent;
-import com.dncomponents.client.components.core.events.selection.SelectionHandler;
 import com.dncomponents.client.components.dropdown.DropDown;
 import com.dncomponents.client.components.dropdown.DropDownItem;
 import com.dncomponents.client.components.table.header.HeaderFiltering;
@@ -33,8 +30,6 @@ import com.dncomponents.client.views.core.ui.table.headers.HeaderTableMenuCellVi
 import com.dncomponents.client.views.core.ui.table.headers.HeaderTableSortCellView;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
-
-import java.util.List;
 
 import static com.dncomponents.client.components.table.header.SortingDirection.ASCENDING;
 import static com.dncomponents.client.components.table.header.SortingDirection.DESCENDING;
@@ -56,11 +51,11 @@ public class HeaderTableMenuCellViewImpl implements HeaderTableMenuCellView {
     HTMLElement sortIconPanel;
     @UiField
     HTMLElement menuHolder;
-    @UiStyle
+    @UiField
     String sortStyle;
-    @UiStyle
+    @UiField
     String sortUpStyle;
-    @UiStyle
+    @UiField
     String sortDownStyle;
 
     Presenter presenter;
@@ -69,7 +64,7 @@ public class HeaderTableMenuCellViewImpl implements HeaderTableMenuCellView {
 
     HasFilterValue<Object> filterPanel;
 
-    HtmlBinder uiBinder = HtmlBinder.get(HeaderTableMenuCellViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(HeaderTableMenuCellViewImpl.class, this);
 
     public HeaderTableMenuCellViewImpl(String template) {
         uiBinder.setTemplateContent(template);

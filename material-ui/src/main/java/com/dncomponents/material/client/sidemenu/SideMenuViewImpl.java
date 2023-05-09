@@ -1,7 +1,6 @@
 package com.dncomponents.material.client.sidemenu;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
 import com.dncomponents.client.components.Tree;
 import com.dncomponents.client.components.core.CellRenderer;
 import com.dncomponents.client.components.core.HtmlBinder;
@@ -34,7 +33,7 @@ public class SideMenuViewImpl implements SideMenuView {
     HTMLElement treePanel;
     @UiField
     HTMLTemplateElement treeSideTemplate;
-    @UiStyle
+    @UiField
     String collapsedStyle;
     @UiField
     public HTMLDivElement navbarPanel;
@@ -48,7 +47,7 @@ public class SideMenuViewImpl implements SideMenuView {
     HTMLInputElement searchField;
     Tree tree;
     private boolean collapsedToggle = true;
-    HtmlBinder uiBinder = HtmlBinder.get(SideMenuViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(SideMenuViewImpl.class, this);
 
 
     public SideMenuViewImpl(String template) {

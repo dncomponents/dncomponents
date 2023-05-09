@@ -1,7 +1,7 @@
 package com.dncomponents.material.client.autocomplete.tree;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.HasTreeData;
 import com.dncomponents.client.components.Tree;
 import com.dncomponents.client.components.core.CellConfig;
@@ -25,13 +25,13 @@ import java.util.function.Function;
  * @author nikolasavic
  */
 
-@UiTemplate
+@Component
 public class AutocompleteTreeViewImpl<T> extends BaseAutocompleteViewImpl<TreeNode<T>> implements AutocompleteTreeView<T> {
 
     @UiField
     Tree tree;
 
-    HtmlBinder uiBinder = HtmlBinder.get(AutocompleteTreeViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(AutocompleteTreeViewImpl.class, this);
 
     public AutocompleteTreeViewImpl() {
         uiBinder.bind();

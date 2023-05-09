@@ -22,7 +22,7 @@ public class CheckBoxViewImpl implements CheckBoxView {
     @UiField
     public HTMLElement labelText;
 
-    HtmlBinder uiBinder = HtmlBinder.get(CheckBoxViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(CheckBoxViewImpl.class, this);
 
 
     public CheckBoxViewImpl() {

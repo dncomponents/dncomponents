@@ -1,7 +1,6 @@
 package com.dncomponents.material.client.tooltip;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.views.core.ui.tooltip.TooltipView;
 import com.dncomponents.client.views.core.ui.tooltip.TooltipViewSlots;
@@ -19,22 +18,22 @@ public class TooltipViewImpl<V extends TooltipViewSlots> implements TooltipView<
     HTMLElement root;
     @UiField
     protected HTMLElement contentPanel;
-    @UiStyle
+    @UiField
     String topStyle;
-    @UiStyle
+    @UiField
     String bottomStyle;
-    @UiStyle
+    @UiField
     String leftStyle;
-    @UiStyle
+    @UiField
     String rightStyle;
-    @UiStyle
+    @UiField
     String baseStyle;
-    @UiStyle
+    @UiField
     String fadeStyle;
-    @UiStyle
+    @UiField
     String showStyle;
 
-    HtmlBinder uiBinder = HtmlBinder.get(TooltipViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(TooltipViewImpl.class, this);
 
     public TooltipViewImpl() {
     }

@@ -35,7 +35,7 @@ public class HeaderTableEditCellViewImpl implements HeaderTableEditCellView {
     @UiField
     HTMLElement addBtn;
 
-    HtmlBinder uiBinder = HtmlBinder.get(HeaderTableEditCellViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(HeaderTableEditCellViewImpl.class, this);
 
     public HeaderTableEditCellViewImpl(String template) {
         uiBinder.setTemplateContent(template);

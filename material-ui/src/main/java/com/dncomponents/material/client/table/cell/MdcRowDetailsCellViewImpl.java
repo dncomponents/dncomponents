@@ -1,7 +1,7 @@
 package com.dncomponents.material.client.table.cell;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.table.columnclasses.rowexpandercolumn.RowDetailsCellView;
 import com.dncomponents.client.components.core.HtmlBinder;
 import elemental2.dom.HTMLElement;
@@ -10,13 +10,13 @@ import elemental2.dom.HTMLTemplateElement;
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class MdcRowDetailsCellViewImpl extends TableCellViewImpl implements RowDetailsCellView {
 
     @UiField
     HTMLElement openClosedElement;
 
-    HtmlBinder uiBinder = HtmlBinder.get(MdcRowDetailsCellViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(MdcRowDetailsCellViewImpl.class, this);
 
     public MdcRowDetailsCellViewImpl(String template) {
         uiBinder.setTemplateContent(template);

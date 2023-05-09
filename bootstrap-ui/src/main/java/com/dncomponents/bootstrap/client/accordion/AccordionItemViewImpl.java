@@ -17,7 +17,6 @@
 package com.dncomponents.bootstrap.client.accordion;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.core.events.Command;
 import com.dncomponents.client.views.core.ui.accordion.AccordionItemView;
@@ -38,11 +37,11 @@ public class AccordionItemViewImpl implements AccordionItemView {
     HTMLElement contentPanel;
     @UiField
     HTMLElement contentPanelParent;
-    @UiStyle
+    @UiField
     String showContentStyle;
 
 
-    HtmlBinder uiBinder = HtmlBinder.get(AccordionItemViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(AccordionItemViewImpl.class, this);
 
     public AccordionItemViewImpl(String templateContent) {
         uiBinder.setTemplateContent(templateContent);

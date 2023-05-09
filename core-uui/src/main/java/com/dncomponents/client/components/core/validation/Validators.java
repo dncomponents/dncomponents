@@ -20,6 +20,7 @@ import elemental2.dom.DomGlobal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * @author nikolasavic
@@ -46,6 +47,19 @@ public class Validators<T> implements Validator<T> {
         }
     }
 
+    public static boolean isNonEmpty(String value) {
+        return !value.isEmpty();
+    }
+    public Validators<T> addBreaking(Predicate<T> check, String message) {
+        Validator<T> validator = value -> {
+            if (!check.test(value)) {
+                throw new ValidationException(message);
+            }
+        };
+        validators.add(validator);
+        validatorsToBreak.add(validator);
+        return this;
+    }
     public Validators<T> add(Validator<T> validator) {
         this.validators.add(validator);
         return this;

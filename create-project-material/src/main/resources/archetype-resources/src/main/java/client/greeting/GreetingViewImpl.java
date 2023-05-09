@@ -24,7 +24,7 @@ public class GreetingViewImpl extends AbstractView<GreetingActivity> implements 
     public HTMLElement errorLabel;
 
 
-    HtmlBinder binder = HtmlBinder.get(GreetingViewImpl.class, this);
+    HtmlBinder binder = HtmlBinder.create(GreetingViewImpl.class, this);
 
     private GreetingViewImpl() {
         binder.bind();

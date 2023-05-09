@@ -19,24 +19,44 @@ package com.dncomponents.client.components.core;
 import com.dncomponents.client.components.core.events.value.AbstractValueChangeHandler;
 import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * @author nikolasavic
  */
 public class State<V> extends AbstractValueChangeHandler<V> {
-    HtmlBinder binder;
+    TemplateParser templateParser;
     V value;
     String valueName;
+    Map<String, Function<V, ?>> functionMap = new HashMap<>();
+
+    public State(String valueName, TemplateParser parser) {
+        this.valueName = valueName;
+        this.templateParser = parser;
+    }
 
     public State(V value, String valueName, HtmlBinder binder) {
-        this.binder = binder;
+        this(value, valueName, binder.template);
+    }
+
+    public State(V value, String valueName, TemplateParser templateParser) {
         this.valueName = valueName;
+        this.templateParser = templateParser;
+        setValue(value);
+    }
+
+    public State(V value, String valueName, TemplateParser templateParser, Map<String, Function<V, ?>> functionMap) {
+        this.valueName = valueName;
+        this.templateParser = templateParser;
+        this.functionMap = functionMap;
         setValue(value);
     }
 
     public void setValue(V value) {
-        setValue(value, true);
+        setValue(value, false);
     }
 
     @Override
@@ -55,8 +75,29 @@ public class State<V> extends AbstractValueChangeHandler<V> {
     }
 
     protected void updateUI(V value) {
-        this.binder.getTemplate().updateValueUi(valueName, value + "");
+        this.templateParser.updateValueUi(valueName, value);
+        functionMap.forEach((s, vFunction) ->
+                templateParser.updateValueUi(s, vFunction.apply(value)));
     }
 
+    public void addValueFunction(String key, Function<V, ?> valueFunction) {
+        this.functionMap.put(key, valueFunction);
+    }
 
+    public void setFunctionMap(Map<String, Function<V, ?>> functionMap) {
+        if (functionMap != null) {
+            this.functionMap = functionMap;
+        }
+    }
+
+    public Object getValueByName(String valueName) {
+        if (this.valueName.equals(valueName)) {
+            return value;
+        }
+        final Function<V, ?> vFunction = this.functionMap.get(valueName);
+        if (vFunction != null) {
+            return vFunction.apply(value);
+        }
+        return null;
+    }
 }

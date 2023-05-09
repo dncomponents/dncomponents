@@ -17,7 +17,7 @@
 package com.dncomponents.bootstrap.client.table.group;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.bootstrap.client.tree.basic.TreeCellParentViewImpl;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.DomUtil;
@@ -28,13 +28,13 @@ import elemental2.dom.HTMLTemplateElement;
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class ParentTableTreeCellViewImpl extends TreeCellParentViewImpl implements ParentTableTreeCellView {
 
     @UiField
     HTMLElement openCloseCell;
 
-    HtmlBinder uiBinder = HtmlBinder.get(ParentTableTreeCellViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(ParentTableTreeCellViewImpl.class, this);
 
     public ParentTableTreeCellViewImpl(String template) {
         uiBinder.setTemplateContent(template);

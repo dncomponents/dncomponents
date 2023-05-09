@@ -27,7 +27,7 @@ public class HeaderTableFilterCellViewImpl implements HeaderTableFilterCellView 
     @UiField
     HTMLElement sortIconPanel;
 
-    HtmlBinder uiBinder = HtmlBinder.get(HeaderTableFilterCellViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(HeaderTableFilterCellViewImpl.class, this);
 
     public HeaderTableFilterCellViewImpl(String template) {
         uiBinder.setTemplateContent(template);

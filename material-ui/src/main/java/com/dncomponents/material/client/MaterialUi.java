@@ -206,13 +206,13 @@ public class MaterialUi implements ComponentsViews {
     }
 
     public MaterialUi() {
-        HtmlBinder uiBinder = HtmlBinder.get(MaterialUi.class, this);
+        HtmlBinder uiBinder = HtmlBinder.create(MaterialUi.class, this);
         uiBinder.bind();
         reg();
     }
 
     public MaterialUi(String template) {
-        HtmlBinder uiBinder = HtmlBinder.get(MaterialUi.class, this);
+        HtmlBinder uiBinder = HtmlBinder.create(MaterialUi.class, this);
         uiBinder.setTemplateContent(template);
         uiBinder.bind();
     }

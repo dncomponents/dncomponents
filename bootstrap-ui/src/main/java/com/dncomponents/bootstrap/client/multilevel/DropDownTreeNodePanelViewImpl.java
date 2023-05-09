@@ -30,7 +30,7 @@ import elemental2.dom.HTMLTemplateElement;
 public class DropDownTreeNodePanelViewImpl implements DropDownTreeNodePanelView {
 
 
-    private HtmlBinder uiBinder = HtmlBinder.get(DropDownTreeNodePanelViewImpl.class, this);
+    private HtmlBinder uiBinder = HtmlBinder.create(DropDownTreeNodePanelViewImpl.class, this);
 
     @UiField
     public HTMLElement root;

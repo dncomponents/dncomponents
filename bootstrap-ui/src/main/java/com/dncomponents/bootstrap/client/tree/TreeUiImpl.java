@@ -56,7 +56,7 @@ public class TreeUiImpl implements TreeUi {
 
     TreeView treeView;
 
-    HtmlBinder uiBinder = HtmlBinder.get(TreeUiImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(TreeUiImpl.class, this);
 
     public TreeUiImpl() {
         uiBinder.setTemplateElement((BootstrapUi.getUi()).tree);

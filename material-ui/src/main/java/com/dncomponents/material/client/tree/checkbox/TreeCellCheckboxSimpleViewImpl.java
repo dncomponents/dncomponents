@@ -19,7 +19,7 @@ public class TreeCellCheckboxSimpleViewImpl extends TreeCellViewImpl implements 
     @UiField
     CheckBox checkBox;
 
-    HtmlBinder uiBinder = HtmlBinder.get(TreeCellCheckboxSimpleViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(TreeCellCheckboxSimpleViewImpl.class, this);
 
 
     public TreeCellCheckboxSimpleViewImpl(HTMLTemplateElement templateElement) {

@@ -30,4 +30,5 @@ public interface AutocompleteMultiSelectView<M> extends BaseAutocompleteView<M> 
 
     AutocompleteMultiSelectItemView getAutocompleteMultiSelectItemView();
 
+    void setPlaceHolder(String text);
 }

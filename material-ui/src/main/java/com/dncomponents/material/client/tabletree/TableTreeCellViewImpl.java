@@ -1,7 +1,6 @@
 package com.dncomponents.material.client.tabletree;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.handlers.BaseEventListener;
 import com.dncomponents.client.views.core.ui.tree.ParentTreeCellView;
@@ -12,14 +11,14 @@ public class TableTreeCellViewImpl extends TableCellViewImpl implements ParentTr
 
     @UiField
     HTMLElement openCloseElement;
-    @UiStyle
+    @UiField
     String openStyle;
-    @UiStyle
+    @UiField
     String closeStyle;
-    @UiStyle
+    @UiField
     String modelSelected;
 
-    HtmlBinder binder = HtmlBinder.get(TableTreeCellViewImpl.class, this);
+    HtmlBinder binder = HtmlBinder.create(TableTreeCellViewImpl.class, this);
     @UiField
     public HTMLElement valuePanel;
 

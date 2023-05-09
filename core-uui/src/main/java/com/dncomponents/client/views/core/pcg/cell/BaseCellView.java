@@ -48,4 +48,11 @@ public interface BaseCellView extends CellView {
     void showSuccessMessage(String successText);
 
     void showErrorMessage(String message);
+
+    default void setDraggable(boolean dragAndDropEnabled) {
+        if (dragAndDropEnabled)
+            asElement().setAttribute("draggable", true);
+        else
+            asElement().removeAttribute("draggable");
+    }
 }

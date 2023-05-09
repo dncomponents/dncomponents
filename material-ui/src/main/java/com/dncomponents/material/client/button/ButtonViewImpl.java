@@ -20,7 +20,7 @@ public class ButtonViewImpl implements ButtonView {
     @UiField
     HTMLElement textPanel;
 
-    HtmlBinder uiBinder = HtmlBinder.get(ButtonViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(ButtonViewImpl.class, this);
 
     private ButtonViewImpl(String template) {
         uiBinder.setTemplateContent(template);

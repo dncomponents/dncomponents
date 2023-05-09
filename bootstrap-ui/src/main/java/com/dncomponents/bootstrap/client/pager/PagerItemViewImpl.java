@@ -32,7 +32,7 @@ public class PagerItemViewImpl implements PagerItemView {
     @UiField
     HTMLElement textPanel;
 
-    HtmlBinder uiBinder = HtmlBinder.get(PagerItemViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(PagerItemViewImpl.class, this);
 
 
     public PagerItemViewImpl(HTMLTemplateElement templateElement) {

@@ -1,8 +1,7 @@
 package com.dncomponents.material.client.textarea;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.material.client.MaterialUi;
 import com.dncomponents.material.client.textbox.TextBoxType;
@@ -13,17 +12,17 @@ import elemental2.dom.HTMLTextAreaElement;
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class TextAreaViewImpl extends BaseTextView {
 
-    @UiStyle
+    @UiField
     String focusTextAreaStyle;
-    @UiStyle
+    @UiField
     String focusFloatingLabelStyle;
     //
     @UiField
     protected HTMLTextAreaElement inputElement;
-    HtmlBinder uiBinder = HtmlBinder.get(TextAreaViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(TextAreaViewImpl.class, this);
 
     public TextAreaViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);

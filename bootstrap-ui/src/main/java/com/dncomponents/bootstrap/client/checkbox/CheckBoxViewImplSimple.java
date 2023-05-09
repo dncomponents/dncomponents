@@ -38,7 +38,7 @@ public class CheckBoxViewImplSimple implements CheckBoxView {
     @UiField
     public HTMLInputElement root;
 
-    HtmlBinder uiBinder = HtmlBinder.get(CheckBoxViewImplSimple.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(CheckBoxViewImplSimple.class, this);
 
     public CheckBoxViewImplSimple() {
         uiBinder.bind();

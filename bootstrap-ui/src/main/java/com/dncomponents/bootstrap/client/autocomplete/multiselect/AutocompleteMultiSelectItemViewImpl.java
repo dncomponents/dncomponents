@@ -36,7 +36,7 @@ public class AutocompleteMultiSelectItemViewImpl implements AutocompleteMultiSel
     @UiField
     HTMLElement removeBtn;
 
-    HtmlBinder uiBinder = HtmlBinder.get(AutocompleteMultiSelectItemViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(AutocompleteMultiSelectItemViewImpl.class, this);
 
     public AutocompleteMultiSelectItemViewImpl(String template) {
         uiBinder.setTemplateContent(template);

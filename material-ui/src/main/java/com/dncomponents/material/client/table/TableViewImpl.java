@@ -1,7 +1,7 @@
 package com.dncomponents.material.client.table;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ScrollHandler;
@@ -14,7 +14,7 @@ import elemental2.dom.*;
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class TableViewImpl extends ListViewImpl implements TableView {
 
     @UiField
@@ -50,7 +50,7 @@ public class TableViewImpl extends ListViewImpl implements TableView {
     @UiField
     HTMLElement footerPagerPanel;
 
-    HtmlBinder uiBinder = HtmlBinder.get(TableViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(TableViewImpl.class, this);
 
 
     public TableViewImpl(String template) {

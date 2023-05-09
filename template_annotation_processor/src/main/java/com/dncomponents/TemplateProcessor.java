@@ -39,14 +39,14 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-@SupportedAnnotationTypes({"com.dncomponents.UiField", "com.dncomponents.UiTemplate", "com.dncomponents.UiStyle",
-        "com.dncomponents.I18n"})
+@SupportedAnnotationTypes({"com.dncomponents.UiField", "com.dncomponents.Component", "com.dncomponents.I18n"})
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @AutoService(Processor.class)
 public class TemplateProcessor extends AbstractProcessor {
 
     private static String EXTENSION = "Binder";
     private static List<TemplateProp> templateProps = new ArrayList<>();
+    private static List<String> parsersClassNames = new ArrayList<>();
     private static Map<Element, Element> elementSubElement = new HashMap<>();
     private static boolean firstRound = true;
     private static String APP_TEMPLATE_NAME = "AppTemplates";
@@ -55,18 +55,15 @@ public class TemplateProcessor extends AbstractProcessor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         System.out.println(" ************************ processing annotations ************************ ");
 
-        Set<? extends Element> elementsAnnotatedWith = roundEnv.getElementsAnnotatedWith(UiTemplate.class);
+        Set<? extends Element> uiComponents = roundEnv.getElementsAnnotatedWith(Component.class);
         Set<? extends Element> i18nAnnotated = roundEnv.getElementsAnnotatedWith(I18n.class);
         Set<? extends Element> allAnnotatedFields = roundEnv.getElementsAnnotatedWith(UiField.class);
-        Set<Element> allClassesContainAnnotatedFields = new HashSet<>();
-        allClassesContainAnnotatedFields.addAll(elementsAnnotatedWith);
 
-        allAnnotatedFields.forEach(new Consumer<Element>() {
-            @Override
-            public void accept(Element element) {
-                allClassesContainAnnotatedFields.add(element.getEnclosingElement());
-            }
-        });
+        Set<Element> allClassesContainAnnotatedFields = new HashSet<>();
+        allClassesContainAnnotatedFields.addAll(uiComponents);
+
+        allAnnotatedFields.forEach((Consumer<Element>) element ->
+                allClassesContainAnnotatedFields.add(element.getEnclosingElement()));
 
         Set<Element> allClassesContainAnnotatedFieldsCopy = new HashSet<>(allClassesContainAnnotatedFields);
 
@@ -98,16 +95,11 @@ public class TemplateProcessor extends AbstractProcessor {
                     fields.add(element);
                 }
             }
-            Set<? extends Element> fieldsStyleOld = roundEnv.getElementsAnnotatedWith(UiStyle.class);
-            Set<Element> fieldsStyle = new HashSet<>();
-            for (Element element : fieldsStyleOld) {
-                if (element.getEnclosingElement() == classEl) {
-                    fieldsStyle.add(element);
-                }
-            }
+
             PackageElement pkg = processingEnv.getElementUtils().getPackageOf(classEl);
             try {
-                generate(pkg, classEl, fields, fieldsStyle);
+
+                generate(pkg, classEl, fields, classEl);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -123,6 +115,13 @@ public class TemplateProcessor extends AbstractProcessor {
         }
 
         return true;
+    }
+
+    private void generateParserClass(Element element, Element classEl) {
+        final String tag = element.getAnnotation(Component.class).tag();
+        if (!tag.isEmpty()) {
+            parsersClassNames.add("new GeneralComponentParser(\"" + tag + "\", () -> new " + classEl + "())");
+        }
     }
 
     private void generateI18e(PackageElement pe, Element element) throws IOException {
@@ -182,37 +181,18 @@ public class TemplateProcessor extends AbstractProcessor {
 
     }
 
-    private interface HasValue {
-        String getValue(Element element);
-    }
-
-    private String fieldString(Set<? extends Element> fields, HasValue hasValue, String getter) {
-        ArrayList<String> fieldsList = new ArrayList<>();
-        fields.forEach((Consumer<Element>) element -> {
-            String fieldName = element.getSimpleName() + "";
-            String value = hasValue.getValue(element);
-            String fieldValue = value.isEmpty() ? fieldName : value;
-            fieldsList.add("        tw." + fieldName + "=" + getter + "(\"" + fieldValue + "\");\n");
-        });
-        String result = "";
-        for (String s : fieldsList) {
-            result += s;
-        }
-        return result;
-    }
-
-    private String fieldString2(Set<? extends Element> fields, AtomicBoolean hasProvided) {
+    private String fieldString(Set<? extends Element> fields, AtomicBoolean hasProvided) {
         ArrayList<String> fieldsList = new ArrayList<>();
         fields.forEach((Consumer<Element>) element -> {
             String fieldName = element.getSimpleName() + "";
             String value = element.getAnnotation(UiField.class).value();
             String fieldValue = value.isEmpty() ? fieldName : value;
             if (element.getAnnotation(UiField.class).provided()) {
-                fieldsList.add("        DomUtil.replace(tw." + fieldName + ", " + "template.getElement" + "(\"" + fieldValue + "\"));\n");
+                fieldsList.add("        DomUtil.replace(d." + fieldName + ", " + "template.getElement" + "(\"" + fieldValue + "\"));\n");
                 if (!hasProvided.get())
                     hasProvided.set(true);
             } else {
-                fieldsList.add("        tw." + fieldName + "=" + "template.getElement" + "(\"" + fieldValue + "\");\n");
+                fieldsList.add("        d." + fieldName + "=" + "template.getElement" + "(\"" + fieldValue + "\");\n");
             }
         });
         String result = "";
@@ -248,7 +228,8 @@ public class TemplateProcessor extends AbstractProcessor {
         }
     }
 
-    private void generate(PackageElement pe, Element element, Set<? extends Element> elementFields, Set<? extends Element> styleFields) throws Exception {
+    private void generate(PackageElement pe, Element element,
+                          Set<? extends Element> elementFields, Element classEl) throws Exception {
 
         //create the source file
         String packageName = pe.toString();
@@ -258,22 +239,27 @@ public class TemplateProcessor extends AbstractProcessor {
         String generatedFullClassName = element.toString() + EXTENSION;
         String generatedClassName = annotatedClassName + EXTENSION;
 
-//        String HtmlBinderName = HtmlBinder.getSimpleName() + "";
+        String templateValue = readHtmlPair(element);
+        if (element.getAnnotation(Component.class) != null) {
+            templateValue = element.getAnnotation(Component.class).template();
+            generateParserClass(element, classEl);
+        }
 
-        String templateValue = element.getAnnotation(UiTemplate.class) == null ? null : element.getAnnotation(UiTemplate.class).value();
+        final EventsProcessing eventsProcessing = new EventsProcessing();
+        final String generatedEventsCode = eventsProcessing.parse(templateValue);
+
+        final ValuesProcessing valuesProcessing = new ValuesProcessing(templateValue, classEl);
+        final LoopProcessing loopProcessing = new LoopProcessing(templateValue, classEl);
+
         if (templateValue != null || (templateValue != null && !templateValue.isEmpty())) {
             templateValue = StringEscapeUtils.escapeJava(templateValue);
-        }
-        //read java html pair
-        String htmlContentFromFile = readHtmlPair(element);
-        if (htmlContentFromFile != null && (templateValue == null || templateValue.isEmpty())) {
-            templateValue = StringEscapeUtils.escapeJava(htmlContentFromFile);
         }
 
         String warning = "//Generated code do not edit!";
         String importFieldsInitPackage =
                 "import com.dncomponents.client.components.core.HtmlBinder;\n" +
                         "import com.dncomponents.client.components.core.TemplateParser;\n";
+
         Element subElement = elementSubElement.get(element);
         String subElementBind = "";
         if (subElement == null) {
@@ -281,13 +267,13 @@ public class TemplateProcessor extends AbstractProcessor {
             try {
                 binderClz = getSuperClassPath(element);
                 Class.forName(binderClz);
-                subElementBind = "        if (b)" + binderClz + ".bind(tw,template,b);\n";
+                subElementBind = "        if (b)" + binderClz + ".bind(d,template,b);\n";
             } catch (ClassNotFoundException e) {
             }
         } else {
-            importFieldsInitPackage += "import " + subElement.toString() + EXTENSION + ";\n";
+            importFieldsInitPackage += "import " + subElement + EXTENSION + ";\n";
             String subElementName = ((Symbol.ClassSymbol) subElement).getSimpleName() + "";
-            subElementBind = "        if (b)" + subElementName + EXTENSION + ".bind(tw,template,b);\n";
+            subElementBind = "        if (b)" + subElementName + EXTENSION + ".bind(d,template,b);\n";
         }
 
         templateProps.add(new TemplateProp(pathAnnotatedClassName, generatedFullClassName, generatedClassName));
@@ -296,14 +282,15 @@ public class TemplateProcessor extends AbstractProcessor {
         String buildPackageName = "package " + packageName + ";" + "\n";
         String buildClassName = "public class " + generatedClassName + " extends HtmlBinder<" + annotatedClassName + "> {\n\n";
         String buildConstructor = "    public " + generatedClassName + "() {\n" +
-//                "       tw." + HtmlBinderName + " = new " + generatedClassName + "();\n" +
                 (templateValue != null ? "       setTemplateContent(\"" + templateValue + "\");\n" : "") + "    }\n\n";
         AtomicBoolean hasProvided = new AtomicBoolean(false);
-        String fieldsString = fieldString2(elementFields, hasProvided);
+        String fieldsString = fieldString(elementFields, hasProvided);
         if (hasProvided.get())
             importFieldsInitPackage += "import com.dncomponents.client.dom.DomUtil;\n\n";
 
-        String fieldsStyleString = fieldString(styleFields, element2 -> element2.getAnnotation(UiStyle.class).value(), "template.getStyle");
+        importFieldsInitPackage += valuesProcessing.getImports();
+        importFieldsInitPackage += eventsProcessing.getImports();
+        importFieldsInitPackage += loopProcessing.getImports();
 
         JavaFileObject jfo = processingEnv.getFiler().createSourceFile(generatedFullClassName, pe);
         Writer writer = jfo.openWriter();
@@ -316,19 +303,32 @@ public class TemplateProcessor extends AbstractProcessor {
                 "    @Override\n" +
                 "    public void bind() {\n" +
                 "        template.init();\n" +
-                "        bind(tw, template, true);\n" +
-                "    }\n\n" +
+                "        bind(d, template, true);\n" +
+                (!generatedEventsCode.isEmpty() ? "        bindEvents();\n" : "") +
+                "        " +
+                "}\n" +
+                "\n" +
                 "    @Override\n" +
                 "    public void bindThis() {\n" +
                 "        template.init();\n" +
-                "        bind(tw, template, false);\n" +
-                "    }\n" +
+                "        bind(d, template, false);\n" +
+                (!generatedEventsCode.isEmpty() ? "        bindEvents();\n" : "") +
+                "        " +
+                "}\n" +
+                "    \n" +
+                generatedEventsCode +
                 "\n" +
-                "    public static void bind(" + annotatedClassName + " tw, TemplateParser template, boolean b) {\n" +
+                "    public void updateUi(){\n" +
+                valuesProcessing.getUpdates() +
+                loopProcessing.getUpdates() +
+                "    }\n\n" +
+                "    public static void bind(" + annotatedClassName + " d, TemplateParser template, boolean b) {\n" +
+                "    " +
                 subElementBind +
                 fieldsString +
-                fieldsStyleString +
-                "    }\n" +
+                valuesProcessing.getInitFunctions() +
+                loopProcessing.getInitFunctions() +
+                "    \n         }\n" +
                 "}");
         writer.close();
     }
@@ -353,10 +353,17 @@ public class TemplateProcessor extends AbstractProcessor {
             inputStream = resource.openInputStream();
         } catch (Exception ex) {
         }
+
+        String allParsersClassName = "";
+        for (String parsersClassName : parsersClassNames) {
+            allParsersClassName += "          HtmlParserService.registerComponent(" + parsersClassName + ");\n";
+        }
+
         String registers = "";
         ArrayList<String> list = new ArrayList<>();
         for (TemplateProp prop : templateProps) {
-            String str = "          TemplateService." + (prop.isI18n ? "i18nBinder" : "binders") + ".put(\"" + prop.fullPathAnnotatedClass + "\", new " + prop.fullPathBinderClass + "());\n";
+            String str = "          TemplateService." + (prop.isI18n ? "i18nBinder" : "binders") +
+                    ".put(\"" + prop.fullPathAnnotatedClass + "\", ()->new " + prop.fullPathBinderClass + "());\n";
             list.add(str);
             registers += str;
         }
@@ -392,6 +399,7 @@ public class TemplateProcessor extends AbstractProcessor {
                 "\n" +
                 "    public static void register() {\n" +
                 registers +
+                allParsersClassName + "\n" +
                 "    }\n" +
                 "}\n");
         writer.close();

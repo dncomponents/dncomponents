@@ -1,7 +1,6 @@
 package com.dncomponents.material.client.list;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
 import com.dncomponents.client.components.checkbox.CheckBox;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.core.events.value.HasValue;
@@ -24,7 +23,7 @@ public class ListCellCheckBoxViewImpl extends BaseCellViewImpl implements ListCe
     HTMLElement valuePanel;
 
     public ListCellCheckBoxViewImpl(HTMLTemplateElement listItemCheckbox) {
-        HtmlBinder uiBinder = HtmlBinder.get(ListCellCheckBoxViewImpl.class, this);
+        HtmlBinder uiBinder = HtmlBinder.create(ListCellCheckBoxViewImpl.class, this);
         uiBinder.setTemplateElement(listItemCheckbox);
         uiBinder.bind();
     }

@@ -2,12 +2,13 @@ package com.dncomponents.material.client.button;
 
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.material.client.MaterialUi;
 
-@UiTemplate
+@Component
 public class ButtonBuilderConst {
+    HtmlBinder binder = HtmlBinder.create(ButtonBuilderConst.class, this);
     @UiField
     String base;
     @UiField
@@ -31,8 +32,8 @@ public class ButtonBuilderConst {
     }
 
     private ButtonBuilderConst() {
-        HtmlBinder.get(ButtonBuilderConst.class, this).setTemplateElement(MaterialUi.getUi().buttonBuilder);
-        HtmlBinder.get(ButtonBuilderConst.class, this).bind();
+        binder.setTemplateElement(MaterialUi.getUi().buttonBuilder);
+        binder.bind();
     }
 
 }

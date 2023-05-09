@@ -36,7 +36,7 @@ public class AccordionUiImpl implements AccordionUi {
 
     AccordionView accordionView;
 
-    HtmlBinder uiBinder = HtmlBinder.get(AccordionUiImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(AccordionUiImpl.class, this);
 
     public AccordionUiImpl(String template) {
         uiBinder.setTemplateContent(template);

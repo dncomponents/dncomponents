@@ -17,12 +17,16 @@
 package com.dncomponents.client.components.core;
 
 
+import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.MultiMap;
+import com.dncomponents.client.dom.MultiMapArray;
+import com.dncomponents.client.views.HasAttributes;
 import com.dncomponents.client.views.IsElement;
 import elemental2.dom.*;
 import jsinterop.base.Js;
 
 import java.util.*;
+import java.util.function.Function;
 
 public class TemplateParser {
 
@@ -31,21 +35,32 @@ public class TemplateParser {
     private HTMLTemplateElement templateElement;
 
     private Map elementsMap = new HashMap();
+    private Set<State> states = new HashSet<>();
 
-    private Map<String, String> valueMap = new HashMap<>();
+    /*
+    Contains elements that have value <div>{{value}}</div>
+     attribute value <div title='{{value}}>Something</div>
+     style properties value <div style='color:{{value}}>Something</div>
+     loops     <ul loop="per in persons">
+                 <li>{{per.getName()}} - {{per.getAge()}}</li>
+              </ul>
+      component with attributes <my-custom-component color={{color}} person={{person}}>
 
-    //looks for element value <div>{{value}}</div>
-    private MultiMap<String, ElementValue> multiMapValueElements = new MultiMap<>();
+     key can be a function like <div>{{person.getName()}}</div>
+    */
+    private MultiMap<String, UpdateUi> multiMapValueElements = new MultiMap<>();
+    private MultiMapArray<String, Element> eventsElementMap = new MultiMapArray<>();
 
-    //looks for element attribute value <div title='{{value}}>Something</div>
-    private MultiMap<String, ElementValue> multiMapValueAttributeElements = new MultiMap<>();
-
-    //looks for style properties <div style='color:{{value}}>Something</div>
-    private MultiMap<String, ElementValue> multiMapValueStyleAttributeElements = new MultiMap<>();
-    private Map<String, ArrayList<Element>> eventsElementMap = new HashMap<>();
-
-    //events list to search for
-    List<String> eventsListAttributes = Arrays.asList("(click)", "(onfocus)");
+    private void initStates() {
+        for (Map.Entry<String, Set<UpdateUi>> entry : multiMapValueElements.entrySet()) {
+            String key = entry.getKey();
+            if (key.contains(".")) {
+                final String[] split = key.split("\\.");
+                key = split[0];
+            }
+            states.add(new State(key, this));
+        }
+    }
 
     private Node clonedNode;
 
@@ -81,18 +96,21 @@ public class TemplateParser {
                 this.templateElement.innerHTML = templateContent;
             }
         elementsMap.clear();
-//        i18e(this.templateElement); //todo change string limiter, disabled for now
+        i18e(this.templateElement);
         this.clonedNode = this.templateElement.content.cloneNode(true);
         parseTemplates(TEMPLATE_KEY, this.clonedNode);
+        parseLoops(LOOP_KEY, this.clonedNode);
         parseValueElements(this.clonedNode);
         parseElements(KEY, this.clonedNode);
-        parseOther(KEY, this.clonedNode);
         parseValueElementsAtAttributes(this.clonedNode);
         parseEventsElements(this.clonedNode);
+        parseOther(KEY, this.clonedNode);
+        initStates();
         clearKeyTags(KEY, getCloned());
     }
 
     public static String KEY = "ui-field";
+    public static String LOOP_KEY = "loop";
 
     public static String TEMPLATE_KEY = "ui-template";
 
@@ -108,12 +126,22 @@ public class TemplateParser {
         return (T) this.elementsMap.get(id);
     }
 
-    public String getStyle(String id) {
+    public String getStringElement(String id) {
         return (String) this.elementsMap.get(id);
+    }
+
+    public State getState(String name) {
+        return states.stream().filter(s -> s.valueName.equals(name)).findAny().get();
     }
 
     public Node getCloned() {
         return clonedNode;
+    }
+
+    HTMLElement rootElement;
+
+    public HTMLElement getRoot() {
+        return rootElement;
     }
 
     private static void clearKeyTags(String key, Node root) {
@@ -140,6 +168,18 @@ public class TemplateParser {
                     throw new IllegalStateException("You can't have duplicate ui-field: " + value + " for class: " + clazz);
                 final IsElement component = HtmlParserService.getComponentParser(at.tagName).parse(at, elementsMap);
                 if (component != null) {
+                    if (component instanceof HasAttributes) {
+                        for (String attributeName : ((HasAttributes) component).getAttributeNames()) {
+                            if (at.attributes.asList().stream().map(e -> e.name)
+                                    .anyMatch(e -> e.equals(attributeName))) {
+                                final String attributeValue = at.getAttribute(attributeName);
+                                final String between = getBetween(attributeValue, "{{", "}}");
+                                if (between == null || between.isEmpty())
+                                    continue;
+                                multiMapValueElements.put(between, new ElementValueComponent(component, between, attributeName));
+                            }
+                        }
+                    }
                     if (value != null)
                         result.put(value, component);
                 }
@@ -161,6 +201,8 @@ public class TemplateParser {
         NodeList<Element> elements = root.querySelectorAll("*");
         for (int i = 0; i < elements.length; i++) {
             Element at = elements.getAt(i);
+            if (i == 0)
+                rootElement = (HTMLElement) at;
             if (at.attributes == null || at.attributes.length == 0) continue;
             String value = at.getAttribute(key);
             if (elementsMap.containsKey(value))
@@ -194,38 +236,31 @@ public class TemplateParser {
             if (value != null)
                 elementsMap.put(value, at);
         }
-
     }
 
-
-    private void updateValueElements(String valueElement) {
-        for (ElementValue element : multiMapValueElements.get(valueElement)) {
-            element.updateValue();
+    private void parseLoops(String key, Node root) {
+        NodeList<Element> elements = root.querySelectorAll("*");
+        for (int i = 0; i < elements.length; i++) {
+            Element at = elements.getAt(i);
+            if (at.attributes == null || at.attributes.length == 0) continue;
+            for (Attr attr : at.attributes.asList()) {
+                if (attr.name.equals(key)) {
+                    final String dloop = at.getAttribute(key);
+                    final String[] split = dloop.split(" ");
+                    String collectionName = split[2];
+                    multiMapValueElements.put(collectionName, new LoopElement(at, split[0], collectionName));
+                }
+            }
         }
     }
 
-    private void updateValueAttributeElements(String valueElement) {
-        for (ElementValue element : multiMapValueAttributeElements.get(valueElement)) {
-            element.updateAttribute();
+
+    void updateValueUi(String valueElementName, Object value) {
+        for (UpdateUi updateUi : multiMapValueElements.get(valueElementName)) {
+            updateUi.update(value);
         }
     }
 
-    private void updateValueStyleAttributeElements(String valueElement) {
-        for (ElementValue element : multiMapValueStyleAttributeElements.get(valueElement)) {
-            element.updateStyle();
-        }
-    }
-
-    public void updateValueUi(String valueElementName, String value) {
-        valueMap.put(valueElementName, value);
-        updateValueElements(valueElementName);
-        updateValueAttributeElements(valueElementName);
-        updateValueStyleAttributeElements(valueElementName);
-    }
-
-    public Map<String, ArrayList<Element>> getEventsElementMap() {
-        return eventsElementMap;
-    }
 
     private void parseValueElements(Node root) {
         NodeList<Element> elements = root.querySelectorAll("*");
@@ -233,10 +268,9 @@ public class TemplateParser {
             Element at = elements.getAt(i);
             if (at.childElementCount == 0 && at.innerHTML.contains("{{")) {
                 String content = at.innerHTML;
-                final String between = getBetween(content, "{{", "}}");
-                if (between == null || between.isEmpty())
-                    continue;
-                multiMapValueElements.put(between, new ElementValue(Js.cast(at), "", at.innerHTML));
+                for (String v : findSubstrings(content)) {
+                    multiMapValueElements.put(v, new ElementValueTag(Js.cast(at), "", at.innerHTML));
+                }
                 at.innerHTML = "";
             }
         }
@@ -245,11 +279,24 @@ public class TemplateParser {
 
     private String replaceAll(String stringWithValues) {
         String str = stringWithValues;
-        for (Map.Entry<String, String> entry : valueMap.entrySet()) {
-            String toReplace = DnI18n.START_TAG + entry.getKey() + DnI18n.END_TAG;
-            str = new String(str).replaceAll(toReplace, entry.getValue());
-        }
+        do {
+            final String between = getBetween(str, "{{", "}}");
+            if (between == null || between.isEmpty())
+                break;
+            Object value = getValueFromStates(between);
+            str = str.replace("{{" + between + "}}", value + "");
+        } while (true);
         return str;
+    }
+
+    private Object getValueFromStates(String valueName) {
+        for (State state : states) {
+            final Object valueByName = state.getValueByName(valueName);
+            if (valueByName != null) {
+                return valueByName;
+            }
+        }
+        return null;
     }
 
     private String getBetween(String text, String c1, String c2) {
@@ -258,6 +305,22 @@ public class TemplateParser {
         } catch (Exception ex) {
             return null;
         }
+    }
+
+    private static List<String> findSubstrings(String input) {
+        List<String> substrings = new ArrayList<>();
+        int startIndex = input.indexOf("{{");
+        int endIndex = -1;
+        while (startIndex != -1) {
+            endIndex = input.indexOf("}}", startIndex);
+            if (endIndex != -1) {
+                substrings.add(input.substring(startIndex + 2, endIndex));
+                startIndex = input.indexOf("{{", endIndex + 2);
+            } else {
+                break;
+            }
+        }
+        return substrings;
     }
 
     private void parseValueElementsAtAttributes(Node root) {
@@ -272,18 +335,15 @@ public class TemplateParser {
                     for (String property : split) {
                         final String[] keyValue = property.split(":");
                         if (keyValue.length == 2) {
-                            final String between = getBetween(keyValue[1], "{{", "}}");
-                            if (between != null) {
-                                multiMapValueStyleAttributeElements
-                                        .put(between, new ElementValue(Js.cast(at), keyValue[0], keyValue[1]));
+                            for (String v : findSubstrings(attr.value)) {
+                                multiMapValueElements.put(v, new ElementValueStyle(Js.cast(at), keyValue[0], keyValue[1]));
                             }
                         }
                     }
                 } else if (attr.value.contains("{{")) {
-                    final String between = getBetween(attr.value, "{{", "}}");
-                    if (between == null || between.isEmpty())
-                        continue;
-                    multiMapValueAttributeElements.put(between, new ElementValue(Js.cast(at), attr.name, attr.value));
+                    for (String v : findSubstrings(attr.value)) {
+                        multiMapValueElements.put(v, new ElementValueAttribute(Js.cast(at), attr.name, attr.value));
+                    }
                 }
             }
         }
@@ -291,21 +351,28 @@ public class TemplateParser {
 
     private void parseEventsElements(Node root) {
         NodeList<Element> elements = root.querySelectorAll("*");
-        for (String keyEvent : eventsListAttributes) {
-            ArrayList<Element> eventElements = new ArrayList<>();
-            for (int i = 0; i < elements.length; i++) {
-                Element at = elements.getAt(i);
-                if (at.attributes == null || at.attributes.length == 0) continue;
-                String value = at.getAttribute(keyEvent);
-                if (value != null) {
-                    eventElements.add(at);
-                    if (!debug)
-                        at.removeAttribute(keyEvent);
+        for (int i = 0; i < elements.length; i++) {
+            Element at = elements.getAt(i);
+            if (at.attributes == null || at.attributes.length == 0) continue;
+            for (Attr attr : at.attributes.asList()) {
+                if (attr.name.startsWith("on-")) {
+                    final String[] split = attr.name.split("-");
+                    String value = attr.value;
+                    if (value != null) {
+                        eventsElementMap.put(split[1], at);
+                        if (!debug)
+                            at.removeAttribute(attr.name);
+                    }
                 }
             }
-            if (!eventElements.isEmpty())
-                eventsElementMap.put(keyEvent, eventElements);
+            if (at.hasAttribute("bind")) {
+                eventsElementMap.put("bind", at);
+            }
         }
+    }
+
+    public MultiMapArray<String, Element> getEventsElementMap() {
+        return eventsElementMap;
     }
 
     private void i18e(HTMLTemplateElement template) {
@@ -330,27 +397,156 @@ public class TemplateParser {
         return debug;
     }
 
-    class ElementValue {
+    public void updateState(String name, Object value) {
+        final State state = getState(name);
+        if (state != null) {
+            state.setValue(value);
+        } else {
+            DomGlobal.console.log("Warning: You are trying to update state element " + name + " that doesn't exist. Check your html code.");
+        }
+    }
+
+    public void setLoopFunctions(String collectionName, HashMap hashMap) {
+        for (UpdateUi updateUi : multiMapValueElements.get(collectionName)) {
+            if (updateUi instanceof LoopElement) {
+                ((LoopElement) updateUi).setFunctions(hashMap);
+            }
+        }
+    }
+
+    abstract class AbstractElementValue implements UpdateUi {
         HTMLElement element;
         String arg;
         String argValue;
 
-        public ElementValue(HTMLElement element, String arg, String argValue) {
+        public AbstractElementValue(HTMLElement element, String arg, String argValue) {
             this.element = element;
             this.arg = arg;
             this.argValue = argValue;
         }
+    }
 
-        public void updateAttribute() {
-            element.setAttribute(arg, replaceAll(argValue));
+    class ElementValueAttribute extends AbstractElementValue {
+
+        public ElementValueAttribute(HTMLElement element, String arg, String argValue) {
+            super(element, arg, argValue);
         }
 
-        public void updateStyle() {
+        @Override
+        public void update(Object value) {
+            element.setAttribute(arg, replaceAll(argValue));
+            if (element.tagName.equalsIgnoreCase("input") && (element.hasAttribute("checked"))) {
+                ((HTMLInputElement) element).checked = element.getAttribute("checked").equalsIgnoreCase("true");
+            }
+            if (element.tagName.equalsIgnoreCase("textarea") && (element.hasAttribute("value"))) {
+                ((HTMLTextAreaElement) element).value = element.getAttribute("value");
+            }
+            if (element.tagName.equalsIgnoreCase("input")
+                    && (element.getAttribute("type") != null
+                    && element.getAttribute("type").equalsIgnoreCase("text"))
+                    && (element.hasAttribute("value"))) {
+                ((HTMLInputElement) element).value = element.getAttribute("value");
+            }
+        }
+    }
+
+    class ElementValueStyle extends AbstractElementValue {
+
+        public ElementValueStyle(HTMLElement element, String arg, String argValue) {
+            super(element, arg, argValue);
+        }
+
+        @Override
+        public void update(Object value) {
             element.style.setProperty(arg, replaceAll(argValue));
         }
+    }
 
-        public void updateValue() {
+    static int eln = 0;
+
+    class ElementValueTag extends AbstractElementValue {
+
+        public ElementValueTag(HTMLElement element, String arg, String argValue) {
+            super(element, arg, argValue);
+        }
+
+        @Override
+        public void update(Object value) {
             element.innerHTML = replaceAll(argValue);
         }
     }
+
+    class LoopElement implements UpdateUi {
+        String valueName;
+        Element element;
+        String collectionName;
+        HTMLTemplateElement templateElement = DomUtil.createTemplate();
+        Map functions;
+
+        LoopElement(Element element, String valueName, String collectionName) {
+            this.valueName = valueName;
+            this.element = element;
+            this.collectionName = collectionName;
+            templateElement.innerHTML = element.innerHTML;
+            this.element.innerHTML = "";
+        }
+
+        public void loop(Collection collection) {
+            this.element.innerHTML = "";
+            for (Object o : collection) {
+                update(valueName, o);
+            }
+        }
+
+
+        private void update(String valueName, Object value) {
+            TemplateParser parser = new TemplateParser(templateElement, true);
+
+            final State state = parser.getState(valueName);
+            if (state != null) {
+                state.setFunctionMap(functions);
+                state.setValue(value);
+            }
+            element.appendChild(parser.getCloned());
+        }
+
+        public LoopElement setFunctions(Map<String, Function<?, ?>> functions) {
+            Map fns = new HashMap();
+            for (Map.Entry<String, Function<?, ?>> entry : functions.entrySet()) {
+                final String key = entry.getKey();
+                final String[] split = key.split("\\.");
+                if (this.valueName.equals(split[0])) {
+                    fns.put(entry.getKey(), entry.getValue());
+                }
+            }
+            this.functions = fns;
+            return this;
+        }
+
+        @Override
+        public void update(Object value) {
+            loop((Collection) value);
+        }
+    }
+
+    class ElementValueComponent implements UpdateUi {
+        Object component;
+        String valueName;
+
+        String attributeName;
+
+        public ElementValueComponent(Object component, String valueName, String attributeName) {
+            this.component = component;
+            this.valueName = valueName;
+            this.attributeName = attributeName;
+        }
+
+        @Override
+        public void update(Object value) {
+            if (component instanceof HasAttributes) {
+                ((HasAttributes) component).setAttribute(attributeName, value);
+            }
+        }
+    }
+
 }

@@ -14,7 +14,7 @@ public class HomeViewImpl extends AbstractView<HomeView.HomePresenter> implement
     public HTMLDivElement root;
 
     {
-        HtmlBinder.get(HomeViewImpl.class, this).bind();
+        HtmlBinder.create(HomeViewImpl.class, this).bind();
     }
 
     public HomeViewImpl() {

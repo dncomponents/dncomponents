@@ -16,6 +16,8 @@
 
 package com.dncomponents.client.components.core;
 
+import java.util.function.Supplier;
+
 /**
  * @author nikolasavic
  */
@@ -26,7 +28,11 @@ public abstract class I18nBinder<T> {
     public static <T> I18nBinder get(Class clazz, T i18n) {
         if (clazz == null || i18n == null)
             throw new IllegalArgumentException("Arguments can't be null!");
-        I18nBinder binder = TemplateService.i18nBinder.get(clazz.getName());
+        final Supplier<I18nBinder> i18nBinderSupplier = TemplateService.i18nBinder.get(clazz.getName());
+        I18nBinder binder = null;
+        if (i18nBinderSupplier != null) {
+            binder = i18nBinderSupplier.get();
+        }
         if (binder == null)
             throw new IllegalStateException("Can't find corresponding binder for " + clazz.getName() + ".");
         binder.i18n = i18n;

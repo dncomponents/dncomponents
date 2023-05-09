@@ -37,7 +37,7 @@ public class TabViewImpl implements TabView {
     @UiField
     HTMLElement tabContentPanel;
 
-    HtmlBinder uiBinder = HtmlBinder.get(TabViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(TabViewImpl.class, this);
 
     public TabViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);

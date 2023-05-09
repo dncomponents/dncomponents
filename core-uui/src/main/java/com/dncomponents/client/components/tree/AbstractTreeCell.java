@@ -23,6 +23,9 @@ import com.dncomponents.client.components.tree.checkbox.TreeCellCheckboxSimple;
 import com.dncomponents.client.views.core.ui.tree.BaseTreeCellView;
 import com.dncomponents.client.views.core.ui.tree.HasTreeUi;
 import com.dncomponents.client.views.core.ui.tree.TreeUi;
+import com.dncomponents.client.views.core.ui.tree.TriConsumer;
+import elemental2.dom.HTMLElement;
+import jsinterop.base.Js;
 
 /**
  * Created by nikolasavic
@@ -62,6 +65,36 @@ public abstract class AbstractTreeCell<T, M> extends BaseCell<TreeNode<T>, M> {
             return new TreeCellSimple();
         } else {
             return new TreeCellParent();
+        }
+    }
+
+    @Override
+    protected void bind() {
+        super.bind();
+        getCellView().setDraggable(isDragAndDropEnabled());
+        if (isDragAndDropEnabled()) {
+            getCellView().onItemDragged(new TriConsumer<HTMLElement, HTMLElement, Boolean>() {
+                @Override
+                public void accept(HTMLElement from, HTMLElement to, Boolean inserted) {
+                    final TreeNode root = getOwner().getRoot();
+                    final BaseCell cell = getOwner().getCell(from);
+                    final BaseCell cellTo = getOwner().getCell(to);
+                    final TreeNode fromModel = Js.cast(cell.getModel());
+                    final TreeNode toModel = Js.cast(cellTo.getModel());
+                    if (toModel.isParentOf(fromModel) || toModel == fromModel) {
+                        return;
+                    }
+                    fromModel.removeFromParent();
+                    if (inserted) {
+                        toModel.insertAfter(fromModel);
+                    } else {
+                        toModel.add(fromModel);
+                    }
+                    getOwner().setRoot(root);
+                    getOwner().drawData();
+                }
+            });
+
         }
     }
 

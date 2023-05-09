@@ -1,6 +1,6 @@
 package com.dncomponents.material.client.table;
 
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.table.TableRowView;
@@ -12,10 +12,10 @@ import elemental2.dom.HTMLTemplateElement;
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class TableRowViewImpl extends BaseCellViewImpl implements TableRowView {
 
-    HtmlBinder uiBinder = HtmlBinder.get(TableRowViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(TableRowViewImpl.class, this);
 
     public TableRowViewImpl() {
         uiBinder.setTemplateElement(((TableUiImpl) (Ui.get()).getTableUi()).tableRow);

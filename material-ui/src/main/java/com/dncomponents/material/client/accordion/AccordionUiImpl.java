@@ -1,7 +1,6 @@
 package com.dncomponents.material.client.accordion;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.views.core.ui.accordion.AccordionItemView;
 import com.dncomponents.client.views.core.ui.accordion.AccordionUi;
@@ -21,7 +20,7 @@ public class AccordionUiImpl implements AccordionUi {
 
     AccordionView accordionView;
 
-    HtmlBinder uiBinder = HtmlBinder.get(AccordionUiImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(AccordionUiImpl.class, this);
 
     public AccordionUiImpl(String template) {
         uiBinder.setTemplateContent(template);

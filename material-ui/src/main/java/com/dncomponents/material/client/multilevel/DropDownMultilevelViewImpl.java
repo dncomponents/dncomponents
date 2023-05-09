@@ -1,7 +1,6 @@
 package com.dncomponents.material.client.multilevel;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.dom.handlers.BaseEventListener;
@@ -25,10 +24,10 @@ public class DropDownMultilevelViewImpl implements DropDownView {
     HTMLElement buttonText;
     @UiField
     HTMLElement dropDownMenu;
-    @UiStyle
+    @UiField
     String dropDownMenuShowStyle;
 
-    HtmlBinder uiBinder = HtmlBinder.get(DropDownMultilevelViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(DropDownMultilevelViewImpl.class, this);
 
     public DropDownMultilevelViewImpl(String template) {
         uiBinder.setTemplateContent(template);

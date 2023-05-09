@@ -17,7 +17,6 @@
 package com.dncomponents.bootstrap.client.button;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.views.MainViewSlots;
 import com.dncomponents.client.views.core.ui.button.ButtonView;
@@ -35,10 +34,10 @@ public class ButtonIconViewImpl implements ButtonView {
     HTMLElement textPanel;
     @UiField
     HTMLElement iconPanel;
-    @UiStyle
+    @UiField
     String disabledStyle;
 
-    HtmlBinder uiBinder = HtmlBinder.get(ButtonIconViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(ButtonIconViewImpl.class, this);
 
 
     public ButtonIconViewImpl(String template) {

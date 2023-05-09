@@ -26,6 +26,9 @@ import static com.dncomponents.client.dom.DomUtil.asHtmlElement;
  */
 public class Handlers {
 
+    public static HandlerRegistration addHandler(Object element, Handler handler) {
+        return handler.addTo(asHtmlElement(element));
+    }
     public static HandlerRegistration addClickHandler(Object element, ClickHandler handler) {
         return handler.addTo(asHtmlElement(element));
     }

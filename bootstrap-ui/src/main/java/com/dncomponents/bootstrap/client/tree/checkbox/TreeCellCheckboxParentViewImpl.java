@@ -17,7 +17,7 @@
 package com.dncomponents.bootstrap.client.tree.checkbox;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.bootstrap.client.tree.basic.TreeCellParentViewImpl;
 import com.dncomponents.client.components.checkbox.CheckBox;
 import com.dncomponents.client.components.core.HtmlBinder;
@@ -31,13 +31,13 @@ import elemental2.dom.MouseEvent;
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class TreeCellCheckboxParentViewImpl extends TreeCellParentViewImpl implements TreeCellCheckboxParentView {
 
     @UiField
     CheckBox checkBox;
 
-    HtmlBinder uiBinder = HtmlBinder.get(TreeCellCheckboxParentViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(TreeCellCheckboxParentViewImpl.class, this);
 
     public TreeCellCheckboxParentViewImpl() {
     }

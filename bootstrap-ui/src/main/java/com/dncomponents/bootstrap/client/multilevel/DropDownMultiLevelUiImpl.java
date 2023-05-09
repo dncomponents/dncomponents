@@ -38,7 +38,7 @@ public class DropDownMultiLevelUiImpl implements DropDownMultiLevelUi {
 
     DropDownView dropDownView;
 
-    HtmlBinder uiBinder = HtmlBinder.get(DropDownMultiLevelUiImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(DropDownMultiLevelUiImpl.class, this);
 
 
     public DropDownMultiLevelUiImpl(HTMLTemplateElement templateElement) {

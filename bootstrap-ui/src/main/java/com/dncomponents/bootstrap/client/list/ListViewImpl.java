@@ -17,8 +17,8 @@
 package com.dncomponents.bootstrap.client.list;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
+import com.dncomponents.bootstrap.client.BootstrapUi;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.dom.DomUtil;
@@ -32,9 +32,10 @@ import elemental2.dom.HTMLTemplateElement;
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class ListViewImpl implements ListView {
 
+    HtmlBinder uiBinder = HtmlBinder.create(ListViewImpl.class, this);
     @UiField
     public HTMLElement root;
 
@@ -43,14 +44,13 @@ public class ListViewImpl implements ListView {
 
     double currentScrollTop;
 
-    @UiStyle
+    @UiField
     protected String scrollableStyle;
 
     public ListViewImpl() {
     }
 
     public ListViewImpl(HTMLTemplateElement listMain) {
-        HtmlBinder uiBinder = HtmlBinder.get(ListViewImpl.class, this);
         uiBinder.setTemplateElement(listMain);
         uiBinder.bind();
         init();

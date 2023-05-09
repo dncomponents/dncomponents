@@ -37,7 +37,7 @@ public class DropDownItemMultiLevelParentViewImpl implements DropDownItemMultiLe
     @UiField
     HTMLElement textPanel;
 
-    HtmlBinder uiBinder = HtmlBinder.get(DropDownItemMultiLevelParentViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(DropDownItemMultiLevelParentViewImpl.class, this);
 
     public DropDownItemMultiLevelParentViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);

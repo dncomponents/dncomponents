@@ -31,7 +31,7 @@ public class SideMenuTreeCellParentViewImpl extends TreeCellParentViewImpl {
     @UiField
     HTMLElement valuePanelParent;
 
-    HtmlBinder uiBinder = HtmlBinder.get(SideMenuTreeCellParentViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(SideMenuTreeCellParentViewImpl.class, this);
 
     public SideMenuTreeCellParentViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);

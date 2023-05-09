@@ -76,6 +76,8 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
 
     private boolean cellEditMode = true;
 
+    private boolean dragAndDropEnabled = false;
+
     public AbstractCellComponent(W ui) {
         super(ui);
     }
@@ -394,6 +396,14 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
      */
     public void setEditable(boolean editable) {
         this.editable = editable;
+    }
+
+    public void setDragAndDropEnabled(boolean dragAndDropEnabled) {
+        this.dragAndDropEnabled = dragAndDropEnabled;
+    }
+
+    public boolean isDragAndDropEnabled() {
+        return dragAndDropEnabled;
     }
 
     public void setCellEditMode(boolean cellEditMode) {

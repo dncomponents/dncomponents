@@ -20,7 +20,7 @@ public class CheckBoxHeaderTableCellViewImpl implements CheckBoxHeaderTableCellV
     @UiField
     HTMLElement root;
 
-    HtmlBinder uiBinder = HtmlBinder.get(CheckBoxHeaderTableCellViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(CheckBoxHeaderTableCellViewImpl.class, this);
 
     public CheckBoxHeaderTableCellViewImpl(String template) {
         uiBinder.setTemplateContent(template);

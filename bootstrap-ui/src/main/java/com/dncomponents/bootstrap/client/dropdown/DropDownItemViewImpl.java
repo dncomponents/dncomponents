@@ -17,7 +17,7 @@
 package com.dncomponents.bootstrap.client.dropdown;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.MainViewSlots;
@@ -28,12 +28,12 @@ import elemental2.dom.HTMLTemplateElement;
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class DropDownItemViewImpl implements DropDownItemView {
 
     @UiField
     HTMLElement root;
-    HtmlBinder uiBinder = HtmlBinder.get(DropDownItemViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(DropDownItemViewImpl.class, this);
 
     public DropDownItemViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);

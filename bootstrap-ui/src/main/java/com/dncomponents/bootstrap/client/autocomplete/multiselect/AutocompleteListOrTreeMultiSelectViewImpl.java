@@ -54,7 +54,7 @@ public class AutocompleteListOrTreeMultiSelectViewImpl extends BaseAutocompleteV
     HTMLTemplateElement itemView;
     AbstractCellComponent listOrTree;
 
-    HtmlBinder uiBinder = HtmlBinder.get(AutocompleteListOrTreeMultiSelectViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(AutocompleteListOrTreeMultiSelectViewImpl.class, this);
 
     public static AutocompleteListOrTreeMultiSelectViewImpl getInstance(HTMLTemplateElement templateElement, boolean tree) {
         if (tree) {
@@ -138,6 +138,11 @@ public class AutocompleteListOrTreeMultiSelectViewImpl extends BaseAutocompleteV
     @Override
     public AutocompleteMultiSelectItemView getAutocompleteMultiSelectItemView() {
         return new AutocompleteMultiSelectItemViewImpl(itemView);
+    }
+
+    @Override
+    public void setPlaceHolder(String text) {
+
     }
 
     @Override

@@ -17,7 +17,7 @@
 package com.dncomponents.bootstrap.client.textarea;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.handlers.KeyUpHandler;
 import com.dncomponents.client.dom.handlers.OnBlurHandler;
@@ -29,13 +29,13 @@ import elemental2.dom.HTMLTextAreaElement;
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class TextAreaViewImpl implements TextBoxView {
 
     public static final String VIEW_ID = "default";
     @UiField
     HTMLTextAreaElement root;
-    HtmlBinder uiBinder = HtmlBinder.get(TextAreaViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(TextAreaViewImpl.class, this);
 
     public TextAreaViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);

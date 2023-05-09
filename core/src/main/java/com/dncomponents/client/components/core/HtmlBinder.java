@@ -16,38 +16,52 @@
 
 package com.dncomponents.client.components.core;
 
+import elemental2.dom.DomGlobal;
+import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
+
+import java.util.function.Supplier;
 
 public abstract class HtmlBinder<T> {
 
-    protected T tw;
+    protected T d;
 
     protected TemplateParser template;
 
     private String clazz;
 
-    public static <T> HtmlBinder get(Class clazz, T view) {
+    public static <T, C extends HtmlBinder<T>> C create(Class clazz, T view) {
         if (clazz == null || view == null)
             throw new IllegalArgumentException("Arguments can't be null!");
-        HtmlBinder binder = TemplateService.binders.get(clazz.getName());
+        final Supplier<HtmlBinder> htmlBinderSupplier = TemplateService.binders.get(clazz.getName());
+        HtmlBinder binder = null;
+        if (htmlBinderSupplier != null) {
+            binder = htmlBinderSupplier.get();
+        }
+        if(binder==null)
+        DomGlobal.console.log(clazz.getName()+" ---- "+ " is null");
         if (binder == null)
             throw new IllegalStateException("Can't find corresponding binder for " + clazz.getName() + ".");
-        binder.tw = view;
+        binder.d = view;
 //        if (!binder.tw.getClass().equals(clazz))
 //            throw new IllegalStateException("Wrong binder class! Expects " +
-//                    "HtmlBinder.get(" + view.getClass() + ".class, this);");
+//                    "HtmlBinder.create(" + view.getClass() + ".class, this);");
         binder.clazz = clazz.getName();
         if (binder.template != null) {
             binder.template.clazz = clazz.getName();
         }
-        return binder;
+        return (C) binder;
     }
 
-    public void setTw(T tw) {
-        this.tw = tw;
+    public void setD(T d) {
+        this.d = d;
     }
 
     public abstract void bind();
+
+    public void updateUi() {
+
+    }
 
     /**
      * Use it to bind only fields from the current class without parent's fields.
@@ -74,4 +88,7 @@ public abstract class HtmlBinder<T> {
         return template;
     }
 
+    public HTMLElement getRoot() {
+        return template.getRoot();
+    }
 }

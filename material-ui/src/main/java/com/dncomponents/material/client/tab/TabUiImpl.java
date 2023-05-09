@@ -24,7 +24,7 @@ public class TabUiImpl implements TabUi {
 
     private TabView tabView;
 
-    HtmlBinder uiBinder = HtmlBinder.get(TabUiImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(TabUiImpl.class, this);
 
     public TabUiImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);

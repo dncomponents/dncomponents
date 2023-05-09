@@ -63,7 +63,7 @@ public class TableViewImpl extends ListViewImpl implements TableView {
     @UiField
     HTMLElement footerPagerPanel;
 
-    HtmlBinder uiBinder = HtmlBinder.get(TableViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(TableViewImpl.class, this);
 
 
     public TableViewImpl(String template) {

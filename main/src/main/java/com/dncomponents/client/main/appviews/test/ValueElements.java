@@ -17,15 +17,14 @@
 package com.dncomponents.client.main.appviews.test;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.core.State;
-import com.dncomponents.client.dom.handlers.Handlers;
 import com.dncomponents.client.views.IsElement;
 import elemental2.dom.HTMLElement;
 
 
-@UiTemplate("" +
+@Component(template = "" +
         "<div ui-field='root'>\n" +
         "    <span>{{someValue}}</span>\n" +
         "<span>bbb</span>\n" +
@@ -34,7 +33,7 @@ import elemental2.dom.HTMLElement;
         "<button ui-field='btn'></button>\n" +
         "</div>")
 public class ValueElements implements IsElement {
-    HtmlBinder binder = HtmlBinder.get(ValueElements.class, this);
+    HtmlBinder binder = HtmlBinder.create(ValueElements.class, this);
     {
         binder.bind();
     }

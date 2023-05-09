@@ -34,7 +34,7 @@ public class FormUiImpl implements FormUi {
 
     FormView rootView;
 
-    HtmlBinder uiBinder = HtmlBinder.get(FormUiImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(FormUiImpl.class, this);
 
 
     public FormUiImpl(HTMLTemplateElement templateElement) {

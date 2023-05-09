@@ -97,6 +97,11 @@ public interface Node<N extends Node> {
         getChildren().add(index, node);
     }
 
+    default void insertAfter(N node) {
+        node.setParent(getParent());
+        getParent().getChildren().add(getParent().getChildren().indexOf(this)+1, node);
+    }
+
     default void add(N node) {
         createChildrenIfNull();
         node.setParent(this);
@@ -109,7 +114,7 @@ public interface Node<N extends Node> {
     }
 
     default boolean isLeaf() {
-        return getChildren() == null;
+        return getChildren() == null || getChildren().isEmpty();
     }
 
     default boolean isRoot() {
@@ -223,5 +228,9 @@ public interface Node<N extends Node> {
         if (parent != null) {
             parent.remove(this);
         }
+    }
+
+    default boolean isParentOf(TreeNode node) {
+        return this.getAllParents().contains(node);
     }
 }

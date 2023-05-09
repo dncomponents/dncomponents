@@ -24,7 +24,6 @@ import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.views.core.ui.form.FormView;
 import elemental2.dom.HTMLDivElement;
 import elemental2.dom.HTMLElement;
-import elemental2.dom.HTMLFormElement;
 import elemental2.dom.HTMLTemplateElement;
 
 public class FormViewImpl implements FormView {
@@ -35,7 +34,7 @@ public class FormViewImpl implements FormView {
     @UiField
     Button submitBtn;
 
-    HtmlBinder uiBinder = HtmlBinder.get(FormViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(FormViewImpl.class, this);
 
     public FormViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);

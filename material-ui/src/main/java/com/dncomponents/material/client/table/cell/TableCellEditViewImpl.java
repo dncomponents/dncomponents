@@ -23,7 +23,7 @@ public class TableCellEditViewImpl extends TableCellViewImpl implements TableCel
     @UiField
     HTMLButtonElement btnDelete;
 
-    HtmlBinder uiBinder = HtmlBinder.get(TableCellEditViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(TableCellEditViewImpl.class, this);
 
     public TableCellEditViewImpl(String template) {
         uiBinder.setTemplateContent(template);

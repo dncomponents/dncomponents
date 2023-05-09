@@ -37,6 +37,7 @@ public abstract class BaseCell<P, M> extends AbstractCell<P, M, BaseCellView> {
     private CellEditor<M> cellEditor;
 
     private boolean editable = true;
+    private boolean dragAndDropEnabled = true;
 
     private boolean selectable = true;
 
@@ -140,6 +141,10 @@ public abstract class BaseCell<P, M> extends AbstractCell<P, M, BaseCellView> {
         return editable && getOwner().isEditable();
     }
 
+    public boolean isDragAndDropEnabled() {
+        return dragAndDropEnabled && getOwner().isDragAndDropEnabled();
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
@@ -201,6 +206,11 @@ public abstract class BaseCell<P, M> extends AbstractCell<P, M, BaseCellView> {
 
     public <C extends BaseCell<P, M>> C setEditable(boolean editable) {
         this.editable = editable;
+        return (C) this;
+    }
+
+    public <C extends BaseCell<P, M>> C setDragAndDropEnabled(boolean dragAndDropEnabled) {
+        this.dragAndDropEnabled = dragAndDropEnabled;
         return (C) this;
     }
 

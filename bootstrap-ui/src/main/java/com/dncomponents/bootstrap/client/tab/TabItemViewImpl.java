@@ -17,8 +17,7 @@
 package com.dncomponents.bootstrap.client.tab;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.core.events.Command;
 import com.dncomponents.client.views.core.ui.tab.TabItemView;
@@ -27,7 +26,7 @@ import elemental2.dom.EventListener;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
-@UiTemplate
+@Component
 public class TabItemViewImpl implements TabItemView {
 
     @UiField
@@ -36,13 +35,13 @@ public class TabItemViewImpl implements TabItemView {
     HTMLElement tabItemPanel;
     @UiField
     HTMLElement tabItemContent;
-    @UiStyle
+    @UiField
     String showTabContentStyle;
-    @UiStyle
+    @UiField
     String active;
 
 
-    HtmlBinder uiBinder = HtmlBinder.get(TabItemViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(TabItemViewImpl.class, this);
 
     public TabItemViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);

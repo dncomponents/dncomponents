@@ -39,7 +39,7 @@ public class ListUiImpl implements ListUi {
     @UiField
     HTMLTemplateElement listItemCheckbox;
 
-    protected HtmlBinder uiBinder = HtmlBinder.get(ListUiImpl.class, this);
+    protected HtmlBinder uiBinder = HtmlBinder.create(ListUiImpl.class, this);
 
     ListView listView;
 

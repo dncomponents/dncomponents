@@ -5,6 +5,7 @@ import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.material.client.MaterialUi;
 
 public class ProgressBuilderConst {
+    HtmlBinder binder = HtmlBinder.create(ProgressBuilderConst.class, this);
     @UiField
     String indeterminate;
     @UiField
@@ -22,8 +23,8 @@ public class ProgressBuilderConst {
     }
 
     private ProgressBuilderConst() {
-        HtmlBinder.get(ProgressBuilderConst.class, this).setTemplateElement(MaterialUi.getUi().progressBuilder);
-        HtmlBinder.get(ProgressBuilderConst.class, this).bind();
+        binder.setTemplateElement(MaterialUi.getUi().progressBuilder);
+        binder.bind();
     }
 
 }

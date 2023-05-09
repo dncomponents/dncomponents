@@ -1,17 +1,12 @@
 package com.dncomponents.material.client.progress;
 
 import com.dncomponents.UiField;
-import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.components.core.HtmlBinder;
-import com.dncomponents.client.views.core.ViewFactory;
 import com.dncomponents.client.views.core.ui.progress.ProgressView;
 import com.dncomponents.material.client.MaterialUi;
 import elemental2.dom.CSSProperties;
-import elemental2.dom.DomGlobal;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
-
-import java.util.Map;
 
 public class ProgressViewImpl implements ProgressView {
 
@@ -24,7 +19,7 @@ public class ProgressViewImpl implements ProgressView {
     @UiField
     public HTMLElement bufferedBar;
 
-    HtmlBinder uiBinder = HtmlBinder.get(ProgressViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(ProgressViewImpl.class, this);
 
     public ProgressViewImpl() {
         uiBinder.setTemplateElement(MaterialUi.getUi().progress);

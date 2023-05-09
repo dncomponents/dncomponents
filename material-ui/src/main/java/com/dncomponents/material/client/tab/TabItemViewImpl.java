@@ -1,7 +1,6 @@
 package com.dncomponents.material.client.tab;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.core.events.Command;
 import com.dncomponents.client.views.core.ui.tab.TabItemView;
@@ -22,15 +21,15 @@ public class TabItemViewImpl implements TabItemView {
     HTMLElement indicator;
     @UiField
     HTMLElement iconPanel;
-    @UiStyle
+    @UiField
     String showTabContentStyle;
-    @UiStyle
+    @UiField
     String active;
-    @UiStyle
+    @UiField
     String activeIndicator;
 
 
-    HtmlBinder uiBinder = HtmlBinder.get(TabItemViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(TabItemViewImpl.class, this);
 
     public TabItemViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);

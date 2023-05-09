@@ -17,7 +17,7 @@
 package com.dncomponents.bootstrap.client.cell;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
+
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.dom.handlers.DoubleClickHandler;
@@ -32,13 +32,13 @@ import elemental2.dom.HTMLElement;
  */
 public abstract class BaseCellViewImpl implements BaseCellView {
 
-    @UiStyle
+    @UiField
     protected String modelSelected;
-    @UiStyle
+    @UiField
     protected String cellHighlighted;
-    @UiStyle
+    @UiField
     protected String errorCell;
-    @UiStyle
+    @UiField
     protected String valueChanged;
     @UiField
     public HTMLElement valuePanel;

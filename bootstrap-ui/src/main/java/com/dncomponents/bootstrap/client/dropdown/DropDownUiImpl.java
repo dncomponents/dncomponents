@@ -36,7 +36,7 @@ public class DropDownUiImpl implements DropDownUi {
 
     DropDownView dropDownView;
 
-    HtmlBinder uiBinder = HtmlBinder.get(DropDownUiImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(DropDownUiImpl.class, this);
 
 
     public DropDownUiImpl(HTMLTemplateElement templateElement) {

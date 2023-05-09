@@ -36,7 +36,7 @@ public class FormItemViewImpl implements FormItemView {
     @UiField
     HTMLDivElement helperTextElement;
 
-    HtmlBinder uiBinder = HtmlBinder.get(FormItemViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(FormItemViewImpl.class, this);
 
     public FormItemViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);

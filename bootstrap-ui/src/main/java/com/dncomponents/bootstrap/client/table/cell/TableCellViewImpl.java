@@ -16,7 +16,7 @@
 
 package com.dncomponents.bootstrap.client.table.cell;
 
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.bootstrap.client.cell.BaseCellViewImpl;
 import com.dncomponents.client.components.core.HtmlBinder;
 import elemental2.dom.HTMLElement;
@@ -25,12 +25,12 @@ import elemental2.dom.HTMLTemplateElement;
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class TableCellViewImpl extends BaseCellViewImpl {
     public TableCellViewImpl() {
     }
 
-    HtmlBinder uiBinder = HtmlBinder.get(TableCellViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(TableCellViewImpl.class, this);
 
     public TableCellViewImpl(String template) {
         uiBinder.setTemplateContent(template);

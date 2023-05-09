@@ -124,6 +124,7 @@ public class BootstrapUi implements ComponentsViews {
         BootstrapTemplates.register();
     }
 
+    HtmlBinder binder = HtmlBinder.create(BootstrapUi.class, this);
     @UiField
     public HTMLTemplateElement dropDownUi;
     @UiField
@@ -233,15 +234,13 @@ public class BootstrapUi implements ComponentsViews {
 
 
     public BootstrapUi(HTMLTemplateElement templateElement) {
-        HtmlBinder uiBinder = HtmlBinder.get(BootstrapUi.class, this);
-        uiBinder.setTemplateElement(templateElement);
-        uiBinder.bind();
+        binder.setTemplateElement(templateElement);
+        binder.bind();
         registeredViewFactoriesList = new RegViews().registeredViewFactoriesList;
     }
 
     public BootstrapUi() {
-        HtmlBinder uiBinder = HtmlBinder.get(BootstrapUi.class, this);
-        uiBinder.bind();
+        binder.bind();
         registeredViewFactoriesList = new RegViews().registeredViewFactoriesList;
     }
 

@@ -1,8 +1,7 @@
 package com.dncomponents.material.client.tree.basic;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.handlers.BaseEventListener;
 import com.dncomponents.client.views.core.ui.tree.ParentTreeCellView;
@@ -12,18 +11,18 @@ import elemental2.dom.HTMLTemplateElement;
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class TreeCellParentViewImpl extends TreeCellViewImpl implements ParentTreeCellView {
 
     @UiField
     protected HTMLElement openCloseElement;
 
-    @UiStyle
+    @UiField
     protected String openStyle;
-    @UiStyle
+    @UiField
     protected String closeStyle;
 
-    HtmlBinder uiBinder = HtmlBinder.get(TreeCellParentViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(TreeCellParentViewImpl.class, this);
 
     public TreeCellParentViewImpl() {
     }

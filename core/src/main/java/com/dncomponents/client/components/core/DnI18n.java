@@ -38,8 +38,8 @@ public class DnI18n {
 
     public static String DEFAULT = "AppMessages";
 
-    public static String START_TAG = "{{";
-    public static String END_TAG = "}}";
+    public static String START_TAG = "{[";
+    public static String END_TAG = "]}";
 
     private Map<String, KeyValue> keyValues = new HashMap<>();
 
@@ -110,14 +110,6 @@ public class DnI18n {
                 break;
             value = value.replace("{" + orderNumb + "}", args[orderNumb] + "");
         } while (true);
-
-//        if (keyValue.items != null) {
-//            for (KeyValue item : keyValue.items) {
-//                 final Object arg = args[2];
-//            }
-//        } else {
-//            return keyValue.value;
-//        }
         return value;
     }
 
@@ -179,7 +171,7 @@ public class DnI18n {
     }
 
     public static String t(String key, Object... args) {
-        return get().getValue(key,args);
+        return get().getValue(key, args);
     }
 
     public static void put(String name, DnI18n i18e) {

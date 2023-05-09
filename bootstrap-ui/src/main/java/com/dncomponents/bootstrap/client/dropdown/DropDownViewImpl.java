@@ -17,8 +17,7 @@
 package com.dncomponents.bootstrap.client.dropdown;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.popover.Popper;
@@ -29,12 +28,11 @@ import com.dncomponents.client.views.core.ui.dropdown.DropDownView;
 import elemental2.dom.DomGlobal;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
-import elemental2.dom.Node;
 
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class DropDownViewImpl implements DropDownView {
 
     @UiField
@@ -43,12 +41,12 @@ public class DropDownViewImpl implements DropDownView {
     HTMLElement button;
     @UiField
     HTMLElement dropDownMenu;
-    @UiStyle
+    @UiField
     String dropDownMenuShowStyle;
 
     Popper popper;
 
-    HtmlBinder uiBinder = HtmlBinder.get(DropDownViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(DropDownViewImpl.class, this);
 
     public DropDownViewImpl(String template) {
         uiBinder.setTemplateContent(template);

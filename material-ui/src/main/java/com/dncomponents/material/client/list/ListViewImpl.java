@@ -1,7 +1,6 @@
 package com.dncomponents.material.client.list;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.dom.DomUtil;
@@ -22,14 +21,14 @@ public class ListViewImpl implements ListView {
     @UiField
     String rowHeight;
     double currentScrollTop;
-    @UiStyle
+    @UiField
     protected String scrollableStyle;
 
     public ListViewImpl() {
     }
 
     public ListViewImpl(HTMLTemplateElement listMain) {
-        HtmlBinder uiBinder = HtmlBinder.get(ListViewImpl.class, this);
+        HtmlBinder uiBinder = HtmlBinder.create(ListViewImpl.class, this);
         uiBinder.setTemplateElement(listMain);
         uiBinder.bind();
         init();

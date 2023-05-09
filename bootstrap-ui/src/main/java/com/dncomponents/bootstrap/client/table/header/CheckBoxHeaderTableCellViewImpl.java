@@ -17,7 +17,7 @@
 package com.dncomponents.bootstrap.client.table.header;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.client.components.checkbox.CheckBox;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.core.events.value.HasValue;
@@ -28,7 +28,7 @@ import elemental2.dom.HTMLTemplateElement;
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class CheckBoxHeaderTableCellViewImpl implements CheckBoxHeaderTableCellView {
 
     @UiField
@@ -40,7 +40,7 @@ public class CheckBoxHeaderTableCellViewImpl implements CheckBoxHeaderTableCellV
     @UiField
     HTMLElement root;
 
-    HtmlBinder uiBinder = HtmlBinder.get(CheckBoxHeaderTableCellViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(CheckBoxHeaderTableCellViewImpl.class, this);
 
     public CheckBoxHeaderTableCellViewImpl(String template) {
         uiBinder.setTemplateContent(template);

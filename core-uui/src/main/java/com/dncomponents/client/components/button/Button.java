@@ -105,7 +105,7 @@ public class Button<T> extends BaseComponent<T, ButtonView> implements HasClickH
 
         private static ButtonHtmlParser instance;
 
-        private ButtonHtmlParser() {
+        public ButtonHtmlParser() {
             arguments.put(DISABLED, Collections.emptyList());
         }
 

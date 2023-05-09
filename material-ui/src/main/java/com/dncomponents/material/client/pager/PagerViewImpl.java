@@ -1,8 +1,8 @@
 package com.dncomponents.material.client.pager;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiStyle;
-import com.dncomponents.UiTemplate;
+
+import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.textbox.IntegerBox;
 import com.dncomponents.client.dom.DomUtil;
@@ -14,7 +14,7 @@ import elemental2.dom.HTMLTemplateElement;
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class PagerViewImpl implements PagerView {
 
     @UiField
@@ -31,13 +31,13 @@ public class PagerViewImpl implements PagerView {
     public HTMLElement textPanel;
     @UiField
     public IntegerBox numberField;
-    @UiStyle
+    @UiField
     public String disabledStyle;
 
     Presenter presenter;
 
 
-    HtmlBinder uiBinder = HtmlBinder.get(PagerViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(PagerViewImpl.class, this);
 
 
     public PagerViewImpl(HTMLTemplateElement templateElement) {

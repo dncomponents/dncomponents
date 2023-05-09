@@ -20,7 +20,7 @@ public class PagerWithListViewImpl implements PagerWithListView {
     Presenter presenter;
 
 
-    HtmlBinder uiBinder = HtmlBinder.get(PagerWithListViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(PagerWithListViewImpl.class, this);
 
 
     public PagerWithListViewImpl(HTMLTemplateElement templateElement) {

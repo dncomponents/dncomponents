@@ -17,7 +17,7 @@
 package com.dncomponents.bootstrap.client.autocomplete.list;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.bootstrap.client.autocomplete.BaseAutocompleteViewImpl;
 import com.dncomponents.client.components.HasRowsDataList;
 import com.dncomponents.client.components.ListCellConfig;
@@ -38,14 +38,14 @@ import java.util.function.Function;
  * @author nikolasavic
  */
 
-@UiTemplate
+@Component
 public class AutocompleteViewImpl<T> extends BaseAutocompleteViewImpl<T> implements AutocompleteView<T> {
 
     protected static final String VIEW_ID = "DEFAULT";
     @UiField
     ListData<T, String> list;
 
-    HtmlBinder uiBinder = HtmlBinder.get(AutocompleteViewImpl.class, this);
+    HtmlBinder uiBinder = HtmlBinder.create(AutocompleteViewImpl.class, this);
 
     public AutocompleteViewImpl() {
         uiBinder.bind();

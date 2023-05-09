@@ -67,6 +67,10 @@ public class AutocompleteMultiSelect<T> extends AbstractAutocompleteMultiSelect<
         view.getHasRowsData().drawData();
     }
 
+    public void setPlaceHolder(String text) {
+        view.setPlaceHolder(text);
+    }
+
     public static class AutocompleteMultiSelectHtmlParser extends AbstractPluginHelper implements ComponentHtmlParser {
 
         private static AutocompleteMultiSelectHtmlParser instance;

@@ -17,7 +17,7 @@
 package com.dncomponents.bootstrap.client.list;
 
 import com.dncomponents.UiField;
-import com.dncomponents.UiTemplate;
+import com.dncomponents.Component;
 import com.dncomponents.bootstrap.client.cell.BaseCellViewImpl;
 import com.dncomponents.client.components.checkbox.CheckBox;
 import com.dncomponents.client.components.core.HtmlBinder;
@@ -30,7 +30,7 @@ import elemental2.dom.HTMLTemplateElement;
 /**
  * @author nikolasavic
  */
-@UiTemplate
+@Component
 public class ListCellCheckBoxViewImpl extends BaseCellViewImpl implements ListCellCheckBoxView {
 
     @UiField
@@ -43,7 +43,7 @@ public class ListCellCheckBoxViewImpl extends BaseCellViewImpl implements ListCe
     HTMLElement valuePanel;
 
     public ListCellCheckBoxViewImpl(HTMLTemplateElement listItemCheckbox) {
-        HtmlBinder uiBinder = HtmlBinder.get(ListCellCheckBoxViewImpl.class, this);
+        HtmlBinder uiBinder = HtmlBinder.create(ListCellCheckBoxViewImpl.class, this);
         uiBinder.setTemplateElement(listItemCheckbox);
         uiBinder.bind();
     }
