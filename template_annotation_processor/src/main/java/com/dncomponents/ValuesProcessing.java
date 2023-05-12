@@ -16,6 +16,7 @@
 
 package com.dncomponents;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -56,8 +57,12 @@ public class ValuesProcessing {
             valuesNames = Arrays.stream(strings).collect(Collectors.toSet());
 
         Set<String> states = new HashSet<>();
+
         for (String valuesName : valuesNames) {
-            if (valuesName.contains(".")) {
+            if (Util.checkIfItsMethod(valuesName)) {
+                updates += "        template.updateState(\"" + StringEscapeUtils.escapeJava(valuesName) + "\"," +
+                        " d." + Util.replaceFunctionArguments(valuesName) + ",true);\n";
+            } else if (valuesName.contains(".")) {
                 final String[] split = valuesName.split("\\.");
                 states.add(split[0]);
             } else {
@@ -65,7 +70,7 @@ public class ValuesProcessing {
             }
         }
         for (String name : states) {
-            updates += "        template.updateState(\"" + name + "\", d." + name + ");\n";
+            updates += "        template.updateState(\"" + name + "\", d." + name + ",true);\n";
             final String fn = checkForFunctions(name, valuesNames, checkCollectionType(name, classEl));
             if (!fn.isEmpty()) {
                 initImports();
@@ -91,7 +96,7 @@ public class ValuesProcessing {
         if (!functions.isEmpty()) {
             String fns = "";
             for (String function : functions) {
-                fns += "                    put(\"" + function + "\", (Function<" + type + ", Object>)" + fieldName + " -> " + function + ");\n";
+                fns += "                    put(\"" + StringEscapeUtils.escapeJava(function) + "\", (Function<" + type + ", Object>)" + fieldName + " -> " + function + ");\n";
             }
             result = "new HashMap() {{\n" + fns + "                }});";
         }

@@ -16,8 +16,11 @@
 
 package com.dncomponents;
 
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.Multimap;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Type;
+import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -26,6 +29,8 @@ import org.jsoup.select.Elements;
 import javax.lang.model.element.ElementKind;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.dncomponents.Util.checkIfItsMethod;
 
 /**
  * @author nikolasavic
@@ -36,8 +41,7 @@ public class LoopProcessing {
     String updates = "";
     String imports = "";
 
-    private Set<String> valuesNames = new HashSet<>();
-    Set<String> collectionsNameSet = new HashSet<>();
+    Multimap<String, Loop> collections = LinkedListMultimap.create();
     private String initFunctions = "";
     javax.lang.model.element.Element classEl;
 
@@ -72,39 +76,44 @@ public class LoopProcessing {
             String value = allElements.get(i).attributes().get("loop");
             if (value != null && !value.isEmpty()) {
                 final String[] words = value.split(" ");
-                parseLoop(allElements.get(i));
-                collectionsNameSet.add(words[2]);
+                collections.put(words[2], new Loop(words[0], words[2], parseLoop(allElements.get(i))));
             }
         }
 
-        for (String name : collectionsNameSet) {
-            updates += "                template.updateState(\"" + name + "\", d." + name + ");\n";
-            final String fn = checkForFunctions(valuesNames, checkCollectionType(name));
+        collections.asMap().forEach((collectionName, loops) -> {
+            updates += "                template.updateState(\"" + collectionName + "\", d." + collectionName + ",true);\n";
+            String fn = "";
+            for (Loop loop : loops) {
+                fn += checkForFunctions(loop, checkCollectionType(collectionName));
+            }
             if (!fn.isEmpty()) {
-                initFunctions += "           template.setLoopFunctions(\"" + name + "\"," + fn +
+                fn = "new HashMap() {{\n" + fn + "                }});";
+                initFunctions += "           template.setLoopFunctions(\"" + collectionName + "\"," + fn +
                         "         ";
             }
-        }
+        });
     }
 
-    private String checkForFunctions(Set<String> valuesNames, String type) {
+    private String checkForFunctions(Loop loop, String type) {
         String result = "";
-        Set<String> functions = new HashSet<>();
-        for (String valuesName : valuesNames) {
-            if (valuesName.contains(".")) {
-                functions.add(valuesName);
-            }
-        }
-        if (!functions.isEmpty()) {
+        if (!loop.functions.isEmpty()) {
             initImports();
             String fns = "";
-            for (String function : functions) {
-                fns += "                    put(\"" + function + "\", (Function<" + type + ", Object>)" + getBaseName(function) + " -> " + function + ");\n";
+            for (String function : loop.functions) {
+                if (checkIfItsMethod(function)) {
+                    fns += "                    put(\"" +  StringEscapeUtils.escapeJava(function) + "\", (Function<" + type + ", Object>)" + loop.arg + " -> d." + function + ");\n";
+
+                } else if (function.contains(".")) {
+                    fns += "                    put(\"" +  StringEscapeUtils.escapeJava(function) + "\", (Function<" + type + ", Object>)" + loop.arg + " -> " + function + ");\n";
+
+                }
+
             }
-            result = "new HashMap() {{\n" + fns + "                }});";
+            result = fns;
         }
         return result;
     }
+
 
     private void initImports() {
         if (imports.isEmpty())
@@ -112,12 +121,14 @@ public class LoopProcessing {
                     "import java.util.function.Function;\n";
     }
 
-    public void parseLoop(Element element) {
+    public Set<String> parseLoop(Element element) {
+        Set<String> valuesNames = new HashSet<>();
         if (element == null)
-            return;
+            return valuesNames;
         final String[] strings = org.apache.commons.lang3.StringUtils.substringsBetween(element.html(), "{{", "}}");
         if (strings != null)
             valuesNames.addAll(Arrays.stream(strings).collect(Collectors.toSet()));
+        return valuesNames;
     }
 
     private String getBaseName(String nm) {
@@ -137,5 +148,17 @@ public class LoopProcessing {
 
     public String getImports() {
         return imports;
+    }
+
+    class Loop {
+        public Loop(String arg, String collectionName, Set<String> functions) {
+            this.arg = arg;
+            this.collectionName = collectionName;
+            this.functions = functions;
+        }
+
+        String arg, collectionName;
+        private Set<String> functions = new HashSet<>();
+
     }
 }

@@ -30,6 +30,8 @@ import java.util.function.Function;
 public class State<V> extends AbstractValueChangeHandler<V> {
     TemplateParser templateParser;
     V value;
+    boolean pending;
+    boolean needsUpdate;
     String valueName;
     Map<String, Function<V, ?>> functionMap = new HashMap<>();
 
@@ -66,7 +68,12 @@ public class State<V> extends AbstractValueChangeHandler<V> {
         if (!Objects.equals(this.value, oldValue)) {
             if (fireEvents)
                 ValueChangeEvent.fire(this, this.value, oldValue);
-            updateUI(value);
+            if (!pending) {
+                updateUI(value);
+                needsUpdate = false;
+            } else {
+                needsUpdate = true;
+            }
         }
     }
 
@@ -100,4 +107,19 @@ public class State<V> extends AbstractValueChangeHandler<V> {
         }
         return null;
     }
+
+    public void setPending(boolean pending) {
+        this.pending = pending;
+    }
+
+    public void updateUI() {
+        if (needsUpdate) {
+            updateUI(value);
+        }
+    }
+
+    public void forceUpdateUI() {
+        updateUI(value);
+    }
+
 }

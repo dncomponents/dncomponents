@@ -321,6 +321,7 @@ public class TemplateProcessor extends AbstractProcessor {
                 "    public void updateUi(){\n" +
                 valuesProcessing.getUpdates() +
                 loopProcessing.getUpdates() +
+                "       template.updateAll();\n"+
                 "    }\n\n" +
                 "    public static void bind(" + annotatedClassName + " d, TemplateParser template, boolean b) {\n" +
                 "    " +

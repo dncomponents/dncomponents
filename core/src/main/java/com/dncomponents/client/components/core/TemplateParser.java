@@ -54,12 +54,28 @@ public class TemplateParser {
     private void initStates() {
         for (Map.Entry<String, Set<UpdateUi>> entry : multiMapValueElements.entrySet()) {
             String key = entry.getKey();
-            if (key.contains(".")) {
+            if (key.contains(".") && !checkIfItsMethod(key)) {
                 final String[] split = key.split("\\.");
                 key = split[0];
             }
             states.add(new State(key, this));
         }
+    }
+
+
+    public static boolean checkIfItsMethod(String str) {
+        char[] chars = str.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            char ch = chars[i];
+            if (!Character.isLetter(ch)) {
+                if (ch == '(') {
+                    return true;
+                } else if (ch == '.') {
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 
     private Node clonedNode;
@@ -131,7 +147,11 @@ public class TemplateParser {
     }
 
     public State getState(String name) {
-        return states.stream().filter(s -> s.valueName.equals(name)).findAny().get();
+        return getStateOptional(name).get();
+    }
+
+    private Optional<State> getStateOptional(String name) {
+        return states.stream().filter(s -> s.valueName.equals(name)).findAny();
     }
 
     public Node getCloned() {
@@ -397,14 +417,26 @@ public class TemplateParser {
         return debug;
     }
 
-    public void updateState(String name, Object value) {
+    public void updateState(String name, Object value, boolean pending) {
         final State state = getState(name);
         if (state != null) {
+            state.setPending(pending);
             state.setValue(value);
         } else {
             DomGlobal.console.log("Warning: You are trying to update state element " + name + " that doesn't exist. Check your html code.");
         }
     }
+
+    public void updateState(String name, Object value) {
+        updateState(name, value, false);
+    }
+
+    public void updateAll() {
+        for (State state : states) {
+            state.updateUI();
+        }
+    }
+
 
     public void setLoopFunctions(String collectionName, HashMap hashMap) {
         for (UpdateUi updateUi : multiMapValueElements.get(collectionName)) {
@@ -516,6 +548,8 @@ public class TemplateParser {
                 final String key = entry.getKey();
                 final String[] split = key.split("\\.");
                 if (this.valueName.equals(split[0])) {
+                    fns.put(entry.getKey(), entry.getValue());
+                } else if (key.contains(this.valueName)) { //if it's method
                     fns.put(entry.getKey(), entry.getValue());
                 }
             }
