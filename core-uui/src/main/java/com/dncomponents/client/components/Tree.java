@@ -21,6 +21,8 @@ import com.dncomponents.client.components.core.entities.ItemId;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.core.events.close.CloseHandler;
 import com.dncomponents.client.components.core.events.close.HasCloseHandlers;
+import com.dncomponents.client.components.core.events.dnd.DropHandler;
+import com.dncomponents.client.components.core.events.dnd.HasDropHandlers;
 import com.dncomponents.client.components.core.events.filters.Filter;
 import com.dncomponents.client.components.core.events.open.HasOpenHandlers;
 import com.dncomponents.client.components.core.events.open.OpenHandler;
@@ -45,7 +47,9 @@ import static com.dncomponents.client.dom.DomUtil.isChildOf;
 /**
  * @author nikolasavic
  */
-public class Tree<M> extends AbstractCellComponent<TreeNode<M>, Object, TreeUi> implements HasOpenHandlers<TreeNode>, HasCloseHandlers<TreeNode>, HasTreeData<M> {
+public class Tree<M> extends AbstractCellComponent<TreeNode<M>, Object, TreeUi> implements HasOpenHandlers<TreeNode>,
+        HasCloseHandlers<TreeNode>, HasTreeData<M>, HasDropHandlers<TreeNode<M>> {
+
 
     static class TreeLogic<M> {
         AbstractCellComponent<TreeNode<M>, Object, ?> owner;
@@ -324,6 +328,11 @@ public class Tree<M> extends AbstractCellComponent<TreeNode<M>, Object, TreeUi> 
 
     @Override
     public HandlerRegistration addOpenHandler(OpenHandler<TreeNode> handler) {
+        return addHandler(handler);
+    }
+
+    @Override
+    public HandlerRegistration addDropHandler(DropHandler<TreeNode<M>> handler) {
         return addHandler(handler);
     }
 

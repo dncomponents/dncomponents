@@ -37,25 +37,45 @@ public class ValuesProcessing {
 
     javax.lang.model.element.Element classEl;
 
+
     public ValuesProcessing(String html, javax.lang.model.element.Element classEl) {
         this.classEl = classEl;
         parse(html);
     }
 
+    String getStateName(String valueName) {
+        String key = valueName;
+        if (key.contains(".") && !checkIfItsMethod(key)) {
+            final String[] split = key.split("\\.");
+            key = split[0];
+        }
+        return key;
+    }
+
+    List<String> fromLoopValues = new ArrayList<>();
+
     public void parse(String html) {
         if (html == null)
             return;
+
         Document doc = Jsoup.parse(html);
 
         final Elements dloop = doc.getElementsByAttribute("loop");
         for (org.jsoup.nodes.Element element : dloop) {
+            final String loop = element.attributes().get("loop");
+            final String[] split = loop.split(" ");
+            String avoidName = split[0];
+            final List<String> valueFromLoop = findSubstrings(element.html()).stream().filter(e ->
+                    !avoidName.equals(getStateName(e))).collect(Collectors.toList());
+            fromLoopValues.addAll(valueFromLoop);
             element.remove();
         }
 
-        final String[] strings = org.apache.commons.lang3.StringUtils.substringsBetween(doc.html(), "{{", "}}");
-        if (strings != null)
-            valuesNames = Arrays.stream(strings).collect(Collectors.toSet());
-
+        List<String> allStateNames = findSubstrings(doc.html());
+        if (allStateNames != null) {
+            valuesNames = allStateNames.stream().collect(Collectors.toSet());
+            valuesNames.addAll(fromLoopValues);
+        }
         Set<String> states = new HashSet<>();
 
         for (String valuesName : valuesNames) {
@@ -77,6 +97,37 @@ public class ValuesProcessing {
                 initFunctions += "          template.getState(\"" + name + "\").setFunctionMap(" + fn + "\n";
             }
         }
+    }
+
+    public static boolean checkIfItsMethod(String str) {
+        char[] chars = str.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            char ch = chars[i];
+            if (!Character.isLetter(ch)) {
+                if (ch == '(') {
+                    return true;
+                } else if (ch == '.') {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static List<String> findSubstrings(String input) {
+        List<String> substrings = new ArrayList<>();
+        int startIndex = input.indexOf("{{");
+        int endIndex = -1;
+        while (startIndex != -1) {
+            endIndex = input.indexOf("}}", startIndex);
+            if (endIndex != -1) {
+                substrings.add(input.substring(startIndex + 2, endIndex));
+                startIndex = input.indexOf("{{", endIndex + 2);
+            } else {
+                break;
+            }
+        }
+        return substrings;
     }
 
     private void initImports() {

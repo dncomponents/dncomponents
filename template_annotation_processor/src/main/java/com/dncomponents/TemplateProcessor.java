@@ -241,7 +241,8 @@ public class TemplateProcessor extends AbstractProcessor {
 
         String templateValue = readHtmlPair(element);
         if (element.getAnnotation(Component.class) != null) {
-            templateValue = element.getAnnotation(Component.class).template();
+            if (templateValue == null || templateValue.isEmpty())
+                templateValue = element.getAnnotation(Component.class).template();
             generateParserClass(element, classEl);
         }
 
@@ -321,7 +322,7 @@ public class TemplateProcessor extends AbstractProcessor {
                 "    public void updateUi(){\n" +
                 valuesProcessing.getUpdates() +
                 loopProcessing.getUpdates() +
-                "       template.updateAll();\n"+
+                "       template.updateAll();\n" +
                 "    }\n\n" +
                 "    public static void bind(" + annotatedClassName + " d, TemplateParser template, boolean b) {\n" +
                 "    " +

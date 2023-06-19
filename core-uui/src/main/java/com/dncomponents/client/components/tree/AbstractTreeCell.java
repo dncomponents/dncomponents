@@ -18,6 +18,7 @@ package com.dncomponents.client.components.tree;
 
 import com.dncomponents.client.components.BaseCell;
 import com.dncomponents.client.components.Tree;
+import com.dncomponents.client.components.core.events.dnd.DropEvent;
 import com.dncomponents.client.components.tree.checkbox.TreeCellCheckboxParent;
 import com.dncomponents.client.components.tree.checkbox.TreeCellCheckboxSimple;
 import com.dncomponents.client.views.core.ui.tree.BaseTreeCellView;
@@ -80,18 +81,23 @@ public abstract class AbstractTreeCell<T, M> extends BaseCell<TreeNode<T>, M> {
                     final BaseCell cell = getOwner().getCell(from);
                     final BaseCell cellTo = getOwner().getCell(to);
                     final TreeNode fromModel = Js.cast(cell.getModel());
-                    final TreeNode toModel = Js.cast(cellTo.getModel());
+                    final TreeNode toModel = (cellTo == null) ? root : Js.cast(cellTo.getModel());
                     if (toModel.isParentOf(fromModel) || toModel == fromModel) {
                         return;
                     }
                     fromModel.removeFromParent();
                     if (inserted) {
-                        toModel.insertAfter(fromModel);
+                        if (toModel.isExpanded() && !toModel.isLeaf()) {
+                            toModel.insert(fromModel, 0);
+                        } else {
+                            toModel.insertAfter(fromModel);
+                        }
                     } else {
                         toModel.add(fromModel);
                     }
                     getOwner().setRoot(root);
                     getOwner().drawData();
+                    DropEvent.fire(getOwner(), fromModel);
                 }
             });
 

@@ -27,6 +27,7 @@ import jsinterop.base.Js;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class TemplateParser {
 
@@ -125,6 +126,7 @@ public class TemplateParser {
         clearKeyTags(KEY, getCloned());
     }
 
+
     public static String KEY = "ui-field";
     public static String LOOP_KEY = "loop";
 
@@ -147,7 +149,7 @@ public class TemplateParser {
     }
 
     public State getState(String name) {
-        return getStateOptional(name).get();
+        return getStateOptional(name).orElse(null);
     }
 
     private Optional<State> getStateOptional(String name) {
@@ -268,8 +270,23 @@ public class TemplateParser {
                     final String dloop = at.getAttribute(key);
                     final String[] split = dloop.split(" ");
                     String collectionName = split[2];
+                    createState(split[0], at);
                     multiMapValueElements.put(collectionName, new LoopElement(at, split[0], collectionName));
                 }
+            }
+        }
+    }
+
+    private void createState(String avoid, Element at) {
+        final String string = at.innerHTML;
+        for (String substring : findSubstrings(string)) {
+            String key = substring;
+            if (key.contains(".") && !checkIfItsMethod(key)) {
+                final String[] split = key.split("\\.");
+                key = split[0];
+            }
+            if (!key.equals(avoid)) {
+                states.add(new State(key, this));
             }
         }
     }
@@ -291,7 +308,7 @@ public class TemplateParser {
                 for (String v : findSubstrings(content)) {
                     multiMapValueElements.put(v, new ElementValueTag(Js.cast(at), "", at.innerHTML));
                 }
-                at.innerHTML = "";
+//                at.innerHTML = "";
             }
         }
     }
@@ -509,6 +526,7 @@ public class TemplateParser {
     }
 
     class LoopElement implements UpdateUi {
+        private boolean isTemplate;
         String valueName;
         Element element;
         String collectionName;
@@ -518,28 +536,51 @@ public class TemplateParser {
         LoopElement(Element element, String valueName, String collectionName) {
             this.valueName = valueName;
             this.element = element;
+            if (element instanceof HTMLTemplateElement) {
+                isTemplate = true;
+            }
             this.collectionName = collectionName;
             templateElement.innerHTML = element.innerHTML;
             this.element.innerHTML = "";
         }
+
+        DocumentFragment fragment = new DocumentFragment();
 
         public void loop(Collection collection) {
             this.element.innerHTML = "";
             for (Object o : collection) {
                 update(valueName, o);
             }
+            if (isTemplate) {
+                DomUtil.replaceRaw1(fragment, element);
+            }
         }
 
+        List<String> getAllStateNames() {
+            return states.stream().map(e -> e.valueName).collect(Collectors.toList());
+        }
 
         private void update(String valueName, Object value) {
             TemplateParser parser = new TemplateParser(templateElement, true);
-
+            for (String stateName : getAllStateNames()) {
+                if (stateName.equals(valueName))
+                    continue;
+                final State state1 = parser.getState(stateName);
+                if (state1 != null) {
+                    state1.setValue(getState(stateName).getValue());
+                }
+            }
             final State state = parser.getState(valueName);
             if (state != null) {
                 state.setFunctionMap(functions);
                 state.setValue(value);
             }
-            element.appendChild(parser.getCloned());
+            if (isTemplate) {
+                fragment.append(parser.getCloned());
+//                element.parentElement.appendChild(parser.getCloned());
+            } else {
+                element.appendChild(parser.getCloned());
+            }
         }
 
         public LoopElement setFunctions(Map<String, Function<?, ?>> functions) {

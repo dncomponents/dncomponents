@@ -460,6 +460,10 @@ public class DomUtil {
         Node parent = n2.parentNode;
         parent.replaceChild(n1, n2);
     }
+    public static void replaceRaw1(Node n1, Node n2) {
+        Node parent = n2.parentNode;
+        parent.replaceChild(n1, n2);
+    }
 
     public static Node unwrap(Element element) {
         DocumentFragment fragment = DomGlobal.document.createDocumentFragment();

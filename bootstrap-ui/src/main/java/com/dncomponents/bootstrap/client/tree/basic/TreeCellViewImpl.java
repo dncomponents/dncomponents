@@ -53,6 +53,7 @@ public class TreeCellViewImpl extends BaseCellViewImpl implements BaseTreeCellVi
 
     static HTMLElement draggedElement;
     boolean inserted;
+    boolean isFirstElement;
 
     public TreeCellViewImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);
@@ -80,12 +81,28 @@ public class TreeCellViewImpl extends BaseCellViewImpl implements BaseTreeCellVi
             @Override
             public void handleEvent(Event evt) {
                 DragEvent event = Js.cast(evt);
-                HTMLElement el = Js.cast(evt.target);
+                HTMLElement el = asElement();
+                if (draggedElement.equals(el)) {
+                    return;
+                }
                 final double v = el.getBoundingClientRect().bottom - event.clientY;
+                final double vv = el.getBoundingClientRect().top - event.clientY;
+
                 if (v < 10) {
                     el.style.set("border", "unset");
                     el.style.set("border-bottom", "2px solid red");
                     inserted = true;
+                } else if (vv < 10) {
+                    // Find the first <li> element with the "draggable" attribute within the parent <ul>
+                    Element firstDraggableElement = asElement().parentElement.querySelector("li[draggable]");
+                    // Check if the element is the first draggable element
+                    boolean isFirstDraggable = el.equals(firstDraggableElement);
+                    if (isFirstDraggable) {
+                        el.style.set("border", "unset");
+                        el.style.set("border-top", "2px solid red");
+                        inserted = true;
+                        isFirstElement = true;
+                    }
                 } else {
                     el.style.set("border", "2px red dotted");
                     inserted = false;
@@ -99,7 +116,7 @@ public class TreeCellViewImpl extends BaseCellViewImpl implements BaseTreeCellVi
         asElement().addEventListener("drop", new EventListener() {
             @Override
             public void handleEvent(Event evt) {
-                dragged.accept(draggedElement, Js.cast(evt.target), inserted);
+                dragged.accept(draggedElement, isFirstElement ? null : Js.cast(evt.target), inserted);
             }
         });
     }
