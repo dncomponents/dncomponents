@@ -54,8 +54,7 @@ public class TreeTableColumnConfig<T, M> extends ColumnConfig<TreeNode<T>, M> {
         setEditable(columnConfig.isEditable());
         setColumnWidth(columnConfig.getColumnWidth());
         setCellFactory(c -> {
-            CellContext<T, M, Table<T>> context =
-                    new CellContext<>(columnConfig, null, c.model.getUserObject(), (Table<T>) c.owner);
+            final CellContext<T, M> context = new CellContext<>(columnConfig, null, c.model.getUserObject(), (Table<T>) c.owner);
             return (TableCell<TreeNode<T>, M>) columnConfig.getCellFactory().getCell(context);
         });
         setHeaderCellFactory(() -> columnConfig.getHeaderCellFactory().getCell());

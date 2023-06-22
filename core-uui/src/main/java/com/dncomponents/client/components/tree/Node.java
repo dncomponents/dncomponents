@@ -17,6 +17,7 @@
 package com.dncomponents.client.components.tree;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -99,7 +100,7 @@ public interface Node<N extends Node> {
 
     default void insertAfter(N node) {
         node.setParent(getParent());
-        getParent().getChildren().add(getParent().getChildren().indexOf(this)+1, node);
+        getParent().getChildren().add(getParent().getChildren().indexOf(this) + 1, node);
     }
 
     default void add(N node) {
@@ -168,23 +169,34 @@ public interface Node<N extends Node> {
         return (N) node;
     }
 
-    //Todo this returns only node next to this.
-    //e.g when we have node with color e.g red that has two children true and false nodes.
-    // if this is true node it returns only two siblings... Not sure if this is correct.
-    // if you want all "true" nodes go with static Node.getAllNodesAtLevel(1, getRoot())
     default List<N> getSiblings() {
-        int level = getLevel();
-        List<N> sib = new ArrayList<>();
-        for (N n : getSiblingsAndChildNodes()) {
-            if (n.getLevel() == level)
-                sib.add(n);
+        if (getParent() != null) {
+            return getParent().getChildren();
         }
-        return sib;
-//        return getSiblingsAndChildNodes().stream() //todo this doesn't work in gwt!!??
-//                .filter(node -> node.getLevel() == level)
-//                .collect(Collectors.toList());
+        return Collections.emptyList();
     }
 
+    default N nextSibling() {
+        if (getParent() != null) {
+            List<N> siblings = getParent().getChildren();
+            int index = siblings.indexOf(this);
+            if (index < siblings.size() - 1) {
+                return siblings.get(index + 1);
+            }
+        }
+        return null;
+    }
+
+    default N previousSibling() {
+        if (getParent() != null) {
+            List<N> siblings = getParent().getChildren();
+            int index = siblings.indexOf(this);
+            if (index > 0) {
+                return siblings.get(index - 1);
+            }
+        }
+        return null;
+    }
 
     default List<N> getAllLeafs() {
         return getAllChildNodes().stream()

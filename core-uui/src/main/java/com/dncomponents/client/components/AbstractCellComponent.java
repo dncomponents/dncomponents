@@ -70,7 +70,7 @@ public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extend
 
     protected VirtualScroll virtualScroll;
 
-    protected CellFactory<T, M, ? extends AbstractCellComponent<T, ?, ?>> defaultCellFactory;
+    protected CellFactory<T, M> defaultCellFactory;
 
     private boolean editable = true;
 

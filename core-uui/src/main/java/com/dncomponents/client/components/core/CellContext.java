@@ -18,12 +18,13 @@ package com.dncomponents.client.components.core;
 
 import com.dncomponents.client.components.AbstractCellComponent;
 import com.dncomponents.client.components.BaseCell;
+
 /**
  * @author nikolasavic
  */
-public class CellContext<T, M, C extends AbstractCellComponent<T, ?, ?>> {
+public class CellContext<T, M> {
 
-    public CellContext(CellConfig<T, M> cellConfig, CellFactory<T, M, C> defaultCellFactory, T model, C owner) {
+    public CellContext(CellConfig<T, M> cellConfig, CellFactory<T, M> defaultCellFactory, T model, AbstractCellComponent owner) {
         this.defaultCellFactory = defaultCellFactory;
         this.cellConfig = cellConfig;
         this.model = model;
@@ -31,9 +32,9 @@ public class CellContext<T, M, C extends AbstractCellComponent<T, ?, ?>> {
     }
 
     CellConfig<T, M> cellConfig;
-    public CellFactory<T, M, C> defaultCellFactory;
+    public CellFactory<T, M> defaultCellFactory;
     public T model;
-    public C owner;
+    public AbstractCellComponent owner;
 
     public M value() {
         return cellConfig.getFieldGetter().apply(model);

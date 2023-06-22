@@ -51,16 +51,11 @@ public class TableTree<T> extends Table<TreeNode<T>> implements HasOpenHandlers<
                 columnConfigs.stream().map(columnConfig ->
                         columnConfig.getFieldGetter().apply(t)).collect(Collectors.toList()));
 //        ensureRowCellConfig().setCellFactory((RowTableCellFactory) context -> new RowTable());
-        ensureRowCellConfig().setCellFactory(new CellFactory<TreeNode<T>, List, AbstractCellComponent<TreeNode<T>, ?, ?>>() {
-            @Override
-            public BaseCell<TreeNode<T>, List> getCell(CellContext<TreeNode<T>, List, AbstractCellComponent<TreeNode<T>, ?, ?>> c) {
-                if (c.model.isLeaf())
-                    return new RowTable<>();
-                else
-                    return new TableTreeCellParent();
-//                    return AbstractTableTreeCell.getCell(c.model, checkable);
-
-            }
+        ensureRowCellConfig().setCellFactory(c -> {
+            if (c.model.isLeaf()) {
+                return new RowTable<>();
+            } else
+                return new TableTreeCellParent();
         });
         setSelectionModel(new ListTreeMultiSelectionModel<>(this, view.getRootView()));
     }

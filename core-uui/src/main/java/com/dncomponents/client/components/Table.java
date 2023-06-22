@@ -61,24 +61,14 @@ public class Table<T> extends AbstractCellComponent<T, List, TableUi> implements
     //    public boolean expandAllGroupBy = false;
     public HeaderCellHolder headerCellHolder = new HeaderCellHolder(this, groupBy);
 
-    protected final CellFactory<T, ?, ? extends AbstractCellComponent<T, ?, ?>> valueCellFactory;
+    protected final CellFactory<T, ?> valueCellFactory;
 
     {
         ensureRowCellConfig().setFieldGetter(t -> columnConfigs.stream().map(c -> c.getFieldGetter().apply(t)).collect(Collectors.toList()));
         setSelectionModel(new ListTreeMultiSelectionModel<>(this, this.getView().getRootView()));
-        defaultCellFactory = (RowTableCellFactory<T>) context -> new RowTable<>();
-        valueCellFactory = new CellFactory<T, Object, AbstractCellComponent<T, ?, ?>>() {
-            @Override
-            public BaseCell<T, Object> getCell(CellContext<T, Object, AbstractCellComponent<T, ?, ?>> c) {
-                return new TableCell<>();
-            }
-        };
-        ensureRowCellConfig().setCellFactory(new CellFactory<T, List, AbstractCellComponent<T, ?, ?>>() {
-            @Override
-            public BaseCell<T, List> getCell(CellContext<T, List, AbstractCellComponent<T, ?, ?>> c) {
-                return new RowTable<>();
-            }
-        });
+        defaultCellFactory = c -> new RowTable<>();
+        valueCellFactory = (CellFactory<T, Object>) c -> new TableCell<>();
+        ensureRowCellConfig().setCellFactory(c -> new RowTable<>());
     }
 
     List<T> rowExpanderList = new ArrayList<>();
@@ -166,8 +156,8 @@ public class Table<T> extends AbstractCellComponent<T, List, TableUi> implements
             for (ColumnConfig config : columnConfigs) {
                 if (!config.isVisible()) continue;
                 FooterCellFactory footerCellFactory = config.getFooterCellFactory();
-                if(footerCellFactory==null)
-                    footerCellFactory= FooterCell::new;
+                if (footerCellFactory == null)
+                    footerCellFactory = FooterCell::new;
                 AbstractFooterCell tableFooterCell = footerCellFactory.getCell();
                 footerCells.add(tableFooterCell);
                 initCell(tableFooterCell, new Object(), config, this);
@@ -234,12 +224,12 @@ public class Table<T> extends AbstractCellComponent<T, List, TableUi> implements
      */
     public void addColumn(ColumnConfig<T, ?>... columns) {
         Collections.addAll(columnConfigs, columns);
-        addHeader=false;
+        addHeader = false;
     }
 
-    public void removeColumn(ColumnConfig<T,?> column){
+    public void removeColumn(ColumnConfig<T, ?> column) {
         columnConfigs.remove(column);
-        addHeader=false;
+        addHeader = false;
     }
 
     public List<ColumnConfig> getColumnConfigs() {
@@ -576,7 +566,7 @@ public class Table<T> extends AbstractCellComponent<T, List, TableUi> implements
         }
 
         public TableRowCellConfig<T, M> setCellFactory(RowTableCellFactory<T> cellFactory) {
-            this.cellFactory = (CellFactory<T, M, ? extends AbstractCellComponent<T, ?, ?>>) cellFactory;
+            this.cellFactory = (CellFactory<T, M>) cellFactory;
             return this;
         }
     }

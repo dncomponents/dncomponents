@@ -169,7 +169,7 @@ public class ColumnConfig<T, M> extends CellConfig<T, M> {
         private Validator<M> validator;
         private CellEditorFactory<T, M> cellEditorFactory;
         private Class clazz;
-        private CellFactory<T, M, ? extends AbstractCellComponent<T, ?, ?>> cellFactory;
+        private CellFactory<T, M> cellFactory;
         private CellRenderer<T, M> cellRenderer;
         private String name;
         private String helperText;

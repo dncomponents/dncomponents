@@ -22,6 +22,6 @@ import com.dncomponents.client.components.BaseCell;
 /**
  * @author nikolasavic
  */
-public interface CellFactory<T, M, C extends AbstractCellComponent<T, ?, ?>> {
-    BaseCell<T, M> getCell(CellContext<T, M, C> c);
+public interface CellFactory<T, M> {
+    BaseCell<T, M> getCell(CellContext<T, M> c);
 }

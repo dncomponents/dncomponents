@@ -26,7 +26,7 @@ import java.util.function.Function;
  */
 public class CellConfig<T, M> extends FieldConfig<T, M> {
 
-    protected CellFactory<T, M, ? extends AbstractCellComponent<T, ?, ?>> cellFactory;
+    protected CellFactory<T, M> cellFactory;
     protected CellRenderer<T, M> cellRenderer = r -> r.valuePanel.innerHTML = r.value == null ? "" : r.value + "";
 
     public CellConfig(Function<T, M> fieldGetter) {
@@ -41,12 +41,12 @@ public class CellConfig<T, M> extends FieldConfig<T, M> {
         return fieldSetter;
     }
 
-    public <C extends CellFactory<T, M, ? extends AbstractCellComponent<T, ?, ?>>> C getCellFactory() {
+    public <C extends CellFactory<T, M>> C getCellFactory() {
         if (cellFactory == null) throw new RuntimeException("Cell Factory is not defined!");
         return (C) cellFactory;
     }
 
-    public void setCellFactory(CellFactory<T, M, ? extends AbstractCellComponent<T, ?, ?>> cellFactory) {
+    public void setCellFactory(CellFactory<T, M> cellFactory) {
         this.cellFactory = cellFactory;
     }
 

@@ -16,14 +16,13 @@
 
 package com.dncomponents.client.components.table;
 
-import com.dncomponents.client.components.Table;
-import com.dncomponents.client.components.core.CellFactory;
 import com.dncomponents.client.components.RowTable;
 import com.dncomponents.client.components.core.CellContext;
+import com.dncomponents.client.components.core.CellFactory;
 
 import java.util.List;
 
-public interface RowTableCellFactory<T> extends CellFactory<T, List, Table<T>> {
+public interface RowTableCellFactory<T> extends CellFactory<T, List> {
     @Override
-    RowTable<T> getCell(CellContext<T, List, Table<T>> c);
+    RowTable<T> getCell(CellContext<T, List> c);
 }

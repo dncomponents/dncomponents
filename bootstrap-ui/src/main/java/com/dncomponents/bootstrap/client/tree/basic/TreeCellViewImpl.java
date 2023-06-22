@@ -86,13 +86,17 @@ public class TreeCellViewImpl extends BaseCellViewImpl implements BaseTreeCellVi
                     return;
                 }
                 final double v = el.getBoundingClientRect().bottom - event.clientY;
-                final double vv = el.getBoundingClientRect().top - event.clientY;
+                final double vv = event.clientY - el.getBoundingClientRect().top;
 
                 if (v < 10) {
                     el.style.set("border", "unset");
                     el.style.set("border-bottom", "2px solid red");
                     inserted = true;
-                } else if (vv < 10) {
+                } else {
+                    el.style.set("border", "2px red dotted");
+                    inserted = false;
+                }
+                if (vv < 10) {
                     // Find the first <li> element with the "draggable" attribute within the parent <ul>
                     Element firstDraggableElement = asElement().parentElement.querySelector("li[draggable]");
                     // Check if the element is the first draggable element
@@ -103,9 +107,6 @@ public class TreeCellViewImpl extends BaseCellViewImpl implements BaseTreeCellVi
                         inserted = true;
                         isFirstElement = true;
                     }
-                } else {
-                    el.style.set("border", "2px red dotted");
-                    inserted = false;
                 }
                 DomGlobal.console.log(el.textContent + "  -  " + v);
                 evt.preventDefault();

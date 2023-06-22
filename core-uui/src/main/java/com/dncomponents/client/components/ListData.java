@@ -16,9 +16,7 @@
 
 package com.dncomponents.client.components;
 
-import com.dncomponents.client.components.core.AbstractPluginHelper;
-import com.dncomponents.client.components.core.BaseComponent;
-import com.dncomponents.client.components.core.ComponentHtmlParser;
+import com.dncomponents.client.components.core.*;
 import com.dncomponents.client.components.core.entities.ItemId;
 import com.dncomponents.client.components.list.ListCell;
 import com.dncomponents.client.components.list.ListCellFactory;
@@ -42,9 +40,8 @@ import java.util.function.Function;
  */
 public class ListData<T, M> extends AbstractCellComponent<T, M, ListUi> implements HasRowsDataList<T> {
 
-
     {
-        defaultCellFactory = (ListCellFactory<T, M>) context -> new ListCell<>();
+        defaultCellFactory = c -> new ListCell<>();
         setSelectionModel(new ListTreeMultiSelectionModel(this, this.getView().getRootView()));
     }
 

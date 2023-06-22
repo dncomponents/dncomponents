@@ -16,11 +16,11 @@
 
 package com.dncomponents.client.components.tree;
 
-import com.dncomponents.client.components.Tree;
+import com.dncomponents.client.components.BaseCell;
 import com.dncomponents.client.components.core.CellContext;
 import com.dncomponents.client.components.core.CellFactory;
 
-public interface TreeCellFactory<T, M> extends CellFactory<TreeNode<T>, M, Tree<T>> {
+public interface TreeCellFactory<T,M> extends CellFactory<TreeNode<T>, M> {
     @Override
-    AbstractTreeCell<T, M> getCell(CellContext<TreeNode<T>, M, Tree<T>> c);
+    BaseCell<TreeNode<T>, M> getCell(CellContext<TreeNode<T>, M> c);
 }

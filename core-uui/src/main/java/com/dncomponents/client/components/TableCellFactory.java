@@ -24,7 +24,7 @@ import com.dncomponents.client.components.core.CellContext;
 /**
  * @author nikolasavic
  */
-public interface TableCellFactory<T, M> extends CellFactory<T, M, Table<T>> {
+public interface TableCellFactory<T, M> extends CellFactory<T, M> {
     @Override
-    TableCell<T, M> getCell(CellContext<T, M, Table<T>> c);
+    TableCell<T, M> getCell(CellContext<T, M> c);
 }

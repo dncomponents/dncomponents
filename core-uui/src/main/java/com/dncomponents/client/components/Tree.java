@@ -321,6 +321,18 @@ public class Tree<M> extends AbstractCellComponent<TreeNode<M>, Object, TreeUi> 
         return treeLogic.showParents;
     }
 
+
+    @Override
+    protected BaseCell createAndInitModelRowCell(TreeNode<M> model) {
+        final CellConfig<TreeNode<M>, Object> bb = ensureRowCellConfig(model);
+        final CellContext<TreeNode<M>, Object> context = new CellContext<>(bb, defaultCellFactory, model, this);
+        final CellFactory<TreeNode<M>, Object> cellFactory = bb.getCellFactory();
+        final BaseCell<TreeNode<M>, Object> cell = cellFactory.getCell(context);
+        initCellListDraw(cell, model, bb, visibleCells, this);
+        view.getRootView().addItem(cell);
+        return cell;
+    }
+
     @Override
     public HandlerRegistration addCloseHandler(CloseHandler<TreeNode> handler) {
         return addHandler(handler);
