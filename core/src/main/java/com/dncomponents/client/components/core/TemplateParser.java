@@ -531,7 +531,8 @@ public class TemplateParser {
         Element element;
         String collectionName;
         HTMLTemplateElement templateElement = DomUtil.createTemplate();
-        Map functions;
+        Map functions;DocumentFragment fragment;
+        List<Node> childNodesList;
 
         LoopElement(Element element, String valueName, String collectionName) {
             this.valueName = valueName;
@@ -544,15 +545,31 @@ public class TemplateParser {
             this.element.innerHTML = "";
         }
 
-        DocumentFragment fragment = new DocumentFragment();
-
         public void loop(Collection collection) {
             this.element.innerHTML = "";
+            fragment = new DocumentFragment();
+
             for (Object o : collection) {
                 update(valueName, o);
             }
             if (isTemplate) {
-                DomUtil.replaceRaw1(fragment, element);
+                final Node node = fragment.cloneNode(true);
+                if (element.parentElement != null) {
+                    childNodesList = new ArrayList<>(node.childNodes.asList());
+                    DomUtil.replaceRawNodes(node, element);
+                } else if (childNodesList != null) {
+                    Node firstChild = null;
+                    for (Node n : childNodesList) {
+                        if (firstChild == null) {
+                            firstChild = n;
+                            continue;
+                        }
+                        if (n.parentElement != null)
+                            n.parentElement.removeChild(n);
+                    }
+                    childNodesList = new ArrayList<>(node.childNodes.asList());
+                    DomUtil.replaceRawNodes(node, firstChild);
+                }
             }
         }
 
@@ -577,7 +594,6 @@ public class TemplateParser {
             }
             if (isTemplate) {
                 fragment.append(parser.getCloned());
-//                element.parentElement.appendChild(parser.getCloned());
             } else {
                 element.appendChild(parser.getCloned());
             }

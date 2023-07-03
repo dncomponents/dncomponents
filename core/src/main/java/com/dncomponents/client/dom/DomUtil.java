@@ -27,6 +27,7 @@ import jsinterop.base.Js;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 /**
  * @author nikolasavic
  */
@@ -446,7 +447,7 @@ public class DomUtil {
     public static void replace(Element n1, Element n2) {
         Node parent = n2.parentNode;
         n1.className = n1.className + " " + n2.className;
-        n1.setAttribute("style",n2.getAttribute("style"));
+        n1.setAttribute("style", n2.getAttribute("style"));
         parent.replaceChild(n1, n2);
     }
 
@@ -460,9 +461,10 @@ public class DomUtil {
         Node parent = n2.parentNode;
         parent.replaceChild(n1, n2);
     }
-    public static void replaceRaw1(Node n1, Node n2) {
+
+    public static Node replaceRawNodes(Node n1, Node n2) {
         Node parent = n2.parentNode;
-        parent.replaceChild(n1, n2);
+        return parent.replaceChild(n1, n2);
     }
 
     public static Node unwrap(Element element) {
