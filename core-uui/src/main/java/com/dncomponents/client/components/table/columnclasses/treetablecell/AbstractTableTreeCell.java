@@ -61,7 +61,7 @@ public abstract class AbstractTableTreeCell<M> extends TableCell<TreeNode<M>, Ob
     @Override
     public void draw() {
         super.draw();
-        getCellView().setPadding(getModel().getLevel() * 10 + 5);
+        getCellView().setShift(getModel().getLevel() * 10 + 5);
     }
 
     @Override

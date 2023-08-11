@@ -511,8 +511,6 @@ public class TemplateParser {
         }
     }
 
-    static int eln = 0;
-
     class ElementValueTag extends AbstractElementValue {
 
         public ElementValueTag(HTMLElement element, String arg, String argValue) {

@@ -26,6 +26,7 @@ import com.dncomponents.client.components.core.events.dnd.HasDropHandlers;
 import com.dncomponents.client.components.core.events.filters.Filter;
 import com.dncomponents.client.components.core.events.open.HasOpenHandlers;
 import com.dncomponents.client.components.core.events.open.OpenHandler;
+import com.dncomponents.client.components.core.selectionmodel.DefaultMultiSelectionModel;
 import com.dncomponents.client.components.list.ListTreeMultiSelectionModel;
 import com.dncomponents.client.components.tree.AbstractTreeCell;
 import com.dncomponents.client.components.tree.TreeCellFactory;
@@ -166,7 +167,10 @@ public class Tree<M> extends AbstractCellComponent<TreeNode<M>, Object, TreeUi> 
 
     {
         defaultCellFactory = (TreeCellFactory<M, Object>) c -> AbstractTreeCell.getCell(c.model, isCheckable());
-        setSelectionModel(new ListTreeMultiSelectionModel<>(this, view.getRootView()));
+        final ListTreeMultiSelectionModel<Object> sm = new ListTreeMultiSelectionModel<>(this, view.getRootView());
+        sm.setSelectionMode(DefaultMultiSelectionModel.SelectionMode.SINGLE);
+        sm.setInvokeType(ListTreeMultiSelectionModel.InvokeType.ON_FOCUS);
+        setSelectionModel(sm);
 //        setSelectionModel(new TreeMultiSelectionModel(this, view.getRootView()));
     }
 

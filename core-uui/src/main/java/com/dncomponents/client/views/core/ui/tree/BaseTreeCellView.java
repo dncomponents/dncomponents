@@ -20,15 +20,13 @@ package com.dncomponents.client.views.core.ui.tree;
 import com.dncomponents.client.views.core.pcg.cell.BaseCellView;
 import elemental2.dom.HTMLElement;
 
-import java.util.function.BiConsumer;
-
 /**
  * @author nikolasavic
  */
 public interface BaseTreeCellView extends BaseCellView {
     void setActive(boolean b);
 
-    void setPadding(double padding);
+    void setShift(int level);
 
     default void onItemDragged(TriConsumer<HTMLElement, HTMLElement,Boolean> dragged) {
     }

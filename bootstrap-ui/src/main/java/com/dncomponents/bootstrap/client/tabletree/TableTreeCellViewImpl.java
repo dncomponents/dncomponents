@@ -75,7 +75,7 @@ public class TableTreeCellViewImpl extends TableCellViewImpl implements ParentTr
     }
 
     @Override
-    public void setPadding(double padding) {
+    public void setShift(int level) {
 
     }
 }

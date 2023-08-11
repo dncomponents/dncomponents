@@ -53,7 +53,8 @@ public class ParentTableTreeCellViewImpl extends TreeCellParentViewImpl implemen
     }
 
     @Override
-    public void setPadding(double padding) {
-        DomUtil.setPaddingLeft(openCloseCell, padding + "px");
+    public void setShift(int level) {
+        double space=level * 10 + 5;
+        DomUtil.setPaddingLeft(openCloseCell, space + "px");
     }
 }

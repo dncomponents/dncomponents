@@ -47,8 +47,9 @@ public class TreeCellViewImpl extends BaseCellViewImpl implements BaseTreeCellVi
     }
 
     @Override
-    public void setPadding(double padding) {
-        DomUtil.setPaddingLeft(asElement(), padding + "px");
+    public void setShift(int level) {
+        double space=level * 10 + 5;
+        DomUtil.setPaddingLeft(asElement(), space + "px");
     }
 
     public <C extends BaseTreeCellView> C setIcon(String icon) {
