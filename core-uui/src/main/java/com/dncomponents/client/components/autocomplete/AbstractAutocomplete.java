@@ -51,6 +51,7 @@ public class AbstractAutocomplete<T, V extends BaseAutocompleteView<T>, C> exten
         }
     };
     protected HandlerRegistration blurRegistration;
+    boolean hideListOnValueChanged = true;
 
     public AbstractAutocomplete(V view) {
         super(view);
@@ -83,7 +84,11 @@ public class AbstractAutocomplete<T, V extends BaseAutocompleteView<T>, C> exten
             } else
                 filter.fireFilterChange();
         });
-        addValueChangeHandler(event -> showList(false));
+        addValueChangeHandler(event -> {
+            if (hideListOnValueChanged) {
+                showList(false);
+            }
+        });
         view.addButtonClickHandler(mouseEvent -> {
             showList(!listShowing);
         });

@@ -63,7 +63,7 @@ public abstract class AbstractAutocompleteMultiSelect<T> extends AbstractAutocom
     }
 
     private void bind() {
-        addValueChangeHandler(event -> showList(false));
+//        addValueChangeHandler(event -> showList(false));
         view.getSelectionModel().getHasValue().addValueChangeHandler(event -> {
             if (event.getOldValue().size() > event.getValue().size()) {
                 List<T> oldValue = event.getOldValue();
@@ -83,6 +83,14 @@ public abstract class AbstractAutocompleteMultiSelect<T> extends AbstractAutocom
                 setValue(event.getValue(), true);
             }
         });
+    }
+
+    public void setHideListOnValueChanged(boolean hideListOnValueChanged) {
+        this.hideListOnValueChanged = hideListOnValueChanged;
+    }
+
+    public boolean isHideListOnValueChanged() {
+        return hideListOnValueChanged;
     }
 
     @Override

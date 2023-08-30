@@ -37,7 +37,7 @@ public class EventsProcessing {
     public String parse(String html) {
         if (html == null)
             return "";
-        Document doc = Jsoup.parse(html);
+        Document doc = Jsoup.parse(wrapToTemplate(html));
         final Elements allElements = doc.getAllElements();
         for (Element element : allElements) {
             if (element.attributes() == null || element.attributes().size() == 0) continue;
@@ -120,6 +120,11 @@ public class EventsProcessing {
         }
 
         return result;
+    }
+
+    private String wrapToTemplate(String html) {
+        String res="<template>"+html+"</template>";
+        return res;
     }
 
     private String getBetween(String text) {
