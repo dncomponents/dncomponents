@@ -530,6 +530,8 @@ public class TemplateParser {
         String collectionName;
         HTMLTemplateElement templateElement = DomUtil.createTemplate();
         Map functions;
+        DocumentFragment fragment;
+        List<Node> childNodesList;
 
         LoopElement(Element element, String valueName, String collectionName) {
             this.valueName = valueName;
@@ -544,11 +546,29 @@ public class TemplateParser {
 
         public void loop(Collection collection) {
             this.element.innerHTML = "";
+            fragment = new DocumentFragment();
             for (Object o : collection) {
                 update(valueName, o);
             }
-            if(isTemplate){
-                DomUtil.unwrap(element);
+            if (isTemplate) {
+                 if (element.parentElement != null) {
+                     //first time loaded
+                    childNodesList = new ArrayList<>(fragment.childNodes.asList());
+                    DomUtil.replaceRawNodes(fragment, element);
+                } else if (childNodesList != null) {
+                     //after update state
+                    Node firstChild = null;
+                    for (Node n : childNodesList) {
+                        if (firstChild == null) {
+                            firstChild = n;
+                            continue;
+                        }
+                        if (n.parentElement != null)
+                            n.parentElement.removeChild(n);
+                    }
+                    childNodesList = new ArrayList<>(fragment.childNodes.asList());
+                    DomUtil.replaceRawNodes(fragment, firstChild);
+                }
             }
         }
 
@@ -556,7 +576,7 @@ public class TemplateParser {
             return states.stream().map(e -> e.valueName).collect(Collectors.toList());
         }
 
-        private void  update(String valueName, Object value) {
+        private void update(String valueName, Object value) {
             TemplateParser parser = new TemplateParser(templateElement, true);
             for (String stateName : getAllStateNames()) {
                 if (stateName.equals(valueName))
@@ -571,7 +591,11 @@ public class TemplateParser {
                 state.setFunctionMap(functions);
                 state.setValue(value);
             }
-            element.appendChild(parser.getCloned());
+            if (isTemplate) {
+                fragment.append(parser.getCloned());
+            } else {
+                element.appendChild(parser.getCloned());
+            }
         }
 
         public LoopElement setFunctions(Map<String, Function<?, ?>> functions) {
