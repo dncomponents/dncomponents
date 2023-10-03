@@ -16,110 +16,70 @@
 
 package com.dncomponents.client.components.core;
 
-import com.dncomponents.client.components.core.events.value.AbstractValueChangeHandler;
-import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
+import elemental2.dom.CustomEvent;
+import elemental2.dom.CustomEventInit;
+import elemental2.dom.Element;
+import elemental2.dom.Event;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * @author nikolasavic
  */
-public class State<V> extends AbstractValueChangeHandler<V> {
+public class State {
     TemplateParser templateParser;
-    V value;
-    boolean pending;
+    Object value;
     boolean needsUpdate;
-    String valueName;
-    Map<String, Function<V, ?>> functionMap = new HashMap<>();
+    String stateName;
+    Supplier createValue;
 
-    public State(String valueName, TemplateParser parser) {
-        this.valueName = valueName;
+    public State(String stateName, TemplateParser parser) {
+        this.stateName = stateName;
         this.templateParser = parser;
     }
 
-    public State(V value, String valueName, HtmlBinder binder) {
-        this(value, valueName, binder.template);
+    public State(String stateName, Supplier createValue, TemplateParser parser) {
+        this.stateName = stateName;
+        this.templateParser = parser;
+        this.createValue = createValue;
     }
 
-    public State(V value, String valueName, TemplateParser templateParser) {
-        this.valueName = valueName;
-        this.templateParser = templateParser;
-        setValue(value);
-    }
-
-    public State(V value, String valueName, TemplateParser templateParser, Map<String, Function<V, ?>> functionMap) {
-        this.valueName = valueName;
-        this.templateParser = templateParser;
-        this.functionMap = functionMap;
-        setValue(value);
-    }
-
-    public void setValue(V value) {
-        setValue(value, false);
-    }
-
-    @Override
-    public void setValue(V value, boolean fireEvents) {
-        V oldValue = getValue();
-        this.value = value;
+    public void setValue() {
+        Object oldValue = getValue();
+        this.value = createValue.get();
         if (!Objects.equals(this.value, oldValue)) {
-            if (fireEvents)
-                ValueChangeEvent.fire(this, this.value, oldValue);
-            if (!pending) {
-                updateUI(value);
-                needsUpdate = false;
-            } else {
-                needsUpdate = true;
-            }
+            needsUpdate = true;
+        }
+        if (this.value instanceof Collection) {
+            //todo compare deep arrays,
+            needsUpdate = true;
         }
     }
 
-    public V getValue() {
+    public Object getValue() {
         return value;
     }
 
-    protected void updateUI(V value) {
-        this.templateParser.updateValueUi(valueName, value);
-        functionMap.forEach((s, vFunction) ->
-                templateParser.updateValueUi(s, vFunction.apply(value)));
+    public String getStateName() {
+        return stateName;
     }
 
-    public void addValueFunction(String key, Function<V, ?> valueFunction) {
-        this.functionMap.put(key, valueFunction);
-    }
-
-    public void setFunctionMap(Map<String, Function<V, ?>> functionMap) {
-        if (functionMap != null) {
-            this.functionMap = functionMap;
-        }
-    }
-
-    public Object getValueByName(String valueName) {
-        if (this.valueName.equals(valueName)) {
-            return value;
-        }
-        final Function<V, ?> vFunction = this.functionMap.get(valueName);
-        if (vFunction != null) {
-            return vFunction.apply(value);
-        }
-        return null;
-    }
-
-    public void setPending(boolean pending) {
-        this.pending = pending;
+    private void updateUI(Object value) {
+        this.templateParser.updateValueUi(stateName, value);
     }
 
     public void updateUI() {
         if (needsUpdate) {
             updateUI(value);
+            needsUpdate = false;
         }
     }
 
     public void forceUpdateUI() {
         updateUI(value);
+        needsUpdate = false;
     }
 
 }

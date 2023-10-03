@@ -16,6 +16,11 @@
 
 package com.dncomponents;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * @author nikolasavic
  */
@@ -49,9 +54,11 @@ public class Util {
         return false;
     }
 
-    public static String replaceFunctionArguments(String code) {
+
+    public static String replaceFunctionArguments(String code, String avoid, String avoid2) {
         int startIndex = code.indexOf("(");
         int endIndex = code.lastIndexOf(")");
+
         if (startIndex >= 0 && endIndex >= 0 && (endIndex - startIndex > 1)) {
             String[] argArray = code.substring(startIndex + 1, endIndex).split(",");
             String result = "(";
@@ -62,14 +69,17 @@ public class Util {
                         !arg.equals("false") &&
                         !(arg.startsWith("\"")) &&
                         !(arg.startsWith("'")) &&
-                        !isNumeric(arg))
+                        !isNumeric(arg) &&
+                        !(avoid != null && (arg.equals(avoid) || arg.startsWith(avoid + "."))) &&
+                        !(avoid2 != null && (arg.equals(avoid2) || arg.startsWith(avoid2 + ".")))
+                )
                     arg = arg.replace(arg, "d." + arg);
                 result += arg + ((i == (argArray.length - 1)) ? ")" : ",");
             }
 
             code = replaceStringBetweenIndexes(code, startIndex, endIndex, result);
         }
-        return code;
+        return "d." + code;
     }
 
     private static boolean isNumeric(String strNum) {
@@ -94,6 +104,38 @@ public class Util {
         sb.append(replacement);
         sb.append(str.substring(endIndex + 1));
         return sb.toString();
+    }
+
+    public static String createJavaCode(String value, String avoid, boolean events) {
+        //todo handle case (something.getString()+ something.getAnotherString()) for the Supplier
+        String result = "";
+        List<String> expressions = new ArrayList<>();
+        if (value != null && !value.isEmpty()) {
+            expressions.addAll(Arrays.stream(value.split(";")).collect(Collectors.toList()));
+        }
+
+        for (String expression : expressions) {
+            if (Util.checkIfItsMethod(expression)) {
+                result += Util.replaceFunctionArguments(expression, avoid, (events ? "e" : null));
+            } else if (avoid != null && expression.equals(avoid) || expression.startsWith((avoid + "."))) {
+                result += expression;
+            } else {
+                result += "d." + expression;
+            }
+            if (events) {
+                result += ";";
+            }
+        }
+        return result;
+    }
+
+    static String getBetween(String text) {
+        String c1 = "{{", c2 = "}}";
+        try {
+            return text.substring(text.indexOf(c1) + c1.length(), text.indexOf(c2));
+        } catch (Exception ex) {
+            return null;
+        }
     }
 }
 

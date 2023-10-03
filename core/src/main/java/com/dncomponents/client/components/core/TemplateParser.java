@@ -26,15 +26,17 @@ import elemental2.dom.*;
 import jsinterop.base.Js;
 
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.function.Supplier;
+
+import static com.dncomponents.client.dom.DomUtil.fireCustomEvent;
 
 public class TemplateParser {
 
     private static boolean debug;
-
     private HTMLTemplateElement templateElement;
-
     private Map elementsMap = new HashMap();
     private Set<State> states = new HashSet<>();
 
@@ -51,39 +53,11 @@ public class TemplateParser {
     */
     private MultiMap<String, UpdateUi> multiMapValueElements = new MultiMap<>();
     private MultiMapArray<String, Element> eventsElementMap = new MultiMapArray<>();
-
-    private void initStates() {
-        for (Map.Entry<String, Set<UpdateUi>> entry : multiMapValueElements.entrySet()) {
-            String key = entry.getKey();
-            if (key.contains(".") && !checkIfItsMethod(key)) {
-                final String[] split = key.split("\\.");
-                key = split[0];
-            }
-            states.add(new State(key, this));
-        }
-    }
-
-
-    public static boolean checkIfItsMethod(String str) {
-        char[] chars = str.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            char ch = chars[i];
-            if (!Character.isLetter(ch)) {
-                if (ch == '(') {
-                    return true;
-                } else if (ch == '.') {
-                    return false;
-                }
-            }
-        }
-        return false;
-    }
-
+    private Map<String, Consumer<Event>> eventHandlers = new HashMap<>();
     private Node clonedNode;
-
     private String templateContent;
-
     String clazz = "";
+    private HTMLElement rootElement;
 
     public TemplateParser(HTMLTemplateElement templateElement) {
         this.templateElement = templateElement;
@@ -120,12 +94,10 @@ public class TemplateParser {
         parseValueElements(this.clonedNode);
         parseElements(KEY, this.clonedNode);
         parseValueElementsAtAttributes(this.clonedNode);
-        parseEventsElements(this.clonedNode);
+        parseEventsElementsAndSet(this.clonedNode);
         parseOther(KEY, this.clonedNode);
-        initStates();
         clearKeyTags(KEY, getCloned());
     }
-
 
     public static String KEY = "ui-field";
     public static String LOOP_KEY = "loop";
@@ -153,14 +125,12 @@ public class TemplateParser {
     }
 
     private Optional<State> getStateOptional(String name) {
-        return states.stream().filter(s -> s.valueName.equals(name)).findAny();
+        return states.stream().filter(s -> s.stateName.equals(name)).findAny();
     }
 
     public Node getCloned() {
         return clonedNode;
     }
-
-    HTMLElement rootElement;
 
     public HTMLElement getRoot() {
         return rootElement;
@@ -249,7 +219,6 @@ public class TemplateParser {
         }
     }
 
-
     private void parseTemplates(String key, Node root) {
         NodeList<Element> elements = root.querySelectorAll("*");
         for (int i = 0; i < elements.length; i++) {
@@ -270,27 +239,11 @@ public class TemplateParser {
                     final String dloop = at.getAttribute(key);
                     final String[] split = dloop.split(" ");
                     String collectionName = split[2];
-                    createState(split[0], at);
                     multiMapValueElements.put(collectionName, new LoopElement(at, split[0], collectionName));
                 }
             }
         }
     }
-
-    private void createState(String avoid, Element at) {
-        final String string = at.innerHTML;
-        for (String substring : findSubstrings(string)) {
-            String key = substring;
-            if (key.contains(".") && !checkIfItsMethod(key)) {
-                final String[] split = key.split("\\.");
-                key = split[0];
-            }
-            if (!key.equals(avoid)) {
-                states.add(new State(key, this));
-            }
-        }
-    }
-
 
     void updateValueUi(String valueElementName, Object value) {
         for (UpdateUi updateUi : multiMapValueElements.get(valueElementName)) {
@@ -298,28 +251,38 @@ public class TemplateParser {
         }
     }
 
-
+    /*
+     * Search only text nodes for {{
+     * then replace it.
+     *
+     * */
     private void parseValueElements(Node root) {
         NodeList<Element> elements = root.querySelectorAll("*");
         for (int i = 0; i < elements.length; i++) {
             Element at = elements.getAt(i);
-            if (at.childElementCount == 0 && at.innerHTML.contains("{{")) {
-                String content = at.innerHTML;
-                for (String v : findSubstrings(content)) {
-                    multiMapValueElements.put(v, new ElementValueTag(Js.cast(at), "", at.innerHTML));
+            List<String> textNodesStrings = new ArrayList<>();
+            String content = "";
+            for (Node node : at.childNodes.asList()) {
+                if (node instanceof Text) {
+                    textNodesStrings.add(node.textContent);
+                    content += node.textContent;
                 }
-//                at.innerHTML = "";
+            }
+            if (content.contains("{{")) {
+                for (String v : findSubstrings(content)) {
+                    multiMapValueElements.put(v, new ElementValueTag(Js.cast(at), textNodesStrings));
+                }
             }
         }
     }
-
 
     private String replaceAll(String stringWithValues) {
         String str = stringWithValues;
         do {
             final String between = getBetween(str, "{{", "}}");
-            if (between == null || between.isEmpty())
+            if (between == null || between.isEmpty()) {
                 break;
+            }
             Object value = getValueFromStates(between);
             str = str.replace("{{" + between + "}}", value + "");
         } while (true);
@@ -328,9 +291,8 @@ public class TemplateParser {
 
     private Object getValueFromStates(String valueName) {
         for (State state : states) {
-            final Object valueByName = state.getValueByName(valueName);
-            if (valueByName != null) {
-                return valueByName;
+            if (state.stateName.equals(valueName)) {
+                return state.value;
             }
         }
         return null;
@@ -386,7 +348,11 @@ public class TemplateParser {
         }
     }
 
-    private void parseEventsElements(Node root) {
+    public void addEventHandler(String s, Consumer<Event> handler) {
+        eventHandlers.put(s, handler);
+    }
+
+    private void parseEventsElementsAndSet(Node root) {
         NodeList<Element> elements = root.querySelectorAll("*");
         for (int i = 0; i < elements.length; i++) {
             Element at = elements.getAt(i);
@@ -395,15 +361,57 @@ public class TemplateParser {
                 if (attr.name.startsWith("on-")) {
                     final String[] split = attr.name.split("-");
                     String value = attr.value;
+                    String name = attr.name;
                     if (value != null) {
                         eventsElementMap.put(split[1], at);
-                        if (!debug)
-                            at.removeAttribute(attr.name);
+                        at.addEventListener(split[1], evt -> {
+                            if (eventHandlers.get(value) != null) {
+                                eventHandlers.get(value).accept(evt);
+                                updateAll();
+                                fireCustomEvent(at, "update", "updated");
+                            }
+                        });
                     }
+                    at.removeAttribute(attr.name);
                 }
             }
             if (at.hasAttribute("bind")) {
-                eventsElementMap.put("bind", at);
+//                eventsElementMap.put("bind", at);
+                final String value = getBetween(at.getAttribute("value"), "{{", "}}");
+                final String checked = getBetween(at.getAttribute("checked"), "{{", "}}");
+                if (at instanceof HTMLTextAreaElement) {
+                    at.addEventListener("input", evt -> {
+                        final Consumer<Event> eventConsumer = eventHandlers.get("textarea:" + value);
+                        if (eventConsumer != null) {
+                            eventConsumer.accept(evt);
+                            updateAll();
+                            fireCustomEvent(at, "update", "updated");
+                        }
+                    });
+                }
+                if (at instanceof HTMLInputElement) {
+                    if (((HTMLInputElement) at).type == "radio" || ((HTMLInputElement) at).type == "checkbox") {
+                        at.addEventListener("change", evt -> {
+                            final Consumer<Event> eventConsumer = eventHandlers.get("radio:" + checked);
+                            if (eventConsumer != null) {
+                                eventConsumer.accept(evt);
+                                updateAll();
+                                fireCustomEvent(at, "update", "updated");
+
+                            }
+                        });
+                    } else {
+                        at.addEventListener("input", evt -> {
+                            final Consumer<Event> eventConsumer = eventHandlers.get("input:" + value);
+                            if (eventConsumer != null) {
+                                eventConsumer.accept(evt);
+                                updateAll();
+                                fireCustomEvent(at, "update", "updated");
+                            }
+                        });
+                    }
+
+                }
             }
         }
     }
@@ -434,33 +442,33 @@ public class TemplateParser {
         return debug;
     }
 
-    public void updateState(String name, Object value, boolean pending) {
-        final State state = getState(name);
-        if (state != null) {
-            state.setPending(pending);
-            state.setValue(value);
-        } else {
-            DomGlobal.console.log("Warning: You are trying to update state element " + name + " that doesn't exist. Check your html code.");
-        }
-    }
-
-    public void updateState(String name, Object value) {
-        updateState(name, value, false);
-    }
-
     public void updateAll() {
+        for (State state : states) {
+            state.setValue();
+        }
         for (State state : states) {
             state.updateUI();
         }
     }
 
-
-    public void setLoopFunctions(String collectionName, HashMap hashMap) {
+    public void setLoopStateFunctions(String collectionName, Map map) {
         for (UpdateUi updateUi : multiMapValueElements.get(collectionName)) {
             if (updateUi instanceof LoopElement) {
-                ((LoopElement) updateUi).setFunctions(hashMap);
+                ((LoopElement) updateUi).setFunctions(map);
             }
         }
+    }
+
+    public void setLoopEventHandlers(String collectionName, Map<String, BiConsumer> map) {
+        for (UpdateUi updateUi : multiMapValueElements.get(collectionName)) {
+            if (updateUi instanceof LoopElement) {
+                ((LoopElement) updateUi).setLoopEventHandlers(map);
+            }
+        }
+    }
+
+    public void addStateFunction(String stateName, Supplier supplier) {
+        states.add(new State(stateName, supplier, this));
     }
 
     abstract class AbstractElementValue implements UpdateUi {
@@ -511,15 +519,34 @@ public class TemplateParser {
         }
     }
 
+    private List<Text> getTextNodes(HTMLElement element) {
+        List<Text> textNodes = new ArrayList<>();
+        for (Node childNode : element.childNodes.asList()) {
+            if (childNode instanceof Text) {
+                Text textNode = (Text) childNode;
+                textNodes.add(textNode);
+            }
+        }
+        return textNodes;
+    }
+
     class ElementValueTag extends AbstractElementValue {
 
-        public ElementValueTag(HTMLElement element, String arg, String argValue) {
-            super(element, arg, argValue);
+        List<String> textNodesStrings;
+
+        public ElementValueTag(HTMLElement element, List<String> textNodes) {
+            super(element, "", "");
+            this.textNodesStrings = textNodes;
         }
 
         @Override
         public void update(Object value) {
-            element.innerHTML = replaceAll(argValue);
+            final List<Text> textNodes = getTextNodes(element);
+            for (int i = 0; i < textNodesStrings.size(); i++) {
+                Text newNode = DomGlobal.document.createTextNode(replaceAll(textNodesStrings.get(i)));
+                // Replace the old text node with the new one
+                element.replaceChild(newNode, textNodes.get(i));
+            }
         }
     }
 
@@ -529,7 +556,8 @@ public class TemplateParser {
         Element element;
         String collectionName;
         HTMLTemplateElement templateElement = DomUtil.createTemplate();
-        Map functions;
+        Map<String, Function> functions;
+        Map<String, BiConsumer> eventHandlers;
         DocumentFragment fragment;
         List<Node> childNodesList;
 
@@ -548,15 +576,15 @@ public class TemplateParser {
             this.element.innerHTML = "";
             fragment = new DocumentFragment();
             for (Object o : collection) {
-                update(valueName, o);
+                updateValue(o);
             }
             if (isTemplate) {
-                 if (element.parentElement != null) {
-                     //first time loaded
+                if (element.parentElement != null) {
+                    //first time loaded
                     childNodesList = new ArrayList<>(fragment.childNodes.asList());
                     DomUtil.replaceRawNodes(fragment, element);
                 } else if (childNodesList != null) {
-                     //after update state
+                    //after update state
                     Node firstChild = null;
                     for (Node n : childNodesList) {
                         if (firstChild == null) {
@@ -572,25 +600,22 @@ public class TemplateParser {
             }
         }
 
-        List<String> getAllStateNames() {
-            return states.stream().map(e -> e.valueName).collect(Collectors.toList());
-        }
-
-        private void update(String valueName, Object value) {
-            TemplateParser parser = new TemplateParser(templateElement, true);
-            for (String stateName : getAllStateNames()) {
-                if (stateName.equals(valueName))
-                    continue;
-                final State state1 = parser.getState(stateName);
-                if (state1 != null) {
-                    state1.setValue(getState(stateName).getValue());
+        private void updateValue(Object value) {
+            TemplateParser parser = new TemplateParser(templateElement);
+            if (functions != null) {
+                for (Map.Entry<String, Function> entry : functions.entrySet()) {
+                    final String key = entry.getKey();
+                    parser.addStateFunction(key, () -> entry.getValue().apply(value));
                 }
             }
-            final State state = parser.getState(valueName);
-            if (state != null) {
-                state.setFunctionMap(functions);
-                state.setValue(value);
+            if (eventHandlers != null) {
+                for (Map.Entry<String, BiConsumer> entry : eventHandlers.entrySet()) {
+                    final String key = entry.getKey();
+                    parser.addEventHandler(key, event -> entry.getValue().accept(event, value));
+                }
             }
+            parser.init();
+            parser.updateAll();
             if (isTemplate) {
                 fragment.append(parser.getCloned());
             } else {
@@ -598,19 +623,12 @@ public class TemplateParser {
             }
         }
 
-        public LoopElement setFunctions(Map<String, Function<?, ?>> functions) {
-            Map fns = new HashMap();
-            for (Map.Entry<String, Function<?, ?>> entry : functions.entrySet()) {
-                final String key = entry.getKey();
-                final String[] split = key.split("\\.");
-                if (this.valueName.equals(split[0])) {
-                    fns.put(entry.getKey(), entry.getValue());
-                } else if (key.contains(this.valueName)) { //if it's method
-                    fns.put(entry.getKey(), entry.getValue());
-                }
-            }
-            this.functions = fns;
-            return this;
+        public void setFunctions(Map<String, Function> functions) {
+            this.functions = functions;
+        }
+
+        public void setLoopEventHandlers(Map<String, BiConsumer> eventHandlers) {
+            this.eventHandlers = eventHandlers;
         }
 
         @Override

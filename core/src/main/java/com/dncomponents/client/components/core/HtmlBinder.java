@@ -38,8 +38,8 @@ public abstract class HtmlBinder<T> {
         if (htmlBinderSupplier != null) {
             binder = htmlBinderSupplier.get();
         }
-        if(binder==null)
-        DomGlobal.console.log(clazz.getName()+" ---- "+ " is null");
+        if (binder == null)
+            DomGlobal.console.log(clazz.getName() + " ---- " + " is null");
         if (binder == null)
             throw new IllegalStateException("Can't find corresponding binder for " + clazz.getName() + ".");
         binder.d = view;
@@ -60,7 +60,7 @@ public abstract class HtmlBinder<T> {
     public abstract void bind();
 
     public void updateUi() {
-
+        template.updateAll();
     }
 
     /**

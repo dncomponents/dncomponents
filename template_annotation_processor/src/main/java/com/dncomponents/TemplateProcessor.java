@@ -188,11 +188,11 @@ public class TemplateProcessor extends AbstractProcessor {
             String value = element.getAnnotation(UiField.class).value();
             String fieldValue = value.isEmpty() ? fieldName : value;
             if (element.getAnnotation(UiField.class).provided()) {
-                fieldsList.add("        DomUtil.replace(d." + fieldName + ", " + "template.getElement" + "(\"" + fieldValue + "\"));\n");
+                fieldsList.add("    DomUtil.replace(d." + fieldName + ", " + "template.getElement" + "(\"" + fieldValue + "\"));\n");
                 if (!hasProvided.get())
                     hasProvided.set(true);
             } else {
-                fieldsList.add("        d." + fieldName + "=" + "template.getElement" + "(\"" + fieldValue + "\");\n");
+                fieldsList.add("    d." + fieldName + "=" + "template.getElement" + "(\"" + fieldValue + "\");\n");
             }
         });
         String result = "";
@@ -246,11 +246,11 @@ public class TemplateProcessor extends AbstractProcessor {
             generateParserClass(element, classEl);
         }
 
+        final LoopProcessing loopProcessing = new LoopProcessing(templateValue, classEl);
         final EventsProcessing eventsProcessing = new EventsProcessing();
         final String generatedEventsCode = eventsProcessing.parse(templateValue);
 
         final ValuesProcessing valuesProcessing = new ValuesProcessing(templateValue, classEl);
-        final LoopProcessing loopProcessing = new LoopProcessing(templateValue, classEl);
 
         if (templateValue != null || (templateValue != null && !templateValue.isEmpty())) {
             templateValue = StringEscapeUtils.escapeJava(templateValue);
@@ -319,18 +319,15 @@ public class TemplateProcessor extends AbstractProcessor {
                 "    \n" +
                 generatedEventsCode +
                 "\n" +
-                "    public void updateUi(){\n" +
-                valuesProcessing.getUpdates() +
-                loopProcessing.getUpdates() +
-                "       template.updateAll();\n" +
-                "    }\n\n" +
                 "    public static void bind(" + annotatedClassName + " d, TemplateParser template, boolean b) {\n" +
                 "    " +
                 subElementBind +
                 fieldsString +
-                valuesProcessing.getInitFunctions() +
+//                valuesProcessing.getInitFunctions() +
+                valuesProcessing.getUpdates() +
+                loopProcessing.getUpdates() +
                 loopProcessing.getInitFunctions() +
-                "    \n         }\n" +
+                "    \n    }\n" +
                 "}");
         writer.close();
     }

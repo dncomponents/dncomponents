@@ -1299,6 +1299,19 @@ public class DomUtil {
         return p.innerHTML;
     }
 
+    public static void fireCustomEvent(Element element, String type, Object detail) {
+        CustomEventInit init = CustomEventInit.create();
+        init.setDetail(detail);
+        init.setBubbles(true);
+        CustomEvent customEvent = new CustomEvent(type, init);
+        element.dispatchEvent(customEvent);
+    }
+
+    public static <T> T getValueFromEvent(Event evt) {
+        return (T) ((CustomEvent) evt).detail;
+    }
+
+
     public native static <T> T getValue(Object obj, String key) /*-{
         return obj[key];
     }-*/;

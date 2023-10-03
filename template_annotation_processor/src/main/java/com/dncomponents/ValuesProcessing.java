@@ -21,7 +21,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import javax.lang.model.element.ElementKind;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,7 +32,6 @@ public class ValuesProcessing {
     private Set<String> valuesNames = new HashSet<>();
     private String imports = "";
     String updates = "";
-    String initFunctions = "";
 
     javax.lang.model.element.Element classEl;
 
@@ -43,76 +41,26 @@ public class ValuesProcessing {
         parse(html);
     }
 
-    String getStateName(String valueName) {
-        String key = valueName;
-        if (key.contains(".") && !checkIfItsMethod(key)) {
-            final String[] split = key.split("\\.");
-            key = split[0];
-        }
-        return key;
-    }
-
-    List<String> fromLoopValues = new ArrayList<>();
-
     public void parse(String html) {
         if (html == null)
             return;
-
         Document doc = Jsoup.parse(html);
-
         final Elements dloop = doc.getElementsByAttribute("loop");
         for (org.jsoup.nodes.Element element : dloop) {
-            final String loop = element.attributes().get("loop");
-            final String[] split = loop.split(" ");
-            String avoidName = split[0];
-            final List<String> valueFromLoop = findSubstrings(element.html()).stream().filter(e ->
-                    !avoidName.equals(getStateName(e))).collect(Collectors.toList());
-            fromLoopValues.addAll(valueFromLoop);
             element.remove();
         }
 
         List<String> allStateNames = findSubstrings(doc.html());
         if (allStateNames != null) {
             valuesNames = allStateNames.stream().collect(Collectors.toSet());
-            valuesNames.addAll(fromLoopValues);
         }
-        Set<String> states = new HashSet<>();
 
         for (String valuesName : valuesNames) {
-            if (Util.checkIfItsMethod(valuesName)) {
-                updates += "        template.updateState(\"" + StringEscapeUtils.escapeJava(valuesName) + "\"," +
-                        " d." + Util.replaceFunctionArguments(valuesName) + ",true);\n";
-            } else if (valuesName.contains(".")) {
-                final String[] split = valuesName.split("\\.");
-                states.add(split[0]);
-            } else {
-                states.add(valuesName);
-            }
-        }
-        for (String name : states) {
-            updates += "        template.updateState(\"" + name + "\", d." + name + ",true);\n";
-            final String fn = checkForFunctions(name, valuesNames, checkCollectionType(name, classEl));
-            if (!fn.isEmpty()) {
-                initImports();
-                initFunctions += "          template.getState(\"" + name + "\").setFunctionMap(" + fn + "\n";
-            }
+            updates += "        template.addStateFunction(\"" + StringEscapeUtils.escapeJava(valuesName) + "\",()->" +
+                    Util.createJavaCode(valuesName, null, false) + ");\n";
         }
     }
 
-    public static boolean checkIfItsMethod(String str) {
-        char[] chars = str.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            char ch = chars[i];
-            if (!Character.isLetter(ch)) {
-                if (ch == '(') {
-                    return true;
-                } else if (ch == '.') {
-                    return false;
-                }
-            }
-        }
-        return false;
-    }
 
     private static List<String> findSubstrings(String input) {
         List<String> substrings = new ArrayList<>();
@@ -130,47 +78,8 @@ public class ValuesProcessing {
         return substrings;
     }
 
-    private void initImports() {
-        if (imports.isEmpty())
-            imports = "import java.util.HashMap;\n" +
-                    "import java.util.function.Function;\n";
-    }
-
-    private String checkForFunctions(String fieldName, Set<String> valuesNames, String type) {
-        String result = "";
-        List<String> functions = new ArrayList<>();
-        for (String valuesName : valuesNames) {
-            if (valuesName.startsWith(fieldName + ".")) {
-                functions.add(valuesName);
-            }
-        }
-        if (!functions.isEmpty()) {
-            String fns = "";
-            for (String function : functions) {
-                fns += "                    put(\"" + StringEscapeUtils.escapeJava(function) + "\", (Function<" + type + ", Object>)" + fieldName + " -> " + function + ");\n";
-            }
-            result = "new HashMap() {{\n" + fns + "                }});";
-        }
-        return result;
-    }
-
     public String getUpdates() {
         return updates;
-    }
-
-    public String getInitFunctions() {
-        return initFunctions;
-    }
-
-    private String checkCollectionType(String collectionName, javax.lang.model.element.Element classEl) {
-        final Optional<? extends javax.lang.model.element.Element> optionalElement = classEl.getEnclosedElements().stream()
-                .filter(e -> e.getKind() == ElementKind.FIELD && e.getSimpleName().toString().equals(collectionName))
-                .findAny();
-        if (optionalElement.isPresent()) {
-            final javax.lang.model.element.Element element = optionalElement.get();
-            return element.asType() + "";
-        }
-        return "";
     }
 
     public String getImports() {

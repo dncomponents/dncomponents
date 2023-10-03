@@ -28,15 +28,16 @@ import org.jsoup.select.Elements;
 
 import javax.lang.model.element.ElementKind;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static com.dncomponents.Util.checkIfItsMethod;
+import static com.dncomponents.EventsProcessing.isBinder;
 
 /**
  * @author nikolasavic
  */
 public class LoopProcessing {
-
 
     String updates = "";
     String imports = "";
@@ -76,49 +77,78 @@ public class LoopProcessing {
             String value = allElements.get(i).attributes().get("loop");
             if (value != null && !value.isEmpty()) {
                 final String[] words = value.split(" ");
-                collections.put(words[2], new Loop(words[0], words[2], parseLoop(allElements.get(i))));
+                collections.put(words[2], new Loop(words[0], words[2],
+                        parseLoop(allElements.get(i)),
+                        parseEventHandlers(allElements.get(i))));
             }
         }
 
         collections.asMap().forEach((collectionName, loops) -> {
-            updates += "                template.updateState(\"" + collectionName + "\", d." + collectionName + ",true);\n";
-            String fn = "";
-            for (Loop loop : loops) {
-                fn += checkForFunctions(loop, checkCollectionType(collectionName));
-            }
+            updates += "        template.addStateFunction(\"" + collectionName + "\",()-> d." + collectionName + ");\n";
+
+            String fn = String.join("", loops.stream()
+                    .flatMap((Function<Loop, Stream<String>>) loop -> checkForFunctions(loop, checkCollectionType(collectionName)).stream())
+                    .collect(Collectors.toSet()));
+
+            String eh = String.join("", loops.stream()
+                    .flatMap((Function<Loop, Stream<String>>) loop -> checkForEventHandlers(loop, checkCollectionType(collectionName)).stream())
+                    .collect(Collectors.toSet()));
+
             if (!fn.isEmpty()) {
-                fn = "new HashMap() {{\n" + fn + "                }});";
-                initFunctions += "           template.setLoopFunctions(\"" + collectionName + "\"," + fn +
-                        "         ";
+                fn = "new HashMap() {{\n" + fn + "        }});";
+                initFunctions += "        template.setLoopStateFunctions(\"" + collectionName + "\"," + fn + "         ";
+            }
+            if (!eh.isEmpty()) {
+                eh = "new HashMap() {{\n" + eh + "        }});";
+                initFunctions += "\n        template.setLoopEventHandlers(\"" + collectionName + "\"," + eh + "         ";
             }
         });
     }
 
-    private String checkForFunctions(Loop loop, String type) {
-        String result = "";
+    private Set<String> checkForFunctions(Loop loop, String type) {
+        Set<String> functionsSet = new HashSet();
         if (!loop.functions.isEmpty()) {
-            initImports();
-            String fns = "";
+            initFnImports();
             for (String function : loop.functions) {
-                if (checkIfItsMethod(function)) {
-                    fns += "                    put(\"" +  StringEscapeUtils.escapeJava(function) + "\", (Function<" + type + ", Object>)" + loop.arg + " -> d." + function + ");\n";
-
-                } else if (function.contains(".")) {
-                    fns += "                    put(\"" +  StringEscapeUtils.escapeJava(function) + "\", (Function<" + type + ", Object>)" + loop.arg + " -> " + function + ");\n";
-
-                }
-
+                function = function.replace("&quot;", "\"");
+                String fns = "            put(\"" + StringEscapeUtils.escapeJava(function) + "\", (Function<" + type + ", Object>)" + loop.arg + " -> " + Util.createJavaCode(function, loop.arg, false) + ");\n";
+                functionsSet.add(fns);
             }
-            result = fns;
         }
-        return result;
+        return functionsSet;
     }
 
+    private Set<String> checkForEventHandlers(Loop loop, String type) {
+        Set<String> eventHandlersSet = new HashSet<>();
+        if (!loop.eventHandlers.isEmpty()) {
+            initEventsImports();
+            String fns = "";
+            for (Map.Entry<String, String> entry : loop.eventHandlers.entrySet()) {
+                if (isBinder(entry.getKey())) {
+                    fns = "            put(\"" + StringEscapeUtils.escapeJava(entry.getKey()) + "\", (BiConsumer<Event," + type + ">)(e," + loop.arg + ") -> {" + Util.createJavaCode(entry.getValue(), loop.arg, true).replace(";", "") + EventsProcessing.getBinderAssign(entry.getKey()) + "});\n";
+                } else {
+                    fns = "            put(\"" + StringEscapeUtils.escapeJava(entry.getKey()) + "\", (BiConsumer<Event," + type + ">)(e," + loop.arg + ") -> {" + Util.createJavaCode(entry.getValue(), loop.arg, true) + "});\n";
+                }
+                eventHandlersSet.add(fns);
+            }
+        }
+        return eventHandlersSet;
+    }
 
-    private void initImports() {
-        if (imports.isEmpty())
-            imports = "import java.util.HashMap;\n" +
-                    "import java.util.function.Function;\n";
+    private void initFnImports() {
+        String fnImports = "import java.util.HashMap;\n" +
+                "import java.util.function.Function;\n";
+        if (!imports.contains(fnImports)) {
+            imports += fnImports;
+        }
+    }
+
+    private void initEventsImports() {
+        String eventHandlerImports = "import java.util.function.BiConsumer;\n" +
+                "import elemental2.dom.Event;\n";
+        if (!imports.contains(eventHandlerImports)) {
+            imports += eventHandlerImports;
+        }
     }
 
     public Set<String> parseLoop(Element element) {
@@ -131,11 +161,10 @@ public class LoopProcessing {
         return valuesNames;
     }
 
-    private String getBaseName(String nm) {
-        if (nm.contains(".")) {
-            return nm.split("\\.")[0];
-        }
-        return null;
+    public Map<String, String> parseEventHandlers(Element element) {
+        final EventsProcessing eventsProcessing = new EventsProcessing();
+        imports += eventsProcessing.getImports();
+        return eventsProcessing.getAllEventsMap(element.html());
     }
 
     public String getInitFunctions() {
@@ -151,13 +180,17 @@ public class LoopProcessing {
     }
 
     class Loop {
-        public Loop(String arg, String collectionName, Set<String> functions) {
+
+        public Loop(String arg, String collectionName, Set<String> functions, Map<String, String> eventHandlers) {
             this.arg = arg;
             this.collectionName = collectionName;
             this.functions = functions;
+            this.eventHandlers = eventHandlers;
         }
 
-        String arg, collectionName;
+        String arg;
+        String collectionName;
+        Map<String, String> eventHandlers;
         private Set<String> functions = new HashSet<>();
 
     }
