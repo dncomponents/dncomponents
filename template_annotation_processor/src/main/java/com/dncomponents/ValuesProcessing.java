@@ -56,6 +56,7 @@ public class ValuesProcessing {
         }
 
         for (String valuesName : valuesNames) {
+            valuesName = valuesName.replace("&quot;", "\"");
             updates += "        template.addStateFunction(\"" + StringEscapeUtils.escapeJava(valuesName) + "\",()->" +
                     Util.createJavaCode(valuesName, null, false) + ");\n";
         }

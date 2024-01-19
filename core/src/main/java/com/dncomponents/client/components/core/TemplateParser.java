@@ -19,7 +19,6 @@ package com.dncomponents.client.components.core;
 
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.dom.MultiMap;
-import com.dncomponents.client.dom.MultiMapArray;
 import com.dncomponents.client.views.HasAttributes;
 import com.dncomponents.client.views.IsElement;
 import elemental2.dom.*;
@@ -52,7 +51,6 @@ public class TemplateParser {
      key can be a function like <div>{{person.getName()}}</div>
     */
     private MultiMap<String, UpdateUi> multiMapValueElements = new MultiMap<>();
-    private MultiMapArray<String, Element> eventsElementMap = new MultiMapArray<>();
     private Map<String, Consumer<Event>> eventHandlers = new HashMap<>();
     private Node clonedNode;
     private String templateContent;
@@ -95,6 +93,7 @@ public class TemplateParser {
         parseElements(KEY, this.clonedNode);
         parseValueElementsAtAttributes(this.clonedNode);
         parseEventsElementsAndSet(this.clonedNode);
+        parseIfs(this.clonedNode);
         parseOther(KEY, this.clonedNode);
         clearKeyTags(KEY, getCloned());
     }
@@ -165,7 +164,7 @@ public class TemplateParser {
                             if (at.attributes.asList().stream().map(e -> e.name)
                                     .anyMatch(e -> e.equals(attributeName))) {
                                 final String attributeValue = at.getAttribute(attributeName);
-                                final String between = getBetween(attributeValue, "{{", "}}");
+                                final String between = getBetween(attributeValue);
                                 if (between == null || between.isEmpty())
                                     continue;
                                 multiMapValueElements.put(between, new ElementValueComponent(component, between, attributeName));
@@ -279,7 +278,7 @@ public class TemplateParser {
     private String replaceAll(String stringWithValues) {
         String str = stringWithValues;
         do {
-            final String between = getBetween(str, "{{", "}}");
+            final String between = getBetween(str);
             if (between == null || between.isEmpty()) {
                 break;
             }
@@ -304,6 +303,10 @@ public class TemplateParser {
         } catch (Exception ex) {
             return null;
         }
+    }
+
+    private String getBetween(String text) {
+        return getBetween(text, "{{", "}}");
     }
 
     private static List<String> findSubstrings(String input) {
@@ -335,7 +338,7 @@ public class TemplateParser {
                         final String[] keyValue = property.split(":");
                         if (keyValue.length == 2) {
                             for (String v : findSubstrings(attr.value)) {
-                                multiMapValueElements.put(v, new ElementValueStyle(Js.cast(at), keyValue[0], keyValue[1]));
+                                multiMapValueElements.put(v, new ElementValueStyle(Js.cast(at), keyValue[0].trim(), keyValue[1].trim()));
                             }
                         }
                     }
@@ -363,7 +366,6 @@ public class TemplateParser {
                     String value = attr.value;
                     String name = attr.name;
                     if (value != null) {
-                        eventsElementMap.put(split[1], at);
                         at.addEventListener(split[1], evt -> {
                             if (eventHandlers.get(value) != null) {
                                 eventHandlers.get(value).accept(evt);
@@ -376,9 +378,8 @@ public class TemplateParser {
                 }
             }
             if (at.hasAttribute("bind")) {
-//                eventsElementMap.put("bind", at);
-                final String value = getBetween(at.getAttribute("value"), "{{", "}}");
-                final String checked = getBetween(at.getAttribute("checked"), "{{", "}}");
+                final String value = getBetween(at.getAttribute("value"));
+                final String checked = getBetween(at.getAttribute("checked"));
                 if (at instanceof HTMLTextAreaElement) {
                     at.addEventListener("input", evt -> {
                         final Consumer<Event> eventConsumer = eventHandlers.get("textarea:" + value);
@@ -416,8 +417,38 @@ public class TemplateParser {
         }
     }
 
-    public MultiMapArray<String, Element> getEventsElementMap() {
-        return eventsElementMap;
+
+    private void parseIfs(Node root) {
+        NodeList<Element> elements = root.querySelectorAll("*");
+        for (int i = 0; i < elements.length; i++) {
+            Element at = elements.getAt(i);
+            if (at.attributes == null || at.attributes.length == 0) continue;
+            if (at.hasAttribute("if")) {
+                List<Pair<String, HTMLElement>> ifElseElements = new ArrayList<>();
+                ifElseElements.add(new Pair<>(getBetween(at.getAttribute("if")), Js.cast(at)));
+
+                Element nextElementSibling = at;
+                while (true) {
+                    nextElementSibling = nextElementSibling.nextElementSibling;
+                    if (nextElementSibling == null || !(nextElementSibling.hasAttribute("else-if")
+                            || nextElementSibling.hasAttribute("else"))) break;
+
+                    if (nextElementSibling.hasAttribute("else-if")) {
+                        ifElseElements.add(new Pair<>(getBetween(nextElementSibling.getAttribute("else-if")), Js.cast(nextElementSibling)));
+                    }
+                    if (nextElementSibling.hasAttribute("else")) {
+                        ifElseElements.add(new Pair<>("", Js.cast(nextElementSibling)));
+                        break;
+                    }
+                }
+                final IfElseElement resultElement = new IfElseElement(ifElseElements);
+                for (Pair<String, HTMLElement> pair : ifElseElements) {
+                    if (pair.getA() != null && !pair.getA().isEmpty()) {
+                        multiMapValueElements.put(pair.getA(), resultElement);
+                    }
+                }
+            }
+        }
     }
 
     private void i18e(HTMLTemplateElement template) {
@@ -451,20 +482,29 @@ public class TemplateParser {
         }
     }
 
+    private Map<String, Map<String, Function>> allLoopsFunctionsMap = new HashMap<>();
+    Map<String, Map<String, BiConsumer>> allLoopEventsHandlers = new HashMap<>();
+    Object loopValue;
+    String loopName;
+    Map<String, Function> loopFunctions = new HashMap<>();
+//    Map<String, BiConsumer> loopHandlers = new HashMap<>();
+
     public void setLoopStateFunctions(String collectionName, Map map) {
-        for (UpdateUi updateUi : multiMapValueElements.get(collectionName)) {
-            if (updateUi instanceof LoopElement) {
-                ((LoopElement) updateUi).setFunctions(map);
-            }
-        }
+        allLoopsFunctionsMap.put(collectionName, map);
+//        for (UpdateUi updateUi : multiMapValueElements.get(collectionName)) {
+//            if (updateUi instanceof LoopElement) {
+//                ((LoopElement) updateUi).setFunctions(map);
+//            }
+//        }
     }
 
     public void setLoopEventHandlers(String collectionName, Map<String, BiConsumer> map) {
-        for (UpdateUi updateUi : multiMapValueElements.get(collectionName)) {
-            if (updateUi instanceof LoopElement) {
-                ((LoopElement) updateUi).setLoopEventHandlers(map);
-            }
-        }
+        allLoopEventsHandlers.put(collectionName, map);
+//        for (UpdateUi updateUi : multiMapValueElements.get(collectionName)) {
+//            if (updateUi instanceof LoopElement) {
+//                ((LoopElement) updateUi).setLoopEventHandlers(map);
+//            }
+//        }
     }
 
     public void addStateFunction(String stateName, Supplier supplier) {
@@ -480,6 +520,40 @@ public class TemplateParser {
             this.element = element;
             this.arg = arg;
             this.argValue = argValue;
+        }
+    }
+
+    class IfElseElement extends AbstractElementValue {
+        List<Pair<String, HTMLElement>> ifElseElements;
+
+        public IfElseElement(List<Pair<String, HTMLElement>> ifElseElements) {
+            super(ifElseElements.get(0).getB(), null, null);
+            this.ifElseElements = ifElseElements;
+        }
+
+        @Override
+        public void update(Object value) {
+            boolean found = false;
+            for (Pair<String, HTMLElement> ifElseElement : ifElseElements) {
+                final Object valueFromStates = getValueFromStates(ifElseElement.getA());
+                if (found) {
+                    DomUtil.setVisible(ifElseElement.getB(), false);
+                }
+                if (valueFromStates instanceof Boolean) {
+                    final Boolean b = (Boolean) valueFromStates;
+                    if (b) {
+                        DomUtil.setVisible(ifElseElement.getB(), b);
+                        found = true;
+                    } else {
+                        DomUtil.setVisible(ifElseElement.getB(), b);
+                    }
+                }
+            }
+            if (!found) {
+                ifElseElements.stream().filter(e -> e.getB().hasAttribute("else"))
+                        .findFirst()
+                        .ifPresent(pair -> DomUtil.setVisible(pair.getB(), true));
+            }
         }
     }
 
@@ -556,8 +630,8 @@ public class TemplateParser {
         Element element;
         String collectionName;
         HTMLTemplateElement templateElement = DomUtil.createTemplate();
-        Map<String, Function> functions;
-        Map<String, BiConsumer> eventHandlers;
+        //        Map<String, Function> functions;
+//        Map<String, BiConsumer> eventHandlers;
         DocumentFragment fragment;
         List<Node> childNodesList;
 
@@ -600,16 +674,36 @@ public class TemplateParser {
             }
         }
 
-        private void updateValue(Object value) {
-            TemplateParser parser = new TemplateParser(templateElement);
+        private void setStates(Map<String, Function> functions, Object value, TemplateParser parser) {
             if (functions != null) {
                 for (Map.Entry<String, Function> entry : functions.entrySet()) {
                     final String key = entry.getKey();
+                    final Object v = entry.getValue().apply(value);
+                    if (v instanceof Collection) {
+                        final Map childLoopFunctionsMap = allLoopsFunctionsMap.get(key);
+                        if (childLoopFunctionsMap != null) {
+                            parser.setLoopStateFunctions(key, childLoopFunctionsMap);
+                        }
+                    }
                     parser.addStateFunction(key, () -> entry.getValue().apply(value));
                 }
             }
-            if (eventHandlers != null) {
-                for (Map.Entry<String, BiConsumer> entry : eventHandlers.entrySet()) {
+        }
+
+        private void updateValue(Object value) {
+            TemplateParser parser = new TemplateParser(templateElement);
+            parser.loopValue = value;
+            parser.loopName = collectionName;
+            parser.loopFunctions = allLoopsFunctionsMap.get(collectionName);
+            setStates(parser.loopFunctions, value, parser);
+            if (loopName != null && loopValue != null) {
+                setStates(loopFunctions, loopValue, parser);
+            }
+            parser.allLoopEventsHandlers = allLoopEventsHandlers;
+            final Map<String, BiConsumer> loopHandlers = allLoopEventsHandlers.get(collectionName);
+
+            if (loopHandlers != null) {
+                for (Map.Entry<String, BiConsumer> entry : loopHandlers.entrySet()) {
                     final String key = entry.getKey();
                     parser.addEventHandler(key, event -> entry.getValue().accept(event, value));
                 }
@@ -621,14 +715,6 @@ public class TemplateParser {
             } else {
                 element.appendChild(parser.getCloned());
             }
-        }
-
-        public void setFunctions(Map<String, Function> functions) {
-            this.functions = functions;
-        }
-
-        public void setLoopEventHandlers(Map<String, BiConsumer> eventHandlers) {
-            this.eventHandlers = eventHandlers;
         }
 
         @Override
@@ -654,6 +740,24 @@ public class TemplateParser {
             if (component instanceof HasAttributes) {
                 ((HasAttributes) component).setAttribute(attributeName, value);
             }
+        }
+    }
+
+    class Pair<A, B> {
+        private final A a;
+        private final B b;
+
+        public Pair(A a, B b) {
+            this.a = a;
+            this.b = b;
+        }
+
+        public A getA() {
+            return this.a;
+        }
+
+        public B getB() {
+            return this.b;
         }
     }
 

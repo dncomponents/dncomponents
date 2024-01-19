@@ -20,6 +20,7 @@ import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Type;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -42,9 +43,12 @@ public class LoopProcessing {
     String updates = "";
     String imports = "";
 
-    Multimap<String, Loop> collections = LinkedListMultimap.create();
+    Multimap<String, Loop> allLoopsMap = LinkedListMultimap.create();
     private String initFunctions = "";
     javax.lang.model.element.Element classEl;
+
+    Map<String, String> loopInLoops = new HashMap<>();
+
 
     public LoopProcessing(String html, javax.lang.model.element.Element classEl) {
         this.classEl = classEl;
@@ -67,6 +71,17 @@ public class LoopProcessing {
         return "";
     }
 
+    private boolean isLoopInLoop(String loopName) {
+        return loopInLoops.get(loopName) != null;
+    }
+
+    private Loop getParentLoop(String loopName) {
+        if (!allLoopsMap.get(loopInLoops.get(loopName)).isEmpty()) {
+            return allLoopsMap.get(loopInLoops.get(loopName)).stream().findFirst().get();
+        }
+        return null;
+    }
+
     public void parse(String html) {
         if (html == null)
             return;
@@ -77,21 +92,33 @@ public class LoopProcessing {
             String value = allElements.get(i).attributes().get("loop");
             if (value != null && !value.isEmpty()) {
                 final String[] words = value.split(" ");
-                collections.put(words[2], new Loop(words[0], words[2],
-                        parseLoop(allElements.get(i)),
-                        parseEventHandlers(allElements.get(i))));
+
+                final Loop loop = new Loop(words[0], words[2],
+                        parseLoop(allElements.get(i), words[0], words[2]),
+                        parseEventHandlers(allElements.get(i)));
+                allLoopsMap.put(words[2], loop);
             }
         }
 
-        collections.asMap().forEach((collectionName, loops) -> {
-            updates += "        template.addStateFunction(\"" + collectionName + "\",()-> d." + collectionName + ");\n";
+
+        allLoopsMap.asMap().forEach((collectionName, loops) -> {
+            String type;
+            if (!isLoopInLoop(collectionName)) {
+                updates += "        template.addStateFunction(\"" + collectionName + "\",()-> d." + collectionName + ");\n";
+                type = checkCollectionType(collectionName);
+                for (Loop loop : loops) {
+                    loop.setType(type);
+                }
+            } else {
+                type = getParentLoop(collectionName).type;
+            }
 
             String fn = String.join("", loops.stream()
-                    .flatMap((Function<Loop, Stream<String>>) loop -> checkForFunctions(loop, checkCollectionType(collectionName)).stream())
+                    .flatMap((Function<Loop, Stream<String>>) loop -> checkForFunctions(loop, type).stream())
                     .collect(Collectors.toSet()));
 
             String eh = String.join("", loops.stream()
-                    .flatMap((Function<Loop, Stream<String>>) loop -> checkForEventHandlers(loop, checkCollectionType(collectionName)).stream())
+                    .flatMap((Function<Loop, Stream<String>>) loop -> checkForEventHandlers(loop, type).stream())
                     .collect(Collectors.toSet()));
 
             if (!fn.isEmpty()) {
@@ -151,13 +178,37 @@ public class LoopProcessing {
         }
     }
 
-    public Set<String> parseLoop(Element element) {
+
+    public Set<String> parseLoop(Element element, String arg, String loopName) {
+        final Elements loopInLoop = element.getElementsByAttribute("loop");
+        Set<String> loopInLoopFns = new HashSet<>();
+        if (loopInLoop.size() > 1) {
+            Element firstLoop = loopInLoop.get(1);
+            final String[] fns = StringUtils.substringsBetween(firstLoop.html(), "{{", "}}");
+            if (fns != null) {
+                loopInLoopFns = Arrays.stream(fns)
+                        .filter(s -> s.startsWith(arg))
+                        .collect(Collectors.toSet());
+            }
+            final String[] words = firstLoop.attributes().get("loop").split(" ");
+            loopInLoopFns.add(words[2]);
+            loopInLoops.put(words[2], loopName);
+            firstLoop.remove();
+        }
         Set<String> valuesNames = new HashSet<>();
+        valuesNames.addAll(loopInLoopFns);
         if (element == null)
             return valuesNames;
         final String[] strings = org.apache.commons.lang3.StringUtils.substringsBetween(element.html(), "{{", "}}");
-        if (strings != null)
-            valuesNames.addAll(Arrays.stream(strings).collect(Collectors.toSet()));
+        if (strings != null) {
+            final Set<String> loopFns = Arrays.stream(strings).collect(Collectors.toSet());
+            if (isLoopInLoop(loopName)) {
+                for (Loop loop : allLoopsMap.get(loopInLoops.get(loopName))) {
+                    loopFns.removeIf(e -> e.startsWith(loop.arg + "."));
+                }
+            }
+            valuesNames.addAll(loopFns);
+        }
         return valuesNames;
     }
 
@@ -181,6 +232,8 @@ public class LoopProcessing {
 
     class Loop {
 
+        private String type;
+
         public Loop(String arg, String collectionName, Set<String> functions, Map<String, String> eventHandlers) {
             this.arg = arg;
             this.collectionName = collectionName;
@@ -193,5 +246,12 @@ public class LoopProcessing {
         Map<String, String> eventHandlers;
         private Set<String> functions = new HashSet<>();
 
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getType() {
+            return type;
+        }
     }
 }
