@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,9 +38,7 @@ import elemental2.dom.*;
 
 import java.util.List;
 
-/**
- * @author nikolasavic
- */
+
 public class SideMenuViewImpl implements SideMenuView {
 
     public static final String VIEW_ID = "default";
@@ -57,11 +55,11 @@ public class SideMenuViewImpl implements SideMenuView {
     @UiField
     public HTMLButtonElement navBtn;
     @UiField
-    public HTMLDivElement navbarPanel;
+    public HTMLElement navbarPanel;
     @UiField
     public String showNavBarPanelStyle;
     @UiField
-    public HTMLDivElement treeHolder;
+    public HTMLElement treeHolder;
     Tree tree;
     private boolean collapsedToggle = true;
 

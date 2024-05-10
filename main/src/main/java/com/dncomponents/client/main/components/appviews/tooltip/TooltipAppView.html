@@ -1,0 +1,292 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Tooltip
+    </h2>
+
+    <div class="demo-component-wrapper">
+        <dn-button ui-field="leftBtn" color="SECONDARY">Left</dn-button>
+        <dn-button ui-field="rightBtn" color="SECONDARY">Right</dn-button>
+        <dn-button ui-field="topBtn" color="SECONDARY">Top</dn-button>
+        <dn-button ui-field="bottomBtn" color="SECONDARY">Bottom</dn-button>
+    </div>
+    <dn-tooltip orientation="LEFT" ui-field="leftpp" owner="leftBtn">
+        left content
+    </dn-tooltip>
+    <dn-tooltip orientation="RIGHT" ui-field="rightpp" owner="rightBtn">
+        right content
+    </dn-tooltip>
+    <dn-tooltip orientation="TOP" ui-field="toppp" owner="topBtn">
+        top content
+    </dn-tooltip>
+    <dn-tooltip orientation="BOTTOM" ui-field="bottompp" owner="bottomBtn">
+        <h2>bottom</h2>content
+        <dn-button color="INFO">Bottom</dn-button>
+    </dn-tooltip>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+
+&lt;dn-button ui-field=&quot;leftBtn&quot; color=&quot;SECONDARY&quot;&gt;Left&lt;/dn-button&gt;
+&lt;dn-button ui-field=&quot;rightBtn&quot; color=&quot;SECONDARY&quot;&gt;Right&lt;/dn-button&gt;
+&lt;dn-button ui-field=&quot;topBtn&quot; color=&quot;SECONDARY&quot;&gt;Top&lt;/dn-button&gt;
+&lt;dn-button ui-field=&quot;bottomBtn&quot; color=&quot;SECONDARY&quot;&gt;Bottom&lt;/dn-button&gt;
+
+
+&lt;dn-tooltip orientation=&quot;LEFT&quot; ui-field=&quot;leftpp&quot; owner=&quot;leftBtn&quot;&gt;
+        left content
+    &lt;/content&gt;
+&lt;/dn-tooltip&gt;
+&lt;dn-tooltip orientation=&quot;RIGHT&quot; ui-field=&quot;rightpp&quot; owner=&quot;rightBtn&quot;&gt;
+        right content
+    &lt;/content&gt;
+&lt;/dn-tooltip&gt;
+&lt;dn-tooltip orientation=&quot;TOP&quot; ui-field=&quot;toppp&quot; owner=&quot;topBtn&quot;&gt;
+        top content
+&lt;/dn-tooltip&gt;
+&lt;dn-tooltip orientation=&quot;BOTTOM&quot; ui-field=&quot;bottompp&quot; owner=&quot;bottomBtn&quot;&gt;
+    &lt;h2&gt;bottom&lt;/h2&gt;content
+    &lt;dn-button view=&quot;DEFAULT&quot; color=&quot;INFO&quot;&gt;Bottom&lt;/dn-button&gt;
+&lt;/dn-tooltip&gt;
+
+            </code>
+        </pre>
+        </div>
+    </div>
+    <!--renderer-->
+    <h5>Renderer</h5>
+    <div class="demo-component-wrapper">
+        <dn-button ui-field="rendererBtn" color="SECONDARY">Renderer</dn-button>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+Tooltip.TooltipRenderer&lt;Fruit&gt; renderer = (fruit, slots) -&gt; {
+    slots.getContent().innerHTML = &quot;&lt;b&gt;&quot; + fruit.getName() + &quot;&lt;/b&gt;&lt;p&gt;&quot; + fruit.getDescription() + &quot;&lt;/p&gt;&quot;;
+};
+Tooltip&lt;Fruit&gt; tooltip = new Tooltip&lt;&gt;(rendererBtn.asElement(), BaseTooltip.Orientation.RIGHT);
+tooltip.setRenderer(renderer);
+tooltip.setUserObject(new Fruit(&quot;Apple&quot;, &quot;Sweet fruit!&quot;));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+let renderer = {
+    render(fruit: Fruit, slots: MainViewSlots): void {
+        slots.getMainSlot().innerHTML = '&lt;b&gt;' + fruit.name + '&lt;/b&gt;&lt;p&gt;' + fruit.description + '&lt;/p&gt;';
+    }
+};
+
+let tooltip: Tooltip&lt;Fruit&gt; = new Tooltip&lt;any&gt;()
+    .setOwner(this.rendererBtn.asElement())
+    .setOrientation(Orientation.RIGHT)
+    .setRenderer(renderer)
+    .setUserObject(new Fruit('Apple', 'Sweet fruit!'));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--trigger-->
+    <h5>Trigger</h5>
+    <div class="demo-component-wrapper">
+        <dn-button ui-field="hoverBtn" color="SECONDARY">Hover (default)</dn-button>
+        <dn-button ui-field="clickBtn" color="SECONDARY">Click</dn-button>
+        <dn-button ui-field="focusBtn" color="SECONDARY">Focus</dn-button>
+        <dn-button ui-field="hoverFocusBtn" color="SECONDARY">Hover Focus</dn-button>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+Tooltip&lt;Fruit&gt; tooltipLeft = new Tooltip(clickBtn.asElement(), BaseTooltip.Orientation.LEFT, BaseTooltip.Trigger.CLICK);
+tooltipLeft.setRenderer(renderer);
+tooltipLeft.setUserObject(Fruit.fruits.get(0));
+Tooltip&lt;Fruit&gt; tooltipRight = new Tooltip(hoverBtn.asElement(), BaseTooltip.Orientation.RIGHT, BaseTooltip.Trigger.HOVER);
+tooltipRight.setRenderer(renderer);
+tooltipRight.setUserObject(Fruit.fruits.get(1));
+Tooltip&lt;Fruit&gt; tooltipTop = new Tooltip(focusBtn.asElement(), BaseTooltip.Orientation.TOP, BaseTooltip.Trigger.FOCUS);
+tooltipTop.setRenderer(renderer);
+tooltipTop.setUserObject(Fruit.fruits.get(2));
+Tooltip&lt;Fruit&gt; tooltipBottom = new Tooltip(hoverFocusBtn.asElement(), BaseTooltip.Orientation.BOTTOM, BaseTooltip.Trigger.HOVER_FOCUS);
+tooltipBottom.setRenderer(renderer);
+tooltipBottom.setUserObject(Fruit.fruits.get(3));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+let tooltipLeft: Tooltip&lt;Fruit&gt; =
+    new Tooltip&lt;Fruit&gt;()
+        .setOwner(this.clickBtn.asElement())
+        .setOrientation(Orientation.LEFT)
+        .setTrigger(Trigger.CLICK)
+        .setRenderer(renderer)
+        .setUserObject(Fruit.fruits.get(0));
+let tooltipRight: Tooltip&lt;Fruit&gt; =
+    new Tooltip&lt;Fruit&gt;()
+        .setOwner(this.hoverBtn.asElement())
+        .setOrientation(Orientation.RIGHT)
+        .setTrigger(Trigger.HOVER)
+        .setRenderer(renderer)
+        .setUserObject(Fruit.fruits.get(1));
+let tooltipTop: Tooltip&lt;Fruit&gt; =
+    new Tooltip&lt;Fruit&gt;()
+        .setOwner(this.focusBtn.asElement())
+        .setOrientation(Orientation.TOP)
+        .setTrigger(Trigger.FOCUS)
+        .setRenderer(renderer)
+        .setUserObject(Fruit.fruits.get(2));
+let tooltipBottom: Tooltip&lt;Fruit&gt; =
+    new Tooltip&lt;Fruit&gt;()
+        .setOwner(this.hoverFocusBtn.asElement())
+        .setOrientation(Orientation.BOTTOM)
+        .setTrigger(Trigger.HOVER_FOCUS)
+        .setRenderer(renderer)
+        .setUserObject(Fruit.fruits.get(3));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--events-->
+    <h5>Events</h5>
+    <div class="demo-component-wrapper">
+        <dn-button ui-field="eventBtn" color="SECONDARY">Events</dn-button>
+        <dn-text-area ui-field="eventsTa" addClass="ta-demo ta-demo-full"></dn-text-area>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+Tooltip&lt;Fruit&gt; tooltip = new Tooltip&lt;&gt;(eventBtn.asElement(), BaseTooltip.Orientation.RIGHT);
+tooltip.setRenderer(renderer);
+tooltip.setUserObject(new Fruit(&quot;Apple&quot;, &quot;Sweet fruit!&quot;));
+tooltip.addOpenHandler((OpenEvent&lt;Tooltip&lt;Fruit&gt;&gt; event) -&gt; eventsTa.append(&quot;open: &quot; + event.getOwner().getUserObject().getName() + &quot;\n&quot;));
+tooltip.addCloseHandler(event -&gt; eventsTa.append(&quot;close: &quot; + event.getOwner().getUserObject().getDescription() + &quot;\n&quot;));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+let tooltip: Tooltip&lt;Fruit&gt; = new Tooltip&lt;any&gt;()
+    .setOwner(this.eventBtn.asElement())
+    .setOrientation(Orientation.RIGHT)
+    .setRenderer(this.renderer)
+    .setUserObject(new Fruit('Apple', 'Sweet fruit!'));
+
+tooltip.addOpenHandler(OpenHandler.onOpen(evt =&gt; {
+    this.eventsTa.append('open: ' + evt.owner.getUserObject().name + '\n');
+}));
+tooltip.addCloseHandler(CloseHandler.onClose(evt =&gt; {
+    this.eventsTa.append('close: ' + evt.owner.getUserObject().description + '\n');
+}));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--markup template-->
+    <h5>Template markup</h5>
+    <div class="demo-component-wrapper" style="height: 110px;position: relative;">
+        <dn-tooltip orientation="BOTTOM">
+            here goes content
+            <dn-button view="DEFAULT" color="INFO">INFO</dn-button>
+            </content>
+        </dn-tooltip>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;template ui-field=&quot;tooltip&quot;&gt;
+    &lt;div ui-field=&quot;root&quot; class=&quot;tooltip bs-tooltip-top&quot; role=&quot;tooltip&quot;&gt;
+        &lt;div ui-field=&quot;arrowPanel&quot; class=&quot;arrow&quot;&gt;&lt;/div&gt;
+        &lt;div ui-field=&quot;contentPanel&quot; class=&quot;tooltip-inner&quot;&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;style-item ui-field=&quot;topStyle&quot; class=&quot;bs-tooltip-top&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;bottomStyle&quot; class=&quot;bs-tooltip-bottom&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;leftStyle&quot; class=&quot;bs-tooltip-left&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;rightStyle&quot; class=&quot;bs-tooltip-right&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;baseStyle&quot; class=&quot;tooltip show&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;fadeStyle&quot; class=&quot;fade&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;showStyle&quot; class=&quot;show&quot;&gt;&lt;/style-item&gt;
+&lt;/template&gt;
+            </code>
+        </pre>
+        </div>
+    </div>
+</div>

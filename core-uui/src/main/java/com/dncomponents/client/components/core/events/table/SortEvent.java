@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,12 +25,9 @@ import elemental2.dom.CustomEvent;
 import elemental2.dom.Event;
 import jsinterop.base.Js;
 
-import java.util.Collection;
 import java.util.LinkedHashSet;
 
-/**
- * @author nikolasavic
- */
+
 public class SortEvent extends AbstractModifierEvent<SortEvent.SortHandler> {
 
     public SortEvent(LinkedHashSet<HeaderSorting> modifiers) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,9 +27,7 @@ import com.dncomponents.client.views.core.ui.accordion.AccordionItemViewSlots;
 import elemental2.dom.Event;
 import elemental2.dom.EventListener;
 
-/**
- * @author nikolasavic
- */
+
 public class AccordionItem<T> extends BaseComponent<T, AccordionItemView> implements CanSelect {
 
     final Accordion<T> accordion;

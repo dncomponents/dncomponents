@@ -1,0 +1,392 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Tree Autocomplete
+    </h2>
+
+    <div class="demo-component-wrapper">
+        <div>
+            <div class="row">
+                <div class="col">
+                    <p>Single select</p>
+                    <dn-autocomplete-tree>
+                        <item itemId="first" content="first">
+                            <item itemId="1">
+                                first one
+                            </item>
+                            <item itemId="2">
+                                first two
+                            </item>
+                            <item itemId="3">
+                                first three
+                            </item>
+                        </item>
+                        <item itemId="second" content="second">
+                            <item itemId="11">
+                                second one
+                            </item>
+                            <item itemId="22">
+                                second two
+                            </item>
+                            <item itemId="33">
+                                second three
+                            </item>
+                        </item>
+                    </dn-autocomplete-tree>
+                </div>
+            </div>
+            <div class="row mt-2 mb-4">
+                <div class="col">
+                    <p>Multi select</p>
+                    <dn-autocomplete-tree-multi-select>
+                        <item itemId="first" content="first">
+                            <item itemId="1">
+                                first one
+                            </item>
+                            <item itemId="2">
+                                first two
+                            </item>
+                            <item itemId="3">
+                                first three
+                            </item>
+                        </item>
+                        <item itemId="second" content="second">
+                            <item itemId="11">
+                                second one
+                            </item>
+                            <item itemId="22">
+                                second two
+                            </item>
+                            <item itemId="33">
+                                second three
+                            </item>
+                        </item>
+                    </dn-autocomplete-tree-multi-select>
+                </div>
+            </div>
+            <div class="code-wrapper">
+                <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;dn-autocomplete-tree&gt;
+    &lt;item itemId=&quot;first&quot; content=&quot;first&quot;&gt;
+        &lt;item itemId=&quot;1&quot;&gt;
+            first one
+        &lt;/item&gt;
+        &lt;item itemId=&quot;2&quot;&gt;
+            first two
+        &lt;/item&gt;
+        &lt;item itemId=&quot;3&quot;&gt;
+            first three
+        &lt;/item&gt;
+    &lt;/item&gt;
+    &lt;item itemId=&quot;second&quot; content=&quot;second&quot;&gt;
+        &lt;item itemId=&quot;11&quot;&gt;
+            second one
+        &lt;/item&gt;
+        &lt;item itemId=&quot;22&quot;&gt;
+            second two
+        &lt;/item&gt;
+        &lt;item itemId=&quot;33&quot;&gt;
+            second three
+        &lt;/item&gt;
+    &lt;/item&gt;
+&lt;/dn-autocomplete-tree&gt;
+
+&lt;dn-autocomplete-tree-multi-select&gt;
+    &lt;item itemId=&quot;first&quot; content=&quot;first&quot;&gt;
+        &lt;item itemId=&quot;1&quot;&gt;
+            first one
+        &lt;/item&gt;
+        &lt;item itemId=&quot;2&quot;&gt;
+            first two
+        &lt;/item&gt;
+        &lt;item itemId=&quot;3&quot;&gt;
+            first three
+        &lt;/item&gt;
+    &lt;/item&gt;
+    &lt;item itemId=&quot;second&quot; content=&quot;second&quot;&gt;
+        &lt;item itemId=&quot;11&quot;&gt;
+            second one
+        &lt;/item&gt;
+        &lt;item itemId=&quot;22&quot;&gt;
+            second two
+        &lt;/item&gt;
+        &lt;item itemId=&quot;33&quot;&gt;
+            second three
+        &lt;/item&gt;
+    &lt;/item&gt;
+&lt;/dn-autocomplete-tree-multi-select&gt;
+
+            </code>
+        </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+AutocompleteTree autocompleteTree;
+@UiField
+AutocompleteTreeMultiSelect autocompleteTreeMultiSelect;
+
+autocompleteTree.setRoot(Fruit.getFruitsTree());
+autocompleteTreeMultiSelect.setRoot(Fruit.getFruitsTree());
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+@UiField
+autocompleteTree: AutocompleteTree&lt;any&gt;;
+@UiField
+autocompleteTreeMultiSelect: AutocompleteTreeMultiSelect&lt;any&gt;;
+
+this.autocompleteTree.setRoot(Fruit.getFruitsTree());
+this.autocompleteTreeMultiSelect.setRoot(Fruit.getFruitsTree());
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+    <!--renderer-->
+    <h5>Renderer</h5>
+    <div class="demo-component-wrapper">
+        <dn-autocomplete-tree ui-field="acTreeRenderer"></dn-autocomplete-tree>
+        <dn-autocomplete-tree-multi-select ui-field="acMsTreeRenderer"
+                                           addclass="mt-2"></dn-autocomplete-tree-multi-select>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+AutocompleteTree acTreeRenderer;
+@UiField
+AutocompleteTreeMultiSelect acMsTreeRenderer;
+
+acMsTreeRenderer.getRowCellConfig().setCellRenderer(r -&gt; r.valuePanel.innerHTML = &quot;&lt;b&gt;&quot; + r.value + &quot;&lt;/b&gt;&quot;);
+acMsTreeRenderer.setRoot(Fruit.getFruitsTree());
+acTreeRenderer.getRowCellConfig().setCellRenderer(r -&gt; r.valuePanel.innerHTML = &quot;&lt;b&gt;&quot; + r.value + &quot;&lt;/b&gt;&quot;);
+acTreeRenderer.setRoot(Fruit.getFruitsTree());
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+@UiField
+accordionRenderer: Accordion&lt;Fruit&gt;;
+
+this.accordionRenderer.setItemRenderer({
+    render(userObject: Fruit, slots: AccordionItemViewSlots): void {
+        slots.getTitle().innerHTML = '&lt;h4&gt;' + userObject.name + '&lt;/h4&gt;';
+        slots.getContent().innerHTML = userObject.description;
+    }
+});
+
+this.accordionRenderer.addItem(new AccordionItem&lt;Fruit&gt;(this.accordionRenderer, new Fruit('Apple', 'apple fruit')));
+this.accordionRenderer.addItem(new AccordionItem&lt;Fruit&gt;(this.accordionRenderer, new Fruit('Orange', 'Orange fruit')));
+this.accordionRenderer.addItem(new AccordionItem&lt;Fruit&gt;(this.accordionRenderer, new Fruit('Banana', 'Banana fruit')));
+let accordionItem = new AccordionItem&lt;Fruit&gt;(this.accordionRenderer);
+accordionItem.setRenderer({
+    render(fruit: Fruit, slots: AccordionItemViewSlots): void {
+        slots.getTitle().innerHTML = '&lt;b&gt;' + fruit.name + '&lt;/b&gt;';
+        slots.getTitle().style.color = 'red';
+        slots.getContent().appendChild(new Button(fruit.description).asElement());
+    }
+});
+accordionItem.setUserObject(new Fruit('Pineapple', 'sweet fruit'));
+this.accordionRenderer.addItem(accordionItem);
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--events-->
+    <h5>Events</h5>
+    <div class="demo-component-wrapper">
+        <div class="row">
+            <div class="col">
+                <p>Single select</p>
+                <dn-autocomplete-tree ui-field="autocompleteTree"></dn-autocomplete-tree>
+                <div class="mt-2 mb-2">
+                    <dn-button ui-field="clearSs" view="DEFAULT" coloroutline="SECONDARY">Clear</dn-button>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2 mb-4">
+            <div class="col">
+                <p>Multi select</p>
+                <dn-autocomplete-tree-multi-select
+                        ui-field="autocompleteTreeMultiSelect"></dn-autocomplete-tree-multi-select>
+                <div class="mt-2 mb-2">
+                    <dn-button ui-field="clearMs" view="DEFAULT" coloroutline="SECONDARY">Clear</dn-button>
+                </div>
+                <dn-text-area ui-field="ta" addClass="mb-3"></dn-text-area>
+                <dn-button ui-field="clearTa" view="DEFAULT" coloroutline="SECONDARY">Clear</dn-button>
+            </div>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+AutocompleteTree&lt;Object&gt; autocompleteTree;
+@UiField
+AutocompleteTreeMultiSelect&lt;Object&gt; autocompleteTreeMultiSelect;
+@UiField
+Button clearMs;
+@UiField
+Button clearSs;
+@UiField
+Button clearTa;
+@UiField
+TextArea ta;
+
+autocompleteTree.setRoot(Fruit.getFruitsTree());
+autocompleteTreeMultiSelect.setRoot(Fruit.getFruitsTree());
+autocompleteTreeMultiSelect.addValueChangeHandler(event -&gt; {
+    ta.append(&quot;multiSelect: value changed event: \n&quot;);
+    ta.append(&quot;***************\n&quot;);
+    event.getValue().forEach(node -&gt; {
+        ta.append(node.getUserObject() + &quot;\n&quot;);
+    });
+    ta.append(&quot;***************\n&quot;);
+});
+autocompleteTreeMultiSelect.addFocusHandler(focusEvent -&gt;
+        ta.append(&quot;multiSelect: focus event!\n&quot;));
+autocompleteTreeMultiSelect.addBlurHandler(focusEvent -&gt;
+        ta.append(&quot;multiSelect: blur event!\n&quot;));
+autocompleteTree.addValueChangeHandler(event -&gt;
+        ta.append(&quot;autocomplete: value changed event:&quot; + ((Fruit) event.getValue().getUserObject()).getName() + &quot;\n&quot;));
+autocompleteTree.addFocusHandler(focusEvent -&gt;
+        ta.append(&quot;autocomplete: focus event!\n&quot;));
+autocompleteTree.addBlurHandler(focusEvent -&gt;
+        ta.append(&quot;autocomplete: blur event!\n&quot;));
+
+clearMs.addClickHandler(mouseEvent -&gt; autocompleteTreeMultiSelect.setValue(null));
+clearSs.addClickHandler(mouseEvent -&gt; autocompleteTree.setValue(null));
+clearTa.addClickHandler(mouseEvent -&gt; ta.setValue(null));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+@UiField
+autocomplete: Autocomplete&lt;Fruit&gt;;
+@UiField
+multiSelect: AutocompleteMultiSelect&lt;Fruit&gt;;
+
+let fruits = Fruit.getFruits(2000);
+this.multiSelect.setRowsData(fruits);
+this.autocomplete.setRowsData(fruits);
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+    <!--markup template-->
+    <h5>Template markup </h5>
+    <div class="demo-component-wrapper">
+        <dn-autocomplete-tree>
+
+        </dn-autocomplete-tree>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;!--  AUTOCOMPLETE  TREE--&gt;
+&lt;template ui-field=&quot;autocompleteTree&quot;&gt;
+    &lt;div ui-field='root' class='autocomplete'&gt;
+        &lt;dn-button ui-field='button' class='btn btn-secondary dropdown-toggle'&gt;
+            &lt;span ui-field='buttonText'&gt;Choose ...&lt;/span&gt;
+        &lt;/dn-button&gt;
+        &lt;div ui-field='listPanel' class='autocomplete-scroll-panel'&gt;
+            &lt;dn-text-box ui-field='textBox'&gt;&lt;/dn-text-box&gt;
+            &lt;div class='scroll-style'&gt;
+                &lt;dn-tree ui-field=&quot;tree&quot;&gt;&lt;/dn-tree&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+            </code>
+        </pre>
+        </div>
+    </div>
+</div>

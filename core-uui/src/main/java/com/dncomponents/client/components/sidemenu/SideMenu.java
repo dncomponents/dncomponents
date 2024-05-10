@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,9 +39,7 @@ import java.util.function.Function;
 
 import static com.dncomponents.client.dom.DomUtil.isChildOf;
 
-/**
- * @author nikolasavic
- */
+
 public class SideMenu<T> extends BaseComponent<Object, SideMenuView> implements HasSelectionHandlers<T> {
 
     Filter<TreeNode> filter = new Filter<TreeNode>() {
@@ -153,7 +151,7 @@ public class SideMenu<T> extends BaseComponent<Object, SideMenuView> implements 
                 final String historyToken = placeManager.getHistoryToken(event.getValue());
                 for (TreeNode item : getAllItems()) {
                     if (((ItemId) item.getUserObject()).getId() != null &&
-                            ((ItemId) item.getUserObject()).getId().equalsIgnoreCase(historyToken)) {
+                        ((ItemId) item.getUserObject()).getId().equalsIgnoreCase(historyToken)) {
                         setSelected(item, true, false);
                         draw();
                     }

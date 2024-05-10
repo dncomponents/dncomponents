@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,9 +27,7 @@ import com.dncomponents.client.views.core.ui.tree.TreeCellCheckboxSimpleView;
 import elemental2.dom.HTMLTemplateElement;
 import elemental2.dom.MouseEvent;
 
-/**
- * @author nikolasavic
- */
+
 public class TreeCellCheckboxSimpleViewImpl extends TreeCellViewImpl implements TreeCellCheckboxSimpleView {
 
     @UiField

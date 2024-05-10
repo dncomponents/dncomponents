@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,9 +28,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/**
- * @author nikolasavic
- */
+
 public class TreeGroupBy<T> extends TableTree<T> {
 
     Table<T> table;
@@ -56,7 +54,7 @@ public class TreeGroupBy<T> extends TableTree<T> {
 
     public static Map groupBy(HeaderGrouping headerGrouping, List rows) {
         Comparator<Object> comparator = headerGrouping.getSortingDirection() ==
-                SortingDirection.DESCENDING ? Collections.reverseOrder() : null;
+                                        SortingDirection.DESCENDING ? Collections.reverseOrder() : null;
         final Object collect = rows.stream()
                 .filter(o -> headerGrouping.getColumn().getFieldGetter().apply(o) != null)
                 .collect(Collectors.groupingBy(t -> headerGrouping.getColumn().getFieldGetter().apply(t), () -> new TreeMap<>(comparator), Collectors.toList()));

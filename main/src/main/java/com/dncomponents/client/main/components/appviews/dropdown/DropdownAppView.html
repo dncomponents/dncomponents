@@ -1,0 +1,283 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Dropdown
+    </h2>
+    <div class="demo-component-wrapper">
+        <div class="row">
+            <div class="col-4">
+                <dn-dropdown ui-field="dropDown" content="Dropdown">
+                    <item itemId="tree">
+                        <i class="fa fa-tree"></i>
+                    </item>
+                    <item itemId="leaf">
+                        <i class="fa fa-leaf"></i>
+                    </item>
+                    <item itemId="apple">
+                        <i class="fa fa-apple"></i>
+                    </item>
+                </dn-dropdown>
+            </div>
+            <div class="col-8">
+                <dn-text-area ui-field="textArea"></dn-text-area>
+            </div>
+        </div>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-html">
+&lt;dn-dropdown ui-field=&quot;dropDown&quot; content=&quot;Dropdown&quot;&gt;
+    &lt;item itemId=&quot;tree&quot;&gt;
+        &lt;i class=&quot;fa fa-tree&quot;&gt;&lt;/i&gt;
+    &lt;/item&gt;
+    &lt;item itemId=&quot;leaf&quot;&gt;
+        &lt;i class=&quot;fa fa-leaf&quot;&gt;&lt;/i&gt;
+    &lt;/item&gt;
+    &lt;item itemId=&quot;apple&quot;&gt;
+        &lt;i class=&quot;fa fa-apple&quot;&gt;&lt;/i&gt;
+    &lt;/item&gt;
+&lt;/dn-dropdown&gt;
+             </code>
+         </pre>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+public DropDown&lt;IdItem&gt; dropDown;
+
+dropDown.addItemSelectionHandler(event -&gt;
+        textArea.setValue(event.getSelectedItem().getUserObject().getId()));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+@UiField
+public dropDown: DropDown&lt;ItemId&gt;;
+
+this.dropDown.addSelectionHandler(SelectionHandler.onSelection(evt =&gt; {
+                 this.textArea.setValue(evt.selection.get(0).getUserObject().getId());
+`            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--renderer-->
+    <h5>
+        Renderer
+    </h5>
+    <p>Create custom item renderer for complex objects.</p>
+    <div ui-field="rendererPanel" class="demo-component-wrapper">
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+DropDown&lt;Fruit&gt; dropDown = new DropDown&lt;&gt;();
+
+dropDown.setItemRenderer((userObject, slots) -&gt; slots.getMainSlot()
+        .appendChild(FontAwesome.CIRCLE_THIN.getIcon())
+        .textContent = &quot;  &quot;+userObject.getName());
+
+for (Fruit fruit : Fruit.fruits) {
+      DropDownItem&lt;Fruit&gt; fruitDropDownItem = new DropDownItem&lt;&gt;(dropDown, fruit);
+      dropDown.addItem(fruitDropDownItem);
+}
+
+dropDown.setButtonContent(&quot;Fruits&quot;);
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+let dropDown: DropDown&lt;Fruit&gt; = new DropDown&lt;Fruit&gt;();
+dropDown.setItemRenderer({
+    render(userObject: Fruit, slots: MainViewSlots): void {
+        slots.getMainSlot()
+            .appendChild(FontAwesome.CIRCLE_THIN.getIcon())
+            .textContent = '  ' + userObject.name;
+    }
+});
+Fruit.fruits.forEach(fruit =&gt; {
+    let fruitDropDownItem: DropDownItem&lt;Fruit&gt; = new DropDownItem&lt;Fruit&gt;(dropDown, fruit);
+    dropDown.addItem(fruitDropDownItem);
+});
+dropDown.setButtonContent('Fruits');
+this.rendererPanel.appendChild(dropDown.asElement());
+`            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--end renderer-->
+
+    <!--events-->
+    <h5>
+        Events
+    </h5>
+    <p>Logs open/close and selection events.</p>
+    <div class="demo-component-wrapper">
+        <div class="row">
+            <div class="col-4">
+                <dn-dropdown ui-field="dpEvents" style="margin-bottom:25px;"></dn-dropdown>
+            </div>
+            <div class="col-8">
+                <dn-text-area ui-field="ta"></dn-text-area>
+            </div>
+        </div>
+    </div>
+
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+DropDown&lt;Fruit&gt; dpEvents;
+
+for (Fruit fruit : Fruit.fruits)
+    dpEvents.addItem(new DropDownItem&lt;&gt;(dpEvents, fruit));
+dpEvents.setButtonContent(&quot;Fruits&quot;);
+dpEvents.addSelectionHandler(new SelectionHandler&lt;List&lt;DropDownItem&lt;Fruit&gt;&gt;&gt;() {
+    @Override
+    public void onSelection(SelectionEvent&lt;List&lt;DropDownItem&lt;Fruit&gt;&gt;&gt; event) {
+        DropDownItem&lt;Fruit&gt; selectedItem = event.getSelectedItem().get(0);
+        ta.append(&quot;Item selection event: &quot; + selectedItem.getUserObject() + &quot;\n&quot;);
+    }
+});
+dpEvents.addSelectionHandler(event -&gt; ta.append(&quot;Selection Event:&quot; + event.getSelectedItem().toString() + &quot;\n&quot;));
+dpEvents.addOpenHandler(event -&gt; ta.append(&quot;Open event\n&quot;));
+dpEvents.addCloseHandler(event -&gt; ta.append(&quot;Close event\n&quot;));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+@UiField
+dpEvents: DropDown&lt;Fruit&gt;;
+
+Fruit.fruits.forEach(fruit =&gt; {
+    this.dpEvents.addItem(new DropDownItem&lt;Fruit&gt;(this.dpEvents, fruit));
+});
+this.dpEvents.setButtonContent('Fruits');
+this.dpEvents.addSelectionHandler(SelectionHandler.onSelection(evt =&gt; {
+    let selectedItem = evt.selection.get(0);
+    this.ta.append('Item selection event: ' + selectedItem.getUserObject() + '\n');
+}));
+this.dpEvents.addSelectionHandler(SelectionHandler.onSelection((evt) =&gt; this.ta.append('Selection Event:' + evt.selection.toString() + '\n')));
+this.dpEvents.addOpenHandler(OpenHandler.onOpen(() =&gt; this.ta.append('Open event\n')));
+this.dpEvents.addCloseHandler(CloseHandler.onClose(() =&gt; this.ta.append('Close event\n')));
+`            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+    <!--markup template-->
+    <h5>Template markup</h5>
+    <div class="demo-component-wrapper">
+        <dn-dropdown content="Dropdown">
+
+        </dn-dropdown>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;!--DROPDOWN--&gt;
+&lt;template ui-field=&quot;dropDownUi&quot;&gt;
+    &lt;template ui-field=&quot;dropdown&quot;&gt;
+        &lt;div class=&quot;dropdown&quot; ui-field=&quot;root&quot;&gt;
+            &lt;button ui-field=&quot;button&quot; class=&quot;btn btn-secondary dropdown-toggle&quot;&gt;
+
+            &lt;/button&gt;
+            &lt;div ui-field=&quot;dropDownMenu&quot; class=&quot;dropdown-menu&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;style-item ui-field=&quot;dropDownMenuShowStyle&quot; class=&quot;show&quot;&gt;&lt;/style-item&gt;
+    &lt;/template&gt;
+    &lt;template ui-field=&quot;dropDownItem&quot;&gt;
+        &lt;a ui-field=&quot;root&quot; class=&quot;dropdown-item&quot; href=&quot;javascript:void(0)&quot;&gt;&lt;/a&gt;
+    &lt;/template&gt;
+&lt;/template&gt;
+            </code>
+        </pre>
+        </div>
+    </div>
+    <!--end events-->
+    <div ui-field="javaTestPanel" class="demo-component-wrapper">
+
+    </div>
+</div>

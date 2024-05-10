@@ -1,0 +1,112 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Filtering Tree
+    </h2>
+
+    <div class="demo-component-wrapper">
+        <div class="row">
+            <div class="col-5">
+                <dn-checkbox ui-field="expandAll" addClass="mb-3">expand all</dn-checkbox>
+                <dn-text-box ui-field="textBox"></dn-text-box>
+            </div>
+            <div class="col-7">
+                <dn-tree ui-field="tree"></dn-tree>
+            </div>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+Tree tree;
+
+Filter&lt;TreeNode&gt; filter = new Filter&lt;TreeNode&gt;() {
+    @Override
+    public boolean test(TreeNode treeNode) {
+        if (treeNode == null || treeNode.getUserObject() == null || textBox.getValue() == null)
+            return true;
+        String str = treeNode.getUserObject() + &quot;&quot;;
+        if (str == null)
+            return false;
+        return str.contains(textBox.getValue());
+    }
+};
+tree.addFilter(filter);
+textBox.addValueChangeHandler(event -&gt; filter.fireFilterChange());
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+tree: Tree&lt;any&gt;;
+
+let filter: Filter&lt;TreeNode&lt;any&gt;&gt; = new FilterT(this);
+this.tree.addFilter(filter);
+this.textBox.addValueChangeHandler(ValueChangeHandler.onValueChange(evt =&gt; {
+    this.tree.expandAll(true);
+    filter.fireFilterChange();
+}));
+
+class FilterT extends Filter&lt;TreeNode&lt;any&gt;&gt; {
+
+    view: TreeFilteringAppView;
+
+    constructor(view: TreeFilteringAppView) {
+        super();
+        this.view = view;
+    }
+
+    compare(): Predicate&lt;TreeNode&lt;any&gt;&gt; {
+        return (treeNode: TreeNode&lt;any&gt;): boolean =&gt; {
+            if (treeNode == null || treeNode.getUserObject() == null || this.view.textBox.getValue() == null)
+                return true;
+            let str = treeNode.getUserObject() + '';
+            if (str == null)
+                return false;
+            return str.includes(this.view.textBox.getValue());
+        };
+    }
+}
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+</div>

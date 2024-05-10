@@ -1,0 +1,89 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<nav class="navbar sticky-top navbar-light bg-white border-bottom">
+    <!--    <a class="navbar-brand" href="#">Logo</a>-->
+    <div class="container-fluid">
+        <a class="navbar-brand d-lg-none" href="../index.html">
+            <img src="images/logo-mob.svg">
+        </a>
+        <a class="navbar-brand d-none d-lg-inline-block" href="../index.html">
+            <img src="images/logo.svg">
+        </a>
+        <a href="../pricing.html" class="btn btn-outline-secondary">Download</a>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row flex-xl-nowrap">
+        <dn-side-menu ui-field="side">
+            <item itemId="accordion">Accordion</item>
+            <item content="Autocomplete">
+                <item itemId="autocomplete:LIST">List Autocomplete</item>
+                <item itemId="autocomplete:TREE">Tree Autocomplete</item>
+            </item>
+            <item itemId="button">Buttons</item>
+            <item itemId="checkbox">Checkboxes</item>
+            <item itemId="dropdown:BASIC">Dropdown</item>
+            <item itemId="dropdown:MULTI_LEVEL">Dropdown Multilevel</item>
+            <item itemId="forms">Forms</item>
+            <item iconType="LIST"
+                  content="List">
+                <item itemId="list:BASIC">Basic List</item>
+                <item itemId="list:BIG_DATA">Big data List</item>
+                <item itemId="list:CHECKBOX">Checkbox List</item>
+                <item itemId="list:CRUD">Edit List</item>
+                <item itemId="list:FILTERING">Filter List</item>
+                <item itemId="list:SELECTION">Selection List</item>
+                <item itemId="list:SORTING">Sorting List</item>
+            </item>
+            <item itemId="modal">Modal</item>
+            <item itemId="popover">Popover</item>
+            <item itemId="progress">Progress</item>
+            <item itemId="radio">Radio</item>
+            <item itemId="sidemenu">Sidemenu</item>
+            <item itemId="tab">Tab</item>
+            <item iconType="TABLE"
+                  content="Table">
+                <item itemId="table:BASIC">Basic Table</item>
+                <item itemId="table:CHECKBOX">Checkbox Table</item>
+                <item itemId="table:COLUMN_VISIBILITY">Column Visibility Table</item>
+                <item itemId="table:EDITING">Edit Table</item>
+                <item itemId="table:FILTERING">Filter Table</item>
+                <item itemId="table:GROUP">Group Table</item>
+                <item itemId="table:HEADER_AND_FOOTER">Header and Footer Table</item>
+                <item itemId="table:PAGINATION">Pagination Table</item>
+                <item itemId="table:ROW_EXPANDER">Row Expander Table</item>
+                <item itemId="table:SORTING">Sorting Table</item>
+            </item>
+            <!--            <item content="Table Tree">-->
+            <!--                <item itemId="table_tree">Table Tree</item>-->
+            <!--            </item>-->
+            <item itemId="tooltip">Tooltip</item>
+            <item iconType="TREE"
+                  content="Tree">
+                <item itemId="tree:SIMPLE">Basic Tree</item>
+                <item itemId="tree:BIG_DATA">Big data Tree</item>
+                <item itemId="tree:CHECKBOX">Checkbox Tree</item>
+                <item itemId="tree:CRUD">Edit Tree</item>
+                <item itemId="tree:FILTERING">Filter Tree</item>
+                <item itemId="tree:SELECTION">Selection Tree</item>
+            </item>
+            <item itemId="valueboxes">Textbox & Textarea</item>
+        </dn-side-menu>
+        <main ui-field="contentWrapper" class="col-12 col-md-9 col-xl-10 p-xl-5">
+        </main>
+    </div>
+</div>

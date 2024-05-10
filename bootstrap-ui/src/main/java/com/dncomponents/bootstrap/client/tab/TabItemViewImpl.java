@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package com.dncomponents.bootstrap.client.tab;
 
+import com.dncomponents.Template;
 import com.dncomponents.UiField;
-import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.core.events.Command;
 import com.dncomponents.client.views.core.ui.tab.TabItemView;
@@ -26,7 +26,7 @@ import elemental2.dom.EventListener;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
-@Component
+@Template
 public class TabItemViewImpl implements TabItemView {
 
     @UiField

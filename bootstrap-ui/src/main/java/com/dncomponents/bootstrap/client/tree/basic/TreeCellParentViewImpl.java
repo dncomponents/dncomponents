@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,16 @@
  */
 package com.dncomponents.bootstrap.client.tree.basic;
 
+import com.dncomponents.Template;
 import com.dncomponents.UiField;
-import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.handlers.BaseEventListener;
 import com.dncomponents.client.views.core.ui.tree.ParentTreeCellView;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
-/**
- * @author nikolasavic
- */
-@Component
+
+@Template
 public class TreeCellParentViewImpl extends TreeCellViewImpl implements ParentTreeCellView {
 
     @UiField

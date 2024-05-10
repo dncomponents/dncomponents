@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,9 +45,7 @@ import java.util.stream.Collectors;
 
 import static com.dncomponents.client.dom.DomUtil.isChildOf;
 
-/**
- * @author nikolasavic
- */
+
 public class Tree<M> extends AbstractCellComponent<TreeNode<M>, Object, TreeUi> implements HasOpenHandlers<TreeNode>,
         HasCloseHandlers<TreeNode>, HasTreeData<M>, HasDropHandlers<TreeNode<M>> {
 

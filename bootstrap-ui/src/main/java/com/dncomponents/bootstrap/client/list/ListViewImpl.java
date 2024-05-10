@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,8 @@
 
 package com.dncomponents.bootstrap.client.list;
 
+import com.dncomponents.Template;
 import com.dncomponents.UiField;
-import com.dncomponents.Component;
-import com.dncomponents.bootstrap.client.BootstrapUi;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.dom.DomUtil;
@@ -29,10 +28,8 @@ import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
-/**
- * @author nikolasavic
- */
-@Component
+
+@Template
 public class ListViewImpl implements ListView {
 
     HtmlBinder uiBinder = HtmlBinder.create(ListViewImpl.class, this);

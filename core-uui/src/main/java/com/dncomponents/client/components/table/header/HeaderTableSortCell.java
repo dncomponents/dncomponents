@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,7 @@ import com.dncomponents.client.views.core.ui.table.headers.HeaderTableSortCellVi
 
 import java.util.ArrayList;
 
-/**
- * Created by nikolasavic
- */
+
 public class HeaderTableSortCell extends HeaderTableTextCell implements HeaderTableSortCellView.SortPresenter {
 
     private HeaderSorting headerSorting;
@@ -62,7 +60,6 @@ public class HeaderTableSortCell extends HeaderTableTextCell implements HeaderTa
      * Sorts ascending {@link SortingDirection#ASCENDING}<p>
      * Sorts descending {@link SortingDirection#DESCENDING}<p>
      * Removes sorting {@code null}
-     *
      */
     @Override
     public void sort(SortingDirection direction) {
@@ -76,7 +73,6 @@ public class HeaderTableSortCell extends HeaderTableTextCell implements HeaderTa
     /**
      * Updates cell view if HeaderSorting is present in event's headers sorting list.
      * Otherwise set activity to false.
-     *
      */
     private void updateView(HeaderSorting header) {
         this.headerSorting = header;

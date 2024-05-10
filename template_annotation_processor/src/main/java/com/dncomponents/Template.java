@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,12 @@
  * limitations under the License.
  */
 
-package com.dncomponents.client.views;
+package com.dncomponents;
 
-import elemental2.dom.Element;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
 
-import java.util.List;
-
-public interface HasAttributes {
-    void setAttribute(String name, Object value);
-
-    List<String> getAttributeNames();
-
-    default void parse(Element htmlElement) {
-        for (String attributeName : getAttributeNames()) {
-            final String value = htmlElement.getAttribute(attributeName);
-            if (value != null && !value.contains("{{"))
-                this.setAttribute(attributeName, value);
-        }
-    }
+@Target({ElementType.TYPE})
+public @interface Template {
+    String value() default "";
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,14 @@
 
 package com.dncomponents.bootstrap.client.table.cell;
 
-import com.dncomponents.Component;
+import com.dncomponents.Template;
 import com.dncomponents.bootstrap.client.cell.BaseCellViewImpl;
 import com.dncomponents.client.components.core.HtmlBinder;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLTemplateElement;
 
-/**
- * @author nikolasavic
- */
-@Component
+
+@Template
 public class TableCellViewImpl extends BaseCellViewImpl {
     public TableCellViewImpl() {
     }

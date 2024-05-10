@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,22 @@
 
 package com.dncomponents.client.components.table.columnclasses.checkboxcolumn;
 
+import com.dncomponents.client.components.AbstractCellComponent;
 import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
 import com.dncomponents.client.components.list.ListTreeMultiSelectionModel;
 import com.dncomponents.client.components.table.TableCell;
-import com.dncomponents.client.components.AbstractCellComponent;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.dom.handlers.KeyDownHandler;
 import elemental2.dom.KeyboardEvent;
 import elemental2.dom.MouseEvent;
 
-/**
- * Created by nikolasavic
- */
+
 public class TableCellCheckBox extends TableCell {
 
     public TableCellCheckBox() {
     }
 
-    
+
     @Override
     protected void setOwner(AbstractCellComponent owner) {
         super.setOwner(owner);
@@ -56,7 +54,7 @@ public class TableCellCheckBox extends TableCell {
         getCellView().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(MouseEvent mouseEvent) {
-                getCellView().getCheckbox().setValue(!getCellView().getCheckbox().getValue(),true);
+                getCellView().getCheckbox().setValue(!getCellView().getCheckbox().getValue(), true);
             }
         });
         getOwner().getSelectionModel().addSelectionHandler(event -> draw());

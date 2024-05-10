@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,8 +31,6 @@ import java.util.List;
  * without affecting browser performance.
  * It is turned on by default on all components that are using this class.
  * It is highly recommended to keep it turned on.
- *
- * @author nikolasavic
  */
 public class VirtualScroll {
 

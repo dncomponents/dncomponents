@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,7 @@ package com.dncomponents.bootstrap.client.progress;
 import com.dncomponents.client.views.core.EnumLookUp;
 import com.dncomponents.client.views.core.HasStyle;
 
-/**
- * @author nikolasavic
- */
+
 public enum ProgressBarTypes implements HasStyle {
     STRIPED(() -> ProgressBuilderConst.getInstance().striped),
     ANIMATED(() -> ProgressBuilderConst.getInstance().animated);

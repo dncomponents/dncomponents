@@ -1,0 +1,414 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Basic Tree
+    </h2>
+    <div class="demo-component-wrapper">
+        <dn-tree>
+            <item itemId="1">
+                one
+            </item>
+            <item itemId="2">
+                two
+            </item>
+            <item itemId="3">
+                three
+            </item>
+            <item itemId="4" content="four">
+                <item itemId="11">
+                    one one
+                </item>
+                <item itemId="22">
+                    two two
+                </item>
+                <item itemId="33">
+                    three three
+                </item>
+            </item>
+            <item itemId="5">
+                five
+            </item>
+        </dn-tree>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;dn-tree&gt;
+    &lt;item itemId=&quot;1&quot;&gt;
+        one
+    &lt;/item&gt;
+    &lt;item itemId=&quot;2&quot;&gt;
+        two
+    &lt;/item&gt;
+    &lt;item itemId=&quot;3&quot;&gt;
+        three
+    &lt;/item&gt;
+    &lt;item itemId=&quot;4&quot; content=&quot;four&quot;&gt;
+        &lt;item itemId=&quot;11&quot;&gt;
+            one one
+        &lt;/item&gt;
+        &lt;item itemId=&quot;22&quot;&gt;
+            two two
+        &lt;/item&gt;
+        &lt;item itemId=&quot;33&quot;&gt;
+            three three
+        &lt;/item&gt;
+    &lt;/item&gt;
+    &lt;item itemId=&quot;5&quot;&gt;
+        five
+    &lt;/item&gt;
+&lt;/dn-tree&gt;
+            </code>
+        </pre>
+        </div>
+    </div>
+    <div class="demo-component-wrapper">
+        <div class="row">
+            <div class="col-5">
+                <dn-checkbox ui-field="showRoot" addClass="mt-3"> show root</dn-checkbox>
+                <dn-checkbox ui-field="expandAll">expand all</dn-checkbox>
+            </div>
+            <div class="col-7">
+                <dn-tree ui-field="tree"></dn-tree>
+            </div>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+Tree&lt;Object&gt; tree;
+
+tree.expandAll(false);
+tree.getRowCellConfig().setFieldGetter(TreeNode::getUserObject);
+
+showRoot.setValue(tree.isShowRoot());
+expandAll.setValue(tree.isAllExpanded());
+
+TreeNode root = new TreeNode(&quot;root&quot;);
+TreeNode node1 = new TreeNode(&quot;node 1&quot;);
+TreeNode node2 = new TreeNode(&quot;node 2&quot;);
+TreeNode node3 = new TreeNode(&quot;node 3&quot;);
+root.add(node1);
+root.add(node2);
+root.add(node3);
+
+TreeNode node11 = new TreeNode(&quot;node 11&quot;);
+node1.add(node11);
+TreeNode node12 = new TreeNode(&quot;node 12&quot;);
+node1.add(node12);
+
+expandAll.addValueChangeHandler(event -&gt; {
+    tree.expandAll(event.getValue());
+    tree.drawData();
+});
+
+showRoot.addValueChangeHandler(event -&gt; {
+    tree.showRoot(event.getValue());
+    tree.drawData();
+});
+
+tree.setRoot(root);
+tree.drawData();
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+tree: Tree&lt;any&gt;;
+
+this.tree.expandAll(false);
+this.tree.getRowCellConfig().setFieldGetter(p =&gt; {
+    return p.getUserObject();
+});
+this.showRoot.setValue(this.tree.isShowRoot());
+this.expandAll.setValue(this.tree.isAllExpanded());
+let root: TreeNode&lt;any&gt; = new TreeNode('root');
+let node1: TreeNode&lt;any&gt; = new TreeNode('node 1');
+let node2: TreeNode&lt;any&gt; = new TreeNode('node 2');
+let node3: TreeNode&lt;any&gt; = new TreeNode('node 3');
+root.add(node1);
+root.add(node2);
+root.add(node3);
+let node11: TreeNode&lt;any&gt; = new TreeNode('node 11');
+node1.add(node11);
+let node12: TreeNode&lt;any&gt; = new TreeNode('node 12');
+node1.add(node12);
+this.expandAll.addValueChangeHandler(ValueChangeHandler.onValueChange(evt =&gt; {
+    this.tree.expandAll(evt.value);
+    this.tree.drawData();
+}));
+this.showRoot.addValueChangeHandler(ValueChangeHandler.onValueChange(evt =&gt; {
+    this.tree.showRoot(evt.value);
+    this.tree.drawData();
+}));
+this.tree.setRoot(root);
+this.tree.drawData();
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--renderer-->
+    <h5>Renderer</h5>
+    <div class="demo-component-wrapper">
+        <dn-tree ui-field="treeRenderer"></dn-tree>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+Tree treeRenderer;
+
+TreeNode root = new TreeNode(&quot;root&quot;);
+TreeNode node1 = new TreeNode(&quot;node 1&quot;);
+TreeNode&lt;Fruit&gt; node2 = new TreeNode(new Fruit(&quot;Watermelon&quot;, &quot;very sweet&quot;));
+TreeCellConfig&lt;Fruit, String&gt; config =
+        new TreeCellConfig&lt;&gt;(fruitTreeNode -&gt; fruitTreeNode.getUserObject().getName());
+config.setCellRenderer(r -&gt; {
+    r.valuePanel.style.color = &quot;blue&quot;;
+    r.valuePanel.innerHTML = r.value;
+});
+treeRenderer.setCellConfig(node2, config);
+
+root.add(node1);
+root.add(node2);
+treeRenderer.setRoot(root);
+treeRenderer.drawData();
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+treeRenderer: Tree&lt;any&gt;;
+
+let root: TreeNode&lt;any&gt; = new TreeNode('root');
+let node1: TreeNode&lt;any&gt; = new TreeNode('node 1');
+let node2: TreeNode&lt;Fruit&gt; = new TreeNode(new Fruit('Watermelon', 'very sweet'));
+let config: TreeCellConfig&lt;Fruit, string&gt; = new TreeCellConfig&lt;Fruit, string&gt;((fruitTreeNode) =&gt; fruitTreeNode.getUserObject().getName());
+config.setCellRenderer({
+    setValue: (r) =&gt; {
+        r.valuePanel.style.color = 'blue';
+        r.valuePanel.innerHTML = r.value;
+    }
+});
+this.treeRenderer.setCellConfig(node2, &lt;any&gt;config);
+root.add(node1);
+root.add(node2);
+this.treeRenderer.setRoot(root);
+this.treeRenderer.drawData();
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+    <!--events-->
+    <h5>Events</h5>
+    <div class="demo-component-wrapper">
+        <p>events: open, closed, mouse over, double click</p>
+        <dn-tree ui-field="eventsTree"></dn-tree>
+        <dn-text-area ui-field="eventsTa" addClass="ta-demo ta-demo-full"></dn-text-area>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+Tree eventsTree;
+
+TreeNode root = new TreeNode(&quot;root&quot;);
+TreeNode node1 = new TreeNode(&quot;node 1&quot;);
+TreeNode node2 = new TreeNode(&quot;node 2&quot;);
+TreeNode node21 = new TreeNode(&quot;node 21&quot;);
+TreeNode node22 = new TreeNode(&quot;node 22&quot;);
+TreeNode node23 = new TreeNode(&quot;node 23&quot;);
+node2.add(node21);
+node2.add(node22);
+node2.add(node23);
+
+root.add(node1);
+root.add(node2);
+eventsTree.setRoot(root);
+eventsTree.addOpenHandler(event -&gt;
+        eventsTa.append(&quot;open: &quot; + event.getTarget().getUserObject() + &quot;\n&quot;));
+eventsTree.addCloseHandler(event -&gt;
+        eventsTa.append(&quot;close: &quot; + event.getTarget().getUserObject() + &quot;\n&quot;));
+eventsTree.addCellHandler((DoubleClickHandler) mouseEvent -&gt;
+        eventsTa.append(&quot;double clicked: &quot; + eventsTree.getCell(mouseEvent).getModel().getUserObject() + &quot;\n&quot;));
+eventsTree.addCellHandler((MouseOverHandler) mouseEvent -&gt;
+        eventsTa.append(&quot;mouse over: &quot; + eventsTree.getCell(mouseEvent).getModel().getUserObject() + &quot;\n&quot;));
+eventsTree.drawData();
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+eventsTree: Tree&lt;any&gt;;
+
+let root: TreeNode&lt;any&gt; = new TreeNode('root');
+let node1: TreeNode&lt;any&gt; = new TreeNode('node 1');
+let node2: TreeNode&lt;any&gt; = new TreeNode('node 2');
+let node21: TreeNode&lt;any&gt; = new TreeNode('node 21');
+let node22: TreeNode&lt;any&gt; = new TreeNode('node 22');
+let node23: TreeNode&lt;any&gt; = new TreeNode('node 23');
+node2.add(node21);
+node2.add(node22);
+node2.add(node23);
+root.add(node1);
+root.add(node2);
+this.eventsTree.setRoot(root);
+this.eventsTree.addOpenHandler(OpenHandler.onOpen(evt =&gt; {
+    this.eventsTa.append('open: ' + evt.owner.getUserObject() + '\n');
+}));
+this.eventsTree.addCloseHandler(CloseHandler.onClose(evt =&gt; {
+    this.eventsTa.append('close: ' + evt.owner.getUserObject() + '\n');
+}));
+this.eventsTree.addCellHandler(DoubleClickHandler.onDoubleClick(evt =&gt; {
+    this.eventsTa.append('double clicked: ' + this.eventsTree.getCell(evt).getModel().getUserObject() + '\n');
+}));
+this.eventsTree.addCellHandler(MouseOverHandler.onMouseOver(evt =&gt; {
+    this.eventsTa.append('mouse over: ' + this.eventsTree.getCell(evt).getModel().getUserObject() + '\n');
+}));
+this.eventsTree.drawData();
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--markup template-->
+    <h5>Template markup</h5>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+Tree tree = new Tree(new TreeUiImpl(&quot;#tree&quot;));
+            </code>
+        </pre>
+            <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;!--   TREE  --&gt;
+&lt;template ui-field=&quot;tree&quot;&gt;
+    &lt;template ui-field=&quot;treeMain&quot;&gt;
+        &lt;ul ui-field=&quot;root&quot; class=&quot;list-group scroll-style tree&quot; style=&quot;border: 1px solid lightgrey;&quot;&gt;&lt;/ul&gt;
+        &lt;style-item ui-field=&quot;rowHeight&quot; class=&quot;49&quot;&gt;&lt;/style-item&gt;
+    &lt;/template&gt;
+    &lt;template ui-field=&quot;treeItemSimple&quot;&gt;
+        &lt;li ui-field=&quot;root&quot; class=&quot;list-group-item&quot;&gt;
+                &lt;span style=&quot;margin-left:48px;&quot;&gt;
+                  &lt;span ui-field=&quot;valuePanel&quot;&gt;&lt;/span&gt;
+                &lt;/span&gt;
+        &lt;/li&gt;
+        &lt;style-item ui-field=&quot;modelSelected&quot; class=&quot;active&quot;&gt;&lt;/style-item&gt;
+    &lt;/template&gt;
+    &lt;template ui-field=&quot;treeItemSimpleParent&quot;&gt;
+        &lt;li ui-field=&quot;root&quot; class=&quot;list-group-item&quot;&gt;
+            &lt;i ui-field=&quot;openCloseElement&quot; style=&quot;margin-right:  10px;&quot;&gt;&lt;/i&gt;
+            &lt;span ui-field=&quot;valuePanel&quot;&gt;&lt;/span&gt;
+        &lt;/li&gt;
+        &lt;style-item ui-field=&quot;openStyle&quot; class=&quot;fas fa-plus&quot;&gt;&lt;/style-item&gt;
+        &lt;style-item ui-field=&quot;closeStyle&quot; class=&quot;fas fa-minus&quot;&gt;&lt;/style-item&gt;
+        &lt;style-item ui-field=&quot;modelSelected&quot; class=&quot;active&quot;&gt;&lt;/style-item&gt;
+    &lt;/template&gt;
+
+    &lt;template ui-field=&quot;treeItemSimpleCheckbox&quot;&gt;
+        &lt;li class=&quot;list-group-item&quot; ui-field=&quot;root&quot;&gt;
+                &lt;span style=&quot;margin-left:  48px;&quot;&gt;
+                    &lt;dn-checkbox ui-field=&quot;checkBox&quot; view=&quot;SIMPLE&quot;&gt;&lt;/dn-checkbox&gt;
+                  &lt;span ui-field=&quot;valuePanel&quot;&gt;&lt;/span&gt;
+                &lt;/span&gt;
+        &lt;/li&gt;
+    &lt;/template&gt;
+    &lt;template ui-field=&quot;treeItemSimpleParentCheckbox&quot;&gt;
+        &lt;li ui-field=&quot;root&quot; class=&quot;list-group-item&quot;&gt;
+            &lt;i ui-field=&quot;openCloseElement&quot; style=&quot;margin-right:  30px;&quot;&gt;&lt;/i&gt;
+            &lt;dn-checkbox ui-field=&quot;checkBox&quot; view=&quot;SIMPLE&quot;&gt;&lt;/dn-checkbox&gt;
+            &lt;span ui-field=&quot;valuePanel&quot;&gt;&lt;/span&gt;
+        &lt;/li&gt;
+        &lt;style-item ui-field=&quot;openStyle&quot; class=&quot;fas fa-plus&quot;&gt;&lt;/style-item&gt;
+        &lt;style-item ui-field=&quot;closeStyle&quot; class=&quot;fas fa-minus&quot;&gt;&lt;/style-item&gt;
+    &lt;/template&gt;
+&lt;/template&gt;
+
+            </code>
+        </pre>
+            </div>
+        </div>
+    </div>
+</div>

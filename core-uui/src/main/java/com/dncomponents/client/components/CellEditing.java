@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,8 +39,6 @@ import elemental2.dom.KeyboardEvent;
  * Defines cell editing behavior.
  * Default trigger event is double click
  * To change this behavior add cell handler to cell owner and start editing programmatically.
- *
- * @author nikolasavic
  */
 public class CellEditing<T, M> {
 

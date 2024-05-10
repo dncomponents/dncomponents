@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,7 @@ import com.dncomponents.client.views.core.ui.table.headers.HeaderTableMenuCellVi
 
 import java.util.ArrayList;
 
-/**
- * @author nikolasavic
- */
+
 public class HeaderTableMenuCell extends HeaderTableSortCell implements HeaderTableMenuCellView.Presenter {
 
     HeaderFiltering headerFiltering;

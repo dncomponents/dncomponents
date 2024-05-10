@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,7 @@ import com.dncomponents.client.components.tree.TreeNode;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-/**
- * @author nikolasavic
- */
+
 public class TreeCellConfig<T, M> extends CellConfig<TreeNode<T>, M> {
 
     protected CellRenderer<TreeNode, T> renderer;

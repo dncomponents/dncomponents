@@ -1,0 +1,302 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Accordion
+    </h2>
+    <dn-button ui-field="brn">
+        <span ui-field="span">span</span>
+    </dn-button>
+    <div class="demo-component-wrapper">
+        <div class="row">
+            <div class="col-5">
+                <dn-checkbox ui-field="allClosed" content="all closed"></dn-checkbox>
+                <dn-checkbox ui-field="multiExpand" content="multiexpand"></dn-checkbox>
+            </div>
+            <div class="col-7">
+                <dn-accordion ui-field='accordion'>
+                    <item itemId="one">
+                        <title>title 1</title>
+                        <content>content 1</content>
+                    </item>
+                    <item itemId="two">
+                        <title>
+                            <i18n id="hua"/>
+                            <i18n>title 2</i18n>
+                        </title>
+                        <content>content 2</content>
+                    </item>
+                    <item itemId="three" ui-field='accordionItem'>
+                        <title>title 3</title>
+                        <content>content 3</content>
+                    </item>
+                </dn-accordion>
+            </div>
+        </div>
+        <dn-text-area ui-field="ta2" addClass="ta-demo ta-demo-full"></dn-text-area>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;dn-accordion ui-field='accordion'&gt;
+    &lt;item itemId=&quot;one&quot;&gt;
+        &lt;title&gt;title 1&lt;/title&gt;
+        &lt;content&gt;content 1&lt;/content&gt;
+    &lt;/item&gt;
+    &lt;item itemId=&quot;two&quot;&gt;
+        &lt;title&gt;title 2&lt;/title&gt;
+        &lt;content&gt;content 2&lt;/content&gt;
+    &lt;/item&gt;
+    &lt;item itemId=&quot;three&quot; ui-field='accordionItem'&gt;
+        &lt;title&gt;title 3&lt;/title&gt;
+        &lt;content&gt;content 3&lt;/content&gt;
+    &lt;/item&gt;
+&lt;/dn-accordion&gt;
+            </code>
+        </pre>
+        </div>
+    </div>
+    <!--renderer-->
+    <h5>Renderer</h5>
+    <div class="demo-component-wrapper">
+        <dn-accordion ui-field="accordionRenderer"></dn-accordion>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+Accordion&lt;Fruit&gt; accordionRenderer;
+
+accordionRenderer.setItemRenderer((userObject, slots) -&gt; {
+    slots.getTitle().innerHTML = &quot;&lt;h4&gt;&quot; + userObject.getName() + &quot;&lt;/h4&gt;&quot;;
+    slots.getContent().innerHTML = userObject.getDescription();
+});
+accordionRenderer.addItem(new AccordionItem&lt;&gt;(accordionRenderer, new Fruit(&quot;Apple&quot;, &quot;apple fruit&quot;)));
+accordionRenderer.addItem(new AccordionItem&lt;&gt;(accordionRenderer, new Fruit(&quot;Orange&quot;, &quot;Orange fruit&quot;)));
+accordionRenderer.addItem(new AccordionItem&lt;&gt;(accordionRenderer, new Fruit(&quot;Banana&quot;, &quot;Banana fruit&quot;)));
+AccordionItem&lt;Fruit&gt; accordionItem = new AccordionItem&lt;&gt;(accordionRenderer);
+accordionItem.setRenderer((fruit, slots) -&gt; {
+    slots.getTitle().innerHTML = &quot;&lt;b&gt;&quot; + fruit.getName() + &quot;&lt;/b&gt;&quot;;
+    slots.getTitle().style.color = &quot;red&quot;;
+    slots.getContent().appendChild(new Button(fruit.getDescription()).asElement());
+});
+accordionItem.setUserObject(new Fruit(&quot;Pineapple&quot;, &quot;sweet fruit&quot;));
+accordionRenderer.addItem(accordionItem);
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+@UiField
+accordionRenderer: Accordion&lt;Fruit&gt;;
+
+this.accordionRenderer.setItemRenderer({
+    render(userObject: Fruit, slots: AccordionItemViewSlots): void {
+        slots.getTitle().innerHTML = '&lt;h4&gt;' + userObject.name + '&lt;/h4&gt;';
+        slots.getContent().innerHTML = userObject.description;
+    }
+});
+
+this.accordionRenderer.addItem(new AccordionItem&lt;Fruit&gt;(this.accordionRenderer, new Fruit('Apple', 'apple fruit')));
+this.accordionRenderer.addItem(new AccordionItem&lt;Fruit&gt;(this.accordionRenderer, new Fruit('Orange', 'Orange fruit')));
+this.accordionRenderer.addItem(new AccordionItem&lt;Fruit&gt;(this.accordionRenderer, new Fruit('Banana', 'Banana fruit')));
+let accordionItem = new AccordionItem&lt;Fruit&gt;(this.accordionRenderer);
+accordionItem.setRenderer({
+    render(fruit: Fruit, slots: AccordionItemViewSlots): void {
+        slots.getTitle().innerHTML = '&lt;b&gt;' + fruit.name + '&lt;/b&gt;';
+        slots.getTitle().style.color = 'red';
+        slots.getContent().appendChild(new Button(fruit.description).asElement());
+    }
+});
+accordionItem.setUserObject(new Fruit('Pineapple', 'sweet fruit'));
+this.accordionRenderer.addItem(accordionItem);
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+    <!--events-->
+    <h5>Events</h5>
+    <div class="demo-component-wrapper">
+        <dn-accordion ui-field="eventsAccordion"></dn-accordion>
+    </div>
+    <dn-text-area ui-field="ta" addClass="mb-3"></dn-text-area>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+Accordion&lt;Person&gt; eventsAccordion;
+
+eventsAccordion.setItemRenderer((people, slots) -&gt; {
+    slots.getTitle().innerHTML = people.getName() + &quot;&quot;;
+    slots.getContent().innerHTML = people.getAge() + &quot;&quot;;
+});
+{
+    final Person person = new Person(&quot;Joe Paul&quot;);
+    person.setAge(22);
+    eventsAccordion.addItem(new AccordionItem&lt;&gt;(eventsAccordion, person));
+}
+{
+    final Person person = new Person(&quot;Mike Smith&quot;);
+    person.setAge(32);
+    eventsAccordion.addItem(new AccordionItem&lt;&gt;(eventsAccordion, person));
+}
+{
+    final Person person = new Person(&quot;Marry Johnson&quot;);
+    person.setAge(42);
+    eventsAccordion.addItem(new AccordionItem&lt;&gt;(eventsAccordion, person));
+}
+eventsAccordion.addSelectionHandler(event -&gt; {
+    ta.setValue(&quot;&quot;);
+    event.getSelectedItem().forEach(e -&gt; ta.append(e.getUserObject().getName() +
+            &quot; &quot; + e.getUserObject().getAge() + &quot;\n&quot;));
+});
+eventsAccordion.getEntitySelectionModel().addSelectionHandler(event -&gt; {
+    for (Person people : event.getSelectedItem())
+        ta.append(&quot;entity selection: &quot; + people + &quot; \n&quot;);
+});
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+@UiField
+eventsAccordion: Accordion&lt;Person&gt;;
+
+this.eventsAccordion.setItemRenderer(new class implements RenderAccordionItem&lt;Person&gt; {
+    render(userObject: Person, slots: AccordionItemViewSlots): void {
+        slots.getTitle().innerHTML = userObject.name + '';
+        slots.getContent().innerHTML = userObject.age + '';
+    }
+});
+{
+    let person = new Person('Joe Paul');
+    person.age = 22;
+    this.eventsAccordion.addItem(new AccordionItem&lt;Person&gt;(this.eventsAccordion, person));
+}
+{
+    let person = new Person('Mike Smith');
+    person.age = (32);
+    this.eventsAccordion.addItem(new AccordionItem&lt;Person&gt;(this.eventsAccordion, person));
+}
+{
+    let person = new Person('Marry Johnson');
+    person.age = 42;
+    this.eventsAccordion.addItem(new AccordionItem&lt;Person&gt;(this.eventsAccordion, person));
+}
+this.eventsAccordion.addSelectionHandler(SelectionHandler.onSelection(evt =&gt; {
+    this.ta.setValue('');
+    evt.selection.forEach(e =&gt; this.ta.append(e.getUserObject().name +
+        ' ' + e.getUserObject().age + '\n'));
+}));
+this.eventsAccordion.getEntitySelectionModel().addSelectionHandler(SelectionHandler.onSelection(evt =&gt; {
+    evt.selection.forEach(people =&gt; {
+        this.ta.append('entity selection: ' + people + ' \n');
+    });
+}));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--markup template-->
+    <h5>Template markup </h5>
+    <div class="demo-component-wrapper">
+        <dn-accordion>
+            <item>
+                <title>
+                    title
+                </title>
+                <content>
+                    content
+                </content>
+            </item>
+        </dn-accordion>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;!--  ACCORDION  --&gt;
+&lt;template ui-field=&quot;accordionUi&quot;&gt;
+    &lt;template ui-field=&quot;accordion&quot;&gt;
+        &lt;div ui-field=&quot;root&quot;&gt;
+
+        &lt;/div&gt;
+    &lt;/template&gt;
+    &lt;template ui-field=&quot;accordionItem&quot;&gt;
+        &lt;div ui-field=&quot;root&quot; class=&quot;card&quot;&gt;
+            &lt;div ui-field=&quot;accordionItemTitlePanel&quot; class=&quot;card-header&quot;&gt;
+                &lt;h5 class=&quot;mb-0&quot;&gt;
+                    &lt;a href=&quot;javascript:void(0)&quot; ui-field=&quot;accordionItemTitle&quot;&gt;
+                    &lt;/a&gt;
+                &lt;/h5&gt;
+            &lt;/div&gt;
+            &lt;div ui-field=&quot;contentPanelParent&quot; class=&quot;collapse&quot; role=&quot;tabpanel&quot;
+                 aria-labelledby=&quot;headingOne&quot;&gt;
+                &lt;div ui-field=&quot;contentPanel&quot; class=&quot;card-body&quot;&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;style-item ui-field=&quot;showContentStyle&quot; class=&quot;show&quot;/&gt;
+    &lt;/template&gt;
+&lt;/template&gt;
+            </code>
+        </pre>
+        </div>
+    </div>
+</div>

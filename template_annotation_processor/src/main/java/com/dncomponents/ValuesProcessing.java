@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,23 +21,21 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * @author nikolasavic
- */
+
 public class ValuesProcessing {
 
     private Set<String> valuesNames = new HashSet<>();
     private String imports = "";
-    String updates = "";
+    private Set<String> updateSet;
 
-    javax.lang.model.element.Element classEl;
-
-
-    public ValuesProcessing(String html, javax.lang.model.element.Element classEl) {
-        this.classEl = classEl;
+    public ValuesProcessing(String html, Set<String> updateSet) {
+        this.updateSet = updateSet;
         parse(html);
     }
 
@@ -45,7 +43,7 @@ public class ValuesProcessing {
         if (html == null)
             return;
         Document doc = Jsoup.parse(html);
-        final Elements dloop = doc.getElementsByAttribute("loop");
+        final Elements dloop = doc.getElementsByAttribute("dn-loop");
         for (org.jsoup.nodes.Element element : dloop) {
             element.remove();
         }
@@ -57,11 +55,10 @@ public class ValuesProcessing {
 
         for (String valuesName : valuesNames) {
             valuesName = valuesName.replace("&quot;", "\"");
-            updates += "        template.addStateFunction(\"" + StringEscapeUtils.escapeJava(valuesName) + "\",()->" +
-                    Util.createJavaCode(valuesName, null, false) + ");\n";
+            updateSet.add("        template.addStateFunction(\"" + StringEscapeUtils.escapeJava(valuesName) + "\", () -> " +
+                          Util.createJavaCode(valuesName, null, false) + ");\n");
         }
     }
-
 
     private static List<String> findSubstrings(String input) {
         List<String> substrings = new ArrayList<>();
@@ -70,7 +67,7 @@ public class ValuesProcessing {
         while (startIndex != -1) {
             endIndex = input.indexOf("}}", startIndex);
             if (endIndex != -1) {
-                substrings.add(input.substring(startIndex + 2, endIndex));
+                substrings.add(input.substring(startIndex + 2, endIndex).trim());
                 startIndex = input.indexOf("{{", endIndex + 2);
             } else {
                 break;
@@ -79,11 +76,9 @@ public class ValuesProcessing {
         return substrings;
     }
 
-    public String getUpdates() {
-        return updates;
-    }
-
     public String getImports() {
         return imports;
     }
+
+
 }

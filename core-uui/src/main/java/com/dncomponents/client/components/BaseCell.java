@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,7 @@ import com.dncomponents.client.views.core.pcg.cell.BaseCellView;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.MouseEvent;
 
-/**
- * @author nikolasavic
- */
+
 public abstract class BaseCell<P, M> extends AbstractCell<P, M, BaseCellView> {
 
     protected CellEditing<P, M> cellEditing;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package com.dncomponents.bootstrap.client.autocomplete.tree;
 
+import com.dncomponents.Template;
 import com.dncomponents.UiField;
-import com.dncomponents.Component;
 import com.dncomponents.bootstrap.client.autocomplete.BaseAutocompleteViewImpl;
 import com.dncomponents.client.components.HasTreeData;
 import com.dncomponents.client.components.Tree;
@@ -36,10 +36,8 @@ import elemental2.dom.HTMLTemplateElement;
 import java.util.List;
 import java.util.function.Function;
 
-/**
- * @author nikolasavic
- */
-@Component
+
+@Template
 public class AutocompleteTreeViewImpl<T> extends BaseAutocompleteViewImpl<TreeNode<T>> implements AutocompleteTreeView<T> {
 
     @UiField

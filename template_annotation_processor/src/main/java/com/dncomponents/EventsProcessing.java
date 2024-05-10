@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,14 +23,22 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * @author nikolasavic
- */
+
 public class EventsProcessing {
     private Set<String> importsSet = new HashSet<>();
+    private Set<String> updateSet;
+    private Map<String, String> fieldsAndTypesMap;
+
+    public EventsProcessing(Map<String, String> fieldsAndTypesMap, Set<String> updateSet) {
+        this.fieldsAndTypesMap = fieldsAndTypesMap;
+        this.updateSet = updateSet;
+    }
 
 
     public String parse(String html) {
@@ -41,20 +49,20 @@ public class EventsProcessing {
         for (Map.Entry<String, String> entry : allEventsMap.entrySet()) {
             if (isBinder(entry.getKey())) {
                 generated += "template.addEventHandler(\"" + entry.getKey() + "\", e -> {\n" +
-                        Util.createJavaCode(entry.getValue(), null, true).replace(";", "") + getBinderAssign(entry.getKey()) +
-                        "        });\n\t\t";
+                             getBinderAssign(entry.getKey(), entry.getValue(), fieldsAndTypesMap) +
+                             "        });\n\t\t";
             } else {
                 generated += "template.addEventHandler(\"" + StringEscapeUtils.escapeJava(entry.getKey()) + "\", e -> {\n" +
-                        "                " + Util.createJavaCode(entry.getValue(), null, true) + "\n" +
-                        "        });\n\t\t";
+                             "                " + Util.createJavaCode(entry.getValue(), null, true) + "\n" +
+                             "        });\n\t\t";
 
             }
         }
         String result = "";
         if (!generated.isEmpty()) {
             result = "    public void bindEvents(){\n" +
-                    "           " + generated + "\n" +
-                    "   }\n";
+                     "           " + generated + "\n" +
+                     "   }\n";
         }
         return result;
     }
@@ -64,7 +72,7 @@ public class EventsProcessing {
         if (html == null)
             return null;
         Document doc = Jsoup.parse(wrapToTemplate(html));
-        for (Element loop : doc.getElementsByAttribute("loop")) {
+        for (Element loop : doc.getElementsByAttribute("dn-loop")) {
             loop.remove();
         }
         final Elements allElements = doc.getAllElements();
@@ -72,34 +80,37 @@ public class EventsProcessing {
         for (Element element : allElements) {
             if (element.attributes() == null || element.attributes().size() == 0) continue;
             for (Attribute attribute : element.attributes()) {
-                if (attribute.getKey().startsWith("on-")) {
+                if (attribute.getKey().startsWith("dn-on-")) {
                     final String value = attribute.getValue();
                     map.put(value, value);
                 }
             }
-            if (element.hasAttr("bind")) {
-                final String valueAttribute = element.attributes().get("value");
-                final String checkedAttribute = element.attributes().get("checked");
-                if (valueAttribute.startsWith("{{")) {
-                    if (element.tagName().equals("input")) {
-                        importsSet.add("import elemental2.dom.HTMLInputElement;\n");
-                        final String between = Util.getBetween(valueAttribute);
-                        map.put("input:" + between, between);
-                    } else if (element.tagName().equals("textarea")) {
-                        importsSet.add("import elemental2.dom.HTMLTextAreaElement;\n");
-                        final String between = Util.getBetween(valueAttribute);
-                        map.put("textarea:" + between, between);
-                    } else if (element.tagName().equals("select")) {
-                        //todo
-                    }
-                } else if (checkedAttribute.startsWith("{{")) {
-                    if (element.tagName().equals("input") && (element.attributes().get("type").equals("checkbox")
-                            || element.attributes().get("type").equals("radio"))) {
-                        importsSet.add("import elemental2.dom.HTMLInputElement;\n");
-                        final String between = Util.getBetween(checkedAttribute);
-                        map.put("radio:" + between, between);
-                    }
+            if (element.hasAttr("dn-model")) {
+//                final String modelAttribute = element.attributes().get("dn-model");
+                final String model = element.attributes().get("dn-model");
+
+                updateSet.add("        template.addStateFunction(\"" + model + "\", () -> d." + model + ");\n");
+
+//                final String model = Util.getBetween(modelAttribute);
+
+                if (element.tagName().equals("textarea")) {
+                    importsSet.add("import elemental2.dom.HTMLTextAreaElement;\n");
+                    map.put("textarea:" + model, model);
                 }
+                if (element.tagName().equals("input") && (element.attributes().get("type").equals("checkbox")
+                                                          || element.attributes().get("type").equals("radio"))) {
+                    importsSet.add("import elemental2.dom.HTMLInputElement;\n");
+                    map.put("radio:" + model, model);
+                } else if (element.tagName().equals("input")) {
+                    importsSet.add("import elemental2.dom.HTMLInputElement;\n");
+                    map.put("input:" + model, model);
+                }
+
+                if (element.tagName().equals("select")) {
+                    importsSet.add("import com.dncomponents.client.dom.DomUtil;\n");
+                    map.put("select:" + model, model);
+                }
+
             }
 
         }
@@ -115,21 +126,34 @@ public class EventsProcessing {
         return importsSet.stream().collect(Collectors.joining());
     }
 
+
     public static boolean isBinder(String key) {
         return (key.startsWith("input:")
                 || key.startsWith("radio:")
-                || key.startsWith("textarea:"));
+                || key.startsWith("textarea:")
+                || key.startsWith("select:"));
     }
 
-    public static String getBinderAssign(String str) {
+
+    //todo check loop
+    public static String getBinderAssign(String str, String value, Map<String, String> fieldsAndTypesMap) {
+        String dValue = Util.createJavaCode(value, null, true).replace(";", "");
         if (str.startsWith("input:")) {
-            return "=((HTMLInputElement) e.target).value;";
-
+            return dValue + "=((HTMLInputElement) e.target).value;";
         } else if (str.startsWith("radio:")) {
-            return "=((HTMLInputElement) e.target).checked;";
-
+            if (fieldsAndTypesMap.get(value) != null) {
+                if (fieldsAndTypesMap.get(value).equals("boolean")) {
+                    return dValue + "=((HTMLInputElement) e.target).checked;";
+                } else if (fieldsAndTypesMap.get(value).equals("collection")) {
+                    return "DomUtil.checkBoxSelection(e.target, " + dValue + ");";
+                }
+            } else {
+                return dValue + "=((HTMLInputElement) e.target).value;";
+            }
         } else if (str.startsWith("textarea:")) {
-            return "=((HTMLTextAreaElement) e.target).value;";
+            return dValue + "=((HTMLTextAreaElement) e.target).value;";
+        } else if (str.startsWith("select:")) {
+            return dValue + "=DomUtil.getSelection(e.target);";
         }
         return "";
     }

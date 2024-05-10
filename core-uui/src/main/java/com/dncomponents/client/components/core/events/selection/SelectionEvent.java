@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,13 +42,14 @@ public class SelectionEvent<T> extends BaseEvent {
     }
 
     public static <T> void fire(IsElement source, T item) {
-        fire(source.asElement(),item);
+        fire(source.asElement(), item);
     }
 
     public static <T> void fire(HasSelectionHandlers<T> source, T item) {
         SelectionEvent<T> event = new SelectionEvent<>(item);
         source.fireEvent(event.asEvent());
     }
+
     public static <T> void fire(Element source, T item) {
         SelectionEvent<T> event = new SelectionEvent<>(item);
         source.dispatchEvent(event.asEvent());

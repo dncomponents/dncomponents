@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,7 @@ import com.dncomponents.client.components.TableCellRowExpander;
 import com.dncomponents.client.components.core.RowDetailsRenderer;
 import com.dncomponents.client.components.table.header.HeaderTableTextCell;
 
-/**
- * Created by nikolasavic
- */
+
 public class ColumnRowExpander<T> extends ColumnConfig<T, Object> {
 
     RowDetailsRenderer<T> rowDetailsRenderer;

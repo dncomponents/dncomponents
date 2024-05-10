@@ -1,4 +1,4 @@
-package ${package}.client.greeting;
+package $
 
 import com.dncomponents.UiField;
 import com.dncomponents.client.components.button.Button;

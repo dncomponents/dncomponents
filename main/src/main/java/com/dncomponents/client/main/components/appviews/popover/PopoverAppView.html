@@ -1,0 +1,349 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Popover
+    </h2>
+    <div class="demo-component-wrapper">
+        <dn-button ui-field="leftBtn" color="SECONDARY">Left</dn-button>
+        <dn-button ui-field="rightBtn" color="SECONDARY">Right</dn-button>
+        <dn-button ui-field="topBtn" color="SECONDARY">Top</dn-button>
+        <dn-button ui-field="bottomBtn" color="SECONDARY">Bottom</dn-button>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-html">
+
+&lt;dn-button ui-field=&quot;leftBtn&quot; color=&quot;SECONDARY&quot;&gt;Left&lt;/dn-button&gt;
+&lt;dn-button ui-field=&quot;rightBtn&quot; color=&quot;SECONDARY&quot;&gt;Right&lt;/dn-button&gt;
+&lt;dn-button ui-field=&quot;topBtn&quot; color=&quot;SECONDARY&quot;&gt;Top&lt;/dn-button&gt;
+&lt;dn-button ui-field=&quot;bottomBtn&quot; color=&quot;SECONDARY&quot;&gt;Bottom&lt;/dn-button&gt;
+
+&lt;dn-popover orientation=&quot;LEFT&quot; ui-field=&quot;leftpp&quot; owner=&quot;leftBtn&quot;&gt;
+    &lt;title&gt;
+        Popover html &lt;b&gt;title&lt;/b&gt;
+    &lt;/title&gt;
+    &lt;content&gt;
+        html &lt;b&gt;content&lt;/b&gt;
+        &lt;dn-button color=&quot;INFO&quot;&gt;Left&lt;/dn-button&gt;
+    &lt;/content&gt;
+&lt;/dn-popover&gt;
+
+&lt;dn-popover orientation=&quot;RIGHT&quot; ui-field=&quot;rightpp&quot; owner=&quot;rightBtn&quot;&gt;
+    &lt;title&gt;Popover title&lt;/title&gt;
+    &lt;content&gt;
+        here goes content
+        &lt;dn-button color=&quot;INFO&quot;&gt;Right&lt;/dn-button&gt;
+    &lt;/content&gt;
+&lt;/dn-popover&gt;
+
+&lt;dn-popover orientation=&quot;TOP&quot; ui-field=&quot;toppp&quot; owner=&quot;topBtn&quot;&gt;
+    &lt;title&gt;Popover title&lt;/title&gt;
+    &lt;content&gt;
+        here goes content
+        &lt;dn-button color=&quot;INFO&quot;&gt;Top&lt;/dn-button&gt;
+    &lt;/content&gt;
+&lt;/dn-popover&gt;
+
+&lt;dn-popover orientation=&quot;BOTTOM&quot; ui-field=&quot;bottompp&quot; owner=&quot;bottomBtn&quot;&gt;
+    &lt;title&gt;Popover title&lt;/title&gt;
+    &lt;content&gt;
+        here goes content
+        &lt;dn-button view=&quot;DEFAULT&quot; color=&quot;INFO&quot;&gt;Bottom&lt;/dn-button&gt;
+    &lt;/content&gt;
+&lt;/dn-popover&gt;
+               </code>
+         </pre>
+        </div>
+    </div>
+    <dn-popover orientation="LEFT" ui-field="leftpp" owner="leftBtn" trigger="CLICK">
+        <title>
+            Popover html <b>title</b>
+        </title>
+        <content>
+            html <b>content</b>
+            <dn-button color="INFO">Left</dn-button>
+        </content>
+    </dn-popover>
+    <dn-popover orientation="RIGHT" ui-field="rightpp" owner="rightBtn">
+        <title>Popover title</title>
+        <content>
+            here goes content
+            <dn-button color="INFO">Right</dn-button>
+        </content>
+    </dn-popover>
+    <dn-popover orientation="TOP" ui-field="toppp" owner="topBtn">
+        <title>Popover title</title>
+        <content>
+            here goes content
+            <dn-button color="INFO">Top</dn-button>
+        </content>
+    </dn-popover>
+    <dn-popover orientation="BOTTOM" ui-field="bottompp" owner="bottomBtn">
+        <title>Popover title</title>
+        <content>
+            here goes content
+            <dn-button ui-field="btnInfo" view="DEFAULT" color="INFO">Bottom</dn-button>
+        </content>
+    </dn-popover>
+    <!--renderer-->
+    <h5>Renderer</h5>
+    <div class="demo-component-wrapper">
+        <dn-button ui-field="rendererBtn" color="SECONDARY">Renderer</dn-button>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+Button&lt;any&gt rendererBtn;
+
+Popover.PopoverRenderer&lt;Fruit&gt; renderer = (fruit, slots) -&gt; {
+    slots.getTitle().innerHTML = &quot;&lt;b&gt;&quot; + fruit.getName() + &quot;&lt;/b&gt;&quot;;
+    slots.getContent().innerHTML = &quot;&lt;p&gt;&quot; + fruit.getDescription() + &quot;&lt;/p&gt;&quot;;
+};
+
+Popover&lt;Fruit&gt; popover = new Popover&lt;&gt;(rendererBtn.asElement(), BaseTooltip.Orientation.RIGHT);
+popover.setRenderer(renderer);
+popover.setUserObject(new Fruit(&quot;Apple&quot;, &quot;Sweet fruit!&quot;));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+rendererBtn: Button&lt;any&gt;;
+
+renderer: PopoverRenderer&lt;Fruit&gt; = {
+    render(fruit: Fruit, slots: PopoverViewSlots): void {
+        slots.getTitle().innerHTML = '&lt;b&gt;' + fruit.name + '&lt;/b&gt;';
+        slots.getMainSlot().innerHTML = '&lt;p&gt;' + fruit.description + '&lt;/p&gt;';
+    }
+};
+
+let popover: Popover&lt;Fruit&gt; = new Popover&lt;Fruit&gt;()
+    .setOwner(this.rendererBtn.asElement())
+    .setOrientation(Orientation.RIGHT);
+popover.setRenderer(this.renderer);
+popover.setUserObject(new Fruit('Apple', 'Sweet fruit!'));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--trigger-->
+    <h3 class="mdc-typography--subtitle1">Trigger</h3>
+    <div class="demo-component-wrapper">
+        <dn-button ui-field="clickBtn" color="SECONDARY">Click (default)</dn-button>
+        <dn-button ui-field="focusBtn" color="SECONDARY">Focus</dn-button>
+        <dn-button ui-field="hoverBtn" color="SECONDARY">Hover</dn-button>
+        <dn-button ui-field="hoverFocusBtn" color="SECONDARY">Hover Focus</dn-button>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+Button clickBtn;
+@UiField
+Button focusBtn;
+@UiField
+Button hoverBtn;
+@UiField
+Button hoverFocusBtn;
+
+Popover&lt;Fruit&gt; popoverLeft = new Popover(clickBtn.asElement(), BaseTooltip.Orientation.LEFT, BaseTooltip.Trigger.CLICK);
+popoverLeft.setRenderer(renderer);
+popoverLeft.setUserObject(Fruit.fruits.get(0));
+Popover&lt;Fruit&gt; popoverRight = new Popover(hoverBtn.asElement(), BaseTooltip.Orientation.RIGHT, BaseTooltip.Trigger.HOVER);
+popoverRight.setRenderer(renderer);
+popoverRight.setUserObject(Fruit.fruits.get(1));
+Popover&lt;Fruit&gt; popoverTop = new Popover(focusBtn.asElement(), BaseTooltip.Orientation.TOP, BaseTooltip.Trigger.FOCUS);
+popoverTop.setRenderer(renderer);
+popoverTop.setUserObject(Fruit.fruits.get(2));
+Popover&lt;Fruit&gt; popoverBottom = new Popover(hoverFocusBtn.asElement(), BaseTooltip.Orientation.BOTTOM, BaseTooltip.Trigger.HOVER_FOCUS);
+popoverBottom.setRenderer(renderer);
+popoverBottom.setUserObject(Fruit.fruits.get(3));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+@UiField
+clickBtn: Button&lt;any&gt;;
+@UiField
+focusBtn: Button&lt;any&gt;;
+@UiField
+hoverBtn: Button&lt;any&gt;;
+@UiField
+hoverFocusBtn: Button&lt;any&gt;;
+
+let popoverLeft: Popover&lt;Fruit&gt; = new Popover&lt;Fruit&gt;()
+    .setOwner(this.clickBtn.asElement())
+    .setOrientation(Orientation.LEFT)
+    .setTrigger(Trigger.CLICK);
+popoverLeft.setRenderer(this.renderer);
+popoverLeft.setUserObject(Fruit.fruits.get(0));
+let popoverRight: Popover&lt;Fruit&gt; = new Popover&lt;Fruit&gt;()
+    .setOwner(this.hoverBtn.asElement())
+    .setOrientation(Orientation.RIGHT)
+    .setTrigger(Trigger.HOVER);
+popoverRight.setRenderer(this.renderer);
+popoverRight.setUserObject(Fruit.fruits.get(1));
+let popoverTop: Popover&lt;Fruit&gt; = new Popover&lt;Fruit&gt;()
+    .setOwner(this.focusBtn.asElement())
+    .setOrientation(Orientation.TOP)
+    .setTrigger(Trigger.CLICK);
+popoverTop.setRenderer(this.renderer);
+popoverTop.setUserObject(Fruit.fruits.get(2));
+let popoverBottom: Popover&lt;Fruit&gt; = new Popover&lt;Fruit&gt;()
+    .setOwner(this.hoverFocusBtn.asElement())
+    .setOrientation(Orientation.BOTTOM)
+    .setTrigger(Trigger.CLICK);
+popoverBottom.setRenderer(this.renderer);
+popoverBottom.setUserObject(Fruit.fruits.get(3));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--events-->
+    <h5>Events</h5>
+    <div class="demo-component-wrapper">
+        <dn-button ui-field="eventBtn" color="SECONDARY">Events</dn-button>
+        <dn-text-area ui-field="eventsTa" addClass="ta-demo ta-demo-full"></dn-text-area>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+Popover&lt;Fruit&gt; popover = new Popover&lt;&gt;(eventBtn.asElement(), BaseTooltip.Orientation.RIGHT);
+popover.setRenderer(renderer);
+popover.setUserObject(new Fruit(&quot;Apple&quot;, &quot;Sweet fruit!&quot;));
+popover.addOpenHandler(event -&gt; eventsTa.append(&quot;open: &quot; + event.getTarget().getUserObject().getName() + &quot;\n&quot;));
+popover.addCloseHandler(event -&gt; eventsTa.append(&quot;close: &quot; + event.getTarget().getUserObject().getDescription() + &quot;\n&quot;));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+let popover: Popover&lt;Fruit&gt; = new Popover&lt;Fruit&gt;().setOwner(this.eventBtn.asElement()).setOrientation(Orientation.RIGHT);
+popover.setRenderer(this.renderer);
+popover.setUserObject(new Fruit('Apple', 'Sweet fruit!'));
+popover.addOpenHandler(OpenHandler.onOpen(evt =&gt; {
+    this.eventsTa.append('open: ' + evt.owner.getUserObject().name + '\n');
+}));
+popover.addCloseHandler(CloseHandler.onClose(evt =&gt; {
+    this.eventsTa.append('close: ' + evt.owner.getUserObject().description + '\n');
+}));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--markup template-->
+    <h5>Template markup</h5>
+    <div class="demo-component-wrapper">
+        <dn-popover orientation="BOTTOM" ui-field="someUiField" style="position: relative !important;">
+            <title>This is a title</title>
+            <content>
+                here goes content
+                <dn-button view="DEFAULT" color="INFO">INFO</dn-button>
+            </content>
+        </dn-popover>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+                    <!--POPOVER-->
+&lt;template ui-field=&quot;popover&quot;&gt;
+    &lt;div ui-field=&quot;root&quot; class=&quot;popover fade bs-popover-right show&quot; role=&quot;tooltip&quot; x-placement=&quot;right&quot;&gt;
+        &lt;div ui-field=&quot;arrowPanel&quot; class=&quot;arrow&quot;&gt;&lt;/div&gt;
+        &lt;h3 ui-field=&quot;popoverTitle&quot; class=&quot;popover-header&quot;&gt;&lt;/h3&gt;
+        &lt;div ui-field=&quot;contentPanel&quot; class=&quot;popover-body&quot;&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;style-item ui-field=&quot;topStyle&quot; class=&quot;bs-popover-top&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;bottomStyle&quot; class=&quot;bs-popover-bottom&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;leftStyle&quot; class=&quot;bs-popover-left&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;rightStyle&quot; class=&quot;bs-popover-right&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;baseStyle&quot; class=&quot;popover&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;fadeStyle&quot; class=&quot;fade&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;showStyle&quot; class=&quot;show&quot;&gt;&lt;/style-item&gt;
+&lt;/template&gt;
+            </code>
+        </pre>
+        </div>
+    </div>
+
+</div>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,11 @@
 
 package com.dncomponents.client.components;
 
-import com.dncomponents.client.components.core.events.hide.HideEvent;
-import com.dncomponents.client.components.core.events.hide.HideHandler;
 import com.dncomponents.client.components.modal.Dialog;
 import com.dncomponents.client.components.table.TableCell;
 import com.dncomponents.client.components.table.columnclasses.editcolumn.TableCellEditView;
 
-/**
- * @author nikolasavic
- */
+
 public class TableCellRowEdit<T, M> extends TableCell<T, M> {
     private boolean dialogMode;
 

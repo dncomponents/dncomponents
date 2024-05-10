@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>dncomponents</artifactId>
+        <groupId>com.dncomponents.core</groupId>
+        <version>3.0.0-alpha-1</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>main</artifactId>
+
+    <packaging>gwt-app</packaging>
+
+    <properties>
+        <generated.source.directory>${project.build.directory}/generated-sources/annotations
+        </generated.source.directory>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>${gwt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+            <version>${gwt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.elemental2</groupId>
+            <artifactId>elemental2-core</artifactId>
+            <version>${elemental.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.elemental2</groupId>
+            <artifactId>elemental2-dom</artifactId>
+            <version>${elemental.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dncomponents.core</groupId>
+            <artifactId>template_annotation_processor</artifactId>
+            <version>3.0.0-alpha-1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dncomponents.core</groupId>
+            <artifactId>core-uui</artifactId>
+            <type>gwt-lib</type>
+            <version>3.0.0-alpha-1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.dncomponents.core</groupId>
+            <artifactId>bootstrap-ui</artifactId>
+            <type>gwt-lib</type>
+            <version>3.0.0-alpha-1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.dncomponents.core</groupId>
+            <artifactId>mvp</artifactId>
+            <version>3.0.0-alpha-1</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/annotations</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <compilerArgs>
+                        <arg>-Aregister=AppTemplates</arg>
+                        <arg>-AcssDir=${project.basedir}/src/main/java/com/dncomponents/public</arg>
+                        <arg>-Asrc=${project.build.sourceDirectory}</arg>
+                    </compilerArgs>
+                    <annotationProcessors>
+                        <annotationProcessor>com.dncomponents.TemplateProcessor</annotationProcessor>
+                    </annotationProcessors>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>net.ltgt.gwt.maven</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <version>${net.ltgt.gwt.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <sourceLevel>${java.version}</sourceLevel>
+                    <launcherDir>${project.build.directory}/gwt/launcherDir</launcherDir>
+                    <skipModule>true</skipModule>
+                    <devmodeArgs>
+                        <devmodeArg>-startupUrl</devmodeArg>
+                        <devmodeArg>com.dncomponents.client.main.App</devmodeArg>
+                        <arg>-generateJsInteropExports</arg>
+                    </devmodeArgs>
+                    <logLevel>INFO</logLevel>
+                    <moduleName>com.dncomponents.client.main.App</moduleName>
+                    <moduleShortName>App</moduleShortName>
+                    <compilerArgs>
+                        <arg>-generateJsInteropExports</arg>
+                    </compilerArgs>
+                    <useCompilerArgsForTests>true</useCompilerArgsForTests>
+                    <codeserverArgs>
+                        <arg>-generateJsInteropExports</arg>
+                        <arg>-port</arg>
+                        <arg>9877</arg>
+                    </codeserverArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

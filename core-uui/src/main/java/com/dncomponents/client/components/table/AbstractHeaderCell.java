@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,7 @@ package com.dncomponents.client.components.table;
 import com.dncomponents.client.components.table.header.HeaderCellHolder;
 import com.dncomponents.client.views.core.pcg.cell.CellView;
 
-/**
- * @author nikolasavic
- */
+
 public abstract class AbstractHeaderCell<T> extends BaseTableCell<T, Object, CellView> {
 
     protected HeaderCellHolder headerCellHolder;

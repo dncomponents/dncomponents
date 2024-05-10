@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@ import com.dncomponents.client.components.HasRowsData;
 import com.dncomponents.client.components.core.CellConfig;
 import com.dncomponents.client.components.core.events.Command;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.filters.Filter;
 import com.dncomponents.client.components.core.events.selection.HasSelectionHandlers;
 import com.dncomponents.client.components.core.selectionmodel.DefaultMultiSelectionModel;
-import com.dncomponents.client.components.core.events.filters.Filter;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.dom.handlers.KeyUpHandler;
 import com.dncomponents.client.views.FocusComponentView;
@@ -30,9 +30,7 @@ import com.dncomponents.client.views.FocusComponentView;
 import java.util.List;
 import java.util.function.Function;
 
-/**
- * @author nikolasavic
- */
+
 public interface BaseAutocompleteView<M> extends FocusComponentView, HasSelectionHandlers<List<M>> {
 
     String getTextBoxCurrentValue();

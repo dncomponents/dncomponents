@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,9 +33,7 @@ import com.dncomponents.client.views.core.ui.form.FormItemView;
 import elemental2.dom.CustomEvent;
 import elemental2.dom.HTMLElement;
 
-/**
- * @author nikolasavic
- */
+
 public class FormItem<T, M> extends BaseHasView<M, FormItemView> implements HasModel<T>, HasValueChangeHandlers<M> {
 
     private FieldConfig<T, M> fieldConfig;

@@ -1,0 +1,116 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Big data Tree
+    </h2>
+    <div class="demo-component-wrapper">
+        <dn-tree ui-field="tree"></dn-tree>
+        <dn-text-area ui-field="ta" addClass="ta-demo ta-demo-full"></dn-text-area>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+Tree tree;
+@UiField
+public TextArea ta;
+
+tree.expandAll(false);
+TreeNode root = new TreeNode(&quot;root&quot;);
+root.add(new TreeNode(&quot;temp&quot;));
+root.setExpanded(false);
+tree.setRoot(root);
+
+OpenHandler&lt;TreeNode&lt;Object&gt;&gt; openHandler = event -&gt; {
+    TreeNode&lt;Object&gt; n = event.getOwner();
+    if (n.getChildren().size() &gt; 998) {
+        return;
+    }
+    n.remove(n.getChildren().get(0));
+    for (int i = 0; i &lt; 1000; i++) {
+        TreeNode nn = new TreeNode(t++ + &quot;&quot;);
+        nn.setExpanded(false);
+        nn.add(new TreeNode(&quot;temp&quot;));
+        n.add(nn);
+    }
+    tree.rootToList();
+    tree.drawData();
+    ta.setValue(tree.getRowsData().size() + &quot; items.&quot;);
+};
+tree.addOpenHandler(openHandler);
+tree.drawData();
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+tree: Tree&lt;any&gt;;
+@UiField
+ta: TextArea;
+
+this.tree.expandAll(false);
+let root: TreeNode&lt;any&gt; = new TreeNode('root');
+root.add(new TreeNode('temp'));
+root.setExpanded(false);
+this.tree.setRoot(root);
+let openHandler: OpenHandler&lt;TreeNode&lt;any&gt;&gt; = OpenHandler.onOpen(evt =&gt; {
+    let n: TreeNode&lt;any&gt; = evt.owner;
+    if (n.getChildren().size() &gt; 998) {
+        return;
+    }
+    n.remove(n.getChildren().get(0));
+    for (let i: number = 0; i &lt; 1000; i++) {
+        let nn: TreeNode&lt;any&gt; = new TreeNode(TreeBigDataAppView.t++ + '');
+        nn.setExpanded(false);
+        nn.add(new TreeNode('temp'));
+        n.add(nn);
+    }
+    this.tree.rootToList();
+    this.tree.drawData();
+    this.ta.setValue(this.tree.getRowsData().size() + ' items.');
+});
+
+this.tree.addOpenHandler(openHandler);
+this.tree.drawData();
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+</div>

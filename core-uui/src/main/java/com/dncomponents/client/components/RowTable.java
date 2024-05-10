@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,6 @@ import com.dncomponents.client.components.core.CellContext;
 import com.dncomponents.client.components.core.CellRenderer;
 import com.dncomponents.client.components.core.RendererContext;
 import com.dncomponents.client.components.core.events.form.ModelChangedEvent;
-import com.dncomponents.client.components.core.events.hide.HideEvent;
-import com.dncomponents.client.components.core.events.hide.HideHandler;
 import com.dncomponents.client.components.core.events.row.RowEditingStartedEvent;
 import com.dncomponents.client.components.core.events.row.RowEditingStoppedEvent;
 import com.dncomponents.client.components.core.events.row.RowValueChangedEvent;
@@ -37,9 +35,7 @@ import com.dncomponents.client.views.core.ui.table.TableRowView;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by nikolasavic
- */
+
 public class RowTable<T> extends AbstractTableCell<T, List> {
 
     ArrayList<TableCell> cells = new ArrayList<>();
@@ -83,7 +79,7 @@ public class RowTable<T> extends AbstractTableCell<T, List> {
 
     public void startEditing() {
         if (getOwner().getCurrentRowEdited() != null &&
-                !getOwner().getCurrentRowEdited().equals(this))
+            !getOwner().getCurrentRowEdited().equals(this))
             getOwner().stopCurrentRowEdited();
         TableCell firstCell = null;
         for (TableCell tableCell : cells) {

@@ -1,0 +1,157 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <style>
+        .ww {
+            width: 100%;
+        }
+
+        @media only screen and (min-width: 768px) {
+            .ww {
+                width: 550px;
+            }
+        }
+    </style>
+    <h2>
+        Forms and Validation
+    </h2>
+
+    <dn-form class="ww" ui-field="form"></dn-form>
+
+    <div class="mt-3 ww">
+        <dn-text-area ui-field="logTa"></dn-text-area>
+    </div>
+
+    <div class="code-wrapper mt-3">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+public class FormDto {
+    public String firstName;
+    public String lastName;
+    public String email;
+    public String address;
+    public List&lt;Fruit&gt; fruits;
+    public String color;
+
+    @Override
+    public String toString() {
+        return &quot;FormDto{&quot; +
+                &quot;firstName=&#39;&quot; + firstName + &#39;\&#39;&#39; +
+                &quot;, lastName=&#39;&quot; + lastName + &#39;\&#39;&#39; +
+                &quot;, email=&#39;&quot; + email + &#39;\&#39;&#39; +
+                &quot;, address=&#39;&quot; + address + &#39;\&#39;&#39; +
+                &quot;, fruits=&quot; + fruits +
+                &quot;, color=&#39;&quot; + color + &#39;\&#39;&#39; +
+                &#39;}&#39;;
+    }
+}
+
+FieldConfig&lt;FormDto, String&gt; firstNameField =
+        new FieldConfig.Builder&lt;FormDto, String&gt;()
+                .setFieldGetter(formDto -&gt; formDto.firstName)
+                .setFieldSetter((formDto, s) -&gt; formDto.firstName = s)
+                .setClazz(String.class)
+                .setName(&quot;First name&quot;)
+                .setHelperText(&quot;Please enter your first name (Can&#39;t be empty, must starts with capital letter)&quot;)
+                .setSuccessText(&quot;Looks good&quot;)
+                .setValidator(new Validators&lt;String&gt;()
+                        .add(new EmptyValidator&lt;&gt;(), true)
+                        .add(value -&gt; {
+                            if (!Character.isUpperCase(value.charAt(0)))
+                                throw new ValidationException(&quot;The name should start in uppercase&quot;);
+                        })
+                )
+                .build();
+
+FieldConfig&lt;FormDto, String&gt; lastNameField =
+        new FieldConfig.Builder&lt;FormDto, String&gt;()
+                .setFieldGetter(formDto -&gt; formDto.lastName)
+                .setFieldSetter((formDto, s) -&gt; formDto.lastName = s)
+                .setClazz(String.class)
+                .setName(&quot;Last name&quot;)
+                .setHelperText(&quot;Please enter your lastName name (Can&#39;t be empty, must starts with capital letter)&quot;)
+                .setSuccessText(&quot;Looks good&quot;)
+                .setValidator(new Validators&lt;String&gt;()
+                        .add(new EmptyValidator&lt;&gt;(), true)
+                        .add(value -&gt; {
+                            if (!Character.isUpperCase(value.charAt(0)))
+                                throw new ValidationException(&quot;The last name should start in uppercase&quot;);
+                        })
+                )
+                .build();
+
+FieldConfig&lt;FormDto, String&gt; emailField = new FieldConfig.Builder&lt;FormDto, String&gt;()
+        .setFieldGetter(formDto -&gt; formDto.email)
+        .setFieldSetter((formDto, s) -&gt; formDto.email = s)
+        .setClazz(String.class)
+        .setName(&quot;Email&quot;)
+        .setHelperText(&quot;Please enter valid email (Can&#39;t be empty, must be valid email)&quot;)
+        .setSuccessText(&quot;Looks good&quot;)
+        .setValidator(new Validators&lt;String&gt;()
+                .add(new EmptyValidator&lt;&gt;(), true)
+                .add(new EmailValidator())
+        ).setCellEditorFactory(m -&gt; new DefaultCellEditor&lt;&gt;(new TextBox()))
+        .build();
+
+Autocomplete&lt;String&gt; ac = new Autocomplete&lt;&gt;();
+ac.setRowsData(TestingHelper.getColors());
+FieldConfig&lt;FormDto, String&gt; colorField = new FieldConfig.Builder&lt;FormDto, String&gt;()
+        .setFieldGetter(formDto -&gt; formDto.color)
+        .setFieldSetter((formDto, s) -&gt; formDto.color = s)
+        .setHelperText(&quot;Enter color&quot;)
+        .setSuccessText(&quot;Looks good!&quot;)
+        .setName(&quot;Color&quot;)
+        .setClazz(String.class)
+        .setCellEditorFactory(m -&gt; new DefaultCellEditor&lt;&gt;(ac))
+        .build();
+
+Table&lt;Fruit&gt; fruitTable = new Table&lt;&gt;();
+fruitTable.setScrollHeight(&quot;250px&quot;);
+fruitTable.addColumn(new ColumnCheckBox&lt;&gt;(),
+        new ColumnConfig&lt;&gt;(Fruit::getName, &quot;Name&quot;),
+        new ColumnConfig&lt;&gt;(Fruit::getDescription, &quot;Description&quot;));
+fruitTable.setRowsData(Fruit.fruits);
+fruitTable.drawData();
+
+FieldConfig&lt;FormDto, List&lt;Fruit&gt;&gt; fruitsField = new FieldConfig.Builder&lt;FormDto, List&lt;Fruit&gt;&gt;()
+        .setFieldGetter(formDto -&gt; formDto.fruits)
+        .setFieldSetter((formDto, fruits) -&gt; formDto.fruits = fruits)
+        .setHelperText(&quot;Choose fruits (Can&#39;t be empty, can&#39;t choose more than three items)&quot;)
+        .setSuccessText(&quot;Looks good!&quot;)
+        .setName(&quot;Fruits&quot;)
+        .setCellEditorFactory(m -&gt; new DefaultCellEditor(fruitTable))
+        .setValidator(new Validators&lt;List&lt;Fruit&gt;&gt;()
+                .add(new EmptyValidator&lt;&gt;(), true)
+                .add(value -&gt; {
+                    if (value.size() &gt; 3)
+                        throw new ValidationException(&quot;Can&#39;t choose more than three fruits!&quot;);
+                }))
+        .setClazz(List.class)
+        .build();
+
+form.addFormConfigs(firstNameField, lastNameField, emailField, colorField, fruitsField);
+form.setFormData(new FormDto());
+form.drawData();
+form.addModelChangedHandler(event -&gt;
+        logTa.setValue(event.getModel().toString()));
+
+             </code>
+        </pre>
+        </div>
+    </div>
+</div>

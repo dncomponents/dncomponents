@@ -1,0 +1,139 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Row Expander Table
+    </h2>
+
+    <div class="demo-component-wrapper">
+        <div class="row">
+            <div class="col-lg-3 mb-3">
+                <dn-checkbox ui-field="singleExpand">
+                    Single expand
+                </dn-checkbox>
+            </div>
+            <div class="col-lg-9">
+                <dn-table ui-field="table"></dn-table>
+            </div>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+CheckBox&lt;Object&gt; singleExpand;
+@UiField
+Table&lt;Fruit&gt; table;
+
+singleExpand.setValue(true);
+singleExpand.addValueChangeHandler(event -&gt; table.setSingleExpandRow(event.getValue()));
+
+table.setRowsData(Fruit.getFruits(1500));
+
+ColumnConfig&lt;Fruit, String&gt; columnRowExpander = new ColumnConfig.Builder&lt;&gt;(Fruit::getName)
+        .setCellFactory(c -&gt;
+                new TableCellRowExpander&lt;Fruit, String&gt;()
+                        .setRowDetailsRenderer((fruit, valuePanel)
+                                -&gt; valuePanel.innerHTML = fruit.getName()
+                                + &quot; - &quot; + fruit.getDescription()))
+        .setColumnWidth(&quot;20px&quot;)
+        .build();
+
+ColumnConfig&lt;Fruit, String&gt; nameColumn =
+        new ColumnConfig&lt;&gt;(Fruit::getName, Fruit::setName, &quot;Name&quot;);
+
+ColumnConfig&lt;Fruit, String&gt; descColumn =
+        new ColumnConfig&lt;&gt;(Fruit::getDescription, Fruit::setDescription, &quot;Description&quot;);
+
+table.addColumn(columnRowExpander);
+table.addColumn(nameColumn);
+table.addColumn(descColumn);
+table.drawData();
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+singleExpand: CheckBox&lt;any&gt;;
+@UiField
+table: Table&lt;Fruit&gt;;
+
+this.singleExpand.setValue(true);
+this.singleExpand.addValueChangeHandler(ValueChangeHandler.onValueChange(evt =&gt; this.table.setSingleExpandRow(evt.value)));
+this.table.setRowsData(Fruit.getFruits(1500));
+let nameColumn: ColumnConfig&lt;Fruit, string&gt; =
+    new ColumnConfig&lt;Fruit, string&gt;()
+        .setFieldGetter(p1 =&gt; p1.name)
+        .setFieldSetter((p1, p2) =&gt; p1.name = p2)
+        .setColumnName('name');
+let descColumn: ColumnConfig&lt;Fruit, string&gt; =
+    new ColumnConfig&lt;Fruit, string&gt;()
+        .setFieldGetter(p1 =&gt; p1.description)
+        .setFieldSetter((p1, p2) =&gt; p1.description = p2)
+        .setColumnName('description');
+let columnRowExpander: ColumnConfig&lt;Fruit, string&gt; = new ColumnConfig&lt;Fruit, any&gt;()
+    .setFieldGetter(f =&gt; f.name)
+    .setCellFactory({
+        getCell: (c) =&gt;
+            new TableCellRowExpander&lt;Fruit, string&gt;()
+                .setRowDetailsRenderer({render: (fruit, valuePanel) =&gt; valuePanel.innerHTML = fruit.name + ' - ' + fruit.description})
+    })
+    .setColumnWidth('20px');
+this.table.getRowCellConfig().setCellFactory({
+    getCell: (c) =&gt; {
+        let rowTableCellView = new TableRowViewImpl();
+        let rowCell: RowTable&lt;Fruit&gt; = new RowTable(rowTableCellView);
+        return rowCell;
+    }
+});
+this.table.getRowCellConfig()
+
+    .setCellRenderer({
+        setValue(r: RendererContext&lt;Fruit, java.util.List&lt;any&gt;&gt;): void {
+            r.valuePanel.innerHTML = 'alsdfjlaksdjf';
+        }
+    });
+this.table.addColumn(columnRowExpander);
+this.table.addColumn(nameColumn);
+this.table.addColumn(descColumn);
+this.table.drawData();
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+</div>

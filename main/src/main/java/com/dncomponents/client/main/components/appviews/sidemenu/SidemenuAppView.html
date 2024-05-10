@@ -1,0 +1,263 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Sidemenu
+    </h2>
+
+    <div class="demo-component-wrapper">
+        <div class="row">
+            <div class="col-4">
+                <dn-side-menu ui-field="sideMenu" class="scroll-style" style="position: relative !important;">
+                    <item itemId="1" icon="fa fa-bell">
+                        one
+                    </item>
+                    <item itemId="2">
+                        two
+                    </item>
+                    <item itemId="3">
+                        three
+                    </item>
+                    <item itemId="more" content="show more">
+                        <item itemId="11">
+                            one one
+                        </item>
+                        <item itemId="22">
+                            two two
+                        </item>
+                        <item itemId="33">
+                            three three
+                        </item>
+                    </item>
+                    <item itemId="4">
+                        four
+                    </item>
+                </dn-side-menu>
+            </div>
+            <div class="col-8">
+                <dn-text-area ui-field="ta" addClass="h-100"></dn-text-area>
+            </div>
+        </div>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;dn-side-menu ui-field=&quot;sideMenu&quot; class=&quot;scroll-style&quot; style=&quot;position: relative !important;&quot;&gt;
+    &lt;item itemId=&quot;1&quot; icon=&quot;fa fa-bell&quot;&gt;
+        one
+    &lt;/item&gt;
+    &lt;item itemId=&quot;2&quot;&gt;
+        two
+    &lt;/item&gt;
+    &lt;item itemId=&quot;3&quot;&gt;
+        three
+    &lt;/item&gt;
+    &lt;item itemId=&quot;more&quot; content=&quot;show more&quot;&gt;
+        &lt;item itemId=&quot;11&quot;&gt;
+            one one
+        &lt;/item&gt;
+        &lt;item itemId=&quot;22&quot;&gt;
+            two two
+        &lt;/item&gt;
+        &lt;item itemId=&quot;33&quot;&gt;
+            three three
+        &lt;/item&gt;
+    &lt;/item&gt;
+    &lt;item itemId=&quot;4&quot;&gt;
+        four
+    &lt;/item&gt;
+&lt;/dn-side-menu&gt;
+            </code>
+        </pre>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+SideMenu&lt;ItemId&gt; sideMenu;
+
+sideMenu.addSelectionHandler(event ->
+    ta.setValue("Selected: id=" + event.getSelectedItem().getId() + "  " + event.getSelectedItem().getContent().trim()));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+sideMenu: SideMenu&lt;ItemId&gt;;
+
+this.sideMenu.addSelectionHandler(SelectionHandler.onSelection(evt =&gt; {
+    this.ta.setValue('Selected: id=' + evt.selection.getId() + '  ' + evt.selection.getContent().trim());
+}));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+    <!--events-->
+    <h5>
+        Events
+    </h5>
+    <p>Logs selection event</p>
+    <div class="demo-component-wrapper">
+        <div class="row">
+            <div class="col-4">
+                <dn-side-menu class="scroll-style" style="position:relative !important;" ui-field="eventsSideMenu"/>
+            </div>
+            <div class="col-8">
+                <dn-text-area addClass="h-100" ui-field="taE"/>
+            </div>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+public SideMenu&lt;IdItem&gt; eventsSideMenu;
+
+eventsSideMenu.setRootMenuItem(Fruit.getFruitsTree());
+eventsSideMenu.addSelectionHandler(event -&gt; taE.append(event.getSelectedItem() + &quot;\n&quot;));
+eventsSideMenu.draw();
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+eventsSideMenu: SideMenu&lt;Fruit&gt;;
+
+this.eventsSideMenu.setRootMenuItem(Fruit.getFruitsTree());
+this.eventsSideMenu.addSelectionHandler(SelectionHandler.onSelection(evt => {
+    this.taE.append(evt.selection + '\n');
+}));
+this.eventsSideMenu.draw();
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!-- markup template-->
+    <h5>Template markup </h5>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;template ui-field=&quot;sidemenu&quot;&gt;
+    &lt;aside ui-field=&quot;root&quot; class=&quot;col-12 col-md-3 col-xl-2 border-right scroll-style&quot; style=&quot;max-height: 100%&quot;&gt;
+        &lt;div class=&quot;d-flex flex-row-reverse justify-content-between align-items-center d-md-block&quot;&gt;
+            &lt;div class=&quot;w-100 ml-3 ml-md-0&quot;&gt;
+                &lt;form&gt;
+                    &lt;dn-text-box ui-field=&quot;searchBox&quot; addclass=&quot;w-100&quot;&gt;&lt;/dn-text-box&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+            &lt;hr class=&quot;d-none d-md-block mb-2&quot;&gt;
+            &lt;button ui-field=&quot;navBtn&quot; class=&quot;navbar-toggler d-block d-md-none border&quot;&gt;
+                &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;30&quot; height=&quot;30&quot; viewBox=&quot;0 0 30 30&quot; role=&quot;img&quot;
+                     focusable=&quot;false&quot;&gt;
+                    &lt;path stroke=&quot;#333&quot; stroke-linecap=&quot;round&quot; stroke-miterlimit=&quot;10&quot; stroke-width=&quot;2&quot;
+                          d=&quot;M4 7h22M4 15h22M4 23h22&quot;&gt;&lt;/path&gt;
+                &lt;/svg&gt;
+            &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;nav class=&quot;navbar navbar-expand-md p-0&quot;&gt;
+            &lt;div ui-field=&quot;navbarPanel&quot; class=&quot;navbar-collapse collapse&quot;&gt;
+                &lt;!--            &lt;dn-tree ui-field=&quot;tree&quot; &gt;&lt;/dn-tree&gt;--&gt;
+                &lt;div ui-field=&quot;treeHolder&quot; class=&quot;pb-4&quot;&gt;&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/nav&gt;
+    &lt;/aside&gt;
+    &lt;template ui-field=&quot;treeSideTemplate&quot;&gt;
+        &lt;template ui-field=&quot;treeMain&quot;&gt;
+            &lt;ul ui-field=&quot;root&quot; class=&quot;nav flex-column w-100 demo-nav&quot;&gt;&lt;/ul&gt;
+            &lt;style-item ui-field=&quot;rowHeight&quot; class=&quot;49&quot;&gt;&lt;/style-item&gt;
+        &lt;/template&gt;
+        &lt;template ui-field=&quot;treeItemSimple&quot;&gt;
+            &lt;li ui-field=&quot;root&quot; class=&quot;nav-item&quot;&gt;
+                &lt;a href=&quot;javascript:void(0)&quot; class=&quot;nav-link&quot;&gt;
+                    &lt;span ui-field=&quot;iconParent&quot; style=&quot;display: none&quot; class=&quot;me-3&quot;&gt;
+                      &lt;i ui-field=&quot;iconPanel&quot; class=&quot;fa fa-user&quot;&gt;&lt;/i&gt;
+                    &lt;/span&gt;
+                    &lt;span ui-field=&quot;valuePanel&quot; class=&quot;d-inline-flex me-auto&quot;&gt;Loremipsum&lt;/span&gt;
+                &lt;/a&gt;
+            &lt;/li&gt;
+            &lt;style-item ui-field=&quot;modelSelected&quot; class=&quot;active&quot;&gt;&lt;/style-item&gt;
+        &lt;/template&gt;
+        &lt;template ui-field=&quot;treeItemSimpleParent&quot;&gt;
+            &lt;li ui-field=&quot;root&quot; class=&quot;nav-item&quot;&gt;
+                &lt;a href=&quot;javascript:void(0)&quot; class=&quot;nav-link dropdown-toggle collapsed&quot; ui-field=&quot;valuePanelParent&quot;&gt;
+                    &lt;span ui-field=&quot;iconParent&quot; style=&quot;display: none&quot; class=&quot;me-3&quot;&gt;
+                      &lt;i ui-field=&quot;iconPanel&quot; class=&quot;fa fa-user&quot;&gt;&lt;/i&gt;
+                    &lt;/span&gt;
+                    &lt;span ui-field=&quot;valuePanel&quot; class=&quot;d-inline-flex me-auto&quot;&gt;Loremipsum&lt;/span&gt;
+                    &lt;i ui-field=&quot;openCloseElement&quot; class=&quot;pull-right&quot;&gt;&lt;/i&gt;
+                &lt;/a&gt;
+            &lt;/li&gt;
+            &lt;style-item ui-field=&quot;openStyle&quot; class=&quot;&quot;&gt;&lt;/style-item&gt;
+            &lt;style-item ui-field=&quot;closeStyle&quot; class=&quot;collapsed&quot;&gt;&lt;/style-item&gt;
+        &lt;/template&gt;
+    &lt;/template&gt;
+
+    &lt;style-item ui-field=&quot;collapsedStyle&quot; class=&quot;collapsed&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;showNavBarPanelStyle&quot; class=&quot;show&quot;&gt;&lt;/style-item&gt;
+&lt;/template&gt;
+            </code>
+        </pre>
+        </div>
+    </div>
+
+</div>

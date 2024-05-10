@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@ package com.dncomponents.client.components.core.selectionmodel;
 
 import com.dncomponents.client.components.core.HasUserValue;
 import com.dncomponents.client.components.core.events.selection.SelectionEvent;
+import com.dncomponents.client.components.core.events.value.AbstractValueChangeHandler;
 import com.dncomponents.client.components.core.events.value.HasValue;
 import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
-import com.dncomponents.client.components.core.events.value.AbstractValueChangeHandler;
 import elemental2.dom.CustomEvent;
 
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public class AbstractMultiSelectionGroup<T, C extends HasUserValue<T>>
         super.fireSelectionChange();
         SelectionEvent.fire(entitySelectionModel, entitySelectionModel.getSelection());
         ValueChangeEvent.fire(entitySelectionModel.getHasValue(),
-                selection.stream().map(c -> c.getUserObject()).collect(Collectors.toList()),entitySelectionModel.getSelection());
+                selection.stream().map(c -> c.getUserObject()).collect(Collectors.toList()), entitySelectionModel.getSelection());
     }
 
     @Override

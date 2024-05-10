@@ -1,0 +1,418 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Tabs
+    </h2>
+    <div class="demo-component-wrapper">
+        <dn-tab ui-field="tab">
+            <item itemId="one">
+                <title>
+                    <b>title 1</b>
+                </title>
+                <content>
+                    <h1>content 1</h1>
+                    <dn-button view="ICON" coloroutline="PRIMARY" icontype="CC_VISA">Button
+                    </dn-button>
+                </content>
+            </item>
+            <item itemId="two">
+                <title>
+                    item 2
+                </title>
+                <content>
+                    <h1>content 2</h1>
+                </content>
+            </item>
+            <item itemId="three">
+                <title>
+                    item 3
+                </title>
+                <content>
+                    <h1>content 3</h1>
+                </content>
+            </item>
+        </dn-tab>
+        <dn-text-area ui-field="ta2" addClass="ta-demo ta-demo-full"></dn-text-area>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-html">
+&lt;dn-tab ui-field=&quot;tab&quot;&gt;
+    &lt;item itemId=&quot;one&quot;&gt;
+        &lt;title&gt;
+            &lt;b&gt;title 1&lt;/b&gt;
+        &lt;/title&gt;
+        &lt;content&gt;
+            &lt;h1&gt;content 1&lt;/h1&gt;
+            &lt;dn-button view=&quot;ICON&quot; coloroutline=&quot;PRIMARY&quot; icontype=&quot;CC_VISA&quot;&gt;Button
+            &lt;/dn-button&gt;
+        &lt;/content&gt;
+    &lt;/item&gt;
+    &lt;item itemId=&quot;two&quot;&gt;
+        &lt;title&gt;
+            item 2
+        &lt;/title&gt;
+        &lt;content&gt;
+            &lt;h1&gt;content 2&lt;/h1&gt;
+        &lt;/content&gt;
+    &lt;/item&gt;
+    &lt;item itemId=&quot;three&quot;&gt;
+        &lt;title&gt;
+            item 3
+        &lt;/title&gt;
+        &lt;content&gt;
+            &lt;h1&gt;content 3&lt;/h1&gt;
+        &lt;/content&gt;
+    &lt;/item&gt;
+&lt;/dn-tab&gt;
+             </code>
+         </pre>
+        </div>
+    </div>
+
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+public Tab&lt;IdItemTitle&gt; tab;
+
+tab.addSelectionHandler(event -&gt;
+        ta2.setValue(event.getSelectedItem().getUserObject().getId()));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+public tab: Tab&lt;ItemIdTitle&gt;;
+
+this.tab.addSelectionHandler(SelectionHandler.onSelection(evt =&gt; {
+    this.ta2.setValue(evt.selection.getUserObject().getId());
+}));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--orientation-->
+    <h5>
+        Vertical tabs
+    </h5>
+    <p>Show vertical tabs.</p>
+    <div class="demo-component-wrapper">
+        <dn-tab orientation="VERTICAL">
+            <item>
+                <title>
+                    item 1
+                </title>
+                <content>
+                    <h1>content 1</h1>
+                </content>
+            </item>
+            <item>
+                <title>
+                    item 2
+                </title>
+                <content>
+                    <h1>content 2</h1>
+                </content>
+            </item>
+            <item>
+                <title>
+                    item 3
+                </title>
+                <content>
+                    <h1>content 3</h1>
+                </content>
+            </item>
+        </dn-tab>
+
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;dn-tab orientation=&quot;VERTICAL&quot;&gt;
+    &lt;item&gt;
+        &lt;title&gt;
+            item 1
+        &lt;/title&gt;
+        &lt;content&gt;
+            &lt;h1&gt;content 1&lt;/h1&gt;
+        &lt;/content&gt;
+    &lt;/item&gt;
+    &lt;item&gt;
+        &lt;title&gt;
+            &lt;b&gt;item 2&lt;/b&gt;
+        &lt;/title&gt;
+        &lt;content&gt;
+            &lt;h1&gt;content 2&lt;/h1&gt;
+        &lt;/content&gt;
+    &lt;/item&gt;
+    &lt;item&gt;
+        &lt;title&gt;
+            item 3
+        &lt;/title&gt;
+        &lt;content&gt;
+            &lt;h1&gt;content 3&lt;/h1&gt;
+        &lt;/content&gt;
+    &lt;/item&gt;
+&lt;/dn-tab&gt;
+             </code>
+        </pre>
+        </div>
+    </div>
+
+    <!--end orientation-->
+
+    <!--renderer-->
+    <h5>
+        Renderer
+    </h5>
+    <p>Create custom renderer for complex objects.</p>
+    <div class="demo-component-wrapper">
+        <dn-tab ui-field="tabRenderer"></dn-tab>
+    </div>
+
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+tabRenderer.setTabItemRenderer(new TabItem.RenderTabItem&lt;Fruit&gt;() {
+@Override
+public void render(Fruit userObject, TabItemViewSlots slots) {
+        slots.getTitle().textContent = userObject.getName();
+        slots.getContent().innerHTML = &quot;&lt;h2&gt;&quot; + SafeHtmlUtils.htmlEscape(userObject.getDescription()) + &quot;&lt;/h2&gt;&quot;;
+    }
+});
+for (Fruit fruit : Fruit.fruits)
+    tabRenderer.addItem(new TabItem&lt;&gt;(tabRenderer, fruit));
+
+              </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+this.tabRenderer.setTabItemRenderer({
+    render(userObject: Fruit, slots: TabItemViewSlots): void {
+        slots.getTitle().textContent = userObject.name;
+        slots.getContent().innerHTML = '&lt;h4&gt;' + userObject.description + '&lt;/h4&gt;';
+    }
+});
+
+Fruit.getFruits(5).forEach(fruit =&gt;
+        this.tabRenderer.addItem(new TabItem&lt;Fruit&gt;(this.tabRenderer).setUserObject(fruit)));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--end renderer-->
+
+
+    <!--events-->
+    <h5>
+        Events
+    </h5>
+    <p>Adds event handlers for BeforeSelectionEvent and SelectionEvent. It logs selected item's
+        order</p>
+    <div class="demo-component-wrapper">
+        <dn-tab style="margin-bottom:25px;" ui-field="tabEvents">
+            <item>
+                <title>
+                    item 1
+                </title>
+                <content>
+                    <h1>content 1</h1>
+                </content>
+            </item>
+            <item>
+                <title>
+                    item 2
+                </title>
+                <content>
+                    <h1>content 2</h1>
+                </content>
+            </item>
+            <item>
+                <title>
+                    item 3
+                </title>
+                <content>
+                    <h1>content 3</h1>
+                </content>
+            </item>
+        </dn-tab>
+        <dn-text-area ui-field="ta" addClass="ta-demo ta-demo-full"></dn-text-area>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+Tab tabEvents;
+@UiField
+TextArea ta;
+
+tabEvents.addSelectionHandler((SelectionHandler&lt;TabItem&lt;Object&gt;&gt;) event -&gt;
+        ta.append(&quot;SelectionEvent - tab: &quot; + event.getSelectedItem().getOrder() + &quot;\n&quot;));
+
+tabEvents.addBeforeSelectionHandler((BeforeSelectionHandler&lt;TabItem&lt;Object&gt;&gt;) event -&gt;
+        ta.append(&quot;BeforeSelectionEvent - tab: &quot; + event.getItem().getOrder() + &quot;\n&quot;));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+tabEvents: Tab&lt;any&gt;;
+@UiField
+ta: TextArea;
+
+this.tabEvents.addSelectionHandler(SelectionHandler.onSelection(evt =&gt; {
+    this.ta.append('SelectionEvent - tab: ' + evt.selection.getOrder() + '\n');
+}));
+this.tabEvents.addBeforeSelectionHandler(BeforeSelectionHandler.onBeforeSelection(evt =&gt; {
+    this.ta.append('BeforeSelectionEvent - tab: ' + evt.selection.getOrder() + '\n');
+}));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+    <!--markup template-->
+    <h5>Template markup </h5>
+    <div class="demo-component-wrapper">
+        <dn-tab>
+            <item>
+                <title>
+                    item 1
+                </title>
+                <content>
+                    <h1>content 1</h1>
+                </content>
+            </item>
+        </dn-tab>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;!--  TAB  --&gt;
+&lt;template ui-field=&quot;tabUi&quot;&gt;
+    &lt;template ui-field=&quot;tab&quot;&gt;
+        &lt;div ui-field=&quot;root&quot; style=&quot;width:100%;&quot;&gt;
+            &lt;ul ui-field=&quot;tabPanel&quot; class=&quot;nav nav-tabs&quot;&gt;
+
+            &lt;/ul&gt;
+            &lt;div ui-field=&quot;tabContentPanel&quot; class=&quot;tab-content&quot; style=&quot;padding:10px;&quot;&gt;
+
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/template&gt;
+    &lt;template ui-field=&quot;tabVertical&quot;&gt;
+        &lt;div ui-field=&quot;root&quot; class=&quot;row&quot;&gt;
+            &lt;div class=&quot;col-3&quot;&gt;
+                &lt;ul ui-field=&quot;tabPanel&quot; class=&quot;nav nav-tabs&quot;&gt;
+
+                &lt;/ul&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-9&quot;&gt;
+                &lt;div ui-field=&quot;tabContentPanel&quot; class=&quot;tab-content&quot;&gt;
+
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/template&gt;
+
+    &lt;template ui-field=&quot;tabItem&quot;&gt;
+        &lt;li ui-field=&quot;tabItemNav&quot; class=&quot;nav-item&quot;&gt;
+            &lt;a ui-field=&quot;tabItemPanel&quot; class=&quot;nav-link&quot; data-toggle=&quot;tab&quot; href=&quot;javascript:void(0)&quot;
+               role=&quot;tab&quot;&gt;
+
+            &lt;/a&gt;
+        &lt;/li&gt;
+        &lt;div ui-field=&quot;tabItemContent&quot; class=&quot;tab-pane fade&quot; role=&quot;tabpanel&quot;&gt;
+
+        &lt;/div&gt;
+        &lt;style-item ui-field=&quot;showTabContentStyle&quot; class=&quot;show active&quot;/&gt;
+        &lt;style-item ui-field=&quot;active&quot; class=&quot;active&quot;/&gt;
+    &lt;/template&gt;
+&lt;/template&gt;
+            </code>
+        </pre>
+        </div>
+    </div>
+</div>

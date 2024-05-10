@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package com.dncomponents.client.main.appviews.test;
+package com.dncomponents.client.main.components.appviews;
 
-public class Template {
-    public final String courseUrlKey;
-    public final String name;
+import jsinterop.annotations.JsPackage;
+import jsinterop.annotations.JsType;
 
-    public Template(String courseUrlKey, String name) {
-        this.courseUrlKey = courseUrlKey;
-        this.name = name;
-    }
+@JsType(isNative = true, namespace = JsPackage.GLOBAL)
+public class PR {
+    public static native void prettyPrint();
 }

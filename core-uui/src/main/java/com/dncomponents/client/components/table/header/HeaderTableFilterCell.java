@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +21,7 @@ import com.dncomponents.client.components.table.header.filter.FilterUtil;
 import com.dncomponents.client.components.table.header.filter.HasFilterValue;
 import com.dncomponents.client.views.core.ui.table.headers.HeaderTableFilterCellView;
 
-/**
- * @author nikolasavic
- */
+
 public class HeaderTableFilterCell extends HeaderTableSortCell {
 
     HeaderFiltering headerFiltering;

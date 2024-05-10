@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,7 @@ import elemental2.dom.MouseEvent;
 
 import java.util.List;
 
-/**
- * @author nikolasavic
- */
+
 public class ListTreeMultiSelectionModel<T> extends DefaultMultiSelectionModel<T> {
 
     private final ListView ownerView;

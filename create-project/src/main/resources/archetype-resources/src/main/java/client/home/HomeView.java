@@ -1,4 +1,4 @@
-package ${package}.client.home;
+package $
 
 import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.appview.Presenter;

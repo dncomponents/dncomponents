@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,7 @@ import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.views.core.pcg.cell.BaseCellView;
 import elemental2.dom.Element;
 
-/**
- * @author nikolasavic
- */
+
 public interface TableRowView extends BaseCellView {
 
     void addRow(Element widget, int columnSize);

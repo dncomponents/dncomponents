@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ public class PagerListUiImpl implements PagerListUi {
     HtmlBinder uiBinder = HtmlBinder.create(PagerListUiImpl.class, this);
 
 
-     public PagerListUiImpl(HTMLTemplateElement templateElement) {
+    public PagerListUiImpl(HTMLTemplateElement templateElement) {
         uiBinder.setTemplateElement(templateElement);
         uiBinder.bind();
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,9 +30,7 @@ import com.dncomponents.client.views.core.ui.autocomplete.BaseAutocompleteView;
 import java.util.List;
 import java.util.function.Function;
 
-/**
- * @author nikolasavic
- */
+
 public class AbstractAutocomplete<T, V extends BaseAutocompleteView<T>, C> extends BaseFocusComponent<T, V> implements HasValue<C> {
 
     boolean listShowing;

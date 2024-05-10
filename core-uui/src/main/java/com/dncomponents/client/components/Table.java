@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,9 +43,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-/**
- * @author nikolasavic
- */
+
 public class Table<T> extends AbstractCellComponent<T, List, TableUi> implements HasRowsDataList<T>, HasRowValueChangedHandlers<T>, HasRowEditingStoppedHandlers<T>, HasRowEditingStartedHandlers<T> {
 
     public TreeGroupBy groupBy;

@@ -1,0 +1,154 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Edit List
+    </h2>
+
+    <div class="demo-component-wrapper">
+        <div class="row">
+            <div class="col-5">
+                <div class="mb-3">
+                    <dn-button ui-field="addItemButton" color="SECONDARY"> Add new item</dn-button>
+                </div>
+                <div class="mb-3">
+                    <dn-button ui-field="removeSelectionButton" color="SECONDARY">Remove selection
+                    </dn-button>
+                </div>
+                <div class="mb-3">
+                    <dn-button ui-field="startEditingButton" color="SECONDARY">Start editing selected cell
+                    </dn-button>
+                </div>
+                <div class="mb-3">
+                    <dn-checkbox ui-field="editableListCheckBox" color="SECONDARY">Editable (list)
+                    </dn-checkbox>
+                </div>
+            </div>
+            <div class="col-7">
+                <dn-list ui-field="list"></dn-list>
+            </div>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+public Button addItemButton;
+@UiField
+public Button removeSelectionButton;
+@UiField
+public ListData&lt;Fruit, String&gt; list;
+@UiField
+public Button startEditingButton;
+@UiField
+public CheckBox editableListCheckBox;
+
+list.getRowCellConfig().setFieldGetter(Fruit::getName);
+list.getRowCellConfig().setFieldSetter(Fruit::setName);
+list.getRowCellConfig().setClazz(String.class);
+list.setRowsData(Fruit.getFruits(2000));
+list.drawData();
+
+//add item
+addItemButton.addClickHandler(mouseEvent -&gt;
+        list.addRow(new Fruit(&quot;new Fruit &quot; + i++, &quot;description &quot; + i)));
+//start editing
+startEditingButton.addClickHandler(mouseEvent -&gt;
+        list.getRowCell(list
+                .getSelectionModel()
+                .getFirstSelected())
+                .startEditing());
+editableListCheckBox.setValue(list.isEditable());
+editableListCheckBox.addValueChangeHandler(event -&gt; list.setEditable((Boolean) event.getValue()));
+//remove
+list.getSelectionModel().addSelectionHandler(event -&gt;
+        removeSelectionButton.setEnabled(event.getSelectedItem().size() &gt; 0));
+removeSelectionButton.setEnabled(!list.getSelectionModel().getSelection().isEmpty());
+removeSelectionButton.addClickHandler(mouseEvent -&gt;
+        list.removeRows(list.getSelectionModel().getSelection()));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+@UiField
+public addItemButton: Button&lt;any&gt;;
+@UiField
+public removeSelectionButton: Button&lt;any&gt;;
+@UiField
+public list: ListData&lt;Fruit, string&gt;;
+@UiField
+public startEditingButton: Button&lt;any&gt;;
+@UiField
+public editableListCheckBox: CheckBox&lt;any&gt;;
+
+this.list.getRowCellConfig().setFieldGetter((p) =&gt; {
+    return p.name;
+});
+this.list.getRowCellConfig().setFieldSetter((p, name) =&gt; {
+    return p.name = (name);
+});
+this.list.getRowCellConfig().setClazz('string');
+this.list.setRowsData(Fruit.getFruits(2000));
+this.list.drawData();
+this.addItemButton.addClickHandler(ClickHandler.onClick(evt =&gt; {
+    this.list.insertRow(new Fruit('Fruit ' + ListCrudAppView.i++, 'description ' + ListCrudAppView.i), 0);
+    this.list.drawData();
+}));
+this.startEditingButton.addClickHandler(ClickHandler.onClick(evt =&gt; {
+    this.list.getRowCell(this.list
+        .getSelectionModel()
+        .getFirstSelected())
+        .startEditing();
+}));
+this.editableListCheckBox.setValue(this.list.isEditable());
+this.editableListCheckBox.addValueChangeHandler(ValueChangeHandler.onValueChange(evt =&gt; {
+    this.list.setEditable(evt.value);
+}));
+this.list.getSelectionModel().addSelectionHandler(SelectionHandler.onSelection(evt =&gt; {
+    this.removeSelectionButton.setEnabled(evt.selection.size() &gt; 0);
+}));
+this.removeSelectionButton.setEnabled(!this.list.getSelectionModel().getSelection().isEmpty());
+this.removeSelectionButton.addClickHandler(ClickHandler.onClick(evt =&gt; {
+    this.list.removeRows(this.list.getSelectionModel().getSelection());
+}));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+</div>

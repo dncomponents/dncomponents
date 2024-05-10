@@ -1,0 +1,70 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Pagination Table
+    </h2>
+
+    <h5>Simple pager</h5>
+    <div class="demo-component-wrapper mb-3">
+        <dn-table ui-field="table1"></dn-table>
+    </div>
+    <h5>List pager</h5>
+    <div class="demo-component-wrapper">
+        <dn-table ui-field="table2"></dn-table>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+Table&lt;Fruit&gt; table1;
+@UiField
+Table&lt;Fruit&gt; table2;
+
+private void init1() {
+    table1.setRowsData(Fruit.getFruits(11500));
+    table1.setPager(new Pager());
+
+    ColumnConfig&lt;Fruit, String&gt; nameColumn =
+            new ColumnConfig&lt;&gt;(Fruit::getName, Fruit::setName, &quot;Name&quot;);
+    ColumnConfig&lt;Fruit, String&gt; descColumn =
+            new ColumnConfig&lt;&gt;(Fruit::getDescription, Fruit::setDescription, &quot;Description&quot;);
+
+    table1.addColumn(nameColumn);
+    table1.addColumn(descColumn);
+
+    table1.drawData();
+}
+
+private void init2() {
+    table2.setRowsData(Fruit.getFruits(11500));
+    table2.setPager(new PagerWithList());
+    ColumnConfig&lt;Fruit, String&gt; nameColumn =
+            new ColumnConfig&lt;&gt;(Fruit::getName, Fruit::setName, &quot;Name&quot;);
+    ColumnConfig&lt;Fruit, String&gt; descColumn =
+            new ColumnConfig&lt;&gt;(Fruit::getDescription, Fruit::setDescription, &quot;Description&quot;);
+
+    table2.addColumn(nameColumn);
+    table2.addColumn(descColumn);
+    table2.drawData();
+}
+            </code>
+        </pre>
+        </div>
+    </div>
+</div>

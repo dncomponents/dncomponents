@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,7 @@ package com.dncomponents.client.components.table.header;
 
 import com.dncomponents.client.components.ColumnConfig;
 
-/**
- * @author nikolasavic
- */
+
 public class HeaderGrouping extends HeaderWithModifiers<ColumnConfig> implements HasDirection {
 
     private SortingDirection sortingDirection;
@@ -44,7 +42,7 @@ public class HeaderGrouping extends HeaderWithModifiers<ColumnConfig> implements
     public HeaderGrouping(ColumnConfig column, Boolean sortingDirection) {
         super(column);
         setSortingDirection((sortingDirection == null) ? null : sortingDirection ?
-        SortingDirection.ASCENDING : SortingDirection.DESCENDING);
+                SortingDirection.ASCENDING : SortingDirection.DESCENDING);
     }
 
     @Override

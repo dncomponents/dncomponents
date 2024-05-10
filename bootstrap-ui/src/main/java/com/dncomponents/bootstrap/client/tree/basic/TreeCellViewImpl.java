@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,19 @@
 
 package com.dncomponents.bootstrap.client.tree.basic;
 
+import com.dncomponents.Template;
 import com.dncomponents.UiField;
-import com.dncomponents.Component;
 import com.dncomponents.bootstrap.client.cell.BaseCellViewImpl;
-import com.dncomponents.client.views.core.ui.tree.TriConsumer;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.tree.BaseTreeCellView;
+import com.dncomponents.client.views.core.ui.tree.TriConsumer;
 import elemental2.dom.*;
 import jsinterop.base.Js;
 
-/**
- * @author nikolasavic
- */
-@Component
+
+@Template
 public class TreeCellViewImpl extends BaseCellViewImpl implements BaseTreeCellView {
 
     @UiField
@@ -135,7 +133,7 @@ public class TreeCellViewImpl extends BaseCellViewImpl implements BaseTreeCellVi
 
     @Override
     public void setShift(int level) {
-        double space=level * 10 + 5;
+        double space = level * 10 + 5;
         DomUtil.setPaddingLeft(asElement(), space + "px");
     }
 

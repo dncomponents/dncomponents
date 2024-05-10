@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,7 @@ import com.dncomponents.client.components.tree.TreeNode;
 import com.dncomponents.client.views.core.ui.tabletree.TableTreeUi;
 import com.dncomponents.client.views.core.ui.tree.BaseTreeCellView;
 
-/**
- * Created by nikolasavic
- */
+
 public abstract class AbstractTableTreeCell<M> extends TableCell<TreeNode<M>, Object> {
 
     public AbstractTableTreeCell() {

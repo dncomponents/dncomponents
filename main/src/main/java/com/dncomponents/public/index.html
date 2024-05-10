@@ -1,0 +1,177 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Demo</title>
+    <link rel="stylesheet" type="text/css" href="google-code-prettify/prettify.css">
+    <script type="text/javascript" src="google-code-prettify/prettify.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <script src="com.dncomponents.client.main.App.nocache.js"></script>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <link rel="stylesheet" type="text/css" href="app.css">
+</head>
+<body onload="PR.prettyPrint()">
+<style>
+    .main_form_panel {
+        padding: 0.375rem 0.75rem;
+    }
+
+    .error_form {
+        box-sizing: border-box;
+        margin: 0;
+        font-family: inherit;
+        resize: vertical;
+        font-weight: 400;
+        display: block;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        height: auto;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23dc3545' viewBox='-2 -2 7 7'%3e%3cpath stroke='%23dc3545' d='M0 0l3 3m0-3L0 3'/%3e%3ccircle r='.5'/%3e%3ccircle cx='3' r='.5'/%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E");
+        background-repeat: no-repeat;
+        background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+        border-color: #dc3545;
+        padding-right: calc(1.5em + .75rem);
+        background-position: top calc(.375em + .1875rem) right calc(.375em + .1875rem);
+    }
+
+    aside {
+        flex: 0 1 320px;
+        position: fixed !important;
+        overflow-y: auto;
+        z-index: 1000;
+        background: #fff;
+        order: 0;
+        padding: 1rem 0;
+        height: calc(100vh - 57px);
+    }
+
+    @media only screen and (max-width: 768px) {
+        aside {
+            height: auto;
+            max-height: 50vh;
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+        }
+
+        main {
+            padding-top: 6rem;
+        }
+
+        .demo-nav {
+            padding-top: 1rem;
+        }
+    }
+
+    main {
+        order: 1;
+        margin-left: auto;
+    }
+
+    .demo-nav .nav-link {
+        color: rgba(0, 0, 0, .65);
+        /*font-weight: bold;*/
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .demo-nav .nav-link:hover {
+        color: rgba(0, 0, 0, .85);
+    }
+
+    .demo-nav .nav-item.active .nav-link {
+        color: rgba(0, 0, 0, .85);
+    }
+
+    .demo-nav ul .nav-link {
+        font-weight: normal;
+    }
+
+    .demo-nav .dropdown-toggle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
+    }
+
+    .demo-nav .dropdown-toggle:after {
+        border: none;
+        content: "-";
+        font-size: 1.2rem;
+        line-height: 0;
+        width: 1rem;
+        text-align: center;
+    }
+
+    .demo-nav .dropdown-toggle.collapsed:after {
+        content: "+";
+    }
+
+    .demo-component-wrapper {
+        padding: 1rem;
+        margin-top: 1.2rem;
+        border: 1px solid #dee2e6;
+        margin-bottom: 1rem;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .ta-demo-full {
+            width: 100% !important;
+            margin-top: 2rem;
+        }
+    }
+
+    .ta-demo {
+        margin-top: 2rem;
+        width: 400px;
+        height: 200px !important;
+    }
+
+    .code-wrapper {
+        margin-bottom: 1rem;
+        padding: 1rem 1.5rem;
+        /*        Ovo ispod je privremeno*/
+        background: #e9ecef;
+        color: #dee2e6;
+    }
+
+    .highlight pre {
+        margin-bottom: -30px;
+    }
+</style>
+
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"-->
+<!--        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"-->
+<!--        crossorigin="anonymous"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"-->
+<!--        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"-->
+<!--        crossorigin="anonymous"></script>-->
+</body>
+</html>

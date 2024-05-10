@@ -1,17 +1,16 @@
-package ${package}.client.home;
+package $
 
 import com.dncomponents.UiField;
 import com.dncomponents.client.components.button.Button;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.views.appview.AbstractView;
-import elemental2.dom.HTMLDivElement;
 import elemental2.dom.HTMLElement;
 
 public class HomeViewImpl extends AbstractView<HomeView.HomePresenter> implements HomeView {
     private static HomeViewImpl instance;
 
     @UiField
-    public HTMLDivElement root;
+    public HTMLElement root;
 
     {
         HtmlBinder.create(HomeViewImpl.class, this).bind();

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,14 +21,14 @@ import com.dncomponents.client.views.core.HasStyle;
 
 import static com.dncomponents.bootstrap.client.button.ButtonBuilderConst.getInstance;
 
-/**`
- * @author nikolasavic
+/**
+ * `
  */
 public enum ButtonColorType implements HasStyle {
-    DANGER(()->getInstance().btnDanger), DARK(()->getInstance().btnDark), INFO(()->getInstance().btnInfo),
-    LIGHT(()->getInstance().btnLight), LINK(()->getInstance().btnLink),
-    PRIMARY(()->getInstance().btnPrimary), SECONDARY(()->getInstance().btnSecondary),
-    SUCCESS(()->getInstance().btnSuccess), WARNING(()->getInstance().btnWarning);
+    DANGER(() -> getInstance().btnDanger), DARK(() -> getInstance().btnDark), INFO(() -> getInstance().btnInfo),
+    LIGHT(() -> getInstance().btnLight), LINK(() -> getInstance().btnLink),
+    PRIMARY(() -> getInstance().btnPrimary), SECONDARY(() -> getInstance().btnSecondary),
+    SUCCESS(() -> getInstance().btnSuccess), WARNING(() -> getInstance().btnWarning);
 
     public static EnumLookUp<ButtonColorType> lookUp = new EnumLookUp<>(ButtonColorType.values());
 

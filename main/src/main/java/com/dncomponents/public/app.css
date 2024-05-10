@@ -1,0 +1,35 @@
+/* Generated css file */
+
+
+/* ConditionalComponent */
+
+        .otherCss{
+          background: blue;
+        }
+
+/* HelloComponent */
+
+.helloCss{
+           background: #ea16b6;
+           padding: 20px;
+           border: 1px solid gray;
+         }
+
+/* MainApp */
+
+.main-title{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* AttributesComponent */
+
+        .someCss{
+          background:    #2ce3c1;
+        }
+
+/* EventsComponent */
+
+.eventsClass {
+    background: lightgray;
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,14 @@
 package com.dncomponents;
 
 import com.google.auto.service.AutoService;
-import com.sun.tools.javac.code.Symbol;
-import com.sun.tools.javac.code.Type;
 import org.apache.commons.text.StringEscapeUtils;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.PackageElement;
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.*;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Types;
 import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
@@ -39,14 +37,16 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-@SupportedAnnotationTypes({"com.dncomponents.UiField", "com.dncomponents.Component", "com.dncomponents.I18n"})
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
+@SupportedAnnotationTypes({"com.dncomponents.UiField", "com.dncomponents.Component",
+        "com.dncomponents.Template", "com.dncomponents.I18n"})
+@SupportedSourceVersion(SourceVersion.RELEASE_11)
 @AutoService(Processor.class)
 public class TemplateProcessor extends AbstractProcessor {
 
     private static String EXTENSION = "Binder";
     private static List<TemplateProp> templateProps = new ArrayList<>();
     private static List<String> parsersClassNames = new ArrayList<>();
+    private static List<String> allCss = new ArrayList<>();
     private static Map<Element, Element> elementSubElement = new HashMap<>();
     private static boolean firstRound = true;
     private static String APP_TEMPLATE_NAME = "AppTemplates";
@@ -56,11 +56,14 @@ public class TemplateProcessor extends AbstractProcessor {
         System.out.println(" ************************ processing annotations ************************ ");
 
         Set<? extends Element> uiComponents = roundEnv.getElementsAnnotatedWith(Component.class);
+        Set<? extends Element> templateComponents = roundEnv.getElementsAnnotatedWith(Template.class);
         Set<? extends Element> i18nAnnotated = roundEnv.getElementsAnnotatedWith(I18n.class);
         Set<? extends Element> allAnnotatedFields = roundEnv.getElementsAnnotatedWith(UiField.class);
 
+
         Set<Element> allClassesContainAnnotatedFields = new HashSet<>();
         allClassesContainAnnotatedFields.addAll(uiComponents);
+        allClassesContainAnnotatedFields.addAll(templateComponents);
 
         allAnnotatedFields.forEach((Consumer<Element>) element ->
                 allClassesContainAnnotatedFields.add(element.getEnclosingElement()));
@@ -71,8 +74,14 @@ public class TemplateProcessor extends AbstractProcessor {
             TypeMirror superclass = ((TypeElement) clazzEl).getSuperclass();
             for (Element clazzEl2 : allClassesContainAnnotatedFieldsCopy) {
                 TypeMirror superclass2 = clazzEl2.asType();
-                if (((Type.ClassType) superclass).asElement() == ((Type.ClassType) superclass2).asElement()) {
-                    elementSubElement.put(clazzEl, clazzEl2);
+
+                if (superclass instanceof DeclaredType && superclass2 instanceof DeclaredType) {
+                    Element superClassElement1 = ((DeclaredType) superclass).asElement();
+                    Element superClassElement2 = ((DeclaredType) superclass2).asElement();
+
+                    if (superClassElement1.equals(superClassElement2)) {
+                        elementSubElement.put(clazzEl, clazzEl2);
+                    }
                 }
             }
         }
@@ -107,6 +116,10 @@ public class TemplateProcessor extends AbstractProcessor {
         if (firstRound) {
             try {
                 generateTemplateService();
+                if (!allCss.isEmpty()) {
+                    generateCssFile(allCss.stream().collect(Collectors.joining("\n")),
+                            processingEnv.getOptions().get("cssDir") + "/app.css");
+                }
                 System.out.println("done");
                 firstRound = false;
             } catch (Exception e) {
@@ -117,10 +130,12 @@ public class TemplateProcessor extends AbstractProcessor {
         return true;
     }
 
-    private void generateParserClass(Element element, Element classEl) {
-        final String tag = element.getAnnotation(Component.class).tag();
-        if (!tag.isEmpty()) {
-            parsersClassNames.add("new GeneralComponentParser(\"" + tag + "\", () -> new " + classEl + "())");
+    private void generateParserClass(Element element, Element classEl, String tag) {
+        String tagName = tag.isEmpty() ? classEl.getSimpleName() + "" : tag;
+        if (Util.hasPropsConstructor(element)) {
+            parsersClassNames.add("new GeneralComponentParser(\"" + tagName + "\", f -> new " + classEl + "((Props) f))");
+        } else {
+            parsersClassNames.add("new GeneralComponentParser(\"" + tagName + "\", () -> new " + classEl + "())");
         }
     }
 
@@ -129,8 +144,8 @@ public class TemplateProcessor extends AbstractProcessor {
 
         //create the source file
         String packageName = pe.toString();
-        String annotatedClassName = ((Symbol.ClassSymbol) element).getSimpleName() + "";
-        String pathAnnotatedClassName = ((Symbol.ClassSymbol) element).fullname + "";
+        String annotatedClassName = element.getSimpleName() + "";
+        String pathAnnotatedClassName = element.toString();
         System.out.println(" ---- " + pathAnnotatedClassName);
         String generatedFullClassName = element.toString() + EXTENSION;
         String generatedClassName = annotatedClassName + EXTENSION;
@@ -165,16 +180,16 @@ public class TemplateProcessor extends AbstractProcessor {
         JavaFileObject jfo = processingEnv.getFiler().createSourceFile(generatedFullClassName, pe);
         Writer writer = jfo.openWriter();
         writer.write("" +
-                buildWarining +
-                buildPackageName +
-                importFieldsInitPackage +
-                buildClassName +
-                buildConstructor +
-                "    @Override\n" +
-                "    public void bind() {\n" +
-                content +
-                "    }\n\n" +
-                "}");
+                     buildWarining +
+                     buildPackageName +
+                     importFieldsInitPackage +
+                     buildClassName +
+                     buildConstructor +
+                     "    @Override\n" +
+                     "    public void bind() {\n" +
+                     content +
+                     "    }\n\n" +
+                     "}");
         writer.close();
         ///%%%
         templateProps.add(new TemplateProp(pathAnnotatedClassName, generatedFullClassName, generatedClassName, true));
@@ -202,8 +217,14 @@ public class TemplateProcessor extends AbstractProcessor {
         return result;
     }
 
+    private String getFilePath(Element element) {
+        return processingEnv.getOptions().get("src") + "/" + element.toString().replace('.', '/') + ".java";
+    }
+
+
     private String readHtmlPair(Element element) {
-        String path = ((Symbol.ClassSymbol) element).sourcefile.toUri().getPath();
+        String path = getFilePath(element);
+
         String htmlPath = path.substring(0, path.length() - 5) + ".html";
         try {
             String content = new String(Files.readAllBytes(Paths.get(htmlPath)));
@@ -214,7 +235,7 @@ public class TemplateProcessor extends AbstractProcessor {
     }
 
     private Properties readPropertiesPair(Element element) {
-        String path = ((Symbol.ClassSymbol) element).sourcefile.toUri().getPath();
+        String path = getFilePath(element);
         String propPath = path.substring(0, path.length() - 5) + ".properties";
         try {
             Properties prop = new Properties();
@@ -228,29 +249,55 @@ public class TemplateProcessor extends AbstractProcessor {
         }
     }
 
+    private String getStatesCall(Set<String> updateSet) {
+        String result = updateSet.stream().collect(Collectors.joining());
+        if (!result.isEmpty()) {
+            result = "\n      void setStates(){\n" +
+                     result +
+                     "      }\n";
+        }
+        return result;
+    }
+
     private void generate(PackageElement pe, Element element,
                           Set<? extends Element> elementFields, Element classEl) throws Exception {
 
         //create the source file
         String packageName = pe.toString();
-        String annotatedClassName = ((Symbol.ClassSymbol) element).getSimpleName() + "";
-        String pathAnnotatedClassName = ((Symbol.ClassSymbol) element).fullname + "";
+        String annotatedClassName = element.getSimpleName() + "";
+        String pathAnnotatedClassName = element.toString();
         System.out.println(" ---- " + pathAnnotatedClassName);
         String generatedFullClassName = element.toString() + EXTENSION;
         String generatedClassName = annotatedClassName + EXTENSION;
 
         String templateValue = readHtmlPair(element);
-        if (element.getAnnotation(Component.class) != null) {
+        String cssValue = null;
+        Component annotationComponent = element.getAnnotation(Component.class);
+        if (annotationComponent != null) {
             if (templateValue == null || templateValue.isEmpty())
-                templateValue = element.getAnnotation(Component.class).template();
-            generateParserClass(element, classEl);
+                templateValue = annotationComponent.template();
+            generateParserClass(element, classEl, annotationComponent.tag());
+            if (!annotationComponent.css().isEmpty()) {
+                allCss.add("/* " + element.getSimpleName() + " */\n");
+                allCss.add(annotationComponent.css());
+                cssValue = annotationComponent.css();
+            }
         }
+        if (element.getAnnotation(Template.class) != null) {
+            if (templateValue == null || templateValue.isEmpty())
+                templateValue = element.getAnnotation(Template.class).value();
+        }
+        Map<String, String> map = allFields(element);
 
-        final LoopProcessing loopProcessing = new LoopProcessing(templateValue, classEl);
-        final EventsProcessing eventsProcessing = new EventsProcessing();
+        Set<String> updateSet = new HashSet<>();
+
+        final LoopProcessing loopProcessing = new LoopProcessing(templateValue, classEl, map, updateSet);
+        final EventsProcessing eventsProcessing = new EventsProcessing(map, updateSet);
+        final IfsProcessing ifsProcessing = new IfsProcessing(templateValue, updateSet);
         final String generatedEventsCode = eventsProcessing.parse(templateValue);
+        final ValuesProcessing valuesProcessing = new ValuesProcessing(templateValue, updateSet);
 
-        final ValuesProcessing valuesProcessing = new ValuesProcessing(templateValue, classEl);
+        final String generatedStatesCode = getStatesCall(updateSet);
 
         if (templateValue != null || (templateValue != null && !templateValue.isEmpty())) {
             templateValue = StringEscapeUtils.escapeJava(templateValue);
@@ -259,7 +306,7 @@ public class TemplateProcessor extends AbstractProcessor {
         String warning = "//Generated code do not edit!";
         String importFieldsInitPackage =
                 "import com.dncomponents.client.components.core.HtmlBinder;\n" +
-                        "import com.dncomponents.client.components.core.TemplateParser;\n";
+                "import com.dncomponents.client.components.core.TemplateParser;\n";
 
         Element subElement = elementSubElement.get(element);
         String subElementBind = "";
@@ -273,7 +320,7 @@ public class TemplateProcessor extends AbstractProcessor {
             }
         } else {
             importFieldsInitPackage += "import " + subElement + EXTENSION + ";\n";
-            String subElementName = ((Symbol.ClassSymbol) subElement).getSimpleName() + "";
+            String subElementName = subElement.getSimpleName() + "";
             subElementBind = "        if (b)" + subElementName + EXTENSION + ".bind(d,template,b);\n";
         }
 
@@ -282,8 +329,10 @@ public class TemplateProcessor extends AbstractProcessor {
         String buildWarining = warning + "\n";
         String buildPackageName = "package " + packageName + ";" + "\n";
         String buildClassName = "public class " + generatedClassName + " extends HtmlBinder<" + annotatedClassName + "> {\n\n";
+        String cssStatic = (cssValue != null ? "static { \n allCss.add(\"/* " + annotatedClassName + " */\"); \n allCss.add(\"" + StringEscapeUtils.escapeJava(cssValue) + "\");\n}\n\n" : "");
         String buildConstructor = "    public " + generatedClassName + "() {\n" +
-                (templateValue != null ? "       setTemplateContent(\"" + templateValue + "\");\n" : "") + "    }\n\n";
+                                  (templateValue != null ? "       setTemplateContent(\"" + templateValue + "\");\n" : "") +
+                                  "    }\n\n";
         AtomicBoolean hasProvided = new AtomicBoolean(false);
         String fieldsString = fieldString(elementFields, hasProvided);
         if (hasProvided.get())
@@ -296,46 +345,94 @@ public class TemplateProcessor extends AbstractProcessor {
         JavaFileObject jfo = processingEnv.getFiler().createSourceFile(generatedFullClassName, pe);
         Writer writer = jfo.openWriter();
         writer.write("" +
-                buildWarining +
-                buildPackageName +
-                importFieldsInitPackage +
-                buildClassName +
-                buildConstructor +
-                "    @Override\n" +
-                "    public void bind() {\n" +
-                "        template.init();\n" +
-                "        bind(d, template, true);\n" +
-                (!generatedEventsCode.isEmpty() ? "        bindEvents();\n" : "") +
-                "        " +
-                "}\n" +
-                "\n" +
-                "    @Override\n" +
-                "    public void bindThis() {\n" +
-                "        template.init();\n" +
-                "        bind(d, template, false);\n" +
-                (!generatedEventsCode.isEmpty() ? "        bindEvents();\n" : "") +
-                "        " +
-                "}\n" +
-                "    \n" +
-                generatedEventsCode +
-                "\n" +
-                "    public static void bind(" + annotatedClassName + " d, TemplateParser template, boolean b) {\n" +
-                "    " +
-                subElementBind +
-                fieldsString +
-//                valuesProcessing.getInitFunctions() +
-                valuesProcessing.getUpdates() +
-                loopProcessing.getUpdates() +
-                loopProcessing.getInitFunctions() +
-                "    \n    }\n" +
-                "}");
+                     buildWarining +
+                     buildPackageName +
+                     importFieldsInitPackage +
+                     buildClassName +
+                     cssStatic +
+                     buildConstructor +
+                     "    @Override\n" +
+                     "    public void bind() {\n" +
+                     (!generatedStatesCode.isEmpty() ? "        setStates();\n" : "") +
+                     "        template.init();\n" +
+                     "        bind(d, template, true);\n" +
+                     (!generatedEventsCode.isEmpty() ? "        bindEvents();\n" : "") +
+                     "        " +
+                     "}\n" +
+                     "\n" +
+                     "    @Override\n" +
+                     "    public void bindThis() {\n" +
+                     (!generatedStatesCode.isEmpty() ? "        setStates();\n" : "") +
+                     "        template.init();\n" +
+                     "        bind(d, template, false);\n" +
+                     (!generatedEventsCode.isEmpty() ? "        bindEvents();\n" : "") +
+                     "        " +
+                     "}\n" +
+                     "    \n" +
+                     generatedEventsCode +
+                     generatedStatesCode +
+                     "\n" +
+                     "    public static void bind(" + annotatedClassName + " d, TemplateParser template, boolean b) {\n" +
+                     "    " +
+                     subElementBind +
+                     fieldsString +
+                     "    \n    }\n" +
+                     "}");
         writer.close();
     }
 
+    private Map<String, String> allFields(Element element) {
+        Map<String, String> map = new HashMap<>();
+        TypeElement annotatedClass = (TypeElement) element;
+        for (Element enclosedElement : annotatedClass.getEnclosedElements()) {
+            if (enclosedElement.getKind() == ElementKind.FIELD) {
+                VariableElement field = (VariableElement) enclosedElement;
+                String fieldName = field.getSimpleName().toString();
+                TypeMirror fieldType = field.asType();
+                if (isCollectionType(fieldType)) {
+                    map.put(fieldName, "collection");
+                }
+                if (isBooleanType(fieldType)) {
+                    map.put(fieldName, "boolean");
+                }
+
+            }
+        }
+        return map;
+    }
+
+    private boolean isCollectionType(TypeMirror type) {
+        Types types = processingEnv.getTypeUtils();
+        TypeMirror collectionType = types.erasure(processingEnv.getElementUtils().getTypeElement(Collection.class.getName()).asType());
+        return types.isAssignable(type, collectionType);
+    }
+
+    private boolean isBooleanType(TypeMirror type) {
+        return type.toString().equals(Boolean.class.getCanonicalName()) ||
+               type.toString().equals(boolean.class.getCanonicalName());
+    }
+
     private String getSuperClassPath(Element element) {
-        String classPath = ((Symbol.ClassSymbol) element).getSuperclass().toString();
-        String classBinderPath = classPath + EXTENSION;
+        String classBinderPath = "";
+        if (element instanceof TypeElement) {
+            TypeElement typeElement = (TypeElement) element;
+            TypeMirror superClass = typeElement.getSuperclass();
+            if (superClass instanceof DeclaredType) {
+                classBinderPath = superClass.toString() + EXTENSION;
+            }
+        }
         return classBinderPath;
+    }
+
+    private void generateCssFile(String cssContent, String filePath) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            // Write the CSS content to the file
+            cssContent = "/* Generated css file */\n\n\n" + cssContent;
+            writer.write(cssContent);
+            System.out.println("CSS file generated successfully at: " + filePath);
+        } catch (IOException e) {
+            System.err.println("Error writing CSS file: " + e.getMessage());
+        }
     }
 
     private void generateTemplateService() throws Exception {
@@ -362,7 +459,7 @@ public class TemplateProcessor extends AbstractProcessor {
         ArrayList<String> list = new ArrayList<>();
         for (TemplateProp prop : templateProps) {
             String str = "          TemplateService." + (prop.isI18n ? "i18nBinder" : "binders") +
-                    ".put(\"" + prop.fullPathAnnotatedClass + "\", ()->new " + prop.fullPathBinderClass + "());\n";
+                         ".put(\"" + prop.fullPathAnnotatedClass + "\", ()->new " + prop.fullPathBinderClass + "());\n";
             list.add(str);
             registers += str;
         }
@@ -390,17 +487,17 @@ public class TemplateProcessor extends AbstractProcessor {
         JavaFileObject jfo = processingEnv.getFiler().createSourceFile(generatedFullClassName);
         Writer writer = jfo.openWriter();
         writer.write("" +
-                "package com.dncomponents.client.components.core;\n" +
-                "import com.dncomponents.client.components.core.HtmlBinder;\n" +
-                "import java.util.HashMap;\n" +
-                "import java.util.Map;\n" +
-                "\npublic class " + name + " {\n" +
-                "\n" +
-                "    public static void register() {\n" +
-                registers +
-                allParsersClassName + "\n" +
-                "    }\n" +
-                "}\n");
+                     "package com.dncomponents.client.components.core;\n" +
+                     "import com.dncomponents.client.components.core.HtmlBinder;\n" +
+                     "import java.util.HashMap;\n" +
+                     "import java.util.Map;\n" +
+                     "\npublic class " + name + " {\n" +
+                     "\n" +
+                     "    public static void register() {\n" +
+                     registers +
+                     allParsersClassName + "\n" +
+                     "    }\n" +
+                     "}\n");
         writer.close();
     }
 

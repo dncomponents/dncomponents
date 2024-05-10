@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,22 +20,18 @@ import com.dncomponents.client.components.button.Button;
 import com.dncomponents.client.components.core.events.Command;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.core.events.form.ModelChangedEvent;
-import com.dncomponents.client.components.core.events.row.RowValueChangedEvent;
 import com.dncomponents.client.components.core.events.value.HasValue;
 import com.dncomponents.client.components.html.HtmlComponent;
 import com.dncomponents.client.components.modal.Dialog;
 import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.views.IsElement;
-import elemental2.dom.HTMLDivElement;
 import elemental2.dom.HTMLElement;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-/**
- * @author nikolasavic
- */
+
 public class EditFormDialog<T> extends Dialog<T> {
 
     private HTMLElement mainPanel = DomUtil.createDiv();
@@ -85,7 +81,7 @@ public class EditFormDialog<T> extends Dialog<T> {
                 handlerRegistrationList.add(handlerRegistration);
                 fields.add(() -> cc.getFieldSetter().accept(model, valueElement.getValue()));
                 IsElement element = (IsElement) valueElement;
-                HTMLDivElement div = DomUtil.createDiv();
+                HTMLElement div = DomUtil.createDiv();
                 div.appendChild(title.asElement());
                 div.appendChild(element.asElement());
                 mainPanel.appendChild(div);
@@ -101,7 +97,7 @@ public class EditFormDialog<T> extends Dialog<T> {
             ModelChangedEvent.fire(getCell().getOwner(), getCell().model);
         }
         if (isAddMode()) {
-            getCell().getOwner().insertRow(getUserObject(),0);
+            getCell().getOwner().insertRow(getUserObject(), 0);
             getCell().getOwner().drawData();
         }
         hide();

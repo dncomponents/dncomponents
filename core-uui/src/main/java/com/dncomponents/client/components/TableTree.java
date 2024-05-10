@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 package com.dncomponents.client.components;
 
-import com.dncomponents.client.components.core.CellContext;
-import com.dncomponents.client.components.core.CellFactory;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.core.events.close.CloseHandler;
 import com.dncomponents.client.components.core.events.close.HasCloseHandlers;
@@ -30,7 +28,6 @@ import com.dncomponents.client.components.tree.TreeNode;
 import com.dncomponents.client.views.Ui;
 import com.dncomponents.client.views.core.ui.table.TableUi;
 
-import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 

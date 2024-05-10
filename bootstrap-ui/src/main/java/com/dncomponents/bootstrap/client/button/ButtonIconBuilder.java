@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,7 +81,7 @@ public class ButtonIconBuilder {
             templateElement = BootstrapUi.getUi().buttonIcon;
         ButtonIconViewImpl iconBootstrapView = new ButtonIconViewImpl(templateElement);
         iconBootstrapView.root.className = BASE_STYLE + HasStyle.appendString(colorType) + HasStyle.appendString(outlineColorType)
-                + HasStyle.appendString(size);
+                                           + HasStyle.appendString(size);
         iconBootstrapView.iconPanel.className = HasStyle.appendString(iconType) + HasStyle.appendString(iconSize);
 
         return iconBootstrapView;

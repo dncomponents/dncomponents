@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import com.dncomponents.client.components.BaseCell;
 import com.dncomponents.client.components.core.CellContext;
 import com.dncomponents.client.components.core.CellFactory;
 
-public interface TreeCellFactory<T,M> extends CellFactory<TreeNode<T>, M> {
+public interface TreeCellFactory<T, M> extends CellFactory<TreeNode<T>, M> {
     @Override
     BaseCell<TreeNode<T>, M> getCell(CellContext<TreeNode<T>, M> c);
 }

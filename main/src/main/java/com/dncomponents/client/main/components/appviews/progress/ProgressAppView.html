@@ -1,0 +1,379 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Progress
+    </h2>
+    <style>
+        .demo-component-wrapper.div {
+            padding: 20px;
+        }
+    </style>
+    <div class="demo-component-wrapper">
+        <div class="mb-2">
+            <dn-progress value="45" color="DANGER"></dn-progress>
+        </div>
+        <div class="mb-2">
+            <dn-progress value="55" color="INFO"></dn-progress>
+        </div>
+        <div class="mb-2">
+            <dn-progress value="65" color="WARNING"></dn-progress>
+        </div>
+        <div class="mb-2">
+            <dn-progress value="75" color="SUCCESS"></dn-progress>
+        </div>
+        <div class="mb-2">
+            <dn-progress value="85"></dn-progress>
+        </div>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-html">
+&lt;dn-progress value=&quot;45&quot; color=&quot;DANGER&quot;&gt;&lt;/dn-progress&gt;
+&lt;dn-progress value=&quot;55&quot; color=&quot;INFO&quot;&gt;&lt;/dn-progress&gt;
+&lt;dn-progress value=&quot;65&quot; color=&quot;WARNING&quot;&gt;&lt;/dn-progress&gt;
+&lt;dn-progress value=&quot;75&quot; color=&quot;SUCCESS&quot;&gt;&lt;/dn-progress&gt;
+&lt;dn-progress value=&quot;85&quot;&gt;&lt;/dn-progress&gt;</code>
+         </pre>
+        </div>
+    </div>
+
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+Progress progress = new Progress(ProgressViewImpl.Builder.get().color(ProgressBarColorTypes.DANGER).build(),45);
+Progress progress = new Progress(ProgressViewImpl.Builder.get().color(ProgressBarColorTypes.INFO).build(),55);
+Progress progress = new Progress(ProgressViewImpl.Builder.get().color(ProgressBarColorTypes.WARNING).build(),65);
+Progress progress = new Progress(ProgressViewImpl.Builder.get().color(ProgressBarColorTypes.SUCCESS).build(),75);
+Progress progress = new Progress(85);
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+let progress = new Progress(ProgressViewImpl.Builder.get().color(ProgressBarColorTypes.DANGER).build()).setValue(45);
+let progress = new Progress(ProgressViewImpl.Builder.get().color(ProgressBarColorTypes.INFO).build()).setValue(55);
+let progress = new Progress(ProgressViewImpl.Builder.get().color(ProgressBarColorTypes.WARNING).build()).setValue(65);
+let progress = new Progress(ProgressViewImpl.Builder.get().color(ProgressBarColorTypes.SUCCESS).build()).setValue(75);
+let progress = new Progress().setValue(85);
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--Striped-->
+    <h5>
+        Striped
+    </h5>
+    <div class="demo-component-wrapper">
+        <div class="mb-2">
+            <dn-progress value="45" color="DANGER" type="STRIPED"></dn-progress>
+        </div>
+        <div class="mb-2">
+            <dn-progress value="55" color="INFO" type="STRIPED"></dn-progress>
+        </div>
+        <div class="mb-2">
+            <dn-progress value="65" color="WARNING" type="STRIPED"></dn-progress>
+        </div>
+        <div class="mb-2">
+            <dn-progress value="75" color="SUCCESS" type="STRIPED"></dn-progress>
+        </div>
+        <div class="mb-2">
+            <dn-progress value="85" type="STRIPED"></dn-progress>
+        </div>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-html">
+&lt;dn-progress value=&quot;45&quot; color=&quot;DANGER&quot; type=&quot;STRIPED&quot;&gt;&lt;/dn-progress&gt;
+&lt;dn-progress value=&quot;55&quot; color=&quot;INFO&quot; type=&quot;STRIPED&quot;&gt;&lt;/dn-progress&gt;
+&lt;dn-progress value=&quot;65&quot; color=&quot;WARNING&quot; type=&quot;STRIPED&quot;&gt;&lt;/dn-progress&gt;
+&lt;dn-progress value=&quot;75&quot; color=&quot;SUCCESS&quot; type=&quot;STRIPED&quot;&gt;&lt;/dn-progress&gt;
+&lt;dn-progress value=&quot;85&quot; type=&quot;STRIPED&quot;&gt;&lt;/dn-progress&gt;
+             </code>
+         </pre>
+        </div>
+    </div>
+
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+Progress progress = new Progress(ProgressViewImpl.Builder.get().type(ProgressBarTypes.STRIPED).color(ProgressBarColorTypes.DANGER).build(),45);
+Progress progress = new Progress(ProgressViewImpl.Builder.get().type(ProgressBarTypes.STRIPED).color(ProgressBarColorTypes.INFO).build(),55);
+Progress progress = new Progress(ProgressViewImpl.Builder.get().type(ProgressBarTypes.STRIPED).color(ProgressBarColorTypes.WARNING).build(),65);
+Progress progress = new Progress(ProgressViewImpl.Builder.get().type(ProgressBarTypes.STRIPED).color(ProgressBarColorTypes.SUCCESS).build(),75);
+Progress progress = new Progress(ProgressViewImpl.Builder.get().type(ProgressBarTypes.STRIPED).build(), 85);
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+let progress = new Progress(ProgressViewImpl.Builder.get().type(ProgressBarTypes.STRIPED).color(ProgressBarColorTypes.DANGER).build()).setValue(45);
+let progress = new Progress(ProgressViewImpl.Builder.get().type(ProgressBarTypes.STRIPED).color(ProgressBarColorTypes.INFO).build()).setValue(55);
+let progress = new Progress(ProgressViewImpl.Builder.get().type(ProgressBarTypes.STRIPED).color(ProgressBarColorTypes.WARNING).build()).setValue(65);
+let progress = new Progress(ProgressViewImpl.Builder.get().type(ProgressBarTypes.STRIPED).color(ProgressBarColorTypes.SUCCESS).build()).setValue(75);
+let progress = new Progress(ProgressViewImpl.Builder.get().type(ProgressBarTypes.STRIPED).build()).setValue(85);
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--end Striped-->
+
+    <!--Animated-->
+    <h5>
+        Striped Animated
+    </h5>
+    <div class="demo-component-wrapper">
+        <div class="mb-2">
+            <dn-progress value="45" color="DANGER" type="STRIPED ANIMATED"></dn-progress>
+        </div>
+        <div class="mb-2">
+            <dn-progress value="55" color="INFO" type="STRIPED ANIMATED"></dn-progress>
+        </div>
+        <div class="mb-2">
+            <dn-progress value="65" color="WARNING" type="STRIPED ANIMATED"></dn-progress>
+        </div>
+        <div class="mb-2">
+            <dn-progress value="75" color="SUCCESS" type="STRIPED ANIMATED"></dn-progress>
+        </div>
+        <div class="mb-2">
+            <dn-progress value="85" type="STRIPED"></dn-progress>
+        </div>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-html">
+&lt;dn-progress value=&quot;45&quot; color=&quot;DANGER&quot; type=&quot;STRIPED ANIMATED&quot;&gt;&lt;/dn-progress&gt;
+&lt;dn-progress value=&quot;55&quot; color=&quot;INFO&quot; type=&quot;STRIPED ANIMATED&quot;&gt;&lt;/dn-progress&gt;
+&lt;dn-progress value=&quot;65&quot; color=&quot;WARNING&quot; type=&quot;STRIPED ANIMATED&quot;&gt;&lt;/dn-progress&gt;
+&lt;dn-progress value=&quot;75&quot; color=&quot;SUCCESS&quot; type=&quot;STRIPED ANIMATED&quot;&gt;&lt;/dn-progress&gt;
+&lt;dn-progress value=&quot;85&quot; type=&quot;STRIPED&quot;&gt;&lt;/dn-progress&gt;
+                 </code>
+         </pre>
+        </div>
+    </div>
+
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+           <pre>
+            <code class="prettyprint lang-java">
+Progress progress = new Progress(ProgressViewImpl.Builder.get()
+         .type(ProgressBarTypes.STRIPED)
+         .type(ProgressBarTypes.ANIMATED)
+         .color(ProgressBarColorTypes.DANGER)
+         .build(), 45);
+Progress progress = new Progress(ProgressViewImpl.Builder.get()
+         .type(ProgressBarTypes.STRIPED)
+         .type(ProgressBarTypes.ANIMATED)
+         .color(ProgressBarColorTypes.INFO)
+         .build(), 55);
+Progress progress = new Progress(ProgressViewImpl.Builder.get()
+         .type(ProgressBarTypes.STRIPED)
+         .type(ProgressBarTypes.ANIMATED)
+         .color(ProgressBarColorTypes.WARNING)
+         .build(), 65);
+Progress progress = new Progress(ProgressViewImpl.Builder.get()
+         .type(ProgressBarTypes.STRIPED)
+         .type(ProgressBarTypes.ANIMATED)
+         .color(ProgressBarColorTypes.SUCCESS)
+         .build(), 75);
+Progress progress = new Progress(ProgressViewImpl.Builder.get()
+         .type(ProgressBarTypes.STRIPED)
+         .type(ProgressBarTypes.ANIMATED)
+         .build(), 85);
+
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+let progress = new Progress(ProgressViewImpl.Builder.get()
+    .type(ProgressBarTypes.STRIPED)
+    .type(ProgressBarTypes.ANIMATED)
+    .color(ProgressBarColorTypes.DANGER)
+    .build()).setValue(45);
+let progress = new Progress(ProgressViewImpl.Builder.get()
+    .type(ProgressBarTypes.STRIPED)
+    .type(ProgressBarTypes.ANIMATED)
+    .color(ProgressBarColorTypes.INFO)
+    .build()).setValue(55);
+let progress = new Progress(ProgressViewImpl.Builder.get()
+    .type(ProgressBarTypes.STRIPED)
+    .type(ProgressBarTypes.ANIMATED)
+    .color(ProgressBarColorTypes.WARNING)
+    .build()).setValue(65);
+let progress = new Progress(ProgressViewImpl.Builder.get()
+    .type(ProgressBarTypes.STRIPED)
+    .type(ProgressBarTypes.ANIMATED)
+    .color(ProgressBarColorTypes.SUCCESS)
+    .build()).setValue(75);
+let progress = new Progress(ProgressViewImpl.Builder.get()
+    .type(ProgressBarTypes.STRIPED)
+    .type(ProgressBarTypes.ANIMATED)
+    .build()).setValue(85);
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+    <!--end Striped-->
+    <!--events-->
+    <h5>Events</h5>
+    <p>Logs ValueChangeEvent event.</p>
+    <div class="demo-component-wrapper">
+        <dn-progress ui-field="eventProgress" value="45" color="DANGER" type="STRIPED ANIMATED"></dn-progress>
+        <dn-text-area ui-field="eventsTa" addClass="ta-demo ta-demo-full"></dn-text-area>
+    </div>
+
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+public Progress eventProgress;
+
+DomGlobal.setInterval(e -&gt; {
+    if (percent &gt; 100)
+        percent = 0;
+    eventProgress.setValue(percent += 10, true);
+}, 1000);
+eventProgress.addValueChangeHandler((ValueChangeEvent&lt;Integer&gt; event) -&gt; eventsTa.setValue(event.getValue() + &quot;%&quot;));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+setInterval(() =&gt; {
+    if (this.percent &gt; 100) this.percent = 0;
+    this.eventProgress.setValue(this.percent += 10, true);
+}, 1000);
+this.eventProgress.addValueChangeHandler(ValueChangeHandler.onValueChange(evt =&gt; {
+    this.eventsTa.setValue(evt.value + '%');
+}));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+
+    <!--markup template-->
+    <h5>Template markup</h5>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;!--PROGRESS--&gt;
+&lt;template ui-field=&quot;progress&quot;&gt;
+    &lt;div ui-field=&quot;root&quot; class=&quot;progress&quot;&gt;
+        &lt;div ui-field=&quot;progressBar&quot; class=&quot;progress-bar&quot; role=&quot;progressbar&quot; style=&quot;width: 25%&quot;&gt;
+
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+&lt;template ui-field=&quot;progressBuilder&quot;&gt;
+    &lt;style-item ui-field=&quot;success&quot; class=&quot;bg-success&quot;/&gt;
+    &lt;style-item ui-field=&quot;info&quot; class=&quot;bg-info&quot;/&gt;
+    &lt;style-item ui-field=&quot;warning&quot; class=&quot;bg-warning&quot;/&gt;
+    &lt;style-item ui-field=&quot;danger&quot; class=&quot;bg-danger&quot;/&gt;
+    &lt;style-item ui-field=&quot;striped&quot; class=&quot;progress-bar-striped&quot;/&gt;
+    &lt;style-item ui-field=&quot;animated&quot; class=&quot;progress-bar-animated active&quot;/&gt;
+&lt;/template&gt;
+            </code>
+        </pre>
+        </div>
+    </div>
+</div>

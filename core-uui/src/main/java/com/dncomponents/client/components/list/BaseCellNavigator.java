@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,15 @@
 
 package com.dncomponents.client.components.list;
 
+import com.dncomponents.client.components.AbstractCellComponent;
+import com.dncomponents.client.components.BaseCell;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.dom.handlers.ClickHandler;
 import com.dncomponents.client.dom.handlers.KeyDownHandler;
-import com.dncomponents.client.components.AbstractCellComponent;
-import com.dncomponents.client.components.BaseCell;
 import elemental2.dom.KeyboardEvent;
 import elemental2.dom.MouseEvent;
 
-/**
- * @author nikolasavic
- */
+
 abstract class BaseCellNavigator {
 
     //TODO on enter select
@@ -56,7 +54,7 @@ abstract class BaseCellNavigator {
         if (currentFocusedModel != lastFocusedModel)
             handler.onClickEvent(currentFocusedModel, lastFocusedModel, mouseEvent);
         else
-            handler.onClickEventEquals(currentFocusedModel,mouseEvent);
+            handler.onClickEventEquals(currentFocusedModel, mouseEvent);
 //        }
     }
 

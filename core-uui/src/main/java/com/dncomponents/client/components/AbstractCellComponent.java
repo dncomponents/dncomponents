@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,9 +44,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-/**
- * @author nikolasavic
- */
+
 public abstract class AbstractCellComponent<T, M, W extends ComponentUi<? extends ScrollView>> extends BaseComponent<Object, W> implements
         HasRowsData<T>, HasSelectionModel, HasModelChangedHandlers<T>, SortEvent.HasSortHandler,
         HasCellValueChangedHandlers<T>, HasValueSelection<List<T>>, HasRowRemovedHandlers<T>,

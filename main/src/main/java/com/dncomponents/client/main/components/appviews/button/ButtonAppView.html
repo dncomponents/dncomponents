@@ -1,0 +1,437 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Buttons
+    </h2>
+    <div class="demo-component-wrapper">
+        <dn-button addclass="asldkfj" onclick="alert('Hello world!')" style="color:red;" color="PRIMARY">PRIMARY
+        </dn-button>
+        <dn-button onclick="alert('Hello!')" color="SECONDARY">SECONDARY</dn-button>
+        <dn-button addstyle="margin:40px;" color="SUCCESS" disabled>SUCCESS</dn-button>
+        <dn-button color="DANGER">DANGER</dn-button>
+        <dn-button color="WARNING">WARNING</dn-button>
+        <dn-button color="INFO">INFO</dn-button>
+        <dn-button color="LIGHT">LIGHT</dn-button>
+        <dn-button color="DARK">DARK</dn-button>
+        <dn-button color="LINK">LINK</dn-button>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-html">
+&lt;dn-button color=&quot;PRIMARY&quot;&gt;PRIMARY&lt;/dn-button&gt;
+&lt;dn-button color=&quot;SECONDARY&quot;&gt;SECONDARY&lt;/dn-button&gt;
+&lt;dn-button color=&quot;SUCCESS&quot; disabled&gt;SUCCESS&lt;/dn-button&gt;
+&lt;dn-button color=&quot;DANGER&quot;&gt;DANGER&lt;/dn-button&gt;
+&lt;dn-button color=&quot;WARNING&quot;&gt;WARNING&lt;/dn-button&gt;
+&lt;dn-button color=&quot;INFO&quot;&gt;INFO&lt;/dn-button&gt;
+&lt;dn-button color=&quot;LIGHT&quot;&gt;LIGHT&lt;/dn-button&gt;
+&lt;dn-button color=&quot;DARK&quot;&gt;DARK&lt;/dn-button&gt;
+&lt;dn-button color=&quot;LINK&quot;&gt;LINK&lt;/dn-button&gt;
+               </code>
+         </pre>
+        </div>
+    </div>
+
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).build(),"PRIMARY");
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).build(),"SECONDARY");
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).build(),"SUCCESS");
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).build(),"DANGER");
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).build(),"WARNING");
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).build(),"INFO");
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).build(),"LIGHT");
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).build(),"DARK");
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).build(),"LINK");
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).build()).setText('PRIMARY');
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).build()).setText('SECONDARY');
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).build()).setText('SUCCESS');
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).build()).setText('DANGER');
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).build()).setText('WARNING');
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).build()).setText('INFO');
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).build()).setText('LIGHT');
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).build()).setText('DARK');
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).build()).setText('LINK');
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+    <!--outline-->
+    <h5>
+        Outline buttons
+    </h5>
+    <div class="demo-component-wrapper">
+        <dn-button coloroutline="PRIMARY">PRIMARY</dn-button>
+        <dn-button coloroutline="SECONDARY">SECONDARY</dn-button>
+        <dn-button coloroutline="SUCCESS">SUCCESS</dn-button>
+        <dn-button coloroutline="DANGER">DANGER</dn-button>
+        <dn-button coloroutline="WARNING">WARNING</dn-button>
+        <dn-button coloroutline="INFO">INFO</dn-button>
+        <dn-button coloroutline="LIGHT">LIGHT</dn-button>
+        <dn-button coloroutline="DARK">DARK</dn-button>
+        <dn-button coloroutline="LINK">LINK</dn-button>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-html">
+&lt;dn-button coloroutline=&quot;PRIMARY&quot;&gt;PRIMARY&lt;/dn-button&gt;
+&lt;dn-button coloroutline=&quot;SECONDARY&quot;&gt;SECONDARY&lt;/dn-button&gt;
+&lt;dn-button coloroutline=&quot;SUCCESS&quot;&gt;SUCCESS&lt;/dn-button&gt;
+&lt;dn-button coloroutline=&quot;DANGER&quot;&gt;DANGER&lt;/dn-button&gt;
+&lt;dn-button coloroutline=&quot;WARNING&quot;&gt;WARNING&lt;/dn-button&gt;
+&lt;dn-button coloroutline=&quot;INFO&quot;&gt;INFO&lt;/dn-button&gt;
+&lt;dn-button coloroutline=&quot;LIGHT&quot;&gt;LIGHT&lt;/dn-button&gt;
+&lt;dn-button coloroutline=&quot;DARK&quot;&gt;DARK&lt;/dn-button&gt;
+&lt;dn-button coloroutline=&quot;LINK&quot;&gt;LINK&lt;/dn-button&gt;
+               </code>
+         </pre>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+new Button(ButtonBuilder.get().outlineColor(ButtonOutlineColorType.PRIMARY).build(),"PRIMARY");
+new Button(ButtonBuilder.get().outlineColor(ButtonOutlineColorType.PRIMARY).build(),"SECONDARY");
+new Button(ButtonBuilder.get().outlineColor(ButtonOutlineColorType.PRIMARY).build(),"SUCCESS");
+new Button(ButtonBuilder.get().outlineColor(ButtonOutlineColorType.PRIMARY).build(),"DANGER");
+new Button(ButtonBuilder.get().outlineColor(ButtonOutlineColorType.PRIMARY).build(),"WARNING");
+new Button(ButtonBuilder.get().outlineColor(ButtonOutlineColorType.PRIMARY).build(),"INFO");
+new Button(ButtonBuilder.get().outlineColor(ButtonOutlineColorType.PRIMARY).build(),"LIGHT");
+new Button(ButtonBuilder.get().outlineColor(ButtonOutlineColorType.PRIMARY).build(),"DARK");
+new Button(ButtonBuilder.get().outlineColor(ButtonOutlineColorType.PRIMARY).build(),"LINK");
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+new Button(ButtonBuilder.get().outlineColor(ButtonOutlineColorType.PRIMARY).build()).setText('PRIMARY');
+new Button(ButtonBuilder.get().outlineColor(ButtonOutlineColorType.PRIMARY).build()).setText('SECONDARY');
+new Button(ButtonBuilder.get().outlineColor(ButtonOutlineColorType.PRIMARY).build()).setText('SUCCESS');
+new Button(ButtonBuilder.get().outlineColor(ButtonOutlineColorType.PRIMARY).build()).setText('DANGER');
+new Button(ButtonBuilder.get().outlineColor(ButtonOutlineColorType.PRIMARY).build()).setText('WARNING');
+new Button(ButtonBuilder.get().outlineColor(ButtonOutlineColorType.PRIMARY).build()).setText('INFO');
+new Button(ButtonBuilder.get().outlineColor(ButtonOutlineColorType.PRIMARY).build()).setText('LIGHT');
+new Button(ButtonBuilder.get().outlineColor(ButtonOutlineColorType.PRIMARY).build()).setText('DARK');
+new Button(ButtonBuilder.get().outlineColor(ButtonOutlineColorType.PRIMARY).build()).setText('LINK');
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--sizes-->
+    <h2>
+        Sizes
+    </h2>
+    <div class="demo-component-wrapper">
+        <div class="mb-3">
+            <dn-button size="SMALL" color="SECONDARY">Small</dn-button>
+        </div>
+        <div class="mb-3">
+            <dn-button size="LARGE" color="PRIMARY">Large</dn-button>
+        </div>
+        <div class="mb-3">
+            <dn-button size="BLOCK" color="SUCCESS">Block</dn-button>
+        </div>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-html">
+&lt;dn-button  size=&quot;SMALL&quot; color=&quot;SECONDARY&quot;&gt;Small&lt;/dn-button&gt;
+&lt;dn-button  size=&quot;LARGE&quot; color=&quot;PRIMARY&quot;&gt;Large&lt;/dn-button&gt;
+&lt;dn-button  size=&quot;BLOCK&quot; color=&quot;SUCCESS&quot;&gt;Block&lt;/dn-button&gt;
+                </code>
+         </pre>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+new Button(ButtonBuilder.get().color(ButtonColorType.SECONDARY).size(ButtonSize.SMALL).build(), "Small");
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).size(ButtonSize.LARGE).build(), "Large");
+new Button(ButtonBuilder.get().color(ButtonColorType.SUCCESS).size(ButtonSize.BLOCK).build(), "Block");
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+new Button(ButtonBuilder.get().color(ButtonColorType.SECONDARY).size(ButtonSize.SMALL).build()).setText('Small');
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).size(ButtonSize.LARGE).build()).setText('Large');
+new Button(ButtonBuilder.get().color(ButtonColorType.SUCCESS).size(ButtonSize.BLOCK).build()).setText('Block');
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--icons-->
+    <h2>
+        Icon buttons
+    </h2>
+    <p>Display icon buttons with fontawsome icon library.</p>
+    <div class="demo-component-wrapper">
+        <dn-button view="ICON" color="PRIMARY" iconsize="TWO_TIMES" icontype="BICYCLE">BICYCLE
+        </dn-button>
+        <dn-button view="ICON" color="SUCCESS" iconsize="LARGE" icontype="ANCHOR">ANCHOR
+        </dn-button>
+        <dn-button view="ICON" color="DANGER" iconsize="SMALL" icontype="BELL">BELL
+        </dn-button>
+        <dn-button view="ICON" color="INFO" iconsize="EXTRA_SMALL" icontype="PENCIL">PENCIL</dn-button>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-html">
+&lt;dn-button view=&quot;ICON&quot; color=&quot;PRIMARY&quot; iconsize=&quot;FORE&quot; icontype=&quot;BICYCLE&quot;&gt;BICYCLE&lt;/dn-button&gt;
+&lt;dn-button view=&quot;ICON&quot; color=&quot;SUCCESS&quot; iconsize=&quot;THREE&quot; icontype=&quot;ANCHOR&quot;&gt;ANCHOR&lt;/dn-button&gt;
+&lt;dn-button view=&quot;ICON&quot; color=&quot;DANGER&quot; iconsize=&quot;TWO&quot; icontype=&quot;BELL&quot;&gt;BELL&lt;/dn-button&gt;
+&lt;dn-button view=&quot;ICON&quot; color=&quot;INFO&quot; icontype=&quot;PENCIL&quot;&gt;PENCIL&lt;/dn-button&gt;
+                </code>
+         </pre>
+        </div>
+    </div>
+
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).size(ButtonSize.LARGE).build(), "PRIMARY");
+new Button(ButtonBuilder.get().color(ButtonColorType.SECONDARY).size(ButtonSize.SMALL).build(), "SECONDARY");
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+new Button(ButtonBuilder.get().color(ButtonColorType.PRIMARY).size(ButtonSize.LARGE).build()).setText('PRIMARY');
+new Button(ButtonBuilder.get().color(ButtonColorType.SECONDARY).size(ButtonSize.SMALL).build()).setText('SECONDARY');
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--renderer-->
+    <h5>Renderer</h5>
+    <div class="demo-component-wrapper">
+        <dn-button ui-field="rendererButton" coloroutline="PRIMARY">
+            renderer button
+        </dn-button>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+public Button&lt;Fruit&gt; rendererButton;
+rendererButton.setRenderer((fruit, slots) -&gt;
+slots.getMainSlot().innerHTML = &quot;&lt;b&gt;&quot; + fruit.getName() + &quot;&lt;/b&gt;&quot;);
+rendererButton.setUserObject(new Fruit(&quot;banana&quot;, &quot;sweet fruit&quot;));
+             </code>
+        </pre>
+        </div>
+    </div>
+
+    <!--events-->
+    <h3>Events</h3>
+    <p>Logs click and mouse leave/enter events.</p>
+    <div class="demo-component-wrapper">
+        <dn-button ui-field="eventButton" color="PRIMARY">
+            event button
+        </dn-button>
+    </div>
+
+    <dn-text-area ui-field="eventsTa" addClass="mb-3"></dn-text-area>
+
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+eventButton.addClickHandler(mouseEvent -&gt; eventsTa.setValue(&quot;mouse click&quot;));
+eventButton.addHandler((MouseEnterHandler) mouseEvent -&gt; eventsTa.setValue(&quot;mouse enter&quot;));
+eventButton.addHandler((MouseLeaveHandler) mouseEvent -&gt; eventsTa.setValue(&quot;mouse leave&quot;));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+this.eventButton.addClickHandler(ClickHandler.onClick(() =&gt; this.eventsTa.setValue('mouse click')));
+this.eventButton.addHandler(MouseEnterHandler.onMouseEnter(() =&gt; this.eventsTa.setValue('mouse enter')));
+this.eventButton.addHandler(MouseLeaveHandler.onMouseLeave(() =&gt; this.eventsTa.setValue('mouse leave')));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+    <!--markup template-->
+    <h3>Template markup</h3>
+    <div class="demo-component-wrapper">
+        <dn-button>
+            button
+        </dn-button>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;!--  BUTTON  --&gt;
+&lt;template ui-field=&quot;button&quot;&gt;
+    &lt;button ui-field=&quot;root&quot; class=&quot;btn btn-primary&quot;&gt;&lt;/button&gt;
+    &lt;style-item ui-field=&quot;disabledStyle&quot; class=&quot;disabled&quot;/&gt;
+&lt;/template&gt;
+&lt;!--  BUTTON  ICON--&gt;
+&lt;template ui-field=&quot;buttonIcon&quot;&gt;
+    &lt;button ui-field='root' class=&quot;btn&quot;&gt;
+        &lt;i ui-field=&quot;iconPanel&quot;&gt;&lt;/i&gt;
+        &lt;span ui-field=&quot;textPanel&quot;&gt;&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;style-item ui-field=&quot;disabledStyle&quot; class=&quot;disabled&quot;/&gt;
+&lt;/template&gt;
+&lt;!--  BUTTON  BUILDER--&gt;
+&lt;template ui-field=&quot;buttonBuilder&quot;&gt;
+    &lt;style-item ui-field=&quot;baseStyle&quot; class=&quot;btn&quot;&gt;&lt;/style-item&gt;
+    &lt;!--color--&gt;
+    &lt;style-item ui-field=&quot;btnSuccess&quot; class=&quot;btn-success&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;btnDanger&quot; class=&quot;btn-danger&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;btnInfo&quot; class=&quot;btn-info&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;btnWarning&quot; class=&quot;btn-warning&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;btnPrimary&quot; class=&quot;btn-primary&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;btnSecondary&quot; class=&quot;btn-secondary&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;btnLight&quot; class=&quot;btn-light&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;btnDark&quot; class=&quot;btn-dark&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;btnLink&quot; class=&quot;btn-link&quot;&gt;&lt;/style-item&gt;
+    &lt;!--outline color--&gt;
+    &lt;style-item ui-field=&quot;btnOutlineSuccess&quot; class=&quot;btn-outline-success&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;btnOutlineInfo&quot; class=&quot;btn-outline-info&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;btnOutlineWarning&quot; class=&quot;btn-outline-warning&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;btnOutlineDanger&quot; class=&quot;btn-outline-danger&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;btnOutlinePrimary&quot; class=&quot;btn-outline-primary&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;btnOutlineSecondary&quot; class=&quot;btn-outline-secondary&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;btnOutlineLight&quot; class=&quot;btn-outline-light&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;btnOutlineDark&quot; class=&quot;btn-outline-dark&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;btnOutlineLink&quot; class=&quot;btn-outline-link&quot;&gt;&lt;/style-item&gt;
+    &lt;!--size--&gt;
+    &lt;style-item ui-field=&quot;small&quot; class=&quot;btn-sm&quot;&gt;&lt;/style-item&gt;
+    &lt;style-item ui-field=&quot;large&quot; class=&quot;btn-lg&quot;&gt;&lt;/style-item&gt;
+&lt;/template&gt;
+            </code>
+        </pre>
+        </div>
+    </div>
+</div>

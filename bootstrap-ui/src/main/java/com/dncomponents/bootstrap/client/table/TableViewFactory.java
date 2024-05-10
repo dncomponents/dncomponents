@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package com.dncomponents.bootstrap.client.table;
 
 import com.dncomponents.bootstrap.client.BootstrapUi;
-import com.dncomponents.bootstrap.client.radio.RadioViewImpl;
 import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.views.core.ViewFactory;
 import com.dncomponents.client.views.core.ui.table.TableUi;
@@ -25,9 +24,7 @@ import elemental2.dom.HTMLTemplateElement;
 
 import java.util.Map;
 
-/**
- * @author nikolasavic
- */
+
 public class TableViewFactory {
 
 

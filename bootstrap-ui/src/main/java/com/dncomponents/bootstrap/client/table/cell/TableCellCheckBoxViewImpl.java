@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package com.dncomponents.bootstrap.client.table.cell;
 
+import com.dncomponents.Template;
 import com.dncomponents.UiField;
-import com.dncomponents.Component;
 import com.dncomponents.bootstrap.client.cell.BaseCellViewImpl;
 import com.dncomponents.client.components.checkbox.CheckBox;
 import com.dncomponents.client.components.core.HtmlBinder;
@@ -25,10 +25,8 @@ import com.dncomponents.client.components.core.events.value.HasValue;
 import com.dncomponents.client.components.table.columnclasses.checkboxcolumn.TableCellCheckBoxView;
 import elemental2.dom.HTMLTemplateElement;
 
-/**
- * @author nikolasavic
- */
-@Component
+
+@Template
 public class TableCellCheckBoxViewImpl extends BaseCellViewImpl implements TableCellCheckBoxView {
 
     @UiField

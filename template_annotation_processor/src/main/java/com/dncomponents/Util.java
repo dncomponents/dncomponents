@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,17 @@
 
 package com.dncomponents;
 
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.util.ElementFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * @author nikolasavic
- */
+
 public class Util {
     public static boolean checkIfItsMethod(String str) {
         char[] chars = str.toCharArray();
@@ -45,7 +48,7 @@ public class Util {
         while (index >= 0) {
             // Check if the variable name is a standalone identifier
             if ((index == 0 || !Character.isJavaIdentifierPart(code.charAt(index - 1)))
-                    && (index + variableName.length() == code.length() ||
+                && (index + variableName.length() == code.length() ||
                     !Character.isJavaIdentifierPart(code.charAt(index + variableName.length())))) {
                 return true;
             }
@@ -66,12 +69,12 @@ public class Util {
                 String arg = argArray[i];
                 arg = arg.trim();
                 if (!arg.equals("true") &&
-                        !arg.equals("false") &&
-                        !(arg.startsWith("\"")) &&
-                        !(arg.startsWith("'")) &&
-                        !isNumeric(arg) &&
-                        !(avoid != null && (arg.equals(avoid) || arg.startsWith(avoid + "."))) &&
-                        !(avoid2 != null && (arg.equals(avoid2) || arg.startsWith(avoid2 + ".")))
+                    !arg.equals("false") &&
+                    !(arg.startsWith("\"")) &&
+                    !(arg.startsWith("'")) &&
+                    !isNumeric(arg) &&
+                    !(avoid != null && (arg.equals(avoid) || arg.startsWith(avoid + "."))) &&
+                    !(avoid2 != null && (arg.equals(avoid2) || arg.startsWith(avoid2 + ".")))
                 )
                     arg = arg.replace(arg, "d." + arg);
                 result += arg + ((i == (argArray.length - 1)) ? ")" : ",");
@@ -137,5 +140,29 @@ public class Util {
             return null;
         }
     }
-}
 
+
+    public static boolean hasPropsConstructor(Element element) {
+        // Check if the element is a TypeElement
+        if (!(element instanceof TypeElement)) {
+            return false;
+        }
+
+        TypeElement typeElement = (TypeElement) element;
+        List<ExecutableElement> constructors = ElementFilter.constructorsIn(typeElement.getEnclosedElements());
+
+        // Iterate over constructors
+        for (ExecutableElement constructor : constructors) {
+            List<? extends VariableElement> parameters = constructor.getParameters();
+            // Check if the constructor has one parameter
+            if (parameters.size() == 1) {
+                VariableElement parameter = parameters.get(0);
+                String parameterTypeName = parameter.asType().toString();
+                if (parameterTypeName.equals("com.dncomponents.client.components.core.Props")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}

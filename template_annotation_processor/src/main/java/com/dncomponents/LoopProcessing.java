@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,6 @@ package com.dncomponents;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
-import com.sun.tools.javac.code.Symbol;
-import com.sun.tools.javac.code.Type;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.Jsoup;
@@ -28,6 +26,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -35,24 +35,36 @@ import java.util.stream.Stream;
 
 import static com.dncomponents.EventsProcessing.isBinder;
 
-/**
- * @author nikolasavic
- */
+
 public class LoopProcessing {
 
-    String updates = "";
     String imports = "";
+    private Set<String> updateSet;
 
     Multimap<String, Loop> allLoopsMap = LinkedListMultimap.create();
     private String initFunctions = "";
     javax.lang.model.element.Element classEl;
 
     Map<String, String> loopInLoops = new HashMap<>();
+    private Map<String, String> fieldsAndTypesMap;
 
 
-    public LoopProcessing(String html, javax.lang.model.element.Element classEl) {
+    public LoopProcessing(String html, javax.lang.model.element.Element classEl, Map<String, String> fieldsAndTypesMap, Set<String> updateSet) {
         this.classEl = classEl;
+        this.fieldsAndTypesMap = fieldsAndTypesMap;
+        this.updateSet = updateSet;
         parse(html);
+    }
+
+    public static String extractFirstTypeParameter(TypeMirror typeMirror) {
+        if (typeMirror instanceof DeclaredType) {
+            List<? extends TypeMirror> typeArguments = ((DeclaredType) typeMirror).getTypeArguments();
+            if (!typeArguments.isEmpty()) {
+                TypeMirror firstTypeArgument = typeArguments.get(0);
+                return firstTypeArgument.toString();
+            }
+        }
+        return null;
     }
 
 
@@ -63,7 +75,9 @@ public class LoopProcessing {
         if (optionalElement.isPresent()) {
             final javax.lang.model.element.Element element = optionalElement.get();
             try {
-                return ((Type.ClassType) ((Symbol.VarSymbol) element).type).typarams_field.get(0).toString();
+                TypeMirror typeMirror = element.asType();
+                String firstTypeParameter = extractFirstTypeParameter(typeMirror);
+                return firstTypeParameter;
             } catch (Exception ex) {
 
             }
@@ -89,7 +103,7 @@ public class LoopProcessing {
         final Elements allElements = doc.getAllElements();
         for (int i = 0; i < allElements.size(); i++) {
             if (allElements.get(i).attributes() == null || allElements.get(i).attributes().size() == 0) continue;
-            String value = allElements.get(i).attributes().get("loop");
+            String value = allElements.get(i).attributes().get("dn-loop");
             if (value != null && !value.isEmpty()) {
                 final String[] words = value.split(" ");
 
@@ -104,7 +118,7 @@ public class LoopProcessing {
         allLoopsMap.asMap().forEach((collectionName, loops) -> {
             String type;
             if (!isLoopInLoop(collectionName)) {
-                updates += "        template.addStateFunction(\"" + collectionName + "\",()-> d." + collectionName + ");\n";
+                updateSet.add("        template.addStateFunction(\"" + collectionName + "\", () -> d." + collectionName + ");\n");
                 type = checkCollectionType(collectionName);
                 for (Loop loop : loops) {
                     loop.setType(type);
@@ -122,14 +136,15 @@ public class LoopProcessing {
                     .collect(Collectors.toSet()));
 
             if (!fn.isEmpty()) {
-                fn = "new HashMap() {{\n" + fn + "        }});";
-                initFunctions += "        template.setLoopStateFunctions(\"" + collectionName + "\"," + fn + "         ";
+                fn = " new HashMap() {{\n" + fn + "        }});";
+                initFunctions += "        template.setLoopStateFunctions(\"" + collectionName + "\"," + fn + "         \n";
             }
             if (!eh.isEmpty()) {
-                eh = "new HashMap() {{\n" + eh + "        }});";
-                initFunctions += "\n        template.setLoopEventHandlers(\"" + collectionName + "\"," + eh + "         ";
+                eh = " new HashMap() {{\n" + eh + "        }});";
+                initFunctions += "\n        template.setLoopEventHandlers(\"" + collectionName + "\"," + eh + "         \n";
             }
         });
+        updateSet.add(initFunctions);
     }
 
     private Set<String> checkForFunctions(Loop loop, String type) {
@@ -152,7 +167,7 @@ public class LoopProcessing {
             String fns = "";
             for (Map.Entry<String, String> entry : loop.eventHandlers.entrySet()) {
                 if (isBinder(entry.getKey())) {
-                    fns = "            put(\"" + StringEscapeUtils.escapeJava(entry.getKey()) + "\", (BiConsumer<Event," + type + ">)(e," + loop.arg + ") -> {" + Util.createJavaCode(entry.getValue(), loop.arg, true).replace(";", "") + EventsProcessing.getBinderAssign(entry.getKey()) + "});\n";
+                    fns = "            put(\"" + StringEscapeUtils.escapeJava(entry.getKey()) + "\", (BiConsumer<Event," + type + ">)(e," + loop.arg + ") -> {" + Util.createJavaCode(entry.getValue(), loop.arg, true).replace(";", "") + EventsProcessing.getBinderAssign(entry.getKey(), entry.getValue(), fieldsAndTypesMap) + "});\n";
                 } else {
                     fns = "            put(\"" + StringEscapeUtils.escapeJava(entry.getKey()) + "\", (BiConsumer<Event," + type + ">)(e," + loop.arg + ") -> {" + Util.createJavaCode(entry.getValue(), loop.arg, true) + "});\n";
                 }
@@ -164,7 +179,7 @@ public class LoopProcessing {
 
     private void initFnImports() {
         String fnImports = "import java.util.HashMap;\n" +
-                "import java.util.function.Function;\n";
+                           "import java.util.function.Function;\n";
         if (!imports.contains(fnImports)) {
             imports += fnImports;
         }
@@ -172,7 +187,7 @@ public class LoopProcessing {
 
     private void initEventsImports() {
         String eventHandlerImports = "import java.util.function.BiConsumer;\n" +
-                "import elemental2.dom.Event;\n";
+                                     "import elemental2.dom.Event;\n";
         if (!imports.contains(eventHandlerImports)) {
             imports += eventHandlerImports;
         }
@@ -180,7 +195,7 @@ public class LoopProcessing {
 
 
     public Set<String> parseLoop(Element element, String arg, String loopName) {
-        final Elements loopInLoop = element.getElementsByAttribute("loop");
+        final Elements loopInLoop = element.getElementsByAttribute("dn-loop");
         Set<String> loopInLoopFns = new HashSet<>();
         if (loopInLoop.size() > 1) {
             Element firstLoop = loopInLoop.get(1);
@@ -190,7 +205,7 @@ public class LoopProcessing {
                         .filter(s -> s.startsWith(arg))
                         .collect(Collectors.toSet());
             }
-            final String[] words = firstLoop.attributes().get("loop").split(" ");
+            final String[] words = firstLoop.attributes().get("dn-loop").split(" ");
             loopInLoopFns.add(words[2]);
             loopInLoops.put(words[2], loopName);
             firstLoop.remove();
@@ -213,22 +228,15 @@ public class LoopProcessing {
     }
 
     public Map<String, String> parseEventHandlers(Element element) {
-        final EventsProcessing eventsProcessing = new EventsProcessing();
+        final EventsProcessing eventsProcessing = new EventsProcessing(fieldsAndTypesMap, updateSet);
         imports += eventsProcessing.getImports();
         return eventsProcessing.getAllEventsMap(element.html());
-    }
-
-    public String getInitFunctions() {
-        return initFunctions;
-    }
-
-    public String getUpdates() {
-        return updates;
     }
 
     public String getImports() {
         return imports;
     }
+
 
     class Loop {
 

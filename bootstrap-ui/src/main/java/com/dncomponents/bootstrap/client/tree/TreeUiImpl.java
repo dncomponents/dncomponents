@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,9 +30,7 @@ import elemental2.dom.HTMLTemplateElement;
 
 import java.util.Map;
 
-/**
- * @author nikolasavic
- */
+
 public class TreeUiImpl implements TreeUi {
 
     public static final String VIEW_ID = "default";

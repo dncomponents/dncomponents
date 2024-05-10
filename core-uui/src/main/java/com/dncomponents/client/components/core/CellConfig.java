@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,10 @@
 
 package com.dncomponents.client.components.core;
 
-import com.dncomponents.client.components.AbstractCellComponent;
-
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-/**
- * @author nikolasavic
- */
+
 public class CellConfig<T, M> extends FieldConfig<T, M> {
 
     protected CellFactory<T, M> cellFactory;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -115,8 +115,8 @@ public class ProgressViewImpl implements ProgressView {
             else
                 progressView = new ProgressViewImpl(templateElement);
             progressView.progressBar.className = BASE_STYLE + " "
-                    + types.stream().map(HasStyle::appendString).collect(Collectors.joining(" ")) + " "
-                    + HasStyle.appendString(colorType);
+                                                 + types.stream().map(HasStyle::appendString).collect(Collectors.joining(" ")) + " "
+                                                 + HasStyle.appendString(colorType);
             return progressView;
         }
     }

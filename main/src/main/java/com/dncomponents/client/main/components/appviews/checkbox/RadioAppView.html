@@ -1,0 +1,312 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <!--*-->
+    <h2>
+        Radio
+    </h2>
+    <div class="demo-component-wrapper">
+        <dn-radio-selection-group ui-field="radioGroup">
+            <dn-radio itemId="first">
+                radio 1
+            </dn-radio>
+            <dn-radio itemId="second">
+                radio 2
+            </dn-radio>
+            <dn-radio itemId="third">
+                radio 3 <b> bold text</b>
+            </dn-radio>
+            <dn-radio value="fourth" disabled>
+                radio 4 disabled
+            </dn-radio>
+        </dn-radio-selection-group>
+        <dn-text-area ui-field="textArea" addClass="ta-demo ta-demo-full"></dn-text-area>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-html">
+&lt;dn-radio-selection-group ui-field=&quot;radioGroup&quot;&gt;
+    &lt;dn-radio itemId=&quot;first&quot;&gt;
+        radio 1
+    &lt;/dn-radio&gt;
+    &lt;dn-radio itemId=&quot;second&quot;&gt;
+        radio 2
+    &lt;/dn-radio&gt;
+    &lt;dn-radio itemId=&quot;third&quot;&gt;
+        radio 3 &lt;b&gt; bold text&lt;/b&gt;
+    &lt;/dn-radio&gt;
+    &lt;dn-radio value=&quot;fourth&quot; disabled&gt;
+        radio 4 disabled
+    &lt;/dn-radio&gt;
+&lt;/dn-radio-selection-group&gt;
+             </code>
+         </pre>
+        </div>
+    </div>
+    <p>
+        Alternative way
+    </p>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-html">
+&lt;dn-radio-selection-group ui-field=&quot;radioGroup&quot;/&gt;
+
+&lt;dn-radio itemId=&quot;first&quot; group=&quot;radioGroup&quot;&gt;
+    radio 1
+&lt;/dn-radio&gt;
+&lt;dn-radio itemId=&quot;second&quot; group=&quot;radioGroup&quot;&gt;
+    radio 2
+&lt;/dn-radio&gt;
+&lt;dn-radio itemId=&quot;third&quot; group=&quot;radioGroup&quot;&gt;
+    radio 3 &lt;b&gt; bold text&lt;/b&gt;
+&lt;/dn-radio&gt;
+&lt;dn-radio value=&quot;fourth&quot; group=&quot;radioGroup&quot; disabled&gt;
+    radio 4
+&lt;/dn-radio&gt;
+             </code>
+         </pre>
+        </div>
+    </div>
+    <div class="demo-component-wrapper" ui-field="javaPanel">
+
+    </div>
+
+    <p class="mt-3">Add to RadioSelectionGroup as Java entities</p>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+RadioSelectionGroup&lt;Fruit&gt; radioGroup = new RadioSelectionGroup&lt;&gt;();
+radioGroup.addEntityItems(Fruit.getFruits(4));
+radioGroup.getItems().forEach(e -&gt; javaPanel.appendChild(e.asElement()));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+let radioGroup: RadioSelectionGroup&lt;Fruit&gt; = &lt;any&gt;(new RadioSelectionGroup&lt;any&gt;());
+radioGroup.addEntityItems(Fruit.getFruits(4));
+radioGroup.getItems().forEach((e) =&gt; this.javaPanel.appendChild(e.asElement()));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+    <p class="mt-3">Add to RadioSelectionGroup as radio components</p>
+
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+RadioSelectionGroup&lt;Fruit&gt; radioGroup = new RadioSelectionGroup&lt;&gt;();
+radioGroup.addItems(Fruit.getFruits(4).stream().map(Radio::new).collect(Collectors.toList()));
+radioGroup.getItems().forEach(e -&gt; javaPanel.appendChild(e.asElement()));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+let radioGroup: RadioSelectionGroup&lt;Fruit&gt; = &lt;any&gt;(new RadioSelectionGroup&lt;any&gt;());
+radioGroup.addItems(Fruit.getFruits(4).stream().map((o) =&gt; new Radio(o)).collect(Collectors.toList()));
+radioGroup.getItems().forEach((e) =&gt; this.javaPanel.appendChild(e.asElement()));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+    <!--renderer-->
+    <h5>Renderer</h5>
+    <div class="demo-component-wrapper">
+        <dn-radio-selection-group>
+            <dn-radio ui-field="rendererRadio">
+                radio 1
+            </dn-radio>
+        </dn-radio-selection-group>
+    </div>
+
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField(provided = true)
+Radio&lt;Fruit&gt; rendererRadio;
+
+rendererRadio = new Radio&lt;&gt;();
+rendererRadio.setRenderer((fruit, slots) -&gt;
+        slots.getMainSlot().innerHTML = &quot;&lt;b&gt;&quot; + fruit.getName() + &quot;&lt;/b&gt; &quot; + fruit.getDescription());
+rendererRadio.setUserObject(Fruit.fruits.get(0));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+rendererRadio: Radio&lt;Fruit&gt;;
+
+this.rendererRadio = new Radio&lt;any&gt;();
+this.rendererRadio.setRenderer({
+    render(fruit: Fruit, slots: MainViewSlots): void {
+        slots.getMainSlot().innerHTML = '&lt;b&gt;' + fruit.name + '&lt;/b&gt; ' + fruit.description;
+    }
+});
+this.rendererRadio.setUserObject(Fruit.fruits.get(0));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--events-->
+    <h5>Events</h5>
+    <p>Logs selection events.</p>
+    <div class="demo-component-wrapper">
+        <div ui-field="eventsPanel"></div>
+        <dn-text-area ui-field="eventsTa" addClass="ta-demo ta-demo-full"></dn-text-area>
+    </div>
+
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+RadioSelectionGroup&lt;Fruit&gt; radioSelectionGroup = new RadioSelectionGroup&lt;&gt;();
+radioSelectionGroup.addEntityItems(Fruit.getFruits(4));
+radioSelectionGroup.getItems().forEach(e -&gt; eventsPanel.appendChild(e.asElement()));
+
+radioSelectionGroup.addSelectionHandler(event -&gt; {
+    final Fruit userObject = event.getSelectedItem().getUserObject();
+    eventsTa.setValue(userObject.getName() + &quot; - &quot; + userObject.getDescription() + &quot;\n&quot;);
+});
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+let radioSelectionGroup: RadioSelectionGroup&lt;Fruit&gt; = new RadioSelectionGroup&lt;any&gt;();
+radioSelectionGroup.addEntityItems(Fruit.getFruits(4));
+radioSelectionGroup.getItems().forEach((e) =&gt; this.eventsPanel.appendChild(e.asElement()));
+radioSelectionGroup.addSelectionHandler(SelectionHandler.onSelection(evt =&gt; {
+    let userObject: Fruit = evt.selection.getUserObject();
+    this.eventsTa.setValue(userObject.name + ' - ' + userObject.description + '\n');
+}));
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+    <!--markup template-->
+    <h5>Template markup</h5>
+    <div class="demo-component-wrapper">
+        <dn-radio-selection-group>
+            <dn-radio value="value1">
+                radio 1
+            </dn-radio>
+        </dn-radio-selection-group>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;!--  RADIO  --&gt;
+&lt;template ui-field=&quot;radio&quot;&gt;
+    &lt;div ui-field=&quot;root&quot; class=&quot;form-check&quot;&gt;
+        &lt;label class=&quot;form-check-label&quot;&gt;
+            &lt;input ui-field=&quot;checkBoxInput&quot; class=&quot;form-check-input&quot; type=&quot;radio&quot; value=&quot;&quot;&gt;
+            &lt;span ui-field=&quot;labelText&quot;&gt;&lt;/span&gt;
+        &lt;/label&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+            </code>
+        </pre>
+        </div>
+    </div>
+</div>

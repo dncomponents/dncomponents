@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,9 +34,7 @@ import java.util.Map;
 
 import static com.dncomponents.client.components.checkbox.CheckBox.CheckBoxHtmlParser.setValueCh;
 
-/**
- * Created by nikolasavic
- */
+
 public class Radio<T> extends AbstractCheckBox<T> {
 
     RadioSelectionGroup<T> group;

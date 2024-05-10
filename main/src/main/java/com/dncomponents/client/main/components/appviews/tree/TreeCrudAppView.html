@@ -1,0 +1,79 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Edit Tree
+    </h2>
+
+    <div class="demo-component-wrapper">
+        <dn-tree ui-field="tree"></dn-tree>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+//person
+TreeCellConfig&lt;Person, String&gt; personCellConfig = new TreeCellConfig&lt;&gt;(o -&gt; o.getUserObject().getName());
+personCellConfig.setFieldSetter((n, s) -&gt; n.getUserObject().setName(s));
+personCellConfig.setCellEditor(new DefaultCellEditor&lt;&gt;(new TextArea()));
+//fruit
+TreeCellConfig&lt;Fruit, String&gt; fruitCellConfig = new TreeCellConfig&lt;&gt;(n -&gt; n.getUserObject().getName());
+fruitCellConfig.setFieldSetter((node, s) -&gt; node.getUserObject().setName(s));
+fruitCellConfig.setClazz(String.class);
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+let personCellConfig: TreeCellConfig&lt;Person, string&gt; = new TreeCellConfig&lt;any, any&gt;((o) =&gt; o.getUserObject().getName());
+personCellConfig.setFieldSetter((n, s) =&gt; n.getUserObject().setName(s));
+personCellConfig.setCellEditor(new DefaultCellEditor&lt;any, any&gt;(new TextArea()));
+personCellConfig.setCellRenderer({setValue: (r) =&gt; r.valuePanel.innerHTML = '' + r.value + ' Person'});
+
+let fruitCellConfig: TreeCellConfig&lt;Fruit, string&gt; = &lt;any&gt;(new TreeCellConfig&lt;any, any&gt;((n) =&gt; n.getUserObject().getName()));
+fruitCellConfig.setFieldSetter((node, s) =&gt; node.getUserObject().setName(s));
+fruitCellConfig.setClazz('string');
+fruitCellConfig.setCellRenderer({
+    setValue: (r) =&gt; {
+        r.valuePanel.innerHTML = '' + r.value;
+        r.valuePanel.style.color = 'blue';
+    }
+});
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+</div>

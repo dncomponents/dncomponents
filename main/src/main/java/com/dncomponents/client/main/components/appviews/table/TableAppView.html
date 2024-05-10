@@ -1,0 +1,503 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Basic table
+    </h2>
+    <div class="demo-component-wrapper">
+        <dn-table ui-field="binderTable">
+            <header>
+                <cell>header 1</cell>
+                <cell>header 2</cell>
+            </header>
+            <row itemId="row1">
+                <cell itemId="cell1">cell 1</cell>
+                <cell itemId="cell2">cell 2</cell>
+            </row>
+            <row itemId="row2">
+                <cell itemId="cell3">cell 3</cell>
+                <cell itemId="cell4">cell 4</cell>
+            </row>
+            <row itemId="row3">
+                <cell itemId="cell5">cell 5</cell>
+                <cell itemId="cell6">cell 6</cell>
+            </row>
+        </dn-table>
+        <dn-text-area ui-field="textArea" addClass="ta-demo ta-demo-full"></dn-text-area>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;dn-table ui-field=&quot;binderTable&quot;&gt;
+    &lt;header&gt;
+        &lt;cell&gt;header 1&lt;/cell&gt;
+        &lt;cell&gt;header 2&lt;/cell&gt;
+    &lt;/header&gt;
+    &lt;row itemId=&quot;row1&quot;&gt;
+        &lt;cell itemId=&quot;cell1&quot;&gt;cell 1&lt;/cell&gt;
+        &lt;cell itemId=&quot;cell2&quot;&gt;cell 2&lt;/cell&gt;
+    &lt;/row&gt;
+    &lt;row itemId=&quot;row2&quot;&gt;
+        &lt;cell itemId=&quot;cell3&quot;&gt;cell 3&lt;/cell&gt;
+        &lt;cell itemId=&quot;cell4&quot;&gt;cell 4&lt;/cell&gt;
+    &lt;/row&gt;
+    &lt;row itemId=&quot;row3&quot;&gt;
+        &lt;cell itemId=&quot;cell5&quot;&gt;cell 5&lt;/cell&gt;
+        &lt;cell itemId=&quot;cell6&quot;&gt;cell 6&lt;/cell&gt;
+    &lt;/row&gt;
+&lt;/dn-table&gt;
+            </code>
+        </pre>
+        </div>
+    </div>
+
+    <!--renderer-->
+    <h5>Renderer</h5>
+    <div class="demo-component-wrapper">
+        <dn-table ui-field="tableRenderer"></dn-table>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+Table tableRenderer;
+
+tableRenderer.setRowsData(Fruit.getFruits(1500));
+ColumnConfig&lt;Fruit, String&gt; nameColumn = new ColumnConfig.Builder&lt;&gt;(Fruit::getName, Fruit::setName)
+        .setName(&quot;Name&quot;)
+        .setHeaderCellFactory(() -&gt; new HeaderTableFilterCell())
+        .setColumnWidth(&quot;200px&quot;)
+        .setVisible(true)
+        .setClazz(String.class)
+        .setCellRenderer(r -&gt;
+                r.valuePanel.innerHTML = &quot;&lt;b&gt;&quot; + DomUtil.escapeHtml(r.value) + &quot;&lt;/b&gt;&quot;)
+        .build();
+
+
+ColumnConfig&lt;Fruit, String&gt; descColumn =
+        new ColumnConfig&lt;&gt;(Fruit::getDescription, Fruit::setDescription, &quot;description&quot;);
+
+tableRenderer.addColumn(nameColumn);
+tableRenderer.addColumn(descColumn);
+
+tableRenderer.drawData();
+
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+tableRenderer:Table;
+
+let nameColumn =
+    new ColumnConfig&lt;Fruit, string&gt;()
+        .setFieldGetter(p1 =&gt; p1.name).setFieldSetter((p1, p2) =&gt; p1.name = p2)
+        .setColumnName('Name')
+        .setHeaderCellFactory({
+            getCell: function (): AbstractHeaderCell {
+                return new HeaderTableFilterCell();
+            }
+        })
+        .setColumnWidth('200px')
+        .setVisible(true)
+        .setClazz('string')
+        .setCellBuilder({
+            setBuilder(b: TableCellBuilder&lt;Fruit, string&gt;): void {
+                b.setCellRenderer({
+                    setValue(r: RendererContext&lt;Fruit, string&gt;): void {
+                        r.valuePanel.innerHTML = '&lt;b&gt;' + r.value + '&lt;/b&gt;';
+                    }
+                });
+            }
+        });
+let descColumn =
+    new ColumnConfig&lt;Fruit, string&gt;()
+        .setFieldGetter(p1 =&gt; p1.description).setFieldSetter((p1, p2) =&gt; p1.description = p2)
+        .setColumnName('description');
+
+this.tableRenderer.setRowsData(Fruit.getFruits(1500));
+this.tableRenderer.addColumn(nameColumn);
+this.tableRenderer.addColumn(descColumn);
+this.tableRenderer.drawData();
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+    <!--events-->
+    <h5>Events</h5>
+    <div class="demo-component-wrapper">
+        <dn-table ui-field="eventsTable"></dn-table>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <b>row events</b>
+            <p>mouse leave, mouse entered, click</p>
+            <dn-text-area ui-field="rowEventsTa"></dn-text-area>
+        </div>
+        <div class="col">
+            <b>cell events</b>
+            <p>mouse over, click</p>
+            <dn-text-area ui-field="cellEventsTa"></dn-text-area>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+TextArea eventsTa;
+@UiField
+Table&lt;Fruit&gt; eventsTable;
+
+eventsTable.setRowsData(Fruit.getFruits(1500));
+eventsTable.addColumn(new ColumnConfig&lt;&gt;(Fruit::getDescription, Fruit::setDescription, &quot;Description&quot;));
+eventsTable.addColumn(new ColumnConfig&lt;&gt;(Fruit::getName, Fruit::setName, &quot;Name&quot;));
+
+//rows
+eventsTable.addRowHandler((MouseLeaveHandler) mouseEvent -&gt;
+        rowEventsTa.append(&quot;row left: &quot; + eventsTable.getRowCell(mouseEvent).getModel().getName() + &quot;\n&quot;));
+eventsTable.addRowHandler((MouseEnterHandler) mouseEvent -&gt;
+        rowEventsTa.append(&quot;row entered: &quot; + eventsTable.getRowCell(mouseEvent).getModel().getName() + &quot;\n&quot;));
+eventsTable.addRowHandler((ClickHandler) mouseEvent -&gt;
+        rowEventsTa.append(&quot;row clicked: &quot; + eventsTable.getRowCell(mouseEvent).getModel().getName() + &quot;\n&quot;));
+
+//cells
+eventsTable.addCellHandler((ClickHandler) mouseEvent -&gt;
+        cellEventsTa.append(&quot;cell clicked: &quot; + eventsTable.getCell(mouseEvent).getValue() + &quot;\n&quot;));
+eventsTable.addCellHandler((MouseOverHandler) mouseEvent -&gt;
+        cellEventsTa.append(&quot;cell mouse over event: &quot; + eventsTable.getCell(mouseEvent).getValue() + &quot;\n&quot;));
+eventsTable.drawData();
+
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+eventsTa:TextArea;
+@UiField
+eventsTable:Table&lt;Fruit&gt;;
+
+this.eventsTable.setRowsData(Fruit.getFruits(1500));
+let nameColumn: ColumnConfig&lt;Fruit, string&gt; =
+    new ColumnConfig&lt;Fruit, string&gt;()
+        .setColumnName('name')
+        .setFieldGetter(p1 =&gt; p1.name)
+        .setFieldSetter((p1, p2) =&gt; p1.name = p2);
+let descColumn: ColumnConfig&lt;Fruit, string&gt; =
+    new ColumnConfig&lt;Fruit, string&gt;()
+        .setColumnName('desc')
+        .setFieldGetter(p1 =&gt; p1.description)
+        .setFieldSetter((p1, p2) =&gt; p1.description = p2);
+this.eventsTable.addColumn(nameColumn, descColumn);
+
+//rows
+this.eventsTable.addRowHandler(MouseLeaveHandler.onMouseLeave(evt =&gt; {
+    this.rowEventsTa.append('row left: ' + this.eventsTable.getRowCellEvent(evt).getModel().name + '\n');
+}));
+this.eventsTable.addRowHandler(MouseEnterHandler.onMouseEnter(evt =&gt; {
+    this.rowEventsTa.append('row entered: ' + this.eventsTable.getRowCellEvent(evt).getModel().name + '\n');
+}));
+this.eventsTable.addRowHandler(ClickHandler.onClick(evt =&gt; {
+    this.rowEventsTa.append('row clicked: ' + this.eventsTable.getRowCellEvent(evt).getModel().name + '\n');
+}));
+this.eventsTable.addRowHandler(MouseOverHandler.onMouseOver(evt =&gt; {
+    this.rowEventsTa.append('row MouseOver: ' + this.eventsTable.getRowCellEvent(evt).getModel().name + '\n');
+}));
+this.eventsTable.drawData();
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--markup template-->
+    <h5>Template markup</h5>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+Table table=new Table(new TableUiImpl(&quot;#tableUi&quot;));
+            </code>
+        </pre>
+            <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+<!--   TABLE  -->
+&lt;template ui-field=&quot;tableUi&quot;&gt;
+    &lt;template ui-field=&quot;filterPanel&quot;&gt;
+        &lt;div ui-field=&quot;root&quot; class=&quot;d-flex&quot;&gt;
+            &lt;div ui-field=&quot;mainPanel&quot; class=&quot;input-group input-group-sm&quot;&gt;
+                &lt;dn-autocomplete ui-field=&quot;ac&quot; template-id=&quot;acc&quot;&gt;&lt;/dn-autocomplete&gt;
+                &lt;div ui-field=&quot;valueHolder&quot;&gt;&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;button ui-field=&quot;clear&quot; class=&quot;btn btn-sm btn-outline-secondary ms-2&quot;&gt;x&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;style-item ui-field=&quot;booleanMainPanelStyle&quot;
+                    class=&quot;d-flex justify-content-between align-items-center&quot;&gt;&lt;/style-item&gt;
+        &lt;template ui-template=&quot;acc&quot;&gt;
+            &lt;div ui-field=&#39;root&#39; class=&#39;input-group-prepend&#39;&gt;
+                &lt;dn-button ui-field=&#39;button&#39; class=&#39;btn btn-outline-secondary btn-sm dropdown-toggle&#39;&gt;
+                    &lt;span ui-field=&#39;buttonText&#39;&gt;Choose ...&lt;/span&gt;
+                &lt;/dn-button&gt;
+                &lt;div ui-field=&#39;listPanel&#39; class=&#39;autocomplete-scroll-panel&#39;&gt;
+                    &lt;dn-text-box ui-field=&#39;textBox&#39;&gt;&lt;/dn-text-box&gt;
+                    &lt;div class=&#39;scroll-style&#39;&gt;
+                        &lt;dn-list ui-field=&quot;list&quot;&gt;&lt;/dn-list&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/template&gt;
+    &lt;/template&gt;
+
+    &lt;template ui-field=&quot;tableRowExpanderItem&quot;&gt;
+        &lt;td ui-field=&quot;root&quot; class=&quot;text-center pexp&quot;&gt;
+            &lt;i ui-field=&quot;openClosedElement&quot; class=&quot;fas fa-times pexp&quot;&gt;&lt;/i&gt;
+        &lt;/td&gt;
+        &lt;style-item ui-field=&quot;openStyle&quot; class=&quot;fas fa-plus&quot;&gt;&lt;/style-item&gt;
+        &lt;style-item ui-field=&quot;closeStyle&quot; class=&quot;fas fa-minus&quot;&gt;&lt;/style-item&gt;
+    &lt;/template&gt;
+
+    &lt;template ui-field=&quot;tableCheckboxColumn&quot;&gt;
+        &lt;td ui-field=&quot;root&quot; class=&quot;text-center pex&quot;&gt;
+            &lt;dn-checkbox ui-field=&quot;checkBox&quot; view=&quot;SIMPLE&quot;&gt;&lt;/dn-checkbox&gt;
+        &lt;/td&gt;
+    &lt;/template&gt;
+
+    &lt;template ui-field=&quot;tableHeaderCheckbox&quot;&gt;
+        &lt;th ui-field=&quot;root&quot; class=&quot;text-center pex&quot; &gt;
+            &lt;dn-checkbox ui-field=&quot;checkBox&quot; style=&quot;display: inline-block;padding-left: 2rem;&quot;&gt;&lt;/dn-checkbox&gt;
+            &lt;span ui-field=&quot;textPanel&quot;&gt;&lt;/span&gt;
+        &lt;/th&gt;
+    &lt;/template&gt;
+
+    &lt;template ui-field=&quot;headerEdit&quot;&gt;
+        &lt;th ui-field=&quot;root&quot;&gt;
+            &lt;button ui-field=&quot;addBtn&quot; class=&quot;btn btn-outline-info btn-sm&quot;&gt;Add&lt;/button&gt;
+        &lt;/th&gt;
+    &lt;/template&gt;
+
+    &lt;template ui-field=&quot;tableCellEdit&quot;&gt;
+        &lt;td ui-field=&quot;root&quot;&gt;
+            &lt;button ui-field=&quot;btnEdit&quot; class=&quot;btn btn-outline-info btn-sm&quot;&gt;Edit&lt;/button&gt;
+            &lt;button ui-field=&quot;btnSave&quot; class=&quot;btn btn-outline-info btn-sm&quot;&gt;Save&lt;/button&gt;
+            &lt;button ui-field=&quot;btnCancel&quot; class=&quot;btn btn-outline-danger btn-sm&quot;&gt;Cancel&lt;/button&gt;
+            &lt;button ui-field=&quot;btnDelete&quot; class=&quot;btn btn-outline-danger btn-sm&quot;&gt;Delete&lt;/button&gt;
+        &lt;/td&gt;
+    &lt;/template&gt;
+
+    &lt;template ui-field=&quot;footerCell&quot;&gt;
+        &lt;td ui-field=&quot;root&quot;&gt;
+        &lt;/td&gt;
+    &lt;/template&gt;
+
+    &lt;template ui-field=&quot;tableBarUi&quot;&gt;
+
+        &lt;template ui-field=&quot;tableBar&quot;&gt;
+            &lt;div ui-field=&quot;root&quot;&gt;
+
+            &lt;/div&gt;
+        &lt;/template&gt;
+        &lt;template ui-field=&quot;columnChooseBar&quot;&gt;
+            &lt;div ui-field=&quot;root&quot;&gt;
+
+            &lt;/div&gt;
+        &lt;/template&gt;
+        &lt;template ui-field=&quot;tableBarGroupByUi&quot;&gt;
+            &lt;template ui-field=&quot;tableBarItem&quot;&gt;
+                &lt;div ui-field=&quot;root&quot; class=&quot;row p-1&quot;&gt;
+                    &lt;div class=&quot;col-1&quot;&gt;
+                        &lt;i ui-field=&quot;close&quot; class=&quot;fas fa-times pexp&quot;&gt;&lt;/i&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;col-2&quot;&gt;
+                        &lt;span ui-field=&quot;actionLabel&quot;&gt;&lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;col-2&quot;&gt;
+                        &lt;span ui-field=&quot;columnName&quot;&gt;&lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;col-6&quot;&gt;
+                        &lt;div class=&quot;row&quot; ui-field=&quot;panel&quot;&gt;
+
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;col-1&quot;&gt;
+                        :::
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/template&gt;
+            &lt;template ui-field=&quot;tableBarPanel&quot;&gt;
+                &lt;div ui-field=&quot;root&quot;&gt;
+                    &lt;div ui-field=&quot;contentPanel&quot; class=&quot;p-2&quot;&gt;&lt;/div&gt;
+                    &lt;div ui-field=&quot;dropDownHolder&quot; class=&quot;ps-2 mb-3 mt-3&quot;&gt;&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/template&gt;
+        &lt;/template&gt;
+    &lt;/template&gt;
+
+    &lt;template ui-field=&quot;tableTreeItemSimpleParent&quot;&gt;
+        &lt;tr ui-field=&quot;root&quot;&gt;
+            &lt;td ui-field=&quot;openCloseCell&quot;&gt;
+                &lt;div class=&quot;horizontal-div&quot;&gt;
+                    &lt;i ui-field=&quot;openCloseElement&quot;&gt;&lt;/i&gt;
+                    &lt;div style=&quot;width: 10px;&quot;&gt;&lt;/div&gt;
+                    &lt;div ui-field=&quot;valuePanel&quot;&gt;&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;style-item ui-field=&quot;openStyle&quot; class=&quot;fas fa-plus pexp&quot;&gt;&lt;/style-item&gt;
+        &lt;style-item ui-field=&quot;closeStyle&quot; class=&quot;fas fa-minus pexp&quot;&gt;&lt;/style-item&gt;
+    &lt;/template&gt;
+
+    &lt;template ui-field=&quot;tableMain&quot;&gt;
+        &lt;style-item ui-field=&quot;rowHeight&quot; class=&quot;49&quot;&gt;&lt;/style-item&gt;
+        &lt;div ui-field=&quot;root&quot; class=&quot;table-main&quot;&gt;
+            &lt;div ui-field=&quot;headerBarRow&quot;&gt;
+                &lt;!--header bar content here--&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+                &lt;table ui-field=&quot;tableHeader&quot; class=&quot;table-header table table-bordered fixed-table table-header-style&quot;&gt;
+                    &lt;colgroup ui-field=&quot;headerColgroupPanel&quot;&gt;&lt;/colgroup&gt;
+                    &lt;tbody ui-field=&quot;headerBodyPanel&quot;&gt;
+                    &lt;tr ui-field=&quot;headerRow&quot;&gt;
+                        &lt;!--header content here--&gt;
+                    &lt;/tr&gt;
+                    &lt;/thead&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+            &lt;div ui-field=&quot;tableContentPanel&quot; class=&quot;table-content-panel scroll-style&quot; style=&quot;padding-right: 1px&quot;&gt;
+                &lt;table ui-field=&quot;tableContent&quot; class=&quot;table table-bordered fixed-table&quot;&gt;
+                    &lt;colgroup ui-field=&quot;contentColgroupPanel&quot;&gt;&lt;/colgroup&gt;
+                    &lt;tbody ui-field=&quot;rowsPanel&quot;&gt;
+                    &lt;!--main content here--&gt;
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+            &lt;div ui-field=&quot;footerPanel&quot;&gt;
+                &lt;table ui-field=&quot;tableFooter&quot; class=&quot;table-header table table-bordered fixed-table&quot;&gt;
+                    &lt;colgroup ui-field=&quot;tableFooterColGroup&quot;&gt;&lt;/colgroup&gt;
+                    &lt;tbody ui-field=&quot;footerBodyPanel&quot;&gt;
+                    &lt;tr ui-field=&quot;tableFooterRow&quot;&gt;
+                        &lt;!--footer content here--&gt;
+                    &lt;/tr&gt;
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+            &lt;div ui-field=&quot;footerPagerPanel&quot;&gt;
+                &lt;!--pager goes here--&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/template&gt;
+    &lt;template ui-field=&quot;tableRow&quot;&gt;
+        &lt;tr ui-field=&quot;root&quot;&gt;&lt;/tr&gt;
+        &lt;style-item ui-field=&quot;modelSelected&quot; class=&quot;table-primary&quot;&gt;&lt;/style-item&gt;
+    &lt;/template&gt;
+    &lt;template ui-field=&quot;tableColumn&quot;&gt;
+        &lt;td ui-field=&quot;root&quot;&gt;&lt;/td&gt;
+        &lt;style-item ui-field=&quot;valueChanged&quot; class=&quot;valueChanged&quot;&gt;&lt;/style-item&gt;
+        &lt;style-item ui-field=&quot;errorCell&quot; class=&quot;errorCell&quot;&gt;&lt;/style-item&gt;
+    &lt;/template&gt;
+
+    &lt;template ui-field=&quot;tableColumnSortHeader&quot;&gt;
+        &lt;td ui-field=&quot;root&quot;&gt;
+            &lt;div ui-field=&quot;textPanel&quot;&gt;&lt;/div&gt;
+            &lt;div style=&quot;position: relative;&quot; class=&quot;float-end&quot;&gt;
+                &lt;div style=&quot;right: 1px;top: -19px;position:absolute;&quot;&gt;
+                    &lt;div ui-field=&quot;sortIcon&quot; class=&quot;float-end header-s2&quot;&gt;&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/td&gt;
+        &lt;style-item ui-field=&quot;sortUpStyle&quot; class=&quot;fa fa-sort-down float-end&quot;&gt;&lt;/style-item&gt;
+        &lt;style-item ui-field=&quot;sortDownStyle&quot; class=&quot;fa fa-sort-up float-end&quot;&gt;&lt;/style-item&gt;
+    &lt;/template&gt;
+    &lt;template ui-field=&quot;tableColumnMenuHeader&quot;&gt;
+        &lt;td ui-field=&quot;root&quot;&gt;
+            &lt;div ui-field=&quot;textPanel&quot;&gt;&lt;/div&gt;
+
+            &lt;div style=&quot;position: relative;&quot; class=&quot;float-end&quot;&gt;
+                &lt;div style=&quot;left: -100px;top: -19px;position:absolute;&quot;&gt;
+                    &lt;div ui-field=&quot;filterIconPanel&quot; class=&quot;fa fa-filter float-end header-s2&quot;&gt;&lt;/div&gt;
+                    &lt;div ui-field=&quot;groupByIconPanel&quot; class=&quot;fa fa-group float-end header-s2&quot;&gt;&lt;/div&gt;
+                    &lt;div ui-field=&quot;sortIconPanel&quot; class=&quot;float-end header-s2&quot;&gt;&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;!--fa fa-sort--&gt;
+                &lt;div style=&quot;right: 1px;top: -30px;position:absolute;&quot;&gt;
+                    &lt;div ui-field=&quot;menuHolder&quot;&gt;&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/td&gt;
+        &lt;style-item ui-field=&quot;sortStyle&quot; class=&quot;fa fa-sort float-end&quot;&gt;&lt;/style-item&gt;
+        &lt;style-item ui-field=&quot;sortUpStyle&quot; class=&quot;fa fa-sort-down float-end&quot;&gt;&lt;/style-item&gt;
+        &lt;style-item ui-field=&quot;sortDownStyle&quot; class=&quot;fa fa-sort-up float-end&quot;&gt;&lt;/style-item&gt;
+    &lt;/template&gt;
+
+    &lt;template ui-field=&quot;tableColumnFilterHeader&quot;&gt;
+        &lt;td ui-field=&quot;root&quot;&gt;
+            &lt;div ui-field=&quot;textPanel&quot; style=&quot;font-weight: bold&quot;&gt;&lt;/div&gt;
+            &lt;div ui-field=&quot;sortIconPanel&quot; class=&quot;float-end header-s2&quot;&gt;&lt;/div&gt;
+            &lt;div ui-field=&quot;filterIconPanel&quot; class=&quot;fa fa-filter float-end header-s2&quot;&gt;&lt;/div&gt;
+            &lt;div ui-field=&quot;filterPanelElement&quot;&gt;&lt;/div&gt;
+        &lt;/td&gt;
+    &lt;/template&gt;
+
+&lt;/template&gt;
+            </code>
+        </pre>
+            </div>
+        </div>
+    </div>
+</div>

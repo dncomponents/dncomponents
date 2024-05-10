@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 
 package com.dncomponents.client.components.core.events.value;
+
 
 import com.dncomponents.client.components.core.events.BaseEvent;
 import com.dncomponents.client.views.IsElement;
@@ -63,8 +64,9 @@ public class ValueChangeEvent<T> extends BaseEvent {
         ValueChangeEvent<T> event = new ValueChangeEvent<T>(value);
         source.fireEvent(event.asEvent());
     }
-    public static <T> void fire(HasValueChangeHandlers<T> source, T value,T oldValue) {
-        ValueChangeEvent<T> event = new ValueChangeEvent<T>(value,oldValue);
+
+    public static <T> void fire(HasValueChangeHandlers<T> source, T value, T oldValue) {
+        ValueChangeEvent<T> event = new ValueChangeEvent<T>(value, oldValue);
         source.fireEvent(event.asEvent());
     }
 

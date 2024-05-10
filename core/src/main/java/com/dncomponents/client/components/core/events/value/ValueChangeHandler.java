@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,18 +24,18 @@ import jsinterop.base.Js;
 public interface ValueChangeHandler<T> extends BaseEventListener {
 
 
-  void onValueChange(ValueChangeEvent<T> event);
+    void onValueChange(ValueChangeEvent<T> event);
 
-  String TYPE = "valueChangeEvent";
+    String TYPE = "valueChangeEvent";
 
-  @Override
-  default void handleEvent(Event evt) {
-    onValueChange(Js.cast(((CustomEvent) evt).detail));
-  }
+    @Override
+    default void handleEvent(Event evt) {
+        onValueChange(Js.cast(((CustomEvent) evt).detail));
+    }
 
-  @Override
-  default String getType() {
-    return TYPE;
-  }
+    @Override
+    default String getType() {
+        return TYPE;
+    }
 
 }

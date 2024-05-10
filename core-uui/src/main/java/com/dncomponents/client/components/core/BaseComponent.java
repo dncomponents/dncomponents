@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,8 +32,6 @@ import elemental2.dom.HTMLElement;
  * View logic is separated in {@link View}.
  * View implementations can be injected through constructor for concrete object
  * and through static methods {@link Ui} on application level.
- *
- * @author nikolasavic
  */
 public abstract class BaseComponent<T, V extends View> implements IsElement, HasUserValue<T>,
         HasHandlers {

@@ -1,0 +1,285 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Basic list
+    </h2>
+    <div class="demo-component-wrapper">
+        <dn-list ui-field="list">
+            <item itemId="one">item 1</item>
+            <item itemId="two"><b>item 2</b></item>
+            <item itemId="three">item 3</item>
+        </dn-list>
+        <dn-text-area ui-field="ta" addClass="ta-demo ta-demo-full"></dn-text-area>
+    </div>
+    <div class="code-wrapper">
+        <figure class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;dn-list ui-field=&quot;list1&quot;&gt;
+    &lt;item itemId=&quot;one&quot;&gt;item 1&lt;/item&gt;
+    &lt;item itemId=&quot;two&quot;&gt;&lt;b&gt;item 2&lt;/b&gt;&lt;/item&gt;
+    &lt;item itemId=&quot;three&quot;&gt;item 3&lt;/item&gt;
+&lt;/dn-list&gt;
+             </code>
+        </pre>
+        </figure>
+    </div>
+
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+ListData&lt;ItemId, String&gt; list;
+@UiField
+TextArea ta;
+
+list.getSelectionModel().addSelectionHandler(event -&gt; {
+    for (ItemId idItem : event.getSelectedItem()) {
+        ta.setValue(&quot;&quot;);
+        ta.append(idItem.getId() + &quot;\n&quot;);
+    }
+});
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+@UiField
+list: ListData&lt;ItemId, string&gt;;
+@UiField
+ta: TextArea;
+
+this.list.getSelectionModel().addSelectionHandler(SelectionHandler.onSelection(evt =&gt; {
+    this.ta.setValue('');
+    evt.selection.forEach(e =&gt; this.ta.append(e.id + '\n'));
+}));
+`            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+    <!--renderer-->
+    <h5>Renderer</h5>
+    <div class="demo-component-wrapper">
+        <dn-list ui-field="listData"></dn-list>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <figure class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField(provided = true)
+ListData&lt;Fruit&gt; listData;
+
+listData.getRowCellConfig().setCellRenderer(r -&gt;
+        r.valuePanel.innerHTML = &quot;&lt;b&gt;&quot; + r.value + &quot;&lt;/b&gt;&quot;
+);
+listData.setRowsData(Fruit.getFruits(2000));
+listData.drawData();
+
+//Another way to set renderer
+listData.getRowCellConfig().setCellFactory(c -&gt; c.createDefaultCell().setRenderer(r -&gt; {
+    r.valuePanel.innerHTML = &quot;&lt;b&gt;&quot; + r.value + &quot;&lt;/b&gt;&quot;;
+}));
+             </code>
+        </pre>
+                    </figure>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+@UiField
+listData: ListData&lt;Fruit, string&gt;;
+
+this.listData.getRowCellConfig().setCellRenderer({
+setValue(r: RendererContext&lt;Fruit, string&gt;): void {
+     r.valuePanel.innerHTML = '&lt;b&gt;' + r.value + '&lt;/b&gt;';
+    }
+});
+this.listData.setRowsData(Fruit.getFruits(2000));
+this.listData.drawData();
+
+//Another way to set renderer
+this.listData.getRowCellConfig().setCellFactory({
+    getCell(c?: any): any {
+        return c.createDefaultCell().setRenderer({
+            setValue(r: RendererContext&lt;any, any&gt;) {
+                r.valuePanel.innerHTML = '&lt;b&gt;' + r.value + '&lt;/b&gt;';
+            }
+        });
+    }
+});
+        </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+
+    <!--events-->
+    <h5>Events</h5>
+    <div class="demo-component-wrapper">
+        <dn-list ui-field="eventsList"></dn-list>
+    </div>
+    <p>
+        <dn-text-area ui-field="eventsTa"></dn-text-area>
+    </p>
+
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+TextArea eventsTa;
+@UiField
+ListData&lt;Fruit, String&gt; eventsList
+
+eventsList.getRowCellConfig().setFieldGetter(Fruit::getName);
+eventsList.setRowsData(Fruit.getFruits(2000));
+eventsList.drawData();
+
+eventsList.addCellHandler((MouseOverHandler) mouseEvent -&gt;
+        eventsTa.append(&quot;mouse over event: &quot; + eventsList.getCell(mouseEvent).getModel().getName() + &quot;\n&quot;));
+eventsList.addCellHandler((DoubleClickHandler) mouseEvent -&gt;
+        eventsTa.append(&quot;double click event: &quot; + eventsList.getCell(mouseEvent).getModel().getName() + &quot;\n&quot;));
+eventsList.addCellHandler((MouseOutHandler) mouseEvent -&gt;
+        eventsTa.append(&quot;mouse out event: &quot; + eventsList.getCell(mouseEvent).getModel().getName() + &quot;\n&quot;));
+
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+@UiField
+eventsList: ListData&lt;Fruit, string&gt;;
+@UiField
+eventsTa: TextArea;
+
+this.eventsList.getRowCellConfig().setFieldGetter((f) =&gt; {
+    return f.name;
+});
+this.eventsList.setRowsData(Fruit.getFruits(2000));
+this.eventsList.drawData();
+
+this.eventsList.addCellHandler(MouseOverHandler.onMouseOver(evt =&gt; {
+    this.eventsTa.append('mouse over event: ' + this.eventsList.getCell(evt).getModel().name + '\n');
+}));
+this.eventsList.addCellHandler(DoubleClickHandler.onDoubleClick(evt =&gt; {
+    this.eventsTa.append('double click event: ' + this.eventsList.getCell(evt).getModel().name + '\n');
+}));
+this.eventsList.addCellHandler(MouseOutHandler.onMouseOut(evt =&gt; {
+    this.eventsTa.append('mouse out event: ' + this.eventsList.getCell(evt).getModel().name + '\n');
+}));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+    <!--markup template-->
+    <h5>List template markup</h5>
+    <div class="code-wrapper">
+        <figure class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+ListData list=new ListData(new ListUiImpl(&quot;#list&quot;));
+            </code>
+        </pre>
+            <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;!--  LIST  --&gt;
+&lt;template ui-field=&quot;list&quot;&gt;
+    &lt;template ui-field=&quot;listMain&quot;&gt;
+        &lt;ul ui-field=&quot;root&quot; class=&quot;list-group scroll-style&quot;&gt;&lt;/ul&gt;
+        &lt;style-item ui-field='scrollableStyle' class='scroll-style'&gt;&lt;/style-item&gt;
+        &lt;style-item ui-field=&quot;rowHeight&quot; class=&quot;49&quot;&gt;&lt;/style-item&gt;
+    &lt;/template&gt;
+
+    &lt;template ui-field=&quot;listItem&quot;&gt;
+        &lt;li ui-field=&quot;root&quot; class=&quot;list-group-item&quot;&gt;&lt;/li&gt;
+        &lt;style-item ui-field=&quot;modelSelected&quot; class=&quot;active&quot;&gt;&lt;/style-item&gt;
+    &lt;/template&gt;
+
+    &lt;template ui-field=&quot;listItemCheckbox&quot;&gt;
+        &lt;li ui-field=&quot;root&quot; class=&quot;list-group-item&quot; style=&quot;padding-left:  30px;&quot;&gt;
+            &lt;dn-checkbox ui-field=&quot;checkBox&quot; view=&quot;SIMPLE&quot;&gt;&lt;/dn-checkbox&gt;
+            &lt;span ui-field=&quot;valuePanel&quot;&gt;&lt;/span&gt;
+        &lt;/li&gt;
+        &lt;style-item ui-field=&quot;modelSelected&quot; class=&quot;active&quot;&gt;&lt;/style-item&gt;
+    &lt;/template&gt;
+&lt;/template&gt;
+            </code>
+        </pre>
+            </div>
+        </figure>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,9 +24,7 @@ import elemental2.dom.DomGlobal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * @author nikolasavic
- */
+
 public class DropDownTreeNodePanel<T> extends BaseHasView<TreeNode<T>, DropDownTreeNodePanelView> {
 
     DropDownMultiLevel<T> dropDown;
@@ -73,15 +71,15 @@ public class DropDownTreeNodePanel<T> extends BaseHasView<TreeNode<T>, DropDownT
             mouseOver = false;
             DomGlobal.setTimeout(p -> {
                 if (!((nextDropDownPanel != null && nextDropDownPanel.mouseOver)
-                        || isDropDownItemMouseOver()
-                        || isFirstLevel())) {
+                      || isDropDownItemMouseOver()
+                      || isFirstLevel())) {
                     DropDownTreeNodePanel<T> pnl = DropDownTreeNodePanel.this;
                     pnl.show(false);
                     while (pnl != null
-                            && pnl.previousDropDownPanel != null
-                            && !pnl.previousDropDownPanel.mouseOver
-                            && pnl.previousDropDownPanel.visible
-                            && pnl.previousDropDownPanel.getValue().getLevel() >= 0) {
+                           && pnl.previousDropDownPanel != null
+                           && !pnl.previousDropDownPanel.mouseOver
+                           && pnl.previousDropDownPanel.visible
+                           && pnl.previousDropDownPanel.getValue().getLevel() >= 0) {
                         pnl.show(false);
                         pnl = pnl.previousDropDownPanel;
                     }

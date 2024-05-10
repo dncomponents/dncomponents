@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,11 @@
 
 package com.dncomponents.client.components;
 
-import com.dncomponents.client.components.core.*;
+import com.dncomponents.client.components.core.AbstractPluginHelper;
+import com.dncomponents.client.components.core.BaseComponent;
+import com.dncomponents.client.components.core.ComponentHtmlParser;
 import com.dncomponents.client.components.core.entities.ItemId;
 import com.dncomponents.client.components.list.ListCell;
-import com.dncomponents.client.components.list.ListCellFactory;
 import com.dncomponents.client.components.list.ListTreeCellNavigator;
 import com.dncomponents.client.components.list.ListTreeMultiSelectionModel;
 import com.dncomponents.client.views.Ui;
@@ -35,9 +36,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-/**
- * @author nikolasavic
- */
+
 public class ListData<T, M> extends AbstractCellComponent<T, M, ListUi> implements HasRowsDataList<T> {
 
     {

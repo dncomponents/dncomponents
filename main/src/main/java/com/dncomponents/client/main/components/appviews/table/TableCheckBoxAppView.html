@@ -1,0 +1,113 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Checkbox Table
+    </h2>
+
+    <div class="demo-component-wrapper">
+        <dn-table ui-field="table"></dn-table>
+        <dn-text-area ui-field="ta" addClass="ta-demo ta-demo-full"></dn-text-area>
+    </div>
+
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+public TextArea ta;
+@UiField
+Table&lt;Fruit&gt; table;
+
+table.setRowsData(Fruit.getFruits(11500));
+ColumnConfig&lt;Fruit, String&gt; nameColumn = new ColumnConfig&lt;&gt;(Fruit::getName, Fruit::setName);
+nameColumn.setHeaderCellFactory(() -&gt; new HeaderTableTextCell(&quot;name&quot;));
+
+ColumnConfig&lt;Fruit, String&gt; descColumn = new ColumnConfig&lt;&gt;(Fruit::getDescription, Fruit::setDescription);
+descColumn.setHeaderCellFactory(() -&gt; new HeaderTableTextCell(&quot;description&quot;));
+
+ColumnCheckBox columnCheckBox = new ColumnCheckBox();
+
+table.addColumn(columnCheckBox);
+table.addColumn(nameColumn);
+table.addColumn(descColumn);
+table.getSelectionModel().addSelectionHandler((SelectionEvent&lt;List&lt;Fruit&gt;&gt; event) -&gt; {
+    ta.setValue(event.getSelectedItem().size() &gt; 100 ?
+            event.getSelectedItem().size() + &quot; items selected&quot; :
+            event.getSelectedItem()
+                    .stream()
+                    .map(Fruit::getName)
+                    .collect(Collectors.joining(&quot;\n&quot;)));
+});
+table.drawData();
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+public ta: TextArea;
+@UiField
+table: Table&lt;Fruit&gt;;
+
+this.table.setRowsData(Fruit.getFruits(11500));
+let nameColumn =
+    new ColumnConfig&lt;Fruit, string&gt;()
+        .setFieldGetter(p1 =&gt; p1.name).setFieldSetter((p1, p2) =&gt; p1.name = p2)
+        .setColumnName('Name')
+        .setHeaderCellFactory({getCell: () =&gt; new HeaderTableTextCell().setText('name')});
+let descColumn =
+    new ColumnConfig&lt;Fruit, string&gt;()
+        .setFieldGetter(p1 =&gt; p1.description).setFieldSetter((p1, p2) =&gt; p1.description = p2)
+        .setColumnName('description');
+let columnCheckBox: ColumnCheckBox&lt;any&gt; = new ColumnCheckBox();
+this.table.addColumn(columnCheckBox);
+this.table.addColumn(nameColumn);
+this.table.addColumn(descColumn);
+this.table.getSelectionModel().addSelectionHandler(SelectionHandler.onSelection(evt =&gt; {
+    this.ta.setValue(evt.selection.size() &gt; 100 ?
+        evt.selection.size() + ' items selected' :
+        evt.selection
+            .stream()
+            .map(p1 =&gt; p1.name)
+            .collect(Collectors.joining('\n')));
+}));
+this.table.drawData();
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+</div>

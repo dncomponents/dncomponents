@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,11 @@
 
 package com.dncomponents.client.components.core.validation;
 
-import elemental2.dom.DomGlobal;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-/**
- * @author nikolasavic
- */
+
 public class Validators<T> implements Validator<T> {
 
     List<Validator<T>> validators = new ArrayList<>();
@@ -50,6 +46,7 @@ public class Validators<T> implements Validator<T> {
     public static boolean isNonEmpty(String value) {
         return !value.isEmpty();
     }
+
     public Validators<T> addBreaking(Predicate<T> check, String message) {
         Validator<T> validator = value -> {
             if (!check.test(value)) {
@@ -60,6 +57,7 @@ public class Validators<T> implements Validator<T> {
         validatorsToBreak.add(validator);
         return this;
     }
+
     public Validators<T> add(Validator<T> validator) {
         this.validators.add(validator);
         return this;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,4 +22,8 @@ import java.util.Map;
 
 public interface HtmlParser<T> extends HasTag {
     T parse(Element htmlElement, Map<String, ?> elements);
+
+    default T parse(Element htmlElement, Map<String, ?> elements, Props props) {
+        return parse(htmlElement, elements);
+    }
 }

@@ -1,4 +1,6 @@
-package ${package}.client;
+package $
+
+{package}.client;
 
 import com.dncomponents.UiField;
 import com.dncomponents.client.components.core.HtmlBinder;

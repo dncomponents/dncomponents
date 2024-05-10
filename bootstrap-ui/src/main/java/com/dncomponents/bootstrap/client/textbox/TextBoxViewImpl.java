@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package com.dncomponents.bootstrap.client.textbox;
 
+import com.dncomponents.Template;
 import com.dncomponents.UiField;
-import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.dom.handlers.KeyUpHandler;
 import com.dncomponents.client.dom.handlers.OnBlurHandler;
@@ -26,10 +26,8 @@ import elemental2.dom.EventListener;
 import elemental2.dom.HTMLInputElement;
 import elemental2.dom.HTMLTemplateElement;
 
-/**
- * @author nikolasavic
- */
-@Component
+
+@Template
 public class TextBoxViewImpl implements TextBoxView {
 
     public static final String VIEW_ID = "default";

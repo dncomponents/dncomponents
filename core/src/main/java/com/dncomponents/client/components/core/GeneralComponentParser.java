@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,30 @@
 
 package com.dncomponents.client.components.core;
 
+
+import com.dncomponents.client.dom.DomUtil;
 import com.dncomponents.client.views.IsElement;
 import elemental2.dom.Element;
+import elemental2.dom.HTMLElement;
 
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class GeneralComponentParser<T extends IsElement> implements IsElementHtmlParser<T> {
 
     private final String tag;
-    private final Supplier<T> createComp;
+    private Supplier<T> createComp = () -> (T) (IsElement<HTMLElement>) () -> DomUtil.createDiv();
+    private Function<Props, T> functionComp;
 
     public GeneralComponentParser(String tag, Supplier<T> createComp) {
         this.tag = tag;
         this.createComp = createComp;
+    }
+
+    public GeneralComponentParser(String tag, Function<Props, T> fn) {
+        this.tag = tag;
+        this.functionComp = fn;
     }
 
     @Override
@@ -40,6 +50,15 @@ public class GeneralComponentParser<T extends IsElement> implements IsElementHtm
     @Override
     public T parse(Element htmlElement, Map<String, ?> elements) {
         return replaceAndCopy(htmlElement, createComp.get());
+    }
+
+    @Override
+    public T parse(Element htmlElement, Map<String, ?> elements, Props props) {
+        if (functionComp != null) {
+            return replaceAndCopy(htmlElement, functionComp.apply(props));
+        } else {
+            return replaceAndCopy(htmlElement, createComp.get());
+        }
     }
 
 }

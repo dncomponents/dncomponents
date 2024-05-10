@@ -1,0 +1,286 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        List Autocomplete
+    </h2>
+    <div class="demo-component-wrapper">
+        <div>
+            <div class="row">
+                <div class="col">
+                    <p>Single select</p>
+                    <dn-autocomplete>
+                        <item itemId="one">One</item>
+                        <item itemId="two">Two</item>
+                        <item itemId="three">Three</item>
+                    </dn-autocomplete>
+                </div>
+            </div>
+            <div class="row mt-2 mb-4">
+                <div class="col">
+                    <p>Multi select</p>
+                    <dn-autocomplete-multi-select>
+                        <item itemId="one">One</item>
+                        <item itemId="two">Two</item>
+                        <item itemId="three">Three</item>
+                    </dn-autocomplete-multi-select>
+                </div>
+            </div>
+            <div class="code-wrapper">
+                <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;dn-autocomplete&gt;
+    &lt;item itemId=&quot;one&quot;&gt;One&lt;/item&gt;
+    &lt;item itemId=&quot;two&quot;&gt;Two&lt;/item&gt;
+    &lt;item itemId=&quot;three&quot;&gt;Three&lt;/item&gt;
+&lt;/dn-autocomplete&gt;
+
+&lt;dn-autocomplete-multi-select&gt;
+    &lt;item itemId=&quot;one&quot;&gt;One&lt;/item&gt;
+    &lt;item itemId=&quot;two&quot;&gt;Two&lt;/item&gt;
+    &lt;item itemId=&quot;three&quot;&gt;Three&lt;/item&gt;
+&lt;/dn-autocomplete-multi-select&gt;
+            </code>
+        </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--renderer-->
+    <h5>Renderer</h5>
+    <div class="demo-component-wrapper">
+        <dn-autocomplete ui-field="acRenderer"></dn-autocomplete>
+        <dn-autocomplete-multi-select ui-field="acMsRenderer" addclass="mt-2"></dn-autocomplete-multi-select>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+Autocomplete&lt;Fruit&gt; acRenderer;
+@UiField
+AutocompleteMultiSelect&lt;Fruit&gt; acMsRenderer;
+
+List&lt;Fruit&gt; fruits = Fruit.getFruits(1000);
+acMsRenderer.getRowCellConfig().setCellRenderer(r -&gt; r.valuePanel.innerHTML = &quot;&lt;b&gt;&quot; + r.value + &quot;&lt;/b&gt;&quot;);
+acMsRenderer.setRowsData(fruits);
+acRenderer.getRowCellConfig().setCellRenderer(r -&gt; r.valuePanel.innerHTML = &quot;&lt;b&gt;&quot; + r.value + &quot;&lt;/b&gt;&quot;);
+acRenderer.setRowsData(fruits);
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+@UiField
+acRenderer: Autocomplete&lt;Fruit&gt;;
+@UiField
+acMsRenderer: AutocompleteMultiSelect&lt;Fruit&gt;;
+
+let fruits = Fruit.getFruits(1000);
+this.acMsRenderer.getRowCellConfig().setCellRenderer({
+    setValue(r: RendererContext&lt;Fruit, string&gt;): void {
+        r.valuePanel.innerHTML = '&lt;b&gt;' + r.value + '&lt;/b&gt;';
+    }
+});
+this.acMsRenderer.setRowsData(fruits);
+this.acRenderer.getRowCellConfig().setCellRenderer({
+    setValue(r: RendererContext&lt;Fruit, string&gt;): void {
+        r.valuePanel.innerHTML = '&lt;b&gt;' + r.value + '&lt;/b&gt;';
+    }
+});
+this.acRenderer.setRowsData(fruits);
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--events-->
+    <h5>Events</h5>
+    <div class="demo-component-wrapper">
+        <div class="row">
+            <div class="col">
+                <p>Single select</p>
+                <dn-autocomplete ui-field="autocomplete"></dn-autocomplete>
+                <div class="mt-2 mb-2">
+                    <dn-button ui-field="clearSs" view="DEFAULT" coloroutline="SECONDARY">Clear</dn-button>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2 mb-4">
+            <div class="col">
+                <p>Multi select</p>
+                <dn-autocomplete-multi-select ui-field="multiSelect"></dn-autocomplete-multi-select>
+                <div class="mt-2 mb-2">
+                    <dn-button ui-field="clearMs" view="DEFAULT" coloroutline="SECONDARY">Clear</dn-button>
+                </div>
+                <dn-text-area ui-field="ta" addClass="mb-3"></dn-text-area>
+                <dn-button ui-field="clearTa" view="DEFAULT" coloroutline="SECONDARY">Clear</dn-button>
+            </div>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+Autocomplete&lt;Fruit&gt; autocomplete;
+@UiField
+AutocompleteMultiSelect&lt;Fruit&gt; multiSelect;
+@UiField
+Button clearMs;
+@UiField
+Button clearSs;
+@UiField
+Button clearTa;
+@UiField
+TextArea ta;
+
+List&lt;Fruit&gt; fruits = Fruit.getFruits(2000);
+multiSelect.setRowsData(fruits);
+multiSelect.addValueChangeHandler(event -&gt; {
+    ta.append(&quot;multiSelect: value changed event: \n&quot;);
+    ta.append(&quot;***************\n&quot;);
+    event.getValue().forEach(fruit -&gt; ta.append(fruit.getName() + &quot;\n&quot;));
+    ta.append(&quot;***************\n&quot;);
+});
+multiSelect.addFocusHandler(focusEvent -&gt;
+        ta.append(&quot;multiSelect: focus event!\n&quot;));
+multiSelect.addBlurHandler(focusEvent -&gt;
+        ta.append(&quot;multiSelect: blur event!\n&quot;));
+autocomplete.addValueChangeHandler(event -&gt;
+        ta.append(&quot;autocomplete: value changed event:&quot; + event.getValue().getName() + &quot;\n&quot;));
+autocomplete.addFocusHandler(focusEvent -&gt;
+        ta.append(&quot;autocomplete: focus event!\n&quot;));
+autocomplete.addBlurHandler(focusEvent -&gt;
+        ta.append(&quot;autocomplete: blur event!\n&quot;));
+autocomplete.setValue(fruits.get(2));
+autocomplete.setRowsData(fruits);
+
+clearMs.addClickHandler(mouseEvent -&gt; multiSelect.setValue(null));
+clearSs.addClickHandler(mouseEvent -&gt; autocomplete.setValue(null));
+clearTa.addClickHandler(mouseEvent -&gt; ta.setValue(null));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+@UiField
+autocomplete: Autocomplete&lt;Fruit&gt;;
+@UiField
+multiSelect: AutocompleteMultiSelect&lt;Fruit&gt;;
+@UiField
+clearMs: Button&lt;any&gt;;
+@UiField
+clearSs: Button&lt;any&gt;;
+@UiField
+clearTa: Button&lt;any&gt;;
+@UiField
+ta: TextArea;
+
+let fruits = Fruit.getFruits(1000);
+this.multiSelect.setRowsData(fruits);
+this.multiSelect.addValueChangeHandler(ValueChangeHandler.onValueChange(evt =&gt; {
+    this.ta.append('multiSelect: value changed event: \n');
+    this.ta.append('***************\n');
+    evt.value.forEach(fruit =&gt; this.ta.append((&lt;Fruit&gt;fruit).name + '\n'));
+    this.ta.append('***************\n');
+}));
+this.multiSelect.addFocusHandler(OnFocusHandler.onFocus(evt =&gt; this.ta.append('multiSelect: focus event!\n')));
+this.multiSelect.addBlurHandler(OnBlurHandler.onBlur(evt =&gt; this.ta.append('multiSelect: blur event!\n')));
+this.autocomplete.addValueChangeHandler(ValueChangeHandler.onValueChange(evt =&gt; this.ta.append('autocomplete: value changed event:' + evt.value.name + '\n')));
+this.autocomplete.addFocusHandler(OnFocusHandler.onFocus(evt =&gt; this.ta.append('autocomplete: focus event!\n')));
+this.autocomplete.addBlurHandler(OnBlurHandler.onBlur(evt =&gt; this.ta.append('autocomplete: blur event!\n')));
+this.autocomplete.setValue(fruits.get(2));
+this.autocomplete.setRowsData(fruits);
+
+this.clearMs.addClickHandler(ClickHandler.onClick(() =&gt; this.multiSelect.setValue(null)));
+this.clearSs.addClickHandler(ClickHandler.onClick(() =&gt; this.autocomplete.setValue(null)));
+this.clearTa.addClickHandler(ClickHandler.onClick(() =&gt; this.ta.setValue(null)));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--markup template-->
+    <h5>Template markup </h5>
+    <div class="demo-component-wrapper">
+        <dn-autocomplete>
+            <item itemId="one">One</item>
+            <item itemId="two">Two</item>
+            <item itemId="three">Three</item>
+        </dn-autocomplete>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;!--  AUTOCOMPLETE  --&gt;
+&lt;template ui-field=&quot;autocomplete&quot;&gt;
+    &lt;div ui-field='root' class='autocomplete'&gt;
+        &lt;dn-button ui-field='button' class='btn btn-secondary dropdown-toggle'&gt;
+            &lt;span ui-field='buttonText'&gt;Choose ...&lt;/span&gt;
+        &lt;/dn-button&gt;
+        &lt;div ui-field='listPanel' class='autocomplete-scroll-panel'&gt;
+            &lt;dn-text-box ui-field='textBox'&gt;&lt;/dn-text-box&gt;
+            &lt;div class='scroll-style'&gt;
+                &lt;dn-list ui-field=&quot;list&quot;&gt;&lt;/dn-list&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+            </code>
+        </pre>
+        </div>
+    </div>
+</div>

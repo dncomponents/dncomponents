@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,17 @@
 
 package com.dncomponents.client.dom;
 
-import com.dncomponents.client.views.IsElement;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.dom.handlers.BaseEventListener;
+import com.dncomponents.client.views.IsElement;
 import elemental2.core.Global;
 import elemental2.core.JsArray;
 import elemental2.dom.*;
 import jsinterop.base.Js;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-/**
- * @author nikolasavic
- */
+
 public class DomUtil {
 
     public static <T extends HTMLElement> T createElement(String tag) {
@@ -57,7 +53,7 @@ public class DomUtil {
         return createElement("template");
     }
 
-    public static HTMLDivElement createDiv() {
+    public static HTMLElement createDiv() {
         return createElement("div");
     }
 
@@ -385,8 +381,8 @@ public class DomUtil {
         return createElement("textarea");
     }
 
-    public static HTMLDivElement createDiv(String innerHtml) {
-        HTMLDivElement div = createDiv();
+    public static HTMLElement createDiv(String innerHtml) {
+        HTMLElement div = createDiv();
         div.innerHTML = innerHtml;
         return div;
     }
@@ -1311,6 +1307,43 @@ public class DomUtil {
         return (T) ((CustomEvent) evt).detail;
     }
 
+    public static <P> P getSelection(EventTarget eventTarget) {
+        HTMLSelectElement element = (HTMLSelectElement) eventTarget;
+        if (element.multiple) {
+            List<String> values = new ArrayList<>();
+            for (int i = 0; i < element.options.getLength(); i++) {
+                HTMLOptionElement option = element.options.item(i);
+                if (option.selected) {
+                    values.add(option.value);
+                }
+            }
+            return (P) values;
+        } else {
+            HTMLOptionElement selectedOption = element.options
+                    .getAt(element.selectedIndex);
+            // Get the value of the selected option
+            String selectedValue = selectedOption.value;
+            return (P) selectedValue;
+        }
+    }
+
+    public static void checkBoxSelection(EventTarget eventTarget, Collection<String> selection) {
+        HTMLInputElement element = (HTMLInputElement) eventTarget;
+        String value = element.value;
+        boolean containsIgnoreCase = selection.stream()
+                .anyMatch(str -> str.equalsIgnoreCase(value));
+        if (element.checked) {
+            if (!containsIgnoreCase) {
+                selection.add(value);
+            }
+        } else {
+            selection.removeIf(str -> str.equalsIgnoreCase(value));
+        }
+    }
+
+    public static String stringifyFlatted(Object object) {
+        return Flatted.stringifyFlatted(object);
+    }
 
     public native static <T> T getValue(Object obj, String key) /*-{
         return obj[key];

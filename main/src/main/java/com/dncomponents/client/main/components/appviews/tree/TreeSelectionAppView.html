@@ -1,0 +1,84 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Selection Tree
+    </h2>
+
+    <div class="demo-component-wrapper">
+        <div class="row">
+            <div class="col-5">
+                <dn-checkbox ui-field="expandAll" addClass="mb-3">expand all</dn-checkbox>
+                <dn-button ui-field="clearBtn" color="SECONDARY" addClass="mb-3">clear</dn-button>
+                <dn-text-area ui-field="ta" addClass="mb-3"></dn-text-area>
+            </div>
+            <div class="col-7">
+                <dn-tree ui-field="tree"></dn-tree>
+            </div>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+Tree tree;
+
+tree.getSelectionModel().addSelectionHandler((SelectionHandler&lt;List&lt;TreeNode&gt;&gt;) event -&gt; ta.setValue(
+        event.getSelectedItem()
+                .stream()
+                .map(e -&gt; e.getUserObject().toString())
+                .collect(Collectors.joining(&quot;, &quot;))
+));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+tree: Tree&lt;any&gt;;
+
+this.tree.getSelectionModel().addSelectionHandler(SelectionHandler.onSelection(evt =&gt; {
+    evt.selection
+        .stream()
+        .map(e =&gt; e.getUserObject().toString())
+        .collect(Collectors.joining(', '));
+}));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+</div>

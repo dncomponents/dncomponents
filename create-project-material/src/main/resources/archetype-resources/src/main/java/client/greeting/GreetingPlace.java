@@ -1,4 +1,6 @@
-package ${package}.client.greeting;
+package $
+
+{package}.client.greeting;
 
 import com.dncomponents.client.views.appview.AbstractActivity;
 import com.dncomponents.client.views.appview.Place;

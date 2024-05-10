@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package com.dncomponents.bootstrap.client.checkbox;
 
-import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.bootstrap.client.BootstrapUi;
+import com.dncomponents.client.components.core.AbstractPluginHelper;
 import com.dncomponents.client.views.core.ViewFactory;
 import com.dncomponents.client.views.core.ui.checkbox.CheckBoxView;
 import elemental2.dom.HTMLTemplateElement;

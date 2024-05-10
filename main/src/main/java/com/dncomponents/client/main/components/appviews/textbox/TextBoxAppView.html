@@ -1,0 +1,283 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Valuebox
+    </h2>
+    <div class="demo-component-wrapper">
+        <table class="table">
+            <tbody>
+            <tr>
+                <td>
+                    <dn-text-box val="text value text-box"></dn-text-box>
+                </td>
+                <td>
+                    <b>Text Box component</b>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <dn-integer-box val="333"></dn-integer-box>
+                </td>
+                <td>
+                    <b>Integer Box component</b>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <dn-long-box val="333333333333333"></dn-long-box>
+                </td>
+                <td>
+                    <b>Long Box component</b>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <dn-double-box val="33.3"></dn-double-box>
+                </td>
+                <td>
+                    <b>Double Box component</b>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <dn-date-box val="6/30/09"></dn-date-box>
+                </td>
+                <td>
+                    <b>Date Box component</b>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <dn-text-area val="text value text-area"></dn-text-area>
+                </td>
+                <td>
+                    <b>Text area component</b>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-html">
+&lt;dn-text-box val=&quot;text value text-box&quot;&gt;&lt;/dn-text-box&gt;
+&lt;dn-integer-box val=&quot;333&quot;&gt;&lt;/dn-integer-box&gt;
+&lt;dn-long-box val=&quot;333333333333333&quot;&gt;&lt;/dn-long-box&gt;
+&lt;dn-double-box val=&quot;33.3&quot;&gt;&lt;/dn-double-box&gt;
+&lt;dn-date-box val=&quot;6/30/09&quot;&gt;&lt;/dn-date-box&gt;
+&lt;dn-text-area val=&quot;text value text-area&quot;&gt;&lt;/dn-text-area&gt;
+             </code>
+         </pre>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+TextBox textBox = new TextBox();
+textBox.setValue(&quot;text box value&quot;);
+IntegerBox integerBox = new IntegerBox();
+integerBox.setValue(333);
+LongBox longBox = new LongBox();
+longBox.setValue(333333333333333L);
+DoubleBox doubleBox = new DoubleBox();
+doubleBox.setValue(33.3);
+DateBox dateBox = new DateBox();
+dateBox.setValue(new Date());
+TextArea textArea = new TextArea();
+textArea.setValue(&quot;text area value&quot;);
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+let textBox = new TextBox();
+textBox.setValue('text box value');
+let integerBox = new IntegerBox();
+integerBox.setValue(333);
+let doubleBox = new DoubleBox();
+doubleBox.setValue(33.3);
+let dateBox = new DateBox();
+dateBox.setValue(new Date());
+let textArea = new TextArea();
+textArea.setValue('text area value');
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+    <!--events-->
+    <h5>Events</h5>
+    <div class="demo-component-wrapper">
+        <table class="table">
+            <tbody>
+            <tr>
+                <td>
+                    <dn-text-box ui-field="textBox" val="text value text-box"></dn-text-box>
+                </td>
+                <td>
+                    <b>Text Box component</b>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <dn-integer-box ui-field="integerBox" val="333"></dn-integer-box>
+                </td>
+                <td>
+                    <b>Integer Box component</b>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <dn-long-box ui-field="longBox" val="333333333333333"></dn-long-box>
+                </td>
+                <td>
+                    <b>Long Box component</b>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <dn-double-box ui-field="doubleBox" val="33.3"></dn-double-box>
+                </td>
+                <td>
+                    <b>Double Box component</b>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <dn-date-box ui-field="dateBox" val="6/30/09"></dn-date-box>
+                </td>
+                <td>
+                    <b>Date Box component</b>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <dn-text-area ui-field="textArea" val="text value text-area"></dn-text-area>
+                </td>
+                <td>
+                    <b>Text area component</b>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <dn-text-area ui-field="ta" addClass="ta-demo ta-demo-full"></dn-text-area>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+ValueChangeHandler changeHandler = event -&gt; {
+    ta.setValue(event.getValue() + &quot;&quot;);
+};
+textBox.addValueChangeHandler(changeHandler);
+integerBox.addValueChangeHandler(changeHandler);
+longBox.addValueChangeHandler(changeHandler);
+doubleBox.addValueChangeHandler(changeHandler);
+dateBox.addValueChangeHandler(changeHandler);
+textArea.addValueChangeHandler(changeHandler);
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+let changeHandler: ValueChangeHandler&lt;any&gt; = ValueChangeHandler.onValueChange(evt =&gt; {
+    this.ta.setValue(evt.value + '');
+});
+this.textBox.addValueChangeHandler(changeHandler);
+this.integerBox.addValueChangeHandler(changeHandler);
+this.doubleBox.addValueChangeHandler(changeHandler);
+this.dateBox.addValueChangeHandler(changeHandler);
+this.textArea.addValueChangeHandler(changeHandler);
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--markup template-->
+    <h5>Template markup</h5>
+    <div class="demo-component-wrapper">
+        <dn-text-box></dn-text-box>
+        <dn-text-area addClass="mt-3"></dn-text-area>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;!--  template for TextBox, IntegerBox, DoubleBox, LongBox, DateBox --&gt;
+&lt;template ui-field=&quot;textbox&quot;&gt;
+    &lt;input ui-field=&quot;root&quot; class=&quot;form-control&quot; type=&quot;text&quot;&gt;
+&lt;/template&gt;
+&lt;!--template for TextArea --&gt;
+&lt;template ui-field=&quot;textarea&quot;&gt;
+    &lt;textarea ui-field=&quot;root&quot; rows=&quot;5&quot; class=&quot;form-control&quot;&gt;&lt;/textarea&gt;
+&lt;/template&gt;
+            </code>
+        </pre>
+        </div>
+    </div>
+    <!-- end markup -->
+</div>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 /**
- * @author nikolasavic
  * <p>
  * Default name for translation class is AppMessages.
  * that means when you refere to this object in java code you call I18n.get().getValue("someProperty")
@@ -91,7 +90,7 @@ public class DnI18n {
                 String operator = getBetween(item.rule, n, n + 2);
                 Integer ruleValue = Integer.parseInt(getBetween(item.rule, n + 1, n + 3));
                 if (orderNumberRule == null || (orderNumberRule != null && orderNumberRule >= args.length)
-                        || operator == null || operator.isEmpty())
+                    || operator == null || operator.isEmpty())
                     continue;
                 if (operator.equals("=")) {
                     if (args[orderNumberRule].equals(ruleValue)) {
@@ -135,11 +134,14 @@ public class DnI18n {
 
 
     static String getBetween(String text, Character c1, Character c2) {
-        try {
-            return text.substring(text.indexOf(c1) + 1, text.indexOf(c2));
-        } catch (Exception ex) {
-            return null;
+        int index1 = text.indexOf(c1);
+        int index2 = text.indexOf(c2);
+        if (index1 != -1 && index2 != -1) {
+            if (index2 > index1) {
+                return text.substring(index1 + 1, index2);
+            }
         }
+        return null;
     }
 
     static String getBetween(String text, Integer index1, Integer index2) {

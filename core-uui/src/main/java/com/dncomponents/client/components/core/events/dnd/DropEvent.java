@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ public class DropEvent<T> extends BaseEvent {
         super(DropHandler.TYPE);
     }
 
-    DropEvent(T owner,Object source) {
+    DropEvent(T owner, Object source) {
         this();
         this.item = owner;
     }
@@ -51,7 +51,7 @@ public class DropEvent<T> extends BaseEvent {
     }
 
     public static <T> void fire(Element source, T item) {
-        DropEvent<T> event = new DropEvent<>(item,source);
+        DropEvent<T> event = new DropEvent<>(item, source);
         source.dispatchEvent(event.asEvent());
     }
 

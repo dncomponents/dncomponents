@@ -1,0 +1,154 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Edit Table
+    </h2>
+
+    <h5>
+        Default editors -
+        choose editing type:
+    </h5>
+    <dn-radio-selection-group ui-field="chooseEditingRadioGroup">
+        <dn-radio itemId="cell">
+            Cell
+        </dn-radio>
+        <dn-radio itemId="dialog">
+            Dialog
+        </dn-radio>
+        <dn-radio value="true" itemId="row">
+            Row cell
+        </dn-radio>
+        <dn-radio itemId="rowDialog">
+            Row dialog
+        </dn-radio>
+    </dn-radio-selection-group>
+    <div class="demo-component-wrapper">
+        <dn-table ui-field="tableEditors"></dn-table>
+        <dn-text-area ui-field="eventsTa" addclass="w-100" addClass="ta-demo ta-demo-full"></dn-text-area>
+    </div>
+
+    <div class="code-wrapper mt-3">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+Table&lt;Person&gt; tableEditors;
+
+@UiField
+RadioSelectionGroup&lt;ItemId&gt; chooseEditingRadioGroup;
+
+chooseEditingRadioGroup.getEntitySelectionModel().addSelectionHandler(event -&gt; {
+    final String id = event.getSelectedItem().getId();
+    if (id.equals(&quot;cell&quot;)) {
+        tableEditors.setPopupEditing(false);
+        tableEditors.removeColumn(columnEdit);
+        tableEditors.drawData();
+    } else if (id.equals(&quot;dialog&quot;)) {
+        tableEditors.setPopupEditing(true);
+        tableEditors.removeColumn(columnEdit);
+        tableEditors.drawData();
+    } else if (id.equals(&quot;row&quot;)) {
+        tableEditors.removeColumn(columnEdit);
+        columnEdit = new ColumnEdit&lt;&gt;(Person::new, false);
+        tableEditors.addColumn(columnEdit);
+        tableEditors.setPopupEditing(false);
+        tableEditors.drawData();
+    } else if (id.equals(&quot;rowDialog&quot;)) {
+        tableEditors.removeColumn(columnEdit);
+        columnEdit = new ColumnEdit&lt;&gt;(Person::new, true);
+        tableEditors.addColumn(columnEdit);
+        tableEditors.drawData();
+    }
+});
+
+tableEditors.addRowValueChangedHandler(event -&gt; {
+    eventsTa.append(&quot;value changed: &quot; + event.getRow().getModel().toString() + &quot;\n&quot;);
+    for (TableCell&lt;Person, ?&gt; changedCell : event.getChangedCells()) {
+        eventsTa.append(&quot;column: &quot; + changedCell.getCellConfig().getName() + &quot; (old value: &quot;
+                + changedCell.oldValue() + &quot; - new value: &quot; + changedCell.getValue() + &quot;)\n&quot;);
+    }
+});
+tableEditors.addModelChangedHandler(event -&gt;
+        eventsTa.append(&quot;model changed: &quot; + event.getModel().toString() + &quot;\n&quot;));
+
+tableEditors.addCellValueChangedHandler(event -&gt; {
+    eventsTa.append(&quot;column: &quot; + event.getCell().getCellConfig().getName() + &quot; (old value: &quot;
+            + event.getOldValue() + &quot; - new value: &quot; + event.getNewValue() + &quot;)\n&quot;);
+    eventsTa.append(&quot;cell changed: &quot; + event.getCell().getModel().toString() + &quot;\n&quot;);
+});
+ColumnConfig&lt;Person, String&gt; nameColumn = new ColumnConfig.Builder&lt;&gt;(Person::getName, Person::setName)
+        .setName(&quot;Name&quot;)
+        .setColumnWidth(&quot;70px&quot;)
+        .setEditable(true)
+        .setValidText(&quot;Looks good&quot;)
+        .setValidator(new EmptyValidator&lt;&gt;())
+        .setClazz(String.class)
+        .build();
+
+ColumnConfig&lt;Person, Boolean&gt; activeColumn = new ColumnConfig.Builder&lt;&gt;(Person::isActive, Person::setActive)
+        .setName(&quot;active&quot;)
+        .setColumnWidth(&quot;50px&quot;)
+        .setClazz(Boolean.class)
+        .setEditable(true)
+        .build();
+
+///column
+ColumnConfig&lt;Person, Integer&gt; ageColumn = new ColumnConfig.Builder&lt;&gt;(Person::getAge, Person::setAge)
+        .setName(&quot;age&quot;)
+        .setColumnWidth(&quot;50px&quot;)
+        .setClazz(Integer.class)
+        .setEditable(true)
+        .build();
+///end column
+AutoCompleteEditor&lt;String&gt; acEditor = new AutoCompleteEditor&lt;&gt;(TestingHelper.getColors());
+ColumnConfig&lt;Person, String&gt; colorColumn =
+        new ColumnConfig.Builder&lt;&gt;(Person::getCurrentColor, Person::setCurrentColor)
+                .setCellEditorFactory(m -&gt; new AutoCompleteEditor&lt;&gt;(TestingHelper.getColors()))
+                .setClazz(String.class)
+                .setName(&quot;Color&quot;)
+                .setCellFactory(c -&gt;
+                        new TableCell&lt;Person, String&gt;()
+                                .setRenderer(r -&gt; {
+                                    r.valuePanel.style.background = r.value;
+                                    r.valuePanel.textContent = r.value;
+                                }))
+                .setEditable(true)
+                .setColumnWidth(&quot;100px&quot;)
+                .build();
+colorColumn.setValidator(s -&gt; {
+    if (s.contains(&quot;red&quot;))
+        throw new ValidationException(&quot;Wrong answer!&quot;);
+});
+ColumnConfig&lt;Person, Date&gt; dateColumn =
+        new ColumnConfig.Builder&lt;&gt;(Person::getDate, Person::setDate)
+                .setName(&quot;Date&quot;)
+                .setCellFactory(c -&gt; new TableCellDate&lt;&gt;())
+                .setColumnWidth(&quot;50px&quot;)
+                .setEditable(true)
+                .setClazz(Date.class)
+                .build();
+
+tableEditors.addColumn(nameColumn, activeColumn, ageColumn, colorColumn, dateColumn, columnEdit);
+tableEditors.setRowsData(people);
+tableEditors.drawData();
+            </code>
+        </pre>
+        </div>
+    </div>
+
+</div>

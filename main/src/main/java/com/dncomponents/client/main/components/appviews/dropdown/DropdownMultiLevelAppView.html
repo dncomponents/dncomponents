@@ -1,0 +1,307 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Dropdown multilevel
+    </h2>
+    <p>Tree structure items</p>
+    <div class="demo-component-wrapper">
+        <div class="row">
+            <div class="col-4">
+                <dn-dropdown-multilevel ui-field="dropDownMultiLevel" content="Dropdown">
+                    <item itemId="one">
+                        item 1
+                    </item>
+                    <item itemId="two">
+                        item 2
+                    </item>
+                    <item itemId="more" content="show more">
+                        <item itemId="one_one">
+                            item 11
+                        </item>
+                        <item itemId="two_two">
+                            item 22
+                        </item>
+                        <item itemId="three_three">
+                            item 33
+                        </item>
+                    </item>
+                </dn-dropdown-multilevel>
+            </div>
+            <div class="col-8">
+                <dn-text-area ui-field="textArea"></dn-text-area>
+            </div>
+        </div>
+    </div>
+    <div ui-field="javaPanel"></div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-html">
+&lt;dn-dropdown-multilevel ui-field=&quot;dropDownMultiLevel&quot; content=&quot;Dropdown&quot;&gt;
+    &lt;item itemId=&quot;one&quot;&gt;
+        item 1
+    &lt;/item&gt;
+    &lt;item itemId=&quot;two&quot;&gt;
+        item 2
+    &lt;/item&gt;
+    &lt;item itemId=&quot;more&quot; content=&quot;show more&quot;&gt;
+        &lt;item itemId=&quot;one_one&quot;&gt;
+            item 11
+        &lt;/item&gt;
+        &lt;item itemId=&quot;two_two&quot;&gt;
+            item 22
+        &lt;/item&gt;
+        &lt;item itemId=&quot;three_three&quot;&gt;
+            item 33
+        &lt;/item&gt;
+    &lt;/item&gt;
+&lt;/dn-dropdown-multilevel&gt;
+             </code>
+         </pre>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+public DropDownMultiLevel&lt;IdItem&gt; dropDownMultiLevel;
+
+dropDownMultiLevel.getSingleSelectionModel().addSelectionHandler(event -&gt;
+        textArea.setValue(event.getSelectedItem().getUserObject().getId())
+);
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+@UiField
+public dropDownMultiLevel: DropDownMultiLevel&lt;ItemId&gt;;
+
+this.dropDownMultiLevel.getSingleSelectionModel().addSelectionHandler(SelectionHandler.onSelection(evt =&gt; {
+    this.textArea.setValue(evt.selection.getUserObject().getId());
+}));
+`            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--renderer-->
+    <h5>
+        Renderer
+    </h5>
+    <p>Create custom item renderer for complex objects.</p>
+    <div class="demo-component-wrapper">
+        <dn-dropdown-multilevel ui-field="dpRenderer" content="renderer"
+                                style="margin-bottom:25px;"></dn-dropdown-multilevel>
+    </div>
+
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+DropDownMultiLevel&lt;Fruit&gt; dpRenderer;
+dpRenderer.setItemRenderer((objectTreeNode, slots) -&gt;
+        slots.getMainSlot().innerHTML = &quot;&lt;b&gt;&quot; + objectTreeNode.getUserObject() + &quot;&lt;/b&gt;&quot;);
+dpRenderer.setRoot(Fruit.getTreeNodes());
+             </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+@UiField
+dpRenderer: DropDownMultiLevel&lt;Fruit&gt;;
+this.dpRenderer.setItemRenderer({
+    render(objectTreeNode: TreeNode&lt;any&gt;, slots: MainViewSlots): void {
+        slots.getMainSlot().innerHTML = '&lt;b&gt;' + objectTreeNode.getUserObject() + '&lt;/b&gt;';
+    }
+});
+this.dpRenderer.setRoot(Fruit.getFruitsTree());
+`            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <!--end renderer-->
+
+    <!--events-->
+    <h5>
+        Events
+    </h5>
+    <p>Logs open/close and selection events.</p>
+    <div class="demo-component-wrapper">
+        <div class="row">
+            <div class="col-4">
+                <dn-dropdown-multilevel ui-field="dpEvents" content="events"
+                                        style="margin-bottom:25px;"></dn-dropdown-multilevel>
+            </div>
+            <div class="col-8">
+                <dn-text-area ui-field="ta"></dn-text-area>
+            </div>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+public DropDownMultiLevel&lt;Object&gt; dpEvents;
+@UiField
+public TextArea ta;
+
+dpEvents.setRoot(Fruit.getFruitsTree());
+dpEvents.getSingleSelectionModel().addSelectionHandler(event -&gt;
+        ta.append(&quot;Item selection event: &quot; + event.getSelectedItem()));
+dpEvents.addOpenHandler(event -&gt; ta.append(&quot;Open event\n&quot;));
+dpEvents.addCloseHandler(event -&gt; ta.append(&quot;Close event\n&quot;));
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+@UiField
+public dpEvents: DropDownMultiLevel&lt;any&gt;;
+@UiField
+public ta: TextArea;
+
+this.dpEvents.setRoot(Fruit.getFruitsTree());
+this.dpEvents.getSingleSelectionModel().addSelectionHandler(SelectionHandler.onSelection((e) =&gt;
+    this.ta.append('Item selection event: ' + e.selection)));
+this.dpEvents.addOpenHandler(OpenHandler.onOpen(() =&gt; this.ta.append('Open event\n')));
+this.dpEvents.addCloseHandler(CloseHandler.onClose(() =&gt; this.ta.append('Close event\n')));
+`            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+    <!--markup template-->
+    <h3>Template markup</h3>
+    <div class="demo-component-wrapper">
+        <dn-dropdown-multilevel content="Dropdown">
+            <item itemId="one">
+                item 1
+            </item>
+            <item itemId="two">
+                item 2
+            </item>
+            <item itemId="more" content="show more">
+                <item itemId="one_one">
+                    item 11
+                </item>
+                <item itemId="two_two">
+                    item 22
+                </item>
+                <item itemId="three_three">
+                    item 33
+                </item>
+            </item>
+        </dn-dropdown-multilevel>
+    </div>
+    <div class="code-wrapper">
+        <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-html">
+&lt;!--  DROPDOWN MULTILEVEL   --&gt;
+&lt;template ui-field=&quot;dropDownMultiLevelUi&quot;&gt;
+    &lt;template ui-field=&quot;dropdown&quot;&gt;
+        &lt;div class=&quot;dropdown&quot; ui-field=&quot;root&quot;&gt;
+            &lt;button ui-field=&quot;button&quot; class=&quot;btn btn-secondary dropdown-toggle&quot;&gt;
+
+            &lt;/button&gt;
+            &lt;div ui-field=&quot;dropDownMenu&quot; class=&quot;dropdown-menu&quot;&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;style-item ui-field=&quot;dropDownMenuShowStyle&quot; class=&quot;show&quot;&gt;&lt;/style-item&gt;
+    &lt;/template&gt;
+    &lt;template ui-field=&quot;dropdownItem&quot;&gt;
+        &lt;a ui-field=&quot;root&quot; class=&quot;dropdown-item&quot; href=&quot;javascript:void(0)&quot;&gt;&lt;/a&gt;
+    &lt;/template&gt;
+    &lt;template ui-field=&quot;dropdownItemHasChildren&quot;&gt;
+        &lt;a ui-field=&quot;root&quot; class=&quot;dropdown-item&quot; href=&quot;javascript:void(0)&quot;&gt;
+            &lt;span ui-field=&quot;textPanel&quot;&gt;&lt;/span&gt;
+            &lt;span style=&quot;position: absolute;right: 5px;&quot;&gt;
+            &lt;i class=&quot;fa fa-angle-right&quot;&gt;&lt;/i&gt;
+        &lt;/span&gt;
+        &lt;/a&gt;
+    &lt;/template&gt;
+    &lt;template ui-field=&quot;dropdownPanelHasChildren&quot;&gt;
+        &lt;div ui-field=&quot;root&quot; class=&quot;dropdown-menu dropdownPanel&quot;&gt;
+        &lt;/div&gt;
+    &lt;/template&gt;
+&lt;/template&gt;
+            </code>
+        </pre>
+        </div>
+    </div>
+</div>

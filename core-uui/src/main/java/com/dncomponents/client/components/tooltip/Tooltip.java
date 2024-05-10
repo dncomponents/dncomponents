@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,9 @@
 
 package com.dncomponents.client.components.tooltip;
 
-import com.dncomponents.client.components.core.*;
+import com.dncomponents.client.components.core.AbstractPluginHelper;
+import com.dncomponents.client.components.core.ComponentHtmlParser;
+import com.dncomponents.client.components.core.HtmlParser;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.core.events.close.CloseEvent;
 import com.dncomponents.client.components.core.events.close.CloseHandler;
@@ -36,9 +38,7 @@ import elemental2.dom.HTMLElement;
 import java.util.Collections;
 import java.util.Map;
 
-/**
- * Created by nikolasavic
- */
+
 public class Tooltip<T> extends BaseTooltip<T, TooltipView> implements HasCloseHandlers<Tooltip<T>>, HasOpenHandlers<Tooltip<T>> {
 
 

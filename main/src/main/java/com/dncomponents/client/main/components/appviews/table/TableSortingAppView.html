@@ -1,0 +1,244 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Sorting Table
+    </h2>
+    <div class="demo-component-wrapper">
+        <div class="row">
+            <div class="col-lg-3 mb-3">
+                <dn-checkbox ui-field="multiSortingChb">multisorting</dn-checkbox>
+            </div>
+            <div class="col-lg-9">
+                <dn-table ui-field="table"></dn-table>
+            </div>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+CheckBox&lt;Object&gt; multiSortingChb;
+@UiField
+Table&lt;Fruit&gt; table;
+
+multiSortingChb.addValueChangeHandler(event -&gt; table.setMultiSorting(event.getValue()));
+
+ColumnConfig&lt;Fruit, String&gt; nameColumn =
+        new ColumnConfig.Builder&lt;&gt;(Fruit::getName, Fruit::setName)
+                .setHeaderCellFactory(() -&gt; new HeaderTableSortCell().setText(&quot;Name&quot;))
+                .build();
+
+ColumnConfig&lt;Fruit, String&gt; descColumn =
+        new ColumnConfig.Builder&lt;&gt;(Fruit::getDescription, Fruit::setDescription)
+                .setHeaderCellFactory(() -&gt; new HeaderTableSortCell().setText(&quot;description&quot;))
+                .build();
+
+table.addColumn(nameColumn);
+table.addColumn(descColumn);
+
+table.setRowsData(Fruit.getFruits(1000));
+table.drawData();
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+multiSortingChb: CheckBox&lt;any&gt;;
+@UiField
+table: Table&lt;Fruit&gt;;
+
+this.multiSortingChb.addValueChangeHandler(ValueChangeHandler.onValueChange(evt =&gt; {
+    this.table.setMultiSorting(evt.value);
+}));
+let nameColumn =
+    new ColumnConfig&lt;Fruit, string&gt;()
+        .setFieldGetter(p1 =&gt; p1.name)
+        .setFieldSetter((p1, p2) =&gt; p1.name = p2)
+        .setColumnName('Name')
+        .setHeaderCellFactory({getCell: () =&gt; new HeaderTableSortCell().setText('name')});
+
+let descColumn: ColumnConfig&lt;Fruit, string&gt; =
+    new ColumnConfig&lt;Fruit, string&gt;()
+        .setFieldGetter(p1 =&gt; p1.description)
+        .setFieldSetter((p1, p2) =&gt; p1.description = p2)
+        .setHeaderCellFactory({getCell: () =&gt; new HeaderTableSortCell().setText('description')});
+this.table.addColumn(nameColumn);
+this.table.addColumn(descColumn);
+this.table.setRowsData(Fruit.getFruits(1000));
+this.table.drawData();
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+    <h5>
+        Default comparators
+    </h5>
+    <div class="demo-component-wrapper">
+        <dn-table ui-field="tableDefault"></dn-table>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+Table&lt;Person&gt; tableDefault;
+
+final ArrayList&lt;Person&gt; people = Data.people;
+ColumnConfig&lt;Person, String&gt; nameColumn = new ColumnConfig&lt;&gt;(Person::getName, Person::setName)
+        .setColumnName(&quot;Name&quot;)
+        .setColumnWidth(&quot;300px&quot;)
+        .setClazz(String.class);
+
+ColumnConfig&lt;Person, Boolean&gt; activeColumn = new ColumnConfig&lt;&gt;(Person::isActive, Person::setActive)
+        .setColumnName(&quot;active&quot;)
+        .setColumnWidth(&quot;100px&quot;)
+        .setClazz(Boolean.class);
+
+///column
+ColumnConfig&lt;Person, Integer&gt; ageColumn = new ColumnConfig&lt;&gt;(Person::getAge, Person::setAge)
+        .setColumnName(&quot;age&quot;)
+        .setColumnWidth(&quot;100px&quot;)
+        .setClazz(Integer.class);
+///end column
+AutoCompleteEditor&lt;String&gt; acEditor = new AutoCompleteEditor&lt;&gt;(TestingHelper.getColors());
+ColumnConfig&lt;Person, String&gt; colorColumn =
+        new ColumnConfig&lt;&gt;(Person::getCurrentColor, Person::setCurrentColor)
+                .setClazz(String.class)
+                .setColumnName(&quot;Color&quot;)
+                .setCellFactory(c -&gt;
+                        new TableCell&lt;Person, String&gt;()
+                                .setRenderer(r -&gt; {
+                                    r.valuePanel.style.background = r.value;
+                                    r.valuePanel.textContent = r.value;
+                                }).setCellEditor(acEditor))
+                .setColumnWidth(&quot;250px&quot;);
+
+ColumnConfig&lt;Person, Date&gt; dateColumn =
+        new ColumnConfig&lt;&gt;(Person::getDate, Person::setDate)
+                .setColumnName(&quot;Date&quot;)
+                .setCellFactory(c -&gt; new TableCellDate&lt;&gt;())
+                .setColumnWidth(&quot;300px&quot;)
+                .setClazz(Date.class);
+
+tableDefault.addColumn(nameColumn, activeColumn, ageColumn, colorColumn, dateColumn);
+tableDefault.setRowsData(people);
+tableDefault.drawData();
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+           <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+tableDefault:Table&lt;Person&gt;;
+
+let people = Data.people;
+let nameColumn = new ColumnConfig&lt;Person, string&gt;()
+    .setFieldGetter(p =&gt; p.name)
+    .setColumnName('Name')
+    .setColumnWidth('300px')
+    .setClazz('string');
+
+let activeColumn = new ColumnConfig&lt;Person, boolean&gt;()
+    .setFieldGetter(p =&gt; p.active)
+    .setColumnName('active')
+    .setColumnWidth('100px')
+    .setClazz('boolean');
+///column
+let ageColumn = new ColumnConfig&lt;Person, number&gt;()
+    .setFieldGetter(p =&gt; p.age)
+    .setColumnName('age')
+    .setColumnWidth('100px')
+    .setClazz('integer');
+///end column
+let acEditor = new AutoCompleteEditor(TestingHelper.getColors());
+let colorColumn = new ColumnConfig&lt;Person, string&gt;()
+    .setFieldGetter(p =&gt; p.currentColor)
+    .setClazz('string')
+    .setColumnName('Color')
+    .setCellFactory({
+        getCell(c): any {
+            return new TableCell&lt;Person, string&gt;()
+                .setRenderer({
+                    setValue(r: RendererContext&lt;Person, string&gt;) {
+                        r.valuePanel.style.background = r.value;
+                        r.valuePanel.textContent = r.value;
+                    }
+                }).setCellEditor(acEditor);
+        }
+    })
+    .setColumnWidth('250px');
+
+let dateColumn = new ColumnConfig&lt;Person, Date&gt;()
+    .setFieldGetter(p =&gt; p.date)
+    .setColumnName('Date')
+    .setCellFactory({
+        getCell(c: any): TableCell&lt;Person, Date&gt; {
+            return new TableCellDate&lt;Person&gt;();
+        }
+    })
+    .setColumnWidth('300px')
+    .setClazz('date');
+
+this.tableDefault.addColumn(nameColumn, activeColumn, ageColumn, colorColumn, dateColumn);
+this.tableDefault.setRowsData(people);
+this.tableDefault.drawData();
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+</div>

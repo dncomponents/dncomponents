@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,9 @@ package com.dncomponents.client.components.core.selectionmodel;
 import com.dncomponents.client.components.core.events.HandlerRegistration;
 import com.dncomponents.client.components.core.events.selection.SelectionEvent;
 import com.dncomponents.client.components.core.events.selection.SelectionHandler;
+import com.dncomponents.client.components.core.events.value.AbstractValueChangeHandler;
 import com.dncomponents.client.components.core.events.value.HasValue;
 import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
-import com.dncomponents.client.components.core.events.value.AbstractValueChangeHandler;
 import com.dncomponents.client.dom.DomUtil;
 import elemental2.dom.CustomEvent;
 import elemental2.dom.HTMLElement;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,7 @@ package com.dncomponents.client.components.core;
 import com.dncomponents.client.components.AbstractCellComponent;
 import com.dncomponents.client.components.BaseCell;
 
-/**
- * @author nikolasavic
- */
+
 public class CellContext<T, M> {
 
     public CellContext(CellConfig<T, M> cellConfig, CellFactory<T, M> defaultCellFactory, T model, AbstractCellComponent owner) {

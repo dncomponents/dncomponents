@@ -1,0 +1,131 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Sorting List
+    </h2>
+
+    <div class="demo-component-wrapper">
+        <div class="row">
+            <div class="col-5">
+                <b>Default sorting</b>
+                <dn-checkbox ui-field="sortableChb" addClass="mt-3"> Sortable</dn-checkbox>
+                <dn-button ui-field="sortAscBtn" color="SECONDARY">Asc</dn-button>
+                <dn-button ui-field="sortDescBtn" color="SECONDARY">Desc</dn-button>
+                <dn-button ui-field="sortOrgBtn" color="SECONDARY">Org</dn-button>
+            </div>
+            <div class="col-7">
+                <dn-list ui-field="list"></dn-list>
+            </div>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+ListData&lt;Fruit, String&gt; list;
+@UiField
+Button&lt;Boolean&gt; sortAscBtn;
+@UiField
+Button&lt;Boolean&gt; sortDescBtn;
+@UiField
+Button&lt;Boolean&gt; sortOrgBtn;
+@UiField
+CheckBox&lt;String&gt; sortableChb;
+
+list.getRowCellConfig().setFieldGetter(Fruit::getName);
+list.getRowCellConfig().setFieldSetter(Fruit::setName);
+list.getRowCellConfig().setCellRenderer(r -&gt;
+        r.valuePanel.innerHTML = r.cell.getModel().getName() +
+                &quot; &lt;b&gt;&quot; + r.cell.getModel().getDescription() + &quot;&lt;/b&gt;&quot;);
+list.setRowsData(Fruit.getFruits(2000));
+list.drawData();
+sortableChb.setValue(list.isSortable(), false);
+sortableChb.addValueChangeHandler(event -&gt; list.setSortable(event.getValue()));
+sortAscBtn.setUserObject(Boolean.TRUE);
+sortDescBtn.setUserObject(Boolean.FALSE);
+sortOrgBtn.setUserObject(null);
+ClickHandler sortHandler = e -&gt; list.sort((Boolean) BaseComponent.source(e).getUserObject());
+sortAscBtn.addClickHandler(sortHandler);
+sortDescBtn.addClickHandler(sortHandler);
+sortOrgBtn.addClickHandler(sortHandler);
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+             <code class="prettyprint lang-ts">
+@UiField
+list: ListData&lt;Fruit, string&gt;;
+@UiField
+sortAscBtn: Button&lt;boolean&gt;;
+@UiField
+sortDescBtn: Button&lt;boolean&gt;;
+@UiField
+sortOrgBtn: Button&lt;boolean&gt;;
+@UiField
+sortableChb: CheckBox&lt;string&gt;;
+
+this.list.getRowCellConfig().setFieldGetter((p) =&gt; {
+    return p.name;
+});
+this.list.getRowCellConfig().setFieldSetter((p, name) =&gt; {
+    return p.name = (name);
+});
+this.list.getRowCellConfig()
+
+    .setCellRenderer({setValue: (r) =&gt; r.valuePanel.innerHTML = r.cell.getModel().name + ' &lt;b&gt;' + r.cell.getModel().name + '&lt;/b&gt;'});
+this.list.setRowsData(Fruit.getFruits(2000));
+this.list.drawData();
+this.sortableChb.setValue(this.list.isSortable(), false);
+this.sortableChb.addValueChangeHandler(ValueChangeHandler.onValueChange(evt =&gt; {
+    this.list.setSortable(evt.value);
+}));
+this.sortAscBtn.setUserObject(javaemul.internal.BooleanHelper.TRUE);
+this.sortDescBtn.setUserObject(javaemul.internal.BooleanHelper.FALSE);
+this.sortOrgBtn.setUserObject(null);
+let sortHandler: ClickHandler = ClickHandler.onClick(evt =&gt; {
+    this.list.sort(BaseComponent.source(evt).getUserObject());
+});
+this.sortAscBtn.addClickHandler(sortHandler);
+this.sortDescBtn.addClickHandler(sortHandler);
+this.sortOrgBtn.addClickHandler(sortHandler);
+
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+</div>

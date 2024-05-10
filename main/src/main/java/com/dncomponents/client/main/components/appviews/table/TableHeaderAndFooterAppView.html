@@ -1,0 +1,257 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Header and footer Table
+    </h2>
+    <div class="demo-component-wrapper">
+        <dn-table ui-field="table"></dn-table>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+
+@UiField
+Table&lt;Person&gt; table;
+
+final ArrayList&lt;Person&gt; people = Data.people;
+table.setHeaderRenderer((headerRow, headerCells, table) -&gt; {
+    //language=html
+    HTMLElement tr = DomUtil.createTr();
+    HTMLElement td1 = headerCells.get(0).asElement();
+    HTMLElement td2 = DomUtil.createTd();
+    td1.setAttribute(&quot;rowspan&quot;, &quot;2&quot;);
+    td1.style.verticalAlign = &quot;middle&quot;;
+    td2.setAttribute(&quot;colspan&quot;, &quot;4&quot;);
+    td2.innerHTML = &quot;Second group&quot;;
+    tr.appendChild(td1);
+    tr.appendChild(td2);
+    headerRow.appendChild(tr);
+    for (int i = 1; i &lt; headerCells.size(); i++) {
+        headerRow.appendChild(headerCells.get(i).asElement());
+    }
+});
+table.setFooterRenderer(new Table.FooterRenderer&lt;Person&gt;() {
+    @Override
+    public void render(HTMLElement headerRow, List&lt;AbstractFooterCell&gt; footerCells, Table&lt;Person&gt; table) {
+        HTMLElement tr = DomUtil.createTr();
+        HTMLElement td1 = footerCells.get(0).asElement();
+        HTMLElement td2 = DomUtil.createTd();
+        td1.setAttribute(&quot;rowspan&quot;, &quot;2&quot;);
+        td1.style.verticalAlign = &quot;middle&quot;;
+        td2.setAttribute(&quot;colspan&quot;, &quot;4&quot;);
+        td2.innerHTML = &quot;Second group&quot;;
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        headerRow.appendChild(tr);
+        for (int i = 1; i &lt; footerCells.size(); i++) {
+            headerRow.appendChild(footerCells.get(i).asElement());
+        }
+
+    }
+});
+
+ColumnConfig&lt;Person, String&gt; nameColumn =
+        new ColumnConfig.Builder&lt;&gt;(Person::getName, Person::setName)
+                .setClazz(String.class)
+                .setName(&quot;Name&quot;)
+                .setColumnWidth(&quot;300px&quot;)
+                .setFooterCellFactory(() -&gt; new FooterCell&lt;Person, String&gt;()
+                        .setCellRenderer((valuePanel, cell) -&gt;
+                                valuePanel.innerHTML = &quot;items number: &quot; + cell.getColumnItems().size()
+                        ))
+                .build();
+
+ColumnConfig&lt;Person, Boolean&gt; activeColumn =
+        new ColumnConfig.Builder&lt;&gt;(Person::isActive, Person::setActive)
+                .setClazz(Boolean.class)
+                .setName(&quot;Active&quot;)
+                .setColumnWidth(&quot;100px&quot;)
+                .setCellRenderer(r -&gt; r.valuePanel.innerHTML = r.value + &quot;&quot;)
+                .setEditable(true)
+                .build();
+
+
+ColumnConfig&lt;Person, Integer&gt; ageColumn =
+        new ColumnConfig.Builder&lt;&gt;(Person::getAge, Person::setAge)
+                .setClazz(Integer.class)
+                .setName(&quot;Age&quot;)
+                .setColumnWidth(&quot;100px&quot;)
+                .setFooterCellFactory(() -&gt;
+                        new NumberFooterCell(NumberFooterCell.Types.COUNT, Object::toString))
+                .build();
+
+ColumnConfig&lt;Person, String&gt; colorColumn =
+        new ColumnConfig.Builder&lt;&gt;(Person::getCurrentColor, Person::setCurrentColor)
+                .setName(&quot;color&quot;)
+                .setClazz(String.class)
+                .setCellFactory(c -&gt; new TableCell&lt;Person, String&gt;()
+                        .setRenderer(r -&gt; {
+                            r.valuePanel.style.background = r.value;
+                            r.valuePanel.innerHTML = r.value;
+                        }))
+                .setColumnWidth(&quot;250px&quot;)
+                .setFooterCellFactory(() -&gt;
+                        new FooterCell&lt;Person, String&gt;()
+                                .setCellRenderer((valuePanel, cell) -&gt; {
+                                    valuePanel.style.background = &quot;lightgreen&quot;;
+                                    valuePanel.style.color = &quot;white&quot;;
+                                    valuePanel.textContent = &quot;Custom footer&quot;;
+                                }))
+                .build();
+
+ColumnConfig&lt;Person, Date&gt; dateColumn =
+        new ColumnConfig.Builder&lt;&gt;(Person::getDate)
+                .setClazz(Date.class)
+                .setName(&quot;Date&quot;)
+                .setCellFactory(c -&gt; new TableCellDate())
+                .setColumnWidth(&quot;300px&quot;)
+                .build();
+
+table.addColumn(nameColumn, activeColumn, ageColumn, colorColumn, dateColumn);
+table.setRowsData(people);
+table.drawData();
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+table:Table&lt;Person&gt;;
+
+let people: java.util.ArrayList&lt;Person&gt; = Data.getPeople();
+this.table.setHeaderRenderer({
+    render: (headerRow, headerCells, table) =&gt; {
+        let tr: HTMLElement = Util.createTr();
+        let td1: HTMLElement = headerCells.get(0).asElement();
+        let td2: HTMLElement = Util.createTd();
+        td1.setAttribute('rowspan', '2');
+        td1.style.verticalAlign = 'middle';
+        td2.setAttribute('colspan', '4');
+        td2.innerHTML = 'Second group';
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        headerRow.appendChild(tr);
+        for (let i: number = 1; i &lt; headerCells.size(); i++) {
+            headerRow.appendChild(headerCells.get(i).asElement());
+        }
+    }
+});
+this.table.setFooterRenderer({
+    render(headerRow: HTMLElement, footerCells: java.util.List&lt;AbstractFooterCell&lt;any, any&gt;&gt;, table: Table&lt;Person&gt;): void {
+        let tr = Util.createTr();
+        let td1 = footerCells.get(0).asElement();
+        let td2 = Util.createTd();
+        td1.setAttribute('rowspan', '2');
+        td1.style.verticalAlign = 'middle';
+        td2.setAttribute('colspan', '4');
+        td2.innerHTML = 'Second group';
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        headerRow.appendChild(tr);
+        for (let i = 1; i &lt; footerCells.size(); i++) {
+            headerRow.appendChild(footerCells.get(i).asElement());
+        }
+    }
+});
+let nameColumn: ColumnConfig&lt;Person, string&gt; = new ColumnConfig&lt;Person, string&gt;()
+    .setFieldGetter((p) =&gt; {
+        return p.name;
+    }).setFieldSetter((p, name) =&gt; {
+        return p.name = (name);
+    }).setColumnName('Name')
+    .setFooterCellFactory({
+        getCell(): AbstractFooterCell&lt;Person, string&gt; {
+            return new FooterCell&lt;Person, string&gt;().setCellRenderer({
+                setValue(valuePanel: HTMLElement, cell: AbstractFooterCell&lt;Person, string&gt;): void {
+                    valuePanel.innerHTML = 'items number: ' + cell.getColumnItems().size();
+                }
+            });
+        }
+    })
+    .setColumnWidth('300px')
+    .setEditable(true)
+    .setClazz('string');
+
+let activeColumn: ColumnConfig&lt;Person, boolean&gt; = new ColumnConfig&lt;Person, boolean&gt;()
+    .setFieldGetter(p =&gt; p.active)
+    .setFieldSetter((p, v) =&gt; p.active = v)
+    .setColumnName('Active')
+    .setHeaderCellFactory({getCell: () =&gt; new HeaderTableFilterCell()})
+    .setColumnWidth('150px')
+    .setClazz('boolean');
+
+let ageColumn: ColumnConfig&lt;Person, number&gt; = new ColumnConfig&lt;Person, number&gt;()
+    .setFieldGetter(p =&gt; p.age)
+    .setFieldSetter((p1, p2) =&gt; p1.age = p2)
+    .setColumnName('Age')
+    .setHeaderCellFactory({getCell: () =&gt; new HeaderTableFilterCell()})
+    .setColumnWidth('150px')
+    .setClazz('number');
+
+let colors: java.util.List&lt;string&gt; = java.util.Arrays.asList&lt;any&gt;(TestingHelper.colors);
+let colorColumn: ColumnConfig&lt;Person, string&gt; = new ColumnConfig&lt;Person, string&gt;()
+    .setFieldGetter(p =&gt; p.currentColor)
+    .setColumnName('Color')
+    .setColumnWidth('250px')
+    .setHeaderCellFactory({
+        getCell(): AbstractHeaderCell {
+            return new HeaderTableFilterCell();
+            //todo FilterPanelList
+        }
+    })
+    .setClazz('string');
+let acEditor: AutoCompleteEditor&lt;string&gt; = new AutoCompleteEditor&lt;string&gt;(TestingHelper.getColors());
+colorColumn.setCellFactory({
+    getCell(c): any {
+        return c.createDefaultCell().setCellEditor(acEditor).setRenderer({
+            setValue(r: RendererContext&lt;any, any&gt;): void {
+                r.valuePanel.style.background = '' + r.value;
+                r.valuePanel.innerHTML = r.value + '';
+            }
+        });
+    }
+});
+this.table.addColumn(nameColumn, activeColumn, ageColumn, colorColumn);
+this.table.setRowsData(people);
+this.table.drawData();
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+</div>

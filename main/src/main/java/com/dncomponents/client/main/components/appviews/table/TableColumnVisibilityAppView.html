@@ -1,0 +1,117 @@
+<!--
+  ~ Copyright 2024 dncomponents
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<div ui-field="root">
+    <h2>
+        Column visibility Table
+    </h2>
+    <div class="demo-component-wrapper">
+        <div class="row">
+            <div ui-field="leftPanel" class="col-lg-3 mb-3"></div>
+            <div class="col-lg-9">
+                <dn-table ui-field="table"></dn-table>
+            </div>
+        </div>
+    </div>
+    <dn-tab>
+        <item itemId="one">
+            <title>
+                Java
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-java">
+@UiField
+public HTMLElement leftPanel;
+@UiField
+Table&lt;Fruit&gt; table;
+
+table.setRowsData(Fruit.getFruits(1500));
+ColumnConfig&lt;Fruit, String&gt; cellConfig1 = new ColumnConfig&lt;&gt;(Fruit::getName, Fruit::setName, &quot;Name&quot;);
+ColumnConfig&lt;Fruit, String&gt; cellConfig2 = new ColumnConfig&lt;&gt;(Fruit::getDescription, Fruit::setDescription, &quot;Description&quot;);
+table.addColumn(cellConfig1);
+table.addColumn(cellConfig2);
+table.drawData();
+for (ColumnConfig columnConfig : table.getColumnConfigs()) {
+    CheckBox columnCheckBox = new CheckBox(columnConfig.getColumnName());
+    columnCheckBox.setValue(columnConfig.isVisible(), false);
+    columnCheckBox.addValueChangeHandler(new ValueChangeHandler&lt;Boolean&gt;() {
+        @Override
+        public void onValueChange(ValueChangeEvent&lt;Boolean&gt; event) {
+            columnConfig.setVisible(event.getValue());
+            table.drawHeader();
+            table.drawData();
+        }
+    });
+    leftPanel.appendChild(columnCheckBox.asElement());
+}
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+        <item itemId="two">
+            <title>
+                Typescript
+            </title>
+            <content>
+                <div class="code-wrapper">
+                    <div class="highlight">
+          <pre>
+            <code class="prettyprint lang-ts">
+@UiField
+public leftPanel: HTMLElement;
+@UiField
+table: Table&lt;Fruit&gt;;
+
+this.table.setRowsData(Fruit.getFruits(1500));
+let nameColumn: ColumnConfig&lt;Fruit, string&gt; =
+    new ColumnConfig&lt;Fruit, string&gt;()
+        .setFieldGetter(p1 =&gt; p1.name)
+        .setFieldSetter((p1, p2) =&gt; p1.name = p2)
+        .setColumnName('name');
+let descColumn: ColumnConfig&lt;Fruit, string&gt; =
+    new ColumnConfig&lt;Fruit, string&gt;()
+        .setFieldGetter(p1 =&gt; p1.description)
+        .setFieldSetter((p1, p2) =&gt; p1.description = p2)
+        .setColumnName('description');
+this.table.addColumn(nameColumn);
+this.table.addColumn(descColumn);
+this.table.drawData();
+for (let index = this.table.getColumnConfigs().iterator(); index.hasNext();) {
+    let columnConfig = index.next();
+    let columnCheckBox: CheckBox&lt;any&gt; = new CheckBox();
+    columnCheckBox.setUserObject(columnConfig.getColumnName());
+    columnCheckBox.setValue(columnConfig.isVisible(), false);
+    columnCheckBox.addValueChangeHandler(ValueChangeHandler.onValueChange(evt =&gt; {
+        columnConfig.setVisible(evt.value);
+        this.table.drawHeader();
+        this.table.drawData();
+    }));
+    this.leftPanel.appendChild(columnCheckBox.asElement());
+}
+            </code>
+        </pre>
+                    </div>
+                </div>
+            </content>
+        </item>
+    </dn-tab>
+
+</div>

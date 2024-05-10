@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,49 +16,50 @@
 
 package com.dncomponents.client.components.core;
 
-import elemental2.dom.CustomEvent;
-import elemental2.dom.CustomEventInit;
-import elemental2.dom.Element;
-import elemental2.dom.Event;
 
-import java.util.Collection;
-import java.util.Objects;
+import com.dncomponents.client.components.core.events.AbstractHandler;
+import com.dncomponents.client.components.core.events.HandlerRegistration;
+import com.dncomponents.client.components.core.events.value.HasValueChangeHandlers;
+import com.dncomponents.client.components.core.events.value.ValueChangeEvent;
+import com.dncomponents.client.components.core.events.value.ValueChangeHandler;
+import com.dncomponents.client.dom.DomUtil;
+
 import java.util.function.Supplier;
 
-/**
- * @author nikolasavic
- */
-public class State {
+
+public class State<T> extends AbstractHandler implements HasValueChangeHandlers<T> {
+    static int ids = 0;
+    int id = ids++;
     TemplateParser templateParser;
-    Object value;
+    T value;
     boolean needsUpdate;
     String stateName;
-    Supplier createValue;
+    Supplier<T> createValue;
 
-    public State(String stateName, TemplateParser parser) {
+    State(String stateName, TemplateParser parser) {
         this.stateName = stateName;
         this.templateParser = parser;
     }
 
-    public State(String stateName, Supplier createValue, TemplateParser parser) {
+    State(String stateName, Supplier createValue, TemplateParser parser) {
         this.stateName = stateName;
         this.templateParser = parser;
         this.createValue = createValue;
     }
 
-    public void setValue() {
-        Object oldValue = getValue();
+
+    String json = "";
+
+    void setValue() {
         this.value = createValue.get();
-        if (!Objects.equals(this.value, oldValue)) {
+        String stringify = DomUtil.stringifyFlatted(value);
+        if (!stringify.equals(json)) {
             needsUpdate = true;
-        }
-        if (this.value instanceof Collection) {
-            //todo compare deep arrays,
-            needsUpdate = true;
+            json = stringify;
         }
     }
 
-    public Object getValue() {
+    public T getValue() {
         return value;
     }
 
@@ -74,12 +75,25 @@ public class State {
         if (needsUpdate) {
             updateUI(value);
             needsUpdate = false;
+            ValueChangeEvent.fire(this, value);
         }
     }
 
-    public void forceUpdateUI() {
+    void forceUpdateUI() {
         updateUI(value);
         needsUpdate = false;
+        ValueChangeEvent.fire(this, value);
+    }
+
+    @Override
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<T> handler) {
+        return handler.addTo(ensureHandlers());
+    }
+
+    public static void watch(ValueChangeHandler valueChangeHandler, State... states) {
+        for (State state : states) {
+            state.addValueChangeHandler(valueChangeHandler);
+        }
     }
 
 }

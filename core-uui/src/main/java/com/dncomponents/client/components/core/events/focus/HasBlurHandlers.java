@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 package com.dncomponents.client.components.core.events.focus;
 
 import com.dncomponents.client.components.core.events.HandlerRegistration;
-import com.dncomponents.client.dom.handlers.OnBlurHandler;
 import com.dncomponents.client.components.core.events.HasHandlers;
+import com.dncomponents.client.dom.handlers.OnBlurHandler;
 
 public interface HasBlurHandlers extends HasHandlers {
     HandlerRegistration addBlurHandler(OnBlurHandler handler);

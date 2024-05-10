@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ import com.dncomponents.client.views.core.ui.table.headers.FilterPanelListView;
 import java.util.List;
 
 /**
- * @author nikolasavic
  * <p>
  * Displays list of comparators for clazz of column.
  */
@@ -49,7 +48,7 @@ public class FilterPanelList<T> extends FilterPanel<T> {
             return;
         }
         if (comparator instanceof FilterUtil.IsAnyOfComparator ||
-                comparator instanceof FilterUtil.IsNonOfComparator) {
+            comparator instanceof FilterUtil.IsNonOfComparator) {
             view.setValueComponent(getMultiCellEdit());
         } else {
             view.setValueComponent(getSingleCellEdit());

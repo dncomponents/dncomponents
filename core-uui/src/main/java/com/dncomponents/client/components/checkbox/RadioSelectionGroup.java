@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class RadioSelectionGroup<T> extends AbstractSingleSelectionGroup<T, Radio<T>> implements HasIsElement{
+public class RadioSelectionGroup<T> extends AbstractSingleSelectionGroup<T, Radio<T>> implements HasIsElement {
 
     private static int id = 0;
     private String groupName;
@@ -87,6 +87,7 @@ public class RadioSelectionGroup<T> extends AbstractSingleSelectionGroup<T, Radi
             setSelected(value, true);
         }
     }
+
     public void setElementToWrap(HTMLElement elementToWrap) {
         this.elementToWrap = elementToWrap;
     }
@@ -102,6 +103,7 @@ public class RadioSelectionGroup<T> extends AbstractSingleSelectionGroup<T, Radi
         getItems().forEach(e -> elementToWrap.appendChild(e.asElement()));
         return () -> elementToWrap;
     }
+
     // ui binder field
     protected String uiField;
 

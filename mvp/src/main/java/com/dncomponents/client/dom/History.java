@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-/**
- * @author nikolasavic
- */
+
 public class History {
 
     private static final List<Consumer<String>> handlerList = new ArrayList<>();
@@ -42,6 +40,7 @@ public class History {
         };
     }
 
+
     public static void removeValueChangeHandler(Consumer<String> handler) {
         handlerList.remove(handler);
     }
@@ -54,9 +53,12 @@ public class History {
     public static void newItem(String historyToken, boolean issueEvent) {
         if (issueEvent) {
             DomGlobal.location.hash = (historyToken);
-        } else
-            DomGlobal.window.history.replaceState(null, null, "#" + historyToken);
+        } else {
+            //todo doesn't work after update
+//            DomGlobal.window.history.replaceState(null, null, "#" + historyToken);
+        }
     }
+
 
     public static void update(String token) {
         handlerList.forEach(e -> e.accept(token.substring(1)));

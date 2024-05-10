@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 dncomponents
+ * Copyright 2024 dncomponents
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,9 +36,7 @@ import java.util.function.Function;
 
 import static com.dncomponents.client.components.Tree.TreeHtmlParser.parseItem;
 
-/**
- * @author nikolasavic
- */
+
 public class AutocompleteTree<T> extends AbstractAutocomplete<TreeNode<T>, AutocompleteTreeView<T>, TreeNode<T>> {
     TreeAcLogic treeAcLogic;
 
