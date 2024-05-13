@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.dncomponents.client.main.reactive;
+package com.dncomponents.client.reactive;
 
 import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
-import com.dncomponents.client.main.testing.Person;
-import com.dncomponents.client.main.testing.TestingHelper;
+import com.dncomponents.client.testing.Person;
+import com.dncomponents.client.testing.TestingHelper;
 import com.dncomponents.client.views.IsElement;
 import elemental2.dom.HTMLElement;
 
@@ -49,18 +49,19 @@ import java.util.List;
                       "        </tbody>\n" +
                       "    </table>\n" +
                       "    <h2>Loop in list</h2>\n" +
-                      "    <ul dn-loop='person 1in persons'>\n" +
+                      "    <ul dn-loop='person in persons'>\n" +
                       "        <li>{{person.getName()}}</li>\n" +
                       "    </ul>\n" +
                       "    <h2>Loop components in list</h2>\n" +
                       "    <ul dn-loop='person in persons'>\n" +
-                      "        <PersonComponent person='{{person}}' color='red'></PersonComponent>\n" +
+                      "        <PersonComponent parent='{{self}}' person='{{person}}' someNumb='{{numb}}' color='red'></PersonComponent>\n" +
                       "    </ul>\n" +
                       "</div>\n")
 public class LoopComponent implements IsElement {
     HtmlBinder<LoopComponent> binder = HtmlBinder.create(LoopComponent.class, this);
     List<Person> persons = TestingHelper.getPeople(10);
-
+    LoopComponent self = this; //testing states out of loop
+    int numb=0;
     public LoopComponent() {
         binder.bindAndUpdateUi();
     }

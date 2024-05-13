@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.dncomponents.client.main.reactive;
+package com.dncomponents.client.reactive;
 
 import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
@@ -28,13 +28,14 @@ import java.util.List;
 //language=html
 @Component(template = "<div>\n" +
                       "    <h1 class='main-title'>Main App</h1>\n" +
-                      "    <select dn-model=\"currentScreens\" multiple>\n" +
+                      "    <select dn-model=\"currentScreens\" multiple style='height: 140px;'>\n" +
                       "        <option>HelloComponent</option>\n" +
                       "        <option>UserInputComponent</option>\n" +
                       "        <option>EventsComponent</option>\n" +
                       "        <option>AttributesComponent</option>\n" +
                       "        <option>LoopComponent</option>\n" +
                       "        <option>ValuesBindingComponent</option>\n" +
+                      "        <option>ConditionalComponent</option>\n" +
                       "    </select>\n" +
                       "    <hello-component dn-if='currentScreens.contains(\"HelloComponent\")'></hello-component>\n" +
                       "    <UserInputComponent dn-if='currentScreens.contains(\"UserInputComponent\")'></UserInputComponent>\n" +
@@ -42,6 +43,7 @@ import java.util.List;
                       "    <EventsComponent dn-if='currentScreens.contains(\"EventsComponent\")'></EventsComponent>\n" +
                       "    <LoopComponent dn-if='currentScreens.contains(\"LoopComponent\")'></LoopComponent>\n" +
                       "    <ValuesBindingComponent dn-if='currentScreens.contains(\"ValuesBindingComponent\")'></ValuesBindingComponent>\n" +
+                      "    <ConditionalComponent dn-if='currentScreens.contains(\"ConditionalComponent\")'></ConditionalComponent>\n" +
                       "</div>\n",
         //language=css
         css = ".main-title{\n" +

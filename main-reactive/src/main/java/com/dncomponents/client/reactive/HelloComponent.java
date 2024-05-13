@@ -14,34 +14,33 @@
  * limitations under the License.
  */
 
-package com.dncomponents.client.main.reactive;
+package com.dncomponents.client.reactive;
 
 import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.views.IsElement;
 import elemental2.dom.HTMLElement;
 
-
 //language=html
-@Component(template = "          <div>\n" +
-                      "            <p>Name: {{name}}</p>\n" +
-                      "            <p>Surname: {{surname}}</p>\n" +
-                      "            <p>Age: {{age}}</p>\n" +
-                      "            <b>{{fullNameAndAge()}}</b>\n" +
-                      "          </div>\n")
-public class ValuesBindingComponent implements IsElement {
-    HtmlBinder<ValuesBindingComponent> binder = HtmlBinder.create(ValuesBindingComponent.class, this);
+@Component(template = "<div class='helloCss'>\n" +
+                      "<h2>*** HelloComponent ***</h2>\n" +
+                      "  <h1>Hello, {{name}}!</h1>\n" +
+                      "</div>\n",
+//language=css
+        css = ".helloCss{\n" +
+              "           background: #1dea16;\n" +
+              "           padding: 20px;\n" +
+              "           border: 1px solid gray;\n" +
+              "         }\n",
+        tag = "hello-component"
+)
 
+public class HelloComponent implements IsElement {
+    HtmlBinder<HelloComponent> binder = HtmlBinder.create(HelloComponent.class, this);
 
-    String name = "John";
-    String surname = "Doe";
-    int age = 33;
+    String name = "All";
 
-    String fullNameAndAge() {
-        return name + ", " + surname + " - " + age;
-    }
-
-    public ValuesBindingComponent() {
+    public HelloComponent() {
         binder.bindAndUpdateUi();
     }
 
@@ -49,5 +48,4 @@ public class ValuesBindingComponent implements IsElement {
     public HTMLElement asElement() {
         return binder.getRoot();
     }
-
 }

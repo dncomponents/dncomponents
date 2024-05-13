@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.dncomponents.client.main.reactive;
+package com.dncomponents.client.reactive;
 
 import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;

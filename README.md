@@ -2,37 +2,58 @@
 
 [![Join the chat at https://gitter.im/dncomponents_/dncomponents](https://badges.gitter.im/dncomponents_/dncomponents.svg)](https://gitter.im/dncomponents_/dncomponents?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-
-&nbsp;&nbsp;Client side java UI framework for building rich web applications written purely in Java language using GWT compiler and elemental2 browser API without any external js libraries.
+&nbsp;&nbsp;Client side java UI framework for building rich web applications written purely in Java language using GWT
+compiler and elemental2 browser API without any external js libraries.
 http://dncomponents.com
 
-| Module              | Info |
-| --------------------|------------------:|
-| <b>core</b>   |  Basic classes to build user interface with elemental2 and dn HTML binder |
-|<b> template_annotation_processor</b>  | Annotation processor to generate code from java/html pairs |
-|<b> mvp</b>  | Lightweight MVP pattern |
-| <b>core-uui</b>  | Components of dncomponents |
-| <b>bootstrap-ui</b>  | Views implementation of dncomponents in bootstrap front-end framework</b>  |
-| <b>material-ui</b>  | Views implementation of dncomponents in material design  |
+| Module                                |                                                                      Info |
+|---------------------------------------|--------------------------------------------------------------------------:|
+| <b>core</b>                           |  Basic classes to build user interface with elemental2 and dn HTML binder |
+| <b> template_annotation_processor</b> |                Annotation processor to generate code from java/html pairs |
+| <b> mvp</b>                           |                                                   Lightweight MVP pattern |
+| <b>core-uui</b>                       |                                                Components of dncomponents |
+| <b>bootstrap-ui</b>                   | Views implementation of dncomponents in bootstrap front-end framework</b> |
+| <b>material-ui</b>                    |                   Views implementation of dncomponents in material design |
+| <b>main</b>                           |                                                          tests components |
+| <b>main-reactive</b>                  |                                                   tests reactive features |
 
 ## Getting started
 
-### Build User Interface only with elemental2 
+See [project web site](https://dncomponents.com/index.html).
 
-To build User Interface using [HTML binder](https://dncomponents.com/documentation-html-binder.html) with elemental2 elements  java and html use only <b>core</b> framework.
-Sample project is [here](https://github.com/dncomponents/dncomponents-java-elemental-starter)
+### To run components examples
 
-### Build User Interface with dncomponents
+Get a stable set of components, same as you can see at  [dncompoentns bootstrap example](https://dncomponents.com/demo/index.html).
 
-To use all dncomponents choose between [bootstrap](https://dncomponents.com/demo/index.html) and [material design](https://dncomponents.com/demo_material/index.html)
-<br>
+clone the project `git clone https://github.com/dncomponents/dncomponents.git`
+
+`cd main` and `run mvn gwt:devmode`
+
+
 Download starter project [here](https://github.com/dncomponents/dncomponents-java-starter-bs) .
-Or create a [new one from command line.](https://dncomponents.com/documentation-get-start.html)
 
-### dncomponents Intellij plugin
-For easy UI development install [plugin](https://plugins.jetbrains.com/plugin/13486-dn-components)
-Read more [here](https://dncomponents.com/documentation-get-start.html#plugin). 
+### To test new reactivity features
 
+This attempts to bring some features of popular frameworks - Vue, React, and Angular, such as:
+
+* **Reactivity** Data-binding system that synchronize the state of the application with DOM.<br>
+* **Component based** Organizing code into reusable UI components encapsulating their own logic, styling, and structure. <br>
+* **Two-way data binding** Changes in the model affect the view and vice versa. <br>
+* **Loops** Iterating over arrays and objects using the **dn-loop** directive, handy for rendering lists and tables dynamically in the DOM. <br>
+* **Conditional Rendering** With **dn-if, dn-if-else dn-else** directives, you can conditionally render elements based on the value of expressions or data properties.
+
+
+Read more [here](https://github.com/dncomponents/dncomponents/blob/master-reactive/main/README.md)
+
+Note that this is still work in progress and we need feedback and more testing.
+
+cd `main-reactivity` and `run mvn gwt:devmode`
+
+Download starter project [here](https://github.com/dncomponents/dncomponents-java-elemental-starter)
+
+## Contact
+Join [gitter chanel](https://gitter.im/dncomponents_/dncomponents) <br> 
+support@dncomponents.com
 
 ## License
 

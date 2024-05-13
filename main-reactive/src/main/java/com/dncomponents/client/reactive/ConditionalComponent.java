@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.dncomponents.client.main.reactive;
+package com.dncomponents.client.reactive;
 
 import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
@@ -28,7 +28,7 @@ import java.util.LinkedList;
 //language=html
 @Component(template = "      <div>\n" +
                       "          <h2>Testing conditional rendering</h2>\n" +
-                      "          <button on-click='changeType()'>{{type}}</button>\n" +
+                      "          <button dn-on-click='changeType()'>{{type}}</button>\n" +
                       "            <div dn-if='type==\"A\"'>\n" +
                       "                  A block\n" +
                       "              </div>\n" +

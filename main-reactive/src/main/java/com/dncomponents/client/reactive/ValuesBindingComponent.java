@@ -14,36 +14,34 @@
  * limitations under the License.
  */
 
-package com.dncomponents.client.main.reactive;
+package com.dncomponents.client.reactive;
 
 import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
-import com.dncomponents.client.main.testing.Person;
 import com.dncomponents.client.views.IsElement;
 import elemental2.dom.HTMLElement;
 
-@Component(
+
 //language=html
-        template = "<div class='someCss'>\n" +
-                   "    <h2>Testing component attributes</h2>\n" +
-                   "    <PersonComponent person='{{pers}}' someNumb='{{number}}' color='red'></PersonComponent>\n" +
-                   "</div>\n",
-//language=css
-        css = "        .someCss{\n" +
-              "          background:    #2ce3c1;\n" +
-              "        }\n"
-)
-public class AttributesComponent implements IsElement {
-    HtmlBinder<AttributesComponent> binder;
+@Component(template = "          <div>\n" +
+                      "            <p>Name: {{name}}</p>\n" +
+                      "            <p>Surname: {{surname}}</p>\n" +
+                      "            <p>Age: {{age}}</p>\n" +
+                      "            <b>{{fullNameAndAge()}}</b>\n" +
+                      "          </div>\n")
+public class ValuesBindingComponent implements IsElement {
+    HtmlBinder<ValuesBindingComponent> binder = HtmlBinder.create(ValuesBindingComponent.class, this);
 
-    Person pers;
-    int number = 200;
 
-    public AttributesComponent() {
-        pers = new Person("Peter");
-        pers.setAge(32);
-        pers.setGender("Male");
-        binder = HtmlBinder.create(AttributesComponent.class, this);
+    String name = "John";
+    String surname = "Doe";
+    int age = 33;
+
+    String fullNameAndAge() {
+        return name + ", " + surname + " - " + age;
+    }
+
+    public ValuesBindingComponent() {
         binder.bindAndUpdateUi();
     }
 

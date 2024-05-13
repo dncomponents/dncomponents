@@ -18,24 +18,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <modelVersion>4.0.0</modelVersion>
+
     <version>1.0-SNAPSHOT</version>
-    <groupId>com.dncomponents.core</groupId>
-    <artifactId>main</artifactId>
-    <packaging>gwt-app</packaging>
+
+    <groupId>com.dncomponents</groupId>
+    <artifactId>main-reactive</artifactId>
 
     <properties>
         <generated.source.directory>${project.build.directory}/generated-sources/annotations
         </generated.source.directory>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- dependencies -->
+        <dncomponents.version>1.0-SNAPSHOT</dncomponents.version>
         <gwt.version>2.10.0</gwt.version>
         <net.ltgt.gwt.version>1.1.0</net.ltgt.gwt.version>
         <elemental.version>1.2.1</elemental.version>
-        <maven.source.plugin>3.3.1</maven.source.plugin>
         <maven.compiler.version>3.13.0</maven.compiler.version>
         <java.version>11</java.version>
     </properties>
@@ -62,32 +64,28 @@
             <version>${elemental.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.dncomponents</groupId>
+            <artifactId>testing</artifactId>
+            <version>${dncomponents.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.dncomponents.core</groupId>
             <artifactId>template_annotation_processor</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${dncomponents.version}</version>
         </dependency>
         <dependency>
             <groupId>com.dncomponents.core</groupId>
-            <artifactId>core-uui</artifactId>
-            <type>gwt-lib</type>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <artifactId>core</artifactId>
+            <version>${dncomponents.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.dncomponents.core</groupId>
-            <artifactId>bootstrap-ui</artifactId>
-            <type>gwt-lib</type>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.dncomponents.core</groupId>
-            <artifactId>mvp</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>org.gwtproject</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>2.10.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -109,7 +107,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -134,16 +131,16 @@
                 <version>${net.ltgt.gwt.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <sourceLevel>${java.version}</sourceLevel>
                     <launcherDir>${project.build.directory}/gwt/launcherDir</launcherDir>
                     <skipModule>true</skipModule>
+                    <sourceLevel>${java.version}</sourceLevel>
                     <devmodeArgs>
                         <devmodeArg>-startupUrl</devmodeArg>
-                        <devmodeArg>com.dncomponents.client.main.App</devmodeArg>
+                        <devmodeArg>com.dncomponents.App</devmodeArg>
                         <arg>-generateJsInteropExports</arg>
                     </devmodeArgs>
                     <logLevel>INFO</logLevel>
-                    <moduleName>com.dncomponents.client.main.App</moduleName>
+                    <moduleName>com.dncomponents.App</moduleName>
                     <moduleShortName>App</moduleShortName>
                     <compilerArgs>
                         <arg>-generateJsInteropExports</arg>
@@ -151,12 +148,9 @@
                     <useCompilerArgsForTests>true</useCompilerArgsForTests>
                     <codeserverArgs>
                         <arg>-generateJsInteropExports</arg>
-                        <arg>-port</arg>
-                        <arg>9877</arg>
                     </codeserverArgs>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
 </project>

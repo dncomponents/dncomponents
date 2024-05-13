@@ -14,33 +14,36 @@
  * limitations under the License.
  */
 
-package com.dncomponents.client.main.reactive;
+package com.dncomponents.client.reactive;
 
 import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
+import com.dncomponents.client.testing.Person;
 import com.dncomponents.client.views.IsElement;
 import elemental2.dom.HTMLElement;
 
+@Component(
 //language=html
-@Component(template = "<div class='helloCss'>\n" +
-                      "<h2>*** HelloComponent ***</h2>\n" +
-                      "  <h1>Hello, {{name}}!</h1>\n" +
-                      "</div>\n",
+        template = "<div class='someCss'>\n" +
+                   "    <h2>Testing component attributes</h2>\n" +
+                   "    <PersonComponent person='{{pers}}' someNumb='{{number}}' color='red'></PersonComponent>\n" +
+                   "</div>\n",
 //language=css
-        css = ".helloCss{\n" +
-              "           background: #ea16b6;\n" +
-              "           padding: 20px;\n" +
-              "           border: 1px solid gray;\n" +
-              "         }\n",
-        tag = "hello-component"
+        css = "        .someCss{\n" +
+              "          background:    #2ce3c1;\n" +
+              "        }\n"
 )
+public class AttributesComponent implements IsElement {
+    HtmlBinder<AttributesComponent> binder;
 
-public class HelloComponent implements IsElement {
-    HtmlBinder<HelloComponent> binder = HtmlBinder.create(HelloComponent.class, this);
+    Person pers;
+    int number = 200;
 
-    String name = "All";
-
-    public HelloComponent() {
+    public AttributesComponent() {
+        pers = new Person("Peter");
+        pers.setAge(32);
+        pers.setGender("Male");
+        binder = HtmlBinder.create(AttributesComponent.class, this);
         binder.bindAndUpdateUi();
     }
 
@@ -48,4 +51,5 @@ public class HelloComponent implements IsElement {
     public HTMLElement asElement() {
         return binder.getRoot();
     }
+
 }

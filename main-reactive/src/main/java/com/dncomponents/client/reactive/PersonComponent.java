@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.dncomponents.client.main.reactive;
+package com.dncomponents.client.reactive;
 
 import com.dncomponents.Component;
 import com.dncomponents.client.components.core.HtmlBinder;
 import com.dncomponents.client.components.core.Props;
-import com.dncomponents.client.main.testing.Person;
+import com.dncomponents.client.testing.Person;
 import com.dncomponents.client.views.IsElement;
 import elemental2.dom.HTMLElement;
 
@@ -31,7 +31,7 @@ import elemental2.dom.HTMLElement;
                       "          <p>{{props.getPerson().getAge()}}</p>\n" +
                       "          <p>{{props.getPerson().getGender()}}</p>\n" +
                       "          <p>Some numb: {{props.getSomeNumb()}}</p>\n" +
-                      "          <p>Color: {{props.getColor()}}</p>\n" +
+                      "          <p style='background: {{props.getPerson().getCurrentColor()}}'>Color: {{props.getColor()}}</p>\n" +
                       "        </div>\n")
 public class PersonComponent implements IsElement {
     HtmlBinder<PersonComponent> binder = HtmlBinder.create(PersonComponent.class, this);
@@ -41,9 +41,12 @@ public class PersonComponent implements IsElement {
         public Person getPerson() {
             return getStateValue("person");
         }
+        public LoopComponent getLoopComponent() {
+            return getStateValue("parent");
+        }
 
         public int getSomeNumb() {
-            return getStateValue("someNumb") == null ? 0 : getStateValue("someNumb");
+            return getStateValue("someNumb");
         }
 
         public String getColor() {
@@ -55,7 +58,12 @@ public class PersonComponent implements IsElement {
 
     public PersonComponent(Props props) {
         this.props = new PersonComponentProps().wrap(props, binder);
-//        State<Person> person = props.getState("person");
+        //testing...
+        LoopComponent loopComponent = this.props.getLoopComponent();
+        if(loopComponent!=null) {
+            Person person = loopComponent.persons.get(2);
+        }
+        //        State<Person> person = props.getState("person");
 //        State<Integer> someNumb = props.getState("someNumb");
 //        String color = props.getAttribute("color");
         binder.bindAndUpdateUi();
