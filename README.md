@@ -6,6 +6,8 @@
 compiler and elemental2 browser API without any external js libraries.
 http://dncomponents.com
 
+Note: There is the same project using [TeaVM](https://teavm.org/) compiler [here](https://github.com/dncomponents/dncomponents-tea) 
+
 | Module                                |                                                                      Info |
 |---------------------------------------|--------------------------------------------------------------------------:|
 | <b>core</b>                           |  Basic classes to build user interface with elemental2 and dn HTML binder |
