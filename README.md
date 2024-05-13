@@ -43,7 +43,7 @@ This attempts to bring some features of popular frameworks - Vue, React, and Ang
 * **Conditional Rendering** With **dn-if, dn-if-else dn-else** directives, you can conditionally render elements based on the value of expressions or data properties.
 
 
-Read more [here](https://github.com/dncomponents/dncomponents/blob/master-reactive/main/README.md)
+Read more [here](https://github.com/dncomponents/dncomponents/blob/master/main-reactive/README.md)
 
 Note that this is still work in progress and we need feedback and more testing.
 

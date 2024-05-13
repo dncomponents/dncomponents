@@ -26,7 +26,6 @@ public class App implements EntryPoint {
 
     public void onModuleLoad() {
         AppTemplates.register();
-        DomGlobal.window.addEventListener("load", evt -> HtmlBinder.cssDevMode());
         MainApp mainApp = new MainApp();
         DomGlobal.document.body.appendChild(mainApp.asElement());
     }
