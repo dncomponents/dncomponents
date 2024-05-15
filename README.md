@@ -1,6 +1,5 @@
 # dncomponents
 
-[![Join the chat at https://gitter.im/dncomponents_/dncomponents](https://badges.gitter.im/dncomponents_/dncomponents.svg)](https://gitter.im/dncomponents_/dncomponents?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 &nbsp;&nbsp;Client side java UI framework for building rich web applications written purely in Java language using GWT
 compiler and elemental2 browser API without any external js libraries.
@@ -54,7 +53,7 @@ cd `main-reactivity` and `run mvn gwt:devmode`
 Download starter project [here](https://github.com/dncomponents/dncomponents-java-elemental-starter)
 
 ## Contact
-Join [gitter chanel](https://gitter.im/dncomponents_/dncomponents) <br> 
+Join gitter room https://app.gitter.im/#/room/#dncomponents.com:gitter.im<br> 
 support@dncomponents.com
 
 ## License
