@@ -53,7 +53,7 @@ cd `main-reactivity` and `run mvn gwt:devmode`
 Download starter project [here](https://github.com/dncomponents/dncomponents-java-elemental-starter)
 
 ## Contact
-Join gitter room https://app.gitter.im/#/room/#dncomponents.com:gitter.im<br> 
+Join [gitter room](https://app.gitter.im/#/room/#dncomponents.com:gitter.im)<br>
 support@dncomponents.com
 
 ## License
