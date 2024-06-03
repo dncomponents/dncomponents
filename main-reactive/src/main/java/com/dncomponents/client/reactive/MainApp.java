@@ -29,13 +29,14 @@ import java.util.List;
 @Component(template = "<div>\n" +
                       "    <h1 class='main-title'>Main App</h1>\n" +
                       "    <select dn-model=\"currentScreens\" multiple style='height: 140px;'>\n" +
-                      "        <option>HelloComponent</option>\n" +
-                      "        <option>UserInputComponent</option>\n" +
+                      "        <option>TodoComponent</option>\n" +
+                      "         <option>UserInputComponent</option>\n" +
                       "        <option>EventsComponent</option>\n" +
                       "        <option>AttributesComponent</option>\n" +
                       "        <option>LoopComponent</option>\n" +
                       "        <option>ValuesBindingComponent</option>\n" +
                       "        <option>ConditionalComponent</option>\n" +
+                      "        <option>HelloComponent</option>\n" +
                       "    </select>\n" +
                       "    <hello-component dn-if='currentScreens.contains(\"HelloComponent\")'></hello-component>\n" +
                       "    <UserInputComponent dn-if='currentScreens.contains(\"UserInputComponent\")'></UserInputComponent>\n" +
@@ -44,6 +45,7 @@ import java.util.List;
                       "    <LoopComponent dn-if='currentScreens.contains(\"LoopComponent\")'></LoopComponent>\n" +
                       "    <ValuesBindingComponent dn-if='currentScreens.contains(\"ValuesBindingComponent\")'></ValuesBindingComponent>\n" +
                       "    <ConditionalComponent dn-if='currentScreens.contains(\"ConditionalComponent\")'></ConditionalComponent>\n" +
+                      "    <TodoComponent dn-if='currentScreens.contains(\"TodoComponent\")'></TodoComponent>\n" +
                       "</div>\n",
         //language=css
         css = ".main-title{\n" +
@@ -53,7 +55,7 @@ import java.util.List;
 )
 public class MainApp implements IsElement {
     HtmlBinder<MainApp> binder = HtmlBinder.create(MainApp.class, this);
-    List<String> currentScreens = new ArrayList<>(Arrays.asList("HelloComponent"));
+    List<String> currentScreens = new ArrayList<>(Arrays.asList("TodoComponent"));
 
     public MainApp() {
         binder.bindAndUpdateUi();

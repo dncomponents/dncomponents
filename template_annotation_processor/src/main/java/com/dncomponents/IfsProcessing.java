@@ -32,8 +32,9 @@ public class IfsProcessing {
     private Set<String> updateSet;
 
 
-    public IfsProcessing(String html, Set<String> updateSet) {
+    public IfsProcessing(String html, Set<String> updateSet, Set<String> valuesNames) {
         this.updateSet = updateSet;
+        this.valuesNames = valuesNames;
         parse(html);
     }
 

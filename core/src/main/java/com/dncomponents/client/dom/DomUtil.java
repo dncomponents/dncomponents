@@ -1327,7 +1327,17 @@ public class DomUtil {
         }
     }
 
-    public static void checkBoxSelection(EventTarget eventTarget, Collection<String> selection) {
+    public static <T> T checkBoxSelection(Object obj, Event e) {
+        if (obj instanceof Collection) {
+            return (T) DomUtil.checkBoxCollectionSelection(e.target, (Collection<String>) obj);
+        } else if (obj instanceof Boolean) {
+            return (T) (Boolean.valueOf(((HTMLInputElement) e.target).checked));
+        }else{
+            return (T) ((HTMLInputElement) e.target).value;
+        }
+    }
+
+    private static Collection<String> checkBoxCollectionSelection(EventTarget eventTarget, Collection<String> selection) {
         HTMLInputElement element = (HTMLInputElement) eventTarget;
         String value = element.value;
         boolean containsIgnoreCase = selection.stream()
@@ -1339,6 +1349,7 @@ public class DomUtil {
         } else {
             selection.removeIf(str -> str.equalsIgnoreCase(value));
         }
+        return selection;
     }
 
     public static String stringifyFlatted(Object object) {

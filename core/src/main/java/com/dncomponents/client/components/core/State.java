@@ -79,7 +79,7 @@ public class State<T> extends AbstractHandler implements HasValueChangeHandlers<
         }
     }
 
-    void forceUpdateUI() {
+    public void forceUpdateUI() {
         updateUI(value);
         needsUpdate = false;
         ValueChangeEvent.fire(this, value);

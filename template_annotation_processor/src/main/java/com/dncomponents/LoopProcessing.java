@@ -25,64 +25,41 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeMirror;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.dncomponents.EventsProcessing.isBinder;
+import static com.dncomponents.EventsProcessing.isModel;
 
 
 public class LoopProcessing {
 
     String imports = "";
     private Set<String> updateSet;
+    private Set<String> eventsSet;
 
     Multimap<String, Loop> allLoopsMap = LinkedListMultimap.create();
     private String initFunctions = "";
     javax.lang.model.element.Element classEl;
 
     Map<String, String> loopInLoops = new HashMap<>();
-    private Map<String, String> fieldsAndTypesMap;
 
 
-    public LoopProcessing(String html, javax.lang.model.element.Element classEl, Map<String, String> fieldsAndTypesMap, Set<String> updateSet) {
+    public LoopProcessing(String html, javax.lang.model.element.Element classEl, Set<String> updateSet, Set<String> eventsSet) {
         this.classEl = classEl;
-        this.fieldsAndTypesMap = fieldsAndTypesMap;
-        this.updateSet = updateSet;
+         this.updateSet = updateSet;
+        this.eventsSet = eventsSet;
         parse(html);
     }
 
-    public static String extractFirstTypeParameter(TypeMirror typeMirror) {
-        if (typeMirror instanceof DeclaredType) {
-            List<? extends TypeMirror> typeArguments = ((DeclaredType) typeMirror).getTypeArguments();
-            if (!typeArguments.isEmpty()) {
-                TypeMirror firstTypeArgument = typeArguments.get(0);
-                return firstTypeArgument.toString();
-            }
-        }
-        return null;
-    }
-
-
     private String checkCollectionType(String collectionName) {
-        final Optional<? extends javax.lang.model.element.Element> optionalElement = classEl.getEnclosedElements().stream()
-                .filter(e -> e.getKind() == ElementKind.FIELD && e.getSimpleName().toString().equals(collectionName))
-                .findAny();
-        if (optionalElement.isPresent()) {
-            final javax.lang.model.element.Element element = optionalElement.get();
-            try {
-                TypeMirror typeMirror = element.asType();
-                String firstTypeParameter = extractFirstTypeParameter(typeMirror);
-                return firstTypeParameter;
-            } catch (Exception ex) {
-
-            }
+        try {
+            CollectionTypeChecker checker = new CollectionTypeChecker(classEl);
+            return checker.checkCollectionType(collectionName);
+        } catch (Exception ex) {
+            return "";
         }
-        return "";
     }
 
     private boolean isLoopInLoop(String loopName) {
@@ -108,8 +85,8 @@ public class LoopProcessing {
                 final String[] words = value.split(" ");
 
                 final Loop loop = new Loop(words[0], words[2],
-                        parseLoop(allElements.get(i), words[0], words[2]),
-                        parseEventHandlers(allElements.get(i)));
+                        parseLoopValues(allElements.get(i), words[0], words[2]),
+                        parseLoopEventHandlers(allElements.get(i)));
                 allLoopsMap.put(words[2], loop);
             }
         }
@@ -127,13 +104,14 @@ public class LoopProcessing {
                 type = getParentLoop(collectionName).type;
             }
 
+            String eh = String.join("", loops.stream()
+                    .flatMap((Function<Loop, Stream<String>>) loop -> checkForEventHandlers(loop, type).stream())
+                    .collect(Collectors.toSet()));
+
             String fn = String.join("", loops.stream()
                     .flatMap((Function<Loop, Stream<String>>) loop -> checkForFunctions(loop, type).stream())
                     .collect(Collectors.toSet()));
 
-            String eh = String.join("", loops.stream()
-                    .flatMap((Function<Loop, Stream<String>>) loop -> checkForEventHandlers(loop, type).stream())
-                    .collect(Collectors.toSet()));
 
             if (!fn.isEmpty()) {
                 fn = " new HashMap() {{\n" + fn + "        }});";
@@ -163,11 +141,21 @@ public class LoopProcessing {
     private Set<String> checkForEventHandlers(Loop loop, String type) {
         Set<String> eventHandlersSet = new HashSet<>();
         if (!loop.eventHandlers.isEmpty()) {
+            initFnImports();
             initEventsImports();
             String fns = "";
             for (Map.Entry<String, String> entry : loop.eventHandlers.entrySet()) {
-                if (isBinder(entry.getKey())) {
-                    fns = "            put(\"" + StringEscapeUtils.escapeJava(entry.getKey()) + "\", (BiConsumer<Event," + type + ">)(e," + loop.arg + ") -> {" + Util.createJavaCode(entry.getValue(), loop.arg, true).replace(";", "") + EventsProcessing.getBinderAssign(entry.getKey(), entry.getValue(), fieldsAndTypesMap) + "});\n";
+                if (isModel(entry.getKey())) {
+                    if (entry.getValue().startsWith(loop.arg + ".") || entry.getValue().equals(loop.arg)) {
+                        fns = "            put(\"" + StringEscapeUtils.escapeJava(entry.getKey()) +
+                              "\", (BiConsumer<Event," + type + ">)(e," + loop.arg + ") -> {" +
+                              EventsProcessing.getModelAssign(StringEscapeUtils.escapeJava(entry.getKey()), entry.getValue(), true) + "});\n";
+                        loop.functions.add(entry.getValue());
+                    } else {
+                        updateSet.add("        template.addStateFunction(\"" + StringEscapeUtils.escapeJava(entry.getValue()) + "\", () -> " +
+                                      Util.createJavaCode(entry.getValue(), null, false) + ");\n");
+                        EventsProcessing.setEventStringHandler(entry.getKey(), entry.getValue(), eventsSet);
+                    }
                 } else {
                     fns = "            put(\"" + StringEscapeUtils.escapeJava(entry.getKey()) + "\", (BiConsumer<Event," + type + ">)(e," + loop.arg + ") -> {" + Util.createJavaCode(entry.getValue(), loop.arg, true) + "});\n";
                 }
@@ -194,7 +182,7 @@ public class LoopProcessing {
     }
 
 
-    public Set<String> parseLoop(Element element, String arg, String loopName) {
+    public Set<String> parseLoopValues(Element element, String arg, String loopName) {
         final Elements loopInLoop = element.getElementsByAttribute("dn-loop");
         Set<String> loopInLoopFns = new HashSet<>();
         if (loopInLoop.size() > 1) {
@@ -212,11 +200,31 @@ public class LoopProcessing {
         }
         Set<String> valuesNames = new HashSet<>();
         valuesNames.addAll(loopInLoopFns);
-        if (element == null)
-            return valuesNames;
         final String[] strings = org.apache.commons.lang3.StringUtils.substringsBetween(element.html(), "{{", "}}");
+        final Set<String> loopFns = Arrays.stream(strings).collect(Collectors.toSet());
+
+        Elements elements = element.select("[dn-if], [dn-else], [dn-else-if]");
+        for (Element el : elements) {
+            // Extract "dn-if" attribute value
+            String dnIfValue = el.attr("dn-if");
+            if (!dnIfValue.isEmpty()) {
+                loopFns.add(dnIfValue);
+            }
+
+            // Extract "dn-else" attribute value
+            String dnElseValue = el.attr("dn-else");
+            if (!dnElseValue.isEmpty()) {
+                loopFns.add(dnElseValue);
+            }
+
+            // Extract "dn-else-if" attribute value
+            String dnElseIfValue = el.attr("dn-else-if");
+            if (!dnElseIfValue.isEmpty()) {
+                loopFns.add(dnElseIfValue);
+            }
+        }
+
         if (strings != null) {
-            final Set<String> loopFns = Arrays.stream(strings).collect(Collectors.toSet());
             if (isLoopInLoop(loopName)) {
                 for (Loop loop : allLoopsMap.get(loopInLoops.get(loopName))) {
                     loopFns.removeIf(e -> e.startsWith(loop.arg + "."));
@@ -227,8 +235,8 @@ public class LoopProcessing {
         return valuesNames;
     }
 
-    public Map<String, String> parseEventHandlers(Element element) {
-        final EventsProcessing eventsProcessing = new EventsProcessing(fieldsAndTypesMap, updateSet);
+    public Map<String, String> parseLoopEventHandlers(Element element) {
+        final EventsProcessing eventsProcessing = new EventsProcessing(element.html(), updateSet, new HashSet<>(), true);
         imports += eventsProcessing.getImports();
         return eventsProcessing.getAllEventsMap(element.html());
     }

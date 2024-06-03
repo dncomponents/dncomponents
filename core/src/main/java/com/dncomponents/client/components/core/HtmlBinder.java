@@ -87,10 +87,6 @@ public abstract class HtmlBinder<T> {
         return (C) binder;
     }
 
-    public void setD(T d) {
-        this.d = d;
-    }
-
     public abstract void bind();
 
     public void bindAndUpdateUi() {
@@ -98,17 +94,16 @@ public abstract class HtmlBinder<T> {
         updateUi();
     }
 
-
     public void updateUi() {
         template.updateAll();
     }
 
-    public void updateUiFieldsExcept(String... stateNames) {
-        template.updateAll(true, stateNames);
+    public void updateUiFieldsExcept(boolean force, String... stateNames) {
+        template.updateAll(true, force, stateNames);
     }
 
-    public void updateUiFields(String... stateNames) {
-        template.updateAll(false, stateNames);
+    public void updateUiFields(boolean force, String... stateNames) {
+        template.updateAll(false, force, stateNames);
     }
 
     public void watch(String stateName, ValueChangeHandler valueChangeHandler) {
@@ -151,5 +146,9 @@ public abstract class HtmlBinder<T> {
 
     TemplateParser getTemplate() {
         return template;
+    }
+
+    public State createOrGetState(String stateName, Supplier o) {
+        return template.createOrGetState(stateName, o);
     }
 }

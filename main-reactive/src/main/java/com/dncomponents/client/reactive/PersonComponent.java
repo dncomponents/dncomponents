@@ -25,14 +25,13 @@ import elemental2.dom.HTMLElement;
 
 
 //language=html
-@Component(template = "        <div>\n" +
-                      "          <h1>Person component</h1>\n" +
-                      "          <p>{{props.getPerson().getName()}}</p>\n" +
-                      "          <p>{{props.getPerson().getAge()}}</p>\n" +
-                      "          <p>{{props.getPerson().getGender()}}</p>\n" +
-                      "          <p>Some numb: {{props.getSomeNumb()}}</p>\n" +
-                      "          <p style='background: {{props.getPerson().getCurrentColor()}}'>Color: {{props.getColor()}}</p>\n" +
-                      "        </div>\n")
+@Component(template = "            <div>\n" +
+                      "                  <h1>Person component</h1>\n" +
+                      "                  <p>{{props.getPerson().getName()}}</p>\n" +
+                      "                  <p>{{props.getPerson().getAge()}}</p>\n" +
+                      "                  <p>Some numb: {{props.getSomeNumb()}}</p>\n" +
+                      "                  <p>Color: {{props.getColor()}}</p>\n" +
+                      "                </div>")
 public class PersonComponent implements IsElement {
     HtmlBinder<PersonComponent> binder = HtmlBinder.create(PersonComponent.class, this);
 
@@ -41,12 +40,9 @@ public class PersonComponent implements IsElement {
         public Person getPerson() {
             return getStateValue("person");
         }
-        public LoopComponent getLoopComponent() {
-            return getStateValue("parent");
-        }
 
         public int getSomeNumb() {
-            return getStateValue("someNumb");
+            return getStateValue("someNumb") == null ? 0 : getStateValue("someNumb");
         }
 
         public String getColor() {
@@ -58,11 +54,6 @@ public class PersonComponent implements IsElement {
 
     public PersonComponent(Props props) {
         this.props = new PersonComponentProps().wrap(props, binder);
-        //testing...
-        LoopComponent loopComponent = this.props.getLoopComponent();
-        if(loopComponent!=null) {
-            Person person = loopComponent.persons.get(2);
-        }
         //        State<Person> person = props.getState("person");
 //        State<Integer> someNumb = props.getState("someNumb");
 //        String color = props.getAttribute("color");

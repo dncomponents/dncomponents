@@ -33,40 +33,38 @@ import java.util.stream.Collectors;
 public class EventsProcessing {
     private Set<String> importsSet = new HashSet<>();
     private Set<String> updateSet;
-    private Map<String, String> fieldsAndTypesMap;
+    private Set<String> eventsSet;
+    private final boolean loop;
 
-    public EventsProcessing(Map<String, String> fieldsAndTypesMap, Set<String> updateSet) {
-        this.fieldsAndTypesMap = fieldsAndTypesMap;
+    public EventsProcessing(String html, Set<String> updateSet, Set<String> eventsSet, boolean loop) {
         this.updateSet = updateSet;
+        this.eventsSet = eventsSet;
+        this.loop = loop;
+        parse(html);
     }
 
 
-    public String parse(String html) {
+    public void parse(String html) {
         if (html == null)
-            return "";
+            return;
         final Map<String, String> allEventsMap = getAllEventsMap(html);
-        String generated = "";
-        for (Map.Entry<String, String> entry : allEventsMap.entrySet()) {
-            if (isBinder(entry.getKey())) {
-                generated += "template.addEventHandler(\"" + entry.getKey() + "\", e -> {\n" +
-                             getBinderAssign(entry.getKey(), entry.getValue(), fieldsAndTypesMap) +
-                             "        });\n\t\t";
-            } else {
-                generated += "template.addEventHandler(\"" + StringEscapeUtils.escapeJava(entry.getKey()) + "\", e -> {\n" +
-                             "                " + Util.createJavaCode(entry.getValue(), null, true) + "\n" +
-                             "        });\n\t\t";
 
-            }
+        for (Map.Entry<String, String> entry : allEventsMap.entrySet()) {
+            setEventStringHandler(entry.getKey(), entry.getValue(), eventsSet);
         }
-        String result = "";
-        if (!generated.isEmpty()) {
-            result = "    public void bindEvents(){\n" +
-                     "           " + generated + "\n" +
-                     "   }\n";
-        }
-        return result;
     }
 
+    public static void setEventStringHandler(String key, String value, Set<String> eventsSet) {
+        if (isModel(key)) {
+            eventsSet.add("template.addEventHandler(\"" + key + "\", e -> {\n\t\t\t" +
+                          getModelAssign(key, value, false) +
+                          "\n\t\t});\n\t\t");
+        } else {
+            eventsSet.add("template.addEventHandler(\"" + StringEscapeUtils.escapeJava(key) + "\", e -> {\n\t\t\t" +
+                          Util.createJavaCode(value, null, true) +
+                          "\n\t\t});\n\t\t");
+        }
+    }
 
     public Map<String, String> getAllEventsMap(String html) {
         if (html == null)
@@ -75,6 +73,7 @@ public class EventsProcessing {
         for (Element loop : doc.getElementsByAttribute("dn-loop")) {
             loop.remove();
         }
+
         final Elements allElements = doc.getAllElements();
         Map<String, String> map = new HashMap<>();
         for (Element element : allElements) {
@@ -86,12 +85,10 @@ public class EventsProcessing {
                 }
             }
             if (element.hasAttr("dn-model")) {
-//                final String modelAttribute = element.attributes().get("dn-model");
                 final String model = element.attributes().get("dn-model");
 
-                updateSet.add("        template.addStateFunction(\"" + model + "\", () -> d." + model + ");\n");
-
-//                final String model = Util.getBetween(modelAttribute);
+                if (!loop)
+                    updateSet.add("        template.addStateFunction(\"" + model + "\", () -> d." + model + ");\n");
 
                 if (element.tagName().equals("textarea")) {
                     importsSet.add("import elemental2.dom.HTMLTextAreaElement;\n");
@@ -127,7 +124,7 @@ public class EventsProcessing {
     }
 
 
-    public static boolean isBinder(String key) {
+    public static boolean isModel(String key) {
         return (key.startsWith("input:")
                 || key.startsWith("radio:")
                 || key.startsWith("textarea:")
@@ -135,25 +132,16 @@ public class EventsProcessing {
     }
 
 
-    //todo check loop
-    public static String getBinderAssign(String str, String value, Map<String, String> fieldsAndTypesMap) {
-        String dValue = Util.createJavaCode(value, null, true).replace(";", "");
+    public static String getModelAssign(String str, String value, boolean loop) {
+        String dValue = loop ? value : Util.createJavaCode(value, null, true).replace(";", "");
         if (str.startsWith("input:")) {
             return dValue + "=((HTMLInputElement) e.target).value;";
         } else if (str.startsWith("radio:")) {
-            if (fieldsAndTypesMap.get(value) != null) {
-                if (fieldsAndTypesMap.get(value).equals("boolean")) {
-                    return dValue + "=((HTMLInputElement) e.target).checked;";
-                } else if (fieldsAndTypesMap.get(value).equals("collection")) {
-                    return "DomUtil.checkBoxSelection(e.target, " + dValue + ");";
-                }
-            } else {
-                return dValue + "=((HTMLInputElement) e.target).value;";
-            }
+            return dValue + "=com.dncomponents.client.dom.DomUtil.checkBoxSelection(" + dValue + ",e);";
         } else if (str.startsWith("textarea:")) {
             return dValue + "=((HTMLTextAreaElement) e.target).value;";
         } else if (str.startsWith("select:")) {
-            return dValue + "=DomUtil.getSelection(e.target);";
+            return dValue + "=com.dncomponents.client.dom.DomUtil.getSelection(e.target);";
         }
         return "";
     }

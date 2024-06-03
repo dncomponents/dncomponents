@@ -21,10 +21,11 @@ import org.apache.commons.text.StringEscapeUtils;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.*;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.PackageElement;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.Types;
 import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
@@ -252,9 +253,19 @@ public class TemplateProcessor extends AbstractProcessor {
     private String getStatesCall(Set<String> updateSet) {
         String result = updateSet.stream().collect(Collectors.joining());
         if (!result.isEmpty()) {
-            result = "\n      void setStates(){\n" +
+            result = "\n\tvoid setStates(){\n" +
                      result +
-                     "      }\n";
+                     "\t}\n";
+        }
+        return result;
+    }
+
+    private String getEventsHandlers(Set<String> eventsSet) {
+        String result = eventsSet.stream().collect(Collectors.joining());
+        if (!result.isEmpty()) {
+            result = "\n\tvoid bindEvents(){\n\t\t" +
+                     result +
+                     "\n\t}\n";
         }
         return result;
     }
@@ -287,19 +298,20 @@ public class TemplateProcessor extends AbstractProcessor {
             if (templateValue == null || templateValue.isEmpty())
                 templateValue = element.getAnnotation(Template.class).value();
         }
-        Map<String, String> map = allFields(element);
 
         Set<String> updateSet = new HashSet<>();
+        Set<String> eventsSet = new HashSet<>();
 
-        final LoopProcessing loopProcessing = new LoopProcessing(templateValue, classEl, map, updateSet);
-        final EventsProcessing eventsProcessing = new EventsProcessing(map, updateSet);
-        final IfsProcessing ifsProcessing = new IfsProcessing(templateValue, updateSet);
-        final String generatedEventsCode = eventsProcessing.parse(templateValue);
+        final LoopProcessing loopProcessing = new LoopProcessing(templateValue, classEl, updateSet, eventsSet);
+        final EventsProcessing eventsProcessing = new EventsProcessing(templateValue, updateSet, eventsSet, false);
+        final IfsProcessing ifsProcessing = new IfsProcessing(templateValue, updateSet, new HashSet<>());
         final ValuesProcessing valuesProcessing = new ValuesProcessing(templateValue, updateSet);
 
         final String generatedStatesCode = getStatesCall(updateSet);
 
-        if (templateValue != null || (templateValue != null && !templateValue.isEmpty())) {
+        final String generatedEventsCode = getEventsHandlers(eventsSet);
+
+        if (templateValue != null && !templateValue.isEmpty()) {
             templateValue = StringEscapeUtils.escapeJava(templateValue);
         }
 
@@ -357,8 +369,7 @@ public class TemplateProcessor extends AbstractProcessor {
                      "        template.init();\n" +
                      "        bind(d, template, true);\n" +
                      (!generatedEventsCode.isEmpty() ? "        bindEvents();\n" : "") +
-                     "        " +
-                     "}\n" +
+                     "\t}\n" +
                      "\n" +
                      "    @Override\n" +
                      "    public void bindThis() {\n" +
@@ -366,8 +377,7 @@ public class TemplateProcessor extends AbstractProcessor {
                      "        template.init();\n" +
                      "        bind(d, template, false);\n" +
                      (!generatedEventsCode.isEmpty() ? "        bindEvents();\n" : "") +
-                     "        " +
-                     "}\n" +
+                     "\t}\n" +
                      "    \n" +
                      generatedEventsCode +
                      generatedStatesCode +
@@ -379,37 +389,6 @@ public class TemplateProcessor extends AbstractProcessor {
                      "    \n    }\n" +
                      "}");
         writer.close();
-    }
-
-    private Map<String, String> allFields(Element element) {
-        Map<String, String> map = new HashMap<>();
-        TypeElement annotatedClass = (TypeElement) element;
-        for (Element enclosedElement : annotatedClass.getEnclosedElements()) {
-            if (enclosedElement.getKind() == ElementKind.FIELD) {
-                VariableElement field = (VariableElement) enclosedElement;
-                String fieldName = field.getSimpleName().toString();
-                TypeMirror fieldType = field.asType();
-                if (isCollectionType(fieldType)) {
-                    map.put(fieldName, "collection");
-                }
-                if (isBooleanType(fieldType)) {
-                    map.put(fieldName, "boolean");
-                }
-
-            }
-        }
-        return map;
-    }
-
-    private boolean isCollectionType(TypeMirror type) {
-        Types types = processingEnv.getTypeUtils();
-        TypeMirror collectionType = types.erasure(processingEnv.getElementUtils().getTypeElement(Collection.class.getName()).asType());
-        return types.isAssignable(type, collectionType);
-    }
-
-    private boolean isBooleanType(TypeMirror type) {
-        return type.toString().equals(Boolean.class.getCanonicalName()) ||
-               type.toString().equals(boolean.class.getCanonicalName());
     }
 
     private String getSuperClassPath(Element element) {
